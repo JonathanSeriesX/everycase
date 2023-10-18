@@ -13,7 +13,7 @@ const withNextra = nextra({
 
 const baseConfig = {
   output: "export",
-  distDir: "dist",
+  distDir: "out",
   images: {
     domains: ["everycase.org", "applecase.wiki"],
     unoptimized: true,
