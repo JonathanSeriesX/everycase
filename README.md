@@ -1,12 +1,12 @@
-# EveryCase Website
+# EveryCase
 
-This is a working repo for the [EveryCase](https://everycase.org/).
+This is a working repo for the [EveryCase](https://everycase.org/) website.
 
 ## What's going on here
 
-A script [table_slayer.py](scripts/table_slayer.py) is responsible for generating most of EveryCase contents from folder with SKU pages and text pages.  
+A [Table Slayer](scripts/table_slayer.py) Python script is responsible for generating most of EveryCase contents, using folders [with SKU pages](trash/layout/) and [text pages](trash/pages/).
 
-## License
+## Licence
 
 This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Docs template, which is licensed under the MIT Licence. The original content and modifications introduced by EveryCase have their own [loicense](LICENCE.md).
 
