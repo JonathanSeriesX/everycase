@@ -1,3 +1,4 @@
+"""Primary script that does all Markdown generation"""
 import os
 import re
 import json

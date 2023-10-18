@@ -1,15 +1,15 @@
+"""Downloads images from Apple servers for SKUs mentioned in models.txt files"""
 import os
-import requests
 import time
 import multiprocessing
-from PIL import Image
 from multiprocessing import Pool, cpu_count
+import requests
 
 BASE_URL_PNG = "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is/{code}?wid=4608&hei=4608&fmt=png"
 BASE_URL_JPG = "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/{code}?wid=1024&hei=1024&fmt=jpg&qlt=95"
 
 
-def download_image(code, folder, img_type, file_path, failed_list):
+def download_image(code, folder, img_type, failed_list):
     file_save_path = os.path.join(folder, f"{code}.{img_type}")
 
     if os.path.exists(file_save_path):
@@ -36,9 +36,9 @@ def download_image(code, folder, img_type, file_path, failed_list):
 
 
 def download_worker(task):
-    code, folder, img_type, file_path, failed_downloads = task
+    code, folder, img_type, failed_downloads = task
     try:
-        download_image(code, folder, img_type, file_path, failed_downloads)
+        download_image(code, folder, img_type, failed_downloads)
     except requests.exceptions.ConnectionError as e:
         print(f"Connection error while downloading {code}.{img_type}: {e}")
         time.sleep(5)
@@ -57,9 +57,7 @@ def process_input_file(input_path, failed_downloads):
         if line.endswith(":"):
             if folder_name:
                 for model in models:
-                    tasks.append(
-                        (model, folder_name, "png", input_path, failed_downloads)
-                    )
+                    tasks.append((model, folder_name, "png", failed_downloads))
                 models = []
             folder_name = line[:-1]
         else:
@@ -67,7 +65,7 @@ def process_input_file(input_path, failed_downloads):
 
     if folder_name:
         for model in models:
-            tasks.append((model, folder_name, "png", input_path, failed_downloads))
+            tasks.append((model, folder_name, "png", failed_downloads))
 
     with Pool(cpu_count()) as p:
         p.map(download_worker, tasks)

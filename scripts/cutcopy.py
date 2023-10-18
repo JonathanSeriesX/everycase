@@ -1,3 +1,4 @@
+"""Cuts very certain amount of pixels from supplied images"""
 import os
 from PIL import Image
 from multiprocessing import Pool, cpu_count

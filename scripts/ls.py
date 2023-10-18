@@ -1,3 +1,4 @@
+"""Lists all the potential versions of images for each SKU"""
 import os
 
 
