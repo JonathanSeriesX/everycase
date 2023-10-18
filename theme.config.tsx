@@ -122,12 +122,12 @@ const config: DocsThemeConfig = {
     if (asPath !== '/') {
       titleTemplate = title + ' — EveryCase'
     } else {
-      titleTemplate = 'EveryCase'
+      titleTemplate = 'Every Case'
     }
 
     return (
       <>
-        <link rel="preload” href=”/fonts/TofinoVariable.woff2" as="font” type=”font/woff2" />
+        <link rel="preload” href=”/fonts/TofinoVariable.woff2" as="font" type="font/woff2" />
         {/* Basic Information */}
         <link rel="icon" href="/icons/android-chrome-512x512.png" type="image/png" sizes="512x512" />
         <link rel="manifest" href="/manifest.json" />
@@ -145,10 +145,11 @@ const config: DocsThemeConfig = {
         <meta property="og:locale" content="en_GB" />
 
         {/* Twitter Tags */}
-        <meta property="twitter:image" content="https://everycase.org/icons/back.jpg" />
-        <meta name="twitter:card" content="summary" />
-        <meta property="twitter:title" content={titleTemplate} />
-        <meta property="twitter:description" content="Library of Apple cases for iPhone, iPad, and Mac." />
+        <meta name="twitter:image" content="https://everycase.org/icons/back.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@Jonathunky"></meta>
+        <meta name="twitter:title" content={titleTemplate} />
+        <meta name="twitter:description" content="Library of Apple cases for iPhone, iPad, and Mac." />
 
         {/* Apple Specific Tags */}
         <meta name="apple-mobile-web-app-title" content="EveryCase" />
