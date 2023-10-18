@@ -120,7 +120,7 @@ const config: DocsThemeConfig = {
 
     var titleTemplate;
     if (asPath !== '/') {
-      titleTemplate = '%s — EveryCase'
+      titleTemplate = title + ' — EveryCase'
     } else {
       titleTemplate = 'EveryCase'
     }
