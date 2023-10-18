@@ -5,6 +5,17 @@ import { useRouter } from "next/router";
 
 const logo = (
   <>
+    <span
+      style={{
+        fontFamily: '"Quicksand", system-ui',
+        fontSize: "26px",
+        letterSpacing: "0px",
+        fontWeight: 300,
+        marginRight: -5,
+      }}
+    >
+      FineWoven
+    </span>
     <picture>
       <img
         src="/icons/icon-512x512.png"
@@ -14,13 +25,14 @@ const logo = (
     </picture>
     <span
       style={{
-        fontFamily: '"Quicksand", "Helvetica Neue", "Roboto", "Arimo", sans-serif',
+        fontFamily: '"Quicksand", system-ui',
         fontSize: "26px",
         letterSpacing: "0px",
-        fontWeight: 300
+        fontWeight: 300,
+        marginLeft: -10
       }}
     >
-      EveryCase
+      Empire
     </span>
   </>
 );
@@ -132,7 +144,7 @@ const config: DocsThemeConfig = {
         <link rel="icon" href="/icons/android-chrome-512x512.png" type="image/png" sizes="512x512" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#E3504F" />
-        <meta name="application-name" content="EveryCase" />
+        <meta name="application-name" content="FineWoven Empire" />
         <meta name="description" content="Library of Apple cases for iPhone, iPad, and Mac." />
 
         {/* OpenGraph Tags */}

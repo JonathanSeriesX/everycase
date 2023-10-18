@@ -8,7 +8,7 @@ Perhaps a website designed for people who have never lost a thing in their lives
 
 I wondered too. Then I've decided to never wonder again and to build such a website; problem solved!
 
-EveryCase turned out quite cool:
+FineWoven Empire turned out quite cool:
 
 - Free with no distractions
 - Modern look & feel

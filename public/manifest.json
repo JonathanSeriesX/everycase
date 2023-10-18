@@ -5,16 +5,11 @@
   "display": "minimal-ui",
   "scope": "https://everycase.org/",
   "start_url": "https://everycase.org/",
-  "name": "EveryCase",
+  "name": "FineWoven Empire",
   "short_name": "EveryCase",
   "description": "Library of Apple cases for iPhone, iPad, and Mac.",
   "orientation": "natural",
   "icons": [
-    {
-      "src": "/icons/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
     {
       "src": "/icons/android-chrome-512x512.png",
       "sizes": "512x512",
@@ -26,7 +21,7 @@
       "name": "Latest Drop",
       "short_name": "Latest",
       "description": "View latest collection released by Apple",
-      "url": "/iphone_15?source=pwa_shortcut`",
+      "url": "/latest-iphone/iphone-15?source=pwa_shortcut",
       "icons": [{ "src": "/icons/fire.png", "sizes": "512x512" }]
     }
   ]
