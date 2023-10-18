@@ -32,7 +32,7 @@ const config: DocsThemeConfig = {
   ],
   project: {
     // GitHub link; will spawn it in the title bar
-    // link: 'https://github.com/JonathanX64/everyfruitcase',
+    link: 'https://github.com/Jonathunky/everyfruitcase',
   },
   chat: {
     //link: 'https://discord.com',
@@ -72,12 +72,23 @@ const config: DocsThemeConfig = {
   primaryHue: 320,
   useNextSeoProps() {
     const { asPath } = useRouter();
-    const titleTemplate = asPath !== "/" ? "%s – EveryCase" : "EveryCase";
-    return {
-      titleTemplate,
-      noindex: false,
-      nofollow: false
-    };
+    var titleTemplate;
+    if (asPath !== '/') {
+      titleTemplate = '%s — EveryCase'
+      return {
+        titleTemplate,
+        noindex: false,
+        nofollow: false
+      }
+    } else {
+      titleTemplate = 'EveryCase'
+      return {
+        titleTemplate,
+        noindex: false,
+        nofollow: false
+      };
+    }
+
   },
   toc: {
     float: true,
