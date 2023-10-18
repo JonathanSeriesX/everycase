@@ -1,14 +1,14 @@
-# EveryCase
+# FineWoven Empire
 
-This is a working repo for the [EveryCase](https://everycase.org/) website.
+This is a working repo for the [FineWoven Empire](https://everycase.org/) website.
 
 ## What's going on here
 
-A [Table Slayer](scripts/table_slayer.py) Python script is responsible for generating most of EveryCase contents, using folders with [SKU pages](trash/layout/) and [text pages](trash/pages/).
+A [Table Slayer](scripts/table_slayer.py) Python script is responsible for generating most of FineWoven Empire contents, using folders with [SKU pages](trash/layout/) and [text pages](trash/pages/).
 
 ## Licence
 
-This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Docs template, which is licensed under the MIT Licence. The original content and modifications introduced by EveryCase have their own [loicence](LICENCE.md).
+This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Docs template, which is licensed under the MIT Licence. The original content and modifications introduced by FineWoven Empire have their own [loicence](LICENCE.md).
 
 ## Local Deployment
 

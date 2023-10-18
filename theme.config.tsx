@@ -8,7 +8,7 @@ const logo = (
     <picture>
       <img
         src="/icons/icon-512x512.png"
-        alt="EveryCase Logo"
+        alt="FineWoven Empire Logo"
         className="logo"
       />
     </picture>
@@ -81,14 +81,14 @@ const config: DocsThemeConfig = {
     const { asPath } = useRouter();
     var titleTemplate;
     if (asPath !== '/') {
-      titleTemplate = '%s — EveryCase'
+      titleTemplate = '%s — FineWoven Empire'
       return {
         titleTemplate,
         noindex: false,
         nofollow: false
       }
     } else {
-      titleTemplate = 'EveryCase'
+      titleTemplate = 'FineWoven Empire'
       return {
         titleTemplate,
         noindex: false,
@@ -120,9 +120,9 @@ const config: DocsThemeConfig = {
 
     var titleTemplate;
     if (asPath !== '/') {
-      titleTemplate = title + ' — EveryCase'
+      titleTemplate = title + ' — FineWoven Empire'
     } else {
-      titleTemplate = 'Every Case'
+      titleTemplate = 'FineWoven Empire'
     }
 
     return (
@@ -152,7 +152,7 @@ const config: DocsThemeConfig = {
         <meta name="twitter:description" content="Library of Apple cases for iPhone, iPad, and Mac." />
 
         {/* Apple Specific Tags */}
-        <meta name="apple-mobile-web-app-title" content="EveryCase" />
+        <meta name="apple-mobile-web-app-title" content="FineWoven Empire" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />

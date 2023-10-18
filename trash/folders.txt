@@ -1,35 +1,35 @@
-iphone_15 => latest-iphone
-iphone_14 => latest-iphone
-iphone_13 => latest-iphone
-iphone_12 => latest-iphone
+iphone-15 => latest-iphone
+iphone-14 => latest-iphone
+iphone-13 => latest-iphone
+iphone-12 => latest-iphone
 
-ipad_10 => latest-ipad
-ipad_mini6 => latest-ipad
-ipad_pro4 => latest-ipad
-ipad_pro2 => latest-ipad
+ipad-10 => latest-ipad
+ipad-mini6 => latest-ipad
+ipad-pro4 => latest-ipad
+ipad-pro2 => latest-ipad
 
 airtag => others
 wallet => others
 pencil => others
 macbook => others
 
-iphone_11 => pre-magsafe-iphone
-iphone_xr => pre-magsafe-iphone
-iphone_x => pre-magsafe-iphone
+iphone-11 => pre-magsafe-iphone
+iphone-xr => pre-magsafe-iphone
+iphone-x => pre-magsafe-iphone
 
-iphone_7 => pre-notch-iphone
-iphone_6 => pre-notch-iphone
-iphone_5s => pre-notch-iphone
+iphone-7 => pre-notch-iphone
+iphone-6 => pre-notch-iphone
+iphone-5s => pre-notch-iphone
 
-ipad_pro105 => pre-liquid-ipad
-ipad_pro129 => pre-liquid-ipad
-ipad_pro97 => pre-liquid-ipad
-ipad_mini4 => pre-liquid-ipad
-ipad_air => pre-liquid-ipad
+ipad-pro105 => pre-liquid-ipad
+ipad-pro129 => pre-liquid-ipad
+ipad-pro97 => pre-liquid-ipad
+ipad-mini4 => pre-liquid-ipad
+ipad-air => pre-liquid-ipad
 
-ipad_mini => ancient
-iphone_5c => ancient
-ipad_2 => ancient
-iphone_4 => ancient
-ipod_touch => ancient
-ipad_1 => ancient
+ipad-mini => ancient
+iphone-5c => ancient
+ipad-2 => ancient
+iphone-4 => ancient
+ipod-touch => ancient
+ipad-1 => ancient
