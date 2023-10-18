@@ -1,5 +1,5 @@
 {
-  "theme_color": "#BF4F95",
+  "theme_color": "#E3504F",
   "background_color": "#FFE0F5",
   "display_override": ["window-controls-overlay", "standalone", "fullscreen"],
   "display": "minimal-ui",

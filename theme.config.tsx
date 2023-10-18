@@ -69,7 +69,14 @@ const config: DocsThemeConfig = {
   nextThemes: {
     defaultTheme: 'system'
   },
-  primaryHue: 320,
+  primaryHue: {
+    light: 325,
+    dark: 325
+  },
+  primarySaturation: {
+    light: 70,
+    dark: 70
+  },
   useNextSeoProps() {
     const { asPath } = useRouter();
     var titleTemplate;
@@ -117,7 +124,7 @@ const config: DocsThemeConfig = {
         {/* Basic Information */}
         <link rel="icon" href="/icons/android-chrome-512x512.png" type="image/png" sizes="512x512" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#BF4F95" />
+        <meta name="theme-color" content="#E3504F" />
         <meta name="application-name" content="EveryCase" />
         <meta name="description" content="Library of Apple cases for iPhone, iPad, and Mac." />
 
@@ -141,7 +148,7 @@ const config: DocsThemeConfig = {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
-        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#bf4f95" />
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#E3504F" />
 
         {/* Microsoft Specific Tags */}
         <meta name="msapplication-config" content="none" />

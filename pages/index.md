@@ -16,6 +16,6 @@ EveryCase turned out quite cool:
 - Incredible performance with more optimizations to come
 - Thousands of handcrafted transparent images of cases with more coming soon
 
-So I'm once again asking for your [support](support) if you enjoy it, and for your [feedback](https://github.com/Jonathunky/everyfruitcase/issues/new?title=General%20Feedback&labels=feedback).
+If you like what you see, please consider supporting me; [here's how](support).
 
-Thanks, and welcome (:
+Thanks, and welcome 🎉
