@@ -21,7 +21,7 @@
   "homepage": "https://everycase.org",
   "dependencies": {
     "@vercel/analytics": "^1.1.1",
-    "next": "~13.5.5",
+    "next": "~13.5.6",
     "next-pwa": "^5.6.0",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",
@@ -32,13 +32,13 @@
   },
   "devDependencies": {
     "@napi-rs/simple-git": "^0.1.9",
-    "@next/eslint-plugin-next": "^13.5.5",
+    "@next/eslint-plugin-next": "^13.5.6",
     "@types/node": "^20.8.7",
     "@types/react": "^18.2.29",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "eslint": "^8.51.0",
-    "eslint-config-next": "^13.5.5",
+    "eslint-config-next": "^13.5.6",
     "typescript": "^5.2.2"
   }
 }
