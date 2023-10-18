@@ -95,7 +95,6 @@ const config: DocsThemeConfig = {
         nofollow: false
       };
     }
-
   },
   toc: {
     float: true,
@@ -114,9 +113,17 @@ const config: DocsThemeConfig = {
   head: function Head() {
     const { title } = useConfig();
     const router = useRouter();
+    const { asPath } = useRouter();
 
     const baseURL = "https://everycase.org";
     const currentURL = `${baseURL}${router.asPath}`;
+
+    var titleTemplate;
+    if (asPath !== '/') {
+      titleTemplate = '%s — EveryCase'
+    } else {
+      titleTemplate = 'EveryCase'
+    }
 
     return (
       <>
@@ -140,7 +147,7 @@ const config: DocsThemeConfig = {
         {/* Twitter Tags */}
         <meta property="twitter:image" content="https://everycase.org/icons/back.jpg" />
         <meta name="twitter:card" content="summary" />
-        <meta property="twitter:title" content={title ? title : "EveryCase"} />
+        <meta property="twitter:title" content={titleTemplate} />
         <meta property="twitter:description" content="Library of Apple cases for iPhone, iPad, and Mac." />
 
         {/* Apple Specific Tags */}
