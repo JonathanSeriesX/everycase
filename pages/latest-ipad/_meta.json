@@ -1,0 +1,12 @@
+{
+  "*": {
+    "theme": {
+      "pagination": false,
+      "toc": true
+    }
+  },
+  "ipad_10": "iPad 10.9″",
+  "ipad_mini6": "iPad mini 6",
+  "ipad_pro4": "iPad Pro 11″ & 12.9″ 2020+",
+  "ipad_pro2": "iPad Pro 2018, Air 4–5"
+}

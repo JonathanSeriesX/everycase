@@ -1,0 +1,12 @@
+{
+  "*": {
+    "theme": {
+      "pagination": false,
+      "toc": true
+    }
+  },
+  "iphone_15": "iPhone 15, Plus, Pro, Max",
+  "iphone_14": "iPhone 14, Plus, Pro, Max",
+  "iphone_13": "iPhone 13, mini, Pro, Max",
+  "iphone_12": "iPhone 12, mini, Pro, Max"
+}

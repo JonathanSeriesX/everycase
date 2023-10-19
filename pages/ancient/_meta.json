@@ -1,0 +1,13 @@
+{
+  "*": {
+    "theme": {
+      "pagination": false,
+      "toc": true
+    }
+  },
+  "ipad_mini": "iPad Mini 1–3",
+  "iphone_5c": "iPhone 5c",
+  "ipad_2": "iPad 2–4",
+  "iphone_4": "iPhone 4 Bumpers",
+  "ipod_touch": "iPod Touch Loop"
+}

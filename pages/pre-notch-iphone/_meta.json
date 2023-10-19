@@ -1,0 +1,11 @@
+{
+  "*": {
+    "theme": {
+      "pagination": false,
+      "toc": true
+    }
+  },
+  "iphone_7": "iPhone 7, 8, Plus & SE",
+  "iphone_6": "iPhone 6, 6s, Plus",
+  "iphone_5s": "iPhone 5, 5s, SE"
+}
