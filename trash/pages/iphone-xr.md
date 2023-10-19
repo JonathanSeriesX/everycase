@@ -8,7 +8,7 @@ For the iPhone XR, Apple introduced a Clear Case — a new design presumably mad
 
 For the iPhone 11, Apple followed a similar path but also introduced two Silicone Cases: Black and White, and later added some with Spring and Summer refreshes.
 
-Both battery cases for the iPhone XR and 11 supported fast charging from USB-C PD sources, as well as Qi wireless charging. Oh, and the one for XR was [recalled](ttps://9to5mac.com/2020/01/13/get-iphone-smart-battery-case-replaced-free/).
+Both battery cases for the iPhone XR and 11 supported fast charging from USB-C PD sources, as well as Qi wireless charging. Oh, and the one for XR was [recalled](https://9to5mac.com/2020/01/13/get-iphone-smart-battery-case-replaced-free/).
 
 It was also bought en masse by technicians [to obtain chips used to repair charging boards](https://www.youtube.com/watch?v=JLIWDKA-1Tw) on MacBooks. Please support right to repair 🥺👉👈
 

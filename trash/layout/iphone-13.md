@@ -35,9 +35,9 @@
 
 #### Silicone Case
 
-| Silicone Case | iPhone 13 mini | iPhone 13 Pro | iPhone 13 | iPhone 13 Pro Max |
-| ------------- | -------------- | ------------- | --------- | ----------------- |
-| Blue Fog      | MN5W3ZM/A      | MN653ZM/A     | MN613ZM/A | MN693ZM/A         |
-| Lemon Zest    | MN5X3ZM/A      | MN663ZM/A     | MN623ZM/A | MN6A3ZM/A         |
-| Eucalyptus    | MN5Y3ZM/A      | MN673ZM/A     | MN633ZM/A | MN6C3ZM/A         |
-| Nectarine     | MN603ZM/A      | MN683ZM/A     | MN643ZM/A | MN6D3ZM/A         |
+| Silicone Case | iPhone 13 | iPhone 13 mini | iPhone 13 Pro | iPhone 13 Pro Max |
+| ------------- | --------- | -------------- | ------------- | ----------------- |
+| Blue Fog      | MN613ZM/A | MN5W3ZM/A      | MN653ZM/A     | MN693ZM/A         |
+| Lemon Zest    | MN623ZM/A | MN5X3ZM/A      | MN663ZM/A     | MN6A3ZM/A         |
+| Eucalyptus    | MN633ZM/A | MN5Y3ZM/A      | MN673ZM/A     | MN6C3ZM/A         |
+| Nectarine     | MN643ZM/A | MN603ZM/A      | MN683ZM/A     | MN6D3ZM/A         |
