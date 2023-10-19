@@ -1,14 +1,16 @@
 # It's free real website!
 
-And it respects visitors. That's why EveryCase:
+And it respects visitors. That's why FineWoven Empire:
 
 - Does not track you in any way, shape, or form
 - Does not embed personalized ads
 - Does not use third-party tools such as Google Fonts that might compromise user privacy
 
-And never ever will. It's also **dead fast**, **100% non-intrusive**, and uses privacy-preserving [Cloudflare Analytics](https://www.cloudflare.com/en-gb/web-analytics).
+And never ever will. It's also dead fast, **100% non-intrusive**, and uses privacy-preserving [Cloudflare Analytics](https://www.cloudflare.com/en-gb/web-analytics).
 
 So I'm once again asking for your support if you enjoy it, and for your [feedback](https://github.com/Jonathunky/everyfruitcase/issues/new?title=General%20Feedback&labels=feedback).
+
+Thanks ever so much!
 
 ---
 
@@ -22,7 +24,7 @@ Or by using:
 
 - Wise — [Evgenii Ostrovskii](https://wise.com/share/evgeniio44)
 - IBAN — BE57 9676 4450 4035 (Evgenii Ostrovskii, TRWIBEB1XXX)
-- Binance ID: 726215787
+- Binance ID — 726215787
 - \$DOGE — 9uh4zef9YuEt1shiGKFPE9idiFyj2EM39r
 - \$USDT-TRC20 — TLSbPQXFaF3zbrZykTBcqEWiv6xa7eDUKL
 - \$USDT-ERC20 — 0x0d93faacca02df0b83f4f379b9dad7ecc18b78ca
