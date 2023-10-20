@@ -92,7 +92,7 @@ def generate_sku_file_content(
         new_header = f"# {header} {head} — {first_col}\n\n"
 
     matches = grep_sku_from_folder(
-        cell_content[:5], os.path.expanduser("~/Downloads/Images/nobg-512-webp-99/")
+        cell_content[:5], os.path.expanduser("~/Downloads/Images/nobg-1536-webp-99/")
     )
 
     with open("trash/keyboards.txt", "r") as file:
