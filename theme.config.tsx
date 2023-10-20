@@ -29,7 +29,8 @@ const logo = (
         fontSize: "26px",
         letterSpacing: "0px",
         fontWeight: 300,
-        marginLeft: -10
+        marginLeft: -10,
+        marginRight: 15,
       }}
     >
       Empire
