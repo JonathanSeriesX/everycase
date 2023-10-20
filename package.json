@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "everycase",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "description": "A website describing every case made by Apple, Inc.",
   "scripts": {
     "dev": "next dev",
@@ -34,7 +34,7 @@
     "@napi-rs/simple-git": "^0.1.9",
     "@next/eslint-plugin-next": "^13.5.6",
     "@types/node": "^20.8.7",
-    "@types/react": "^18.2.29",
+    "@types/react": "^18.2.30",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "eslint": "^8.51.0",
