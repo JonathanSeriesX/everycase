@@ -45,7 +45,8 @@ const config: DocsThemeConfig = {
   ],
   project: {
     // GitHub link; will spawn it in the title bar
-    link: 'https://github.com/Jonathunky/everyfruitcase',
+    //link: 'https://github.com/Jonathunky/everyfruitcase',
+    //TODO make it show up only on desktop?
   },
   chat: {
     //link: 'https://discord.com',
@@ -83,12 +84,12 @@ const config: DocsThemeConfig = {
     defaultTheme: 'system'
   },
   primaryHue: {
-    light: 325,
-    dark: 325
+    light: 10,
+    dark: 10
   },
   primarySaturation: {
-    light: 70,
-    dark: 70
+    light: 100,
+    dark: 100
   },
   useNextSeoProps() {
     const { asPath } = useRouter();
