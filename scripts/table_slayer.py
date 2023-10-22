@@ -121,7 +121,7 @@ def generate_sku_file_content(
             f"<Callout type='info' emoji='👉🏻'>**{cell_content[:7]}** is an order number for this product, used for search engines, auction websites and such."
             f"</Callout>\n\n"
             f"## Image\n\n"
-            f"<SingleImage image='https://everycase.imgix.net/everysource/{cell_content[:5]}.webp'/>"
+            f"<SingleImage image='https://everycase.imgix.net/everysource/{cell_content[:5]}.webp'/>\n"
             # TODO title: "..."
         )
 
