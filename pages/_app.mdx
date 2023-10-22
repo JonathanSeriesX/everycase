@@ -1,11 +1,17 @@
 import "nextra-theme-docs/style.css";
 import "styles/global.css";
 import "react-image-gallery/styles/css/image-gallery.css";
+import 'lightbox.js-react/dist/index.css'
+import { initLightboxJS } from 'lightbox.js-react';
+import React, { useEffect } from 'react';
 import { usePreserveScroll } from "components/ScrollPreserve.tsx";
 import { Analytics } from "@vercel/analytics/react";
 
 export default function Nextra({ Component, pageProps }) {
   usePreserveScroll();
+  useEffect(() => {
+    initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_LICENSE_KEY, "individual");
+  }, []);
 
   return (
     <>
@@ -14,7 +20,7 @@ export default function Nextra({ Component, pageProps }) {
       <script //Cloudflare Web Analytics snippet
         defer
         src='https://static.cloudflareinsights.com/beacon.min.js'
-        data-cf-beacon='{"token": "${process.env.CLOUDFLARE_TOKEN}"}'
+        data-cf-beacon='{"token": "${process.env.NEXT_PUBLIC_CLOUDFLARE_TOKEN}"}'
       ></script>
     </>
   );

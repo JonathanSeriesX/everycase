@@ -12,6 +12,7 @@
 .eslintcache
 .env
 .vercel
+.env.local
 
 # Package management
 node_modules/

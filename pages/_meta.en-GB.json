@@ -80,5 +80,10 @@
     "title": "For Vercel",
     "type": "page",
     "display": "hidden"
+  },
+  "test": {
+    "title": "Test",
+    "type": "page",
+    "display": "hidden"
   }
 }

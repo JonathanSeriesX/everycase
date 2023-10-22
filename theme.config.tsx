@@ -97,16 +97,12 @@ const config: DocsThemeConfig = {
     if (asPath !== '/') {
       titleTemplate = '%s — FineWoven Empire'
       return {
-        titleTemplate,
-        noindex: false,
-        nofollow: false
+        titleTemplate
       }
     } else {
       titleTemplate = 'FineWoven Empire'
       return {
-        titleTemplate,
-        noindex: false,
-        nofollow: false
+        titleTemplate
       };
     }
   },

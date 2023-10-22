@@ -21,6 +21,7 @@
   "homepage": "https://everycase.org",
   "dependencies": {
     "@vercel/analytics": "^1.1.1",
+    "lightbox.js-react": "^0.9.5",
     "next": "~13.5.6",
     "next-pwa": "^5.6.0",
     "nextra": "^2.13.2",
@@ -34,11 +35,17 @@
     "@napi-rs/simple-git": "^0.1.9",
     "@next/eslint-plugin-next": "^13.5.6",
     "@types/node": "^20.8.7",
-    "@types/react": "^18.2.30",
+    "@types/react": "^18.2.31",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
-    "eslint": "^8.51.0",
+    "eslint": "^8.52.0",
     "eslint-config-next": "^13.5.6",
     "typescript": "^5.2.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "react-key-handler>react": "18.2.0",
+      "react-magnifier>react": "18.2.0"
+    }
   }
 }
