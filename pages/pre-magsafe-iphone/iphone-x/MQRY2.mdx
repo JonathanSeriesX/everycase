@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPhone X Leather Folio — Taupe
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MQRY2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQRY2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQRY2.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MQRY2_AV1_SILVER.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQRY2_AV1_SILVER.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQRY2_AV1_SILVER.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MQRY2_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQRY2_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQRY2_AV2.webp"
       }
     ]}
   />

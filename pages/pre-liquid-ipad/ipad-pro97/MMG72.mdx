@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad Pro 9.7″ Smart Cover — Lilac
@@ -7,15 +7,13 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MMG72.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MMG72.webp",
+        src: "https://cloudfront.everycase.org/everysource/MMG72.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MMG72_AV1_SPACE_GRAY.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MMG72_AV1_SPACE_GRAY.webp",
+        src: "https://cloudfront.everycase.org/everysource/MMG72_AV1_SPACE_GRAY.webp"
       }
     ]}
   />

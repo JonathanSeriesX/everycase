@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPhone 5c Case — Pink
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MF036.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MF036.webp",
+        src: "https://cloudfront.everycase.org/everysource/MF036.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MF036_AV1_WHITE.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MF036_AV1_WHITE.webp",
+        src: "https://cloudfront.everycase.org/everysource/MF036_AV1_WHITE.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MF036_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MF036_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MF036_AV2.webp"
       }
     ]}
   />

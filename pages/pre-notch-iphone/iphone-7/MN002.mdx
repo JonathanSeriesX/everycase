@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPhone 7 Smart Battery Case — Black
@@ -7,15 +7,13 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MN002.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MN002.webp",
+        src: "https://cloudfront.everycase.org/everysource/MN002.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MN002_AV1_JET_BLACK.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MN002_AV1_JET_BLACK.webp",
+        src: "https://cloudfront.everycase.org/everysource/MN002_AV1_JET_BLACK.webp"
       }
     ]}
   />

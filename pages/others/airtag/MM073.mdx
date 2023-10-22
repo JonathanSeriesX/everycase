@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # AirTag Leather Key Ring — Forest Green
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MM073.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MM073.webp",
+        src: "https://cloudfront.everycase.org/everysource/MM073.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MM073_AV1.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MM073_AV1.webp",
+        src: "https://cloudfront.everycase.org/everysource/MM073_AV1.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MM073_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MM073_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MM073_AV2.webp"
       }
     ]}
   />

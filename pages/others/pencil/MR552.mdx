@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # Apple Pencil Leather Case — Red
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MR552.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MR552.webp",
+        src: "https://cloudfront.everycase.org/everysource/MR552.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MR552_AV1.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MR552_AV1.webp",
+        src: "https://cloudfront.everycase.org/everysource/MR552_AV1.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MR552_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MR552_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MR552_AV2.webp"
       }
     ]}
   />

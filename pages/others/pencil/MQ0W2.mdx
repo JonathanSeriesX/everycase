@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # Apple Pencil Leather Case — Midnight Blue
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MQ0W2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQ0W2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQ0W2.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MQ0W2_AV1.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQ0W2_AV1.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQ0W2_AV1.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MQ0W2_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQ0W2_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQ0W2_AV2.webp"
       }
     ]}
   />

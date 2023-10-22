@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad 10th gen Magic Keyboard Folio — White
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MQDP3.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQDP3.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQDP3.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MQDP3_AV1.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQDP3_AV1.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQDP3_AV1.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MQDP3_AV4.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQDP3_AV4.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQDP3_AV4.webp"
       }
     ]}
   />

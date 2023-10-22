@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad Pro 12.9″ Smart Folio — White
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MJMH3.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MJMH3.webp",
+        src: "https://cloudfront.everycase.org/everysource/MJMH3.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MJMH3_AV3.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MJMH3_AV3.webp",
+        src: "https://cloudfront.everycase.org/everysource/MJMH3_AV3.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MJMH3_AV4.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MJMH3_AV4.webp",
+        src: "https://cloudfront.everycase.org/everysource/MJMH3_AV4.webp"
       }
     ]}
   />

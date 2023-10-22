@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad mini Smart Cover — Papaya
@@ -7,15 +7,13 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MVQG2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MVQG2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MVQG2.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MVQG2_AV1_GOLD.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MVQG2_AV1_GOLD.webp",
+        src: "https://cloudfront.everycase.org/everysource/MVQG2_AV1_GOLD.webp"
       }
     ]}
   />

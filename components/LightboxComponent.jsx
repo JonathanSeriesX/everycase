@@ -1,13 +1,12 @@
 import React from 'react';
 import { SlideshowLightbox } from 'lightbox.js-react';
 
-const LightboxComponent = ({ src, alt }) => {
+const LightboxComponent = ({ images }) => {
     return (
-        <SlideshowLightbox className='container grid grid-cols-3 gap-2 mx-auto' showThumbnails={true}>
-            <img className='w-full rounded' src='https://cloudfront.everycase.org/everysource/MF041.webp' />
-            <img className='w-full rounded' src='https://cloudfront.everycase.org/everysource/MF041.webp' />
-            <img className='w-full rounded' src='https://cloudfront.everycase.org/everysource/MF041.webp' />
-
+        <SlideshowLightbox className='container grid grid-cols-3 gap-2 mx-auto' showThumbnails={true} showSlideshowIcon={false} theme="lightbox">
+            {images.map((image, index) => (
+                <img key={index} className='w-full rounded' src={image.src} alt={image.alt} />
+            ))}
         </SlideshowLightbox>
     );
 }

@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPhone 8 Silicone Case — (PRODUCT)RED
@@ -7,15 +7,13 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MQGP2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQGP2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQGP2.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MQGP2_AV1_SPACE_GRAY.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQGP2_AV1_SPACE_GRAY.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQGP2_AV1_SPACE_GRAY.webp"
       }
     ]}
   />

@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad mini 4 Smart Cover — Blue
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MKM12.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MKM12.webp",
+        src: "https://cloudfront.everycase.org/everysource/MKM12.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MKM12_AV1_SPACE_GRAY.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MKM12_AV1_SPACE_GRAY.webp",
+        src: "https://cloudfront.everycase.org/everysource/MKM12_AV1_SPACE_GRAY.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MKM12_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MKM12_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MKM12_AV2.webp"
       }
     ]}
   />

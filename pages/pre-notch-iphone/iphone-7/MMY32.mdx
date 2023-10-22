@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPhone 7 Leather Case — Midnight Blue
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MMY32.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MMY32.webp",
+        src: "https://cloudfront.everycase.org/everysource/MMY32.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MMY32_AV1_JET_BLACK.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MMY32_AV1_JET_BLACK.webp",
+        src: "https://cloudfront.everycase.org/everysource/MMY32_AV1_JET_BLACK.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MMY32_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MMY32_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MMY32_AV2.webp"
       }
     ]}
   />

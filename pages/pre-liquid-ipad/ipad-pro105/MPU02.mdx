@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad Pro 10.5″ Leather Sleeve — Taupe
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MPU02.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MPU02.webp",
+        src: "https://cloudfront.everycase.org/everysource/MPU02.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MPU02_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MPU02_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MPU02_AV2.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MPU02_AV3.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MPU02_AV3.webp",
+        src: "https://cloudfront.everycase.org/everysource/MPU02_AV3.webp"
       }
     ]}
   />

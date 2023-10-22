@@ -35,8 +35,7 @@ def generate_jsx(filenames):
     image_entries = ",\n      ".join(
         [
             f"""{{
-        original: "https://cloudfront.everycase.org/everysource/{filename}.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/{filename}.webp",
+        src: "https://cloudfront.everycase.org/everysource/{filename}.webp"
       }}"""
             for filename in filenames
             if "_cut" not in filename
@@ -45,7 +44,7 @@ def generate_jsx(filenames):
 
     jsx = (
         # "<div style={{ width: '100%', maxWidth: '768px' }}>\n"
-        "<GalleryComponent\n    images={[\n      "
+        "<LightboxComponent\n    images={[\n      "
         + image_entries
         + "\n    ]}\n  />\n"
         # + "</div>"
@@ -105,23 +104,25 @@ def generate_sku_file_content(
 
     if len(matches) > 1:
         return (
-            f"import GalleryComponent from '/components/GalleryComponent'\n"
+            f"import LightboxComponent from '/components/LightboxComponent'\n"
             f"import {{ Callout }} from 'nextra/components'\n\n"
             f"{new_header}"
             f"<Callout type='info' emoji='👉🏻'>**{cell_content[:7]}** {callout}"
             f"</Callout>\n\n"
             f"## Image gallery\n\n"
             f"{generate_jsx(matches)}"
+            # TODO alt = "..."
         )
     else:
         return (
-            f"import GalleryComponent from '/components/GalleryComponent'\n"
+            f"import SingleImage from '/components/SingleImage'\n"
             f"import {{ Callout }} from 'nextra/components'\n\n"
             f"{new_header}"
             f"<Callout type='info' emoji='👉🏻'>**{cell_content[:7]}** is an order number for this product, used for search engines, auction websites and such."
             f"</Callout>\n\n"
             f"## Image\n\n"
-            f"![Image](https://everycase.imgix.net/everysource/{cell_content[:5]}.webp)"
+            f"<SingleImage image='https://everycase.imgix.net/everysource/{cell_content[:5]}.webp'/>"
+            # TODO title: "..."
         )
 
 

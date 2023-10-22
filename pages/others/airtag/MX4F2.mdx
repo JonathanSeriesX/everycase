@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # AirTag Silicone Loop — White
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MX4F2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MX4F2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MX4F2.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MX4F2_AV1.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MX4F2_AV1.webp",
+        src: "https://cloudfront.everycase.org/everysource/MX4F2_AV1.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MX4F2_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MX4F2_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MX4F2_AV2.webp"
       }
     ]}
   />

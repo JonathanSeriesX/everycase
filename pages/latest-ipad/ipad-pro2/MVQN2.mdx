@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad Pro 12.9″ 3rd gen Smart Folio — Pink Sand
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MVQN2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MVQN2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MVQN2.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MVQN2_AV3.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MVQN2_AV3.webp",
+        src: "https://cloudfront.everycase.org/everysource/MVQN2_AV3.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MVQN2_AV4.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MVQN2_AV4.webp",
+        src: "https://cloudfront.everycase.org/everysource/MVQN2_AV4.webp"
       }
     ]}
   />

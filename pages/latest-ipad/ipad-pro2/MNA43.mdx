@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad Air 5 Smart Folio — Dark Cherry
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MNA43.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MNA43.webp",
+        src: "https://cloudfront.everycase.org/everysource/MNA43.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MNA43_AV1.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MNA43_AV1.webp",
+        src: "https://cloudfront.everycase.org/everysource/MNA43_AV1.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MNA43_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MNA43_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MNA43_AV2.webp"
       }
     ]}
   />

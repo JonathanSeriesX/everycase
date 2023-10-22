@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPad Air 3 Smart Cover — Pink Sand
@@ -7,15 +7,13 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MVQ42.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MVQ42.webp",
+        src: "https://cloudfront.everycase.org/everysource/MVQ42.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MVQ42_AV1_SPACE_GRAY.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MVQ42_AV1_SPACE_GRAY.webp",
+        src: "https://cloudfront.everycase.org/everysource/MVQ42_AV1_SPACE_GRAY.webp"
       }
     ]}
   />

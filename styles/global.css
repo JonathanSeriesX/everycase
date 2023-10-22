@@ -6,6 +6,7 @@ img {
     height: auto;
     width: 100%;
     max-width: 768px;
+    display: block;
 }
 
 table img {
@@ -19,6 +20,10 @@ table img {
 
 .folder-name {
     font-weight: 500;
+}
+
+.imageModal {
+    object-fit: contain;
 }
 
 [role="tab"]:focus,
@@ -153,19 +158,4 @@ h6 {
     white-space: pre;
     /* Use pre to preserve whitespace and line breaks */
     color: #f0f0f0;
-}
-
-.image-container {
-    display: inline-block;
-    /* or block? */
-    position: relative;
-    margin: 1rem 0;
-}
-
-.image-caption {
-    display: block;
-    font-size: 0.8rem;
-    text-align: center;
-    color: #666;
-    margin-top: 0.5rem;
 }

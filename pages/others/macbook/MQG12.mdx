@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # MacBook 12″ Leather Sleeve — Saddle Brown
@@ -7,15 +7,13 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MQG12.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQG12.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQG12.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MQG12_AV1.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MQG12_AV1.webp",
+        src: "https://cloudfront.everycase.org/everysource/MQG12_AV1.webp"
       }
     ]}
   />

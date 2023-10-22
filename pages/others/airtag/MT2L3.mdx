@@ -1,4 +1,4 @@
-import GalleryComponent from '/components/GalleryComponent'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # AirTag FineWoven Key Ring — Taupe
@@ -7,19 +7,16 @@ import { Callout } from 'nextra/components'
 
 ## Image gallery
 
-<GalleryComponent
+<LightboxComponent
     images={[
       {
-        original: "https://cloudfront.everycase.org/everysource/MT2L3.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MT2L3.webp",
+        src: "https://cloudfront.everycase.org/everysource/MT2L3.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MT2L3_AV1.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MT2L3_AV1.webp",
+        src: "https://cloudfront.everycase.org/everysource/MT2L3_AV1.webp"
       },
       {
-        original: "https://cloudfront.everycase.org/everysource/MT2L3_AV2.webp",
-        thumbnail: "https://cloudfront.everycase.org/everypreview/MT2L3_AV2.webp",
+        src: "https://cloudfront.everycase.org/everysource/MT2L3_AV2.webp"
       }
     ]}
   />
