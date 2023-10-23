@@ -3,41 +3,40 @@ import os
 import re
 import json
 import concurrent.futures
-from functools import lru_cache
 
 
+# from functools import lru_cache
 # @lru_cache(maxsize=None)
 def list_directory_contents(file_path):
-    """grep of images folder"""
+    """Create listing of folder with images"""
     return os.listdir(file_path)
 
 
-# Read the SKUs from the file and store them in a set
 with open("trash/skus.txt", "r") as file:
-    """previews to replace with better-looking ones"""
+    """Read the SKUs from the file and store them in a set"""
+    """skus.txt = list of preview images to replace with better-looking ones"""
     extended_skus = set(file.read().splitlines())
 
 
 def get_extended_sku(original_sku):
-    """check is preview needs to be replaced"""
-
-    # Search for a SKU that starts with the original SKU
+    """Check if default preview image needs to be replaced"""
     for sku in extended_skus:
         if sku.startswith(original_sku):
             return sku
 
-    # If no extended SKU is found in the cache, return the original SKU
+    """If no "extended" filename is found in the cache, return the original SKU"""
     return original_sku
 
 
 def generate_jsx(filenames):
-    """returns Image Gallery"""
+    """Returns Image Gallery MDX code for given filenames"""
     image_entries = ",\n      ".join(
         [
             f"""{{
         src: "https://cloudfront.everycase.org/everysource/{filename}.webp"
       }}"""
             for filename in filenames
+            # ignores some of improved preview images
             if "_cut" not in filename
         ]
     )
@@ -54,7 +53,7 @@ def generate_jsx(filenames):
 
 
 def grep_sku_from_folder(sku, folder_path):
-    """checks how many images are there for a single model"""
+    """Checks how many images are there for a single SKU"""
     matches = []
 
     # Get folder contents. This will be cached after the first call.
@@ -72,7 +71,7 @@ def grep_sku_from_folder(sku, folder_path):
 def generate_sku_file_content(
     header, head, first_col, cell_content, file_name_without_extension
 ):
-    """returns full contents of SKU.mdx files"""
+    """Returns full contents of SKU.mdx files"""
     match = re.search(r"iPhone (\d+)", header)
 
     if match:
@@ -90,6 +89,7 @@ def generate_sku_file_content(
     else:
         new_header = f"# {header} {head} — {first_col}\n\n"
 
+    """Hardcoded path to folder with images"""
     matches = grep_sku_from_folder(
         cell_content[:5], os.path.expanduser("~/Downloads/Images/nobg-1536-webp-99/")
     )
@@ -97,8 +97,12 @@ def generate_sku_file_content(
     with open("trash/keyboards.txt", "r") as file:
         keyboards_list = [line.strip() for line in file.readlines()]
 
+    """Hack for Smart Keyboards"""
     if cell_content[:5] in keyboards_list:
-        callout = "is an order number for US ANSI version. The last two letters will be different for different locales; like SM for Swiss, UA for Ukrainian, etc."
+        callout = (
+            "is an order number for US ANSI version. The last two letters will be different for different "
+            "locales; like SM for Swiss, UA for Ukrainian, etc."
+        )
     else:
         callout = "is an order number for this product, used for search engines, auction websites and such."
 
@@ -118,16 +122,15 @@ def generate_sku_file_content(
             f"import SingleImage from '/components/SingleImage'\n"
             f"import {{ Callout }} from 'nextra/components'\n\n"
             f"{new_header}"
-            f"<Callout type='info' emoji='👉🏻'>**{cell_content[:7]}** is an order number for this product, used for search engines, auction websites and such."
+            f"<Callout type='info' emoji='👉🏻'>**{cell_content[:7]}** {callout}"
             f"</Callout>\n\n"
             f"## Image\n\n"
-            f"<SingleImage image='https://everycase.imgix.net/everysource/{cell_content[:5]}.webp'/>\n"
-            # TODO title: "..."
+            f"<SingleImage image='https://everycase.imgix.net/everysource/{cell_content[:5]}.webp' title='{new_header[2:-2]}'/>\n"
         )
 
 
 def write_meta_to_file(folder_path):
-    """creates _meta.json in given folder to hide all the entries"""
+    """Creates _meta.json in given folder to hide all the entries"""
     data = {
         "*": {
             "theme": {
@@ -155,18 +158,7 @@ def write_meta_to_file(folder_path):
 
 def get_mapped_name(name, config_file_path="trash/folders.txt"):
     """
-    Given a name, return its mapping based on a hardcoded file. If no mapping found, return the original name.
-
-    Parameters:
-    - name: str
-        The name to look up in the mapping file.
-
-    - config_file_path: str
-        Path to the config file containing mapping rules.
-
-    Returns:
-    - str
-        The mapped name or the original name if no mapping found.
+    Returns path to put Markdown files into based on folders.txt
     """
 
     # Load the mappings from the config file
@@ -192,9 +184,13 @@ KEYWORDS = ["iPhone", "iPad", "AirTag", "Apple Pencil", "MacBook"]
 def generate_tab_or_table(
     headers, rows, generate_everycase, file_name_without_extension
 ):
-    """table generation for level one docs + call to generate SKU docs using table data"""
+    """
+    Table generation for level one docs
+    + call to generate SKU docs using table data
+    """
     table = []
 
+    """Hack to replace material in tables with just Color"""
     with open("trash/hide_material.txt", "r") as file:
         hide_material_list = [line.strip() for line in file.readlines()]
 
@@ -263,7 +259,7 @@ def generate_tab_or_table(
 def convert_table_to_tabs(
     table_content, file_name_without_extension, generate_everycase=True
 ):
-    """receives table, returns tables in tabs"""
+    """Receives table, splits it into Tabs"""
     lines = table_content.strip().split("\n")
 
     headers = [h.strip() for h in lines[0].split("|")[1:-1]]
@@ -299,6 +295,7 @@ def convert_table_to_tabs(
             )
         )
 
+    """Hack to avoid duplicating word iPhone in tab names"""
     formatted_headers = []
     previous_headers = ""
     for header in headers[1:]:
@@ -319,6 +316,7 @@ def convert_table_to_tabs(
 
 
 def extract_tables_from_file(filename):
+    """Returns all tables found in Markdown file"""
     with open(filename, "r") as f:
         lines = f.readlines()
 
