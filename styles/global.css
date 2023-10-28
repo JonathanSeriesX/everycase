@@ -24,6 +24,8 @@ table img {
 
 .imageModal {
     object-fit: contain;
+    object-position: center;
+    display: block;
 }
 
 [role="tab"]:focus,
@@ -111,7 +113,7 @@ td:nth-child(3) {
 
 @font-face {
     font-family: 'Tofino Variable';
-    src: url('/fonts/TofinoVariable.woff2') format('woff2-variations');
+    src: url('https://cloudfront.everycase.org/fonts/TofinoVariable.woff2') format('woff2-variations');
 
     font-weight: 100 800;
     font-stretch: 100% 125%;
@@ -122,7 +124,7 @@ td:nth-child(3) {
 
 @font-face {
     font-family: 'Quicksand';
-    src: url('/fonts/Quicksand.woff2') format('woff2-variations');
+    src: url('https://cloudfront.everycase.org/fonts/Quicksand.woff2') format('woff2-variations');
     font-display: swap;
 }
 
@@ -131,6 +133,15 @@ body {
     font-stretch: 101%;
     font-weight: 330;
     font-display: swap;
+}
+
+em,
+i,
+.italic-class {
+    font-variation-settings: 'ital' 0.1 !important;
+    margin-left: -1px;
+    /* pull the element to the left by 1px otherwise looks a bit weird */
+    margin-right: 1px;
 }
 
 h1,
