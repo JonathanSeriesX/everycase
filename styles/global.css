@@ -113,7 +113,8 @@ td:nth-child(3) {
 
 @font-face {
     font-family: 'Tofino Variable';
-    src: url('https://cloudfront.everycase.org/fonts/TofinoVariable.woff2') format('woff2-variations');
+    src: url('https://cloudfront.everycase.org/fonts/TofinoVariable.woff2') format('woff2-variations'),
+        url('https://cloudfront.everycase.org/fonts/TofinoVariable.ttf') format("truetype");
 
     font-weight: 100 800;
     font-stretch: 100% 125%;
@@ -124,7 +125,8 @@ td:nth-child(3) {
 
 @font-face {
     font-family: 'Quicksand';
-    src: url('https://cloudfront.everycase.org/fonts/Quicksand.woff2') format('woff2-variations');
+    src: url('https://cloudfront.everycase.org/fonts/Quicksand.woff2') format('woff2-variations'),
+        url('https://cloudfront.everycase.org/fonts/Quicksand-Light.ttf') format("truetype");
     font-display: swap;
 }
 
@@ -133,6 +135,15 @@ body {
     font-stretch: 101%;
     font-weight: 330;
     font-display: swap;
+}
+
+@-moz-document url-prefix() {
+    body {
+        font-family: system-ui;
+        text-rendering: optimizeLegibility;
+        font-stretch: 99%;
+        font-weight: 340;
+    }
 }
 
 em,
