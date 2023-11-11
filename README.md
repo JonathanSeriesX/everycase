@@ -14,7 +14,7 @@ A [Table Slayer](scripts/table_slayer.py) Python script is responsible for gener
 
 ## Licence
 
-This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Docs template, which is licensed under the MIT Licence. The original content and modifications introduced by FineWoven Empire have their own [loicence](LICENCE.md).
+This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Docs template, which is licensed under the MIT Licence. The original content and modifications introduced by FineWoven Empire have their own [loicense](LICENCE.md).
 
 ## Local Deployment
 
