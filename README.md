@@ -2,6 +2,12 @@
 
 This is a working repo for the [FineWoven Empire](https://everycase.org/) website.
 
+## To-do list
+
+- Improving dataset of case images (I'm manually doing transparent backgrounds 🥲)
+- More bad writing 🤗
+- Small tweaks and fixes here and there
+
 ## What's going on here
 
 A [Table Slayer](scripts/table_slayer.py) Python script is responsible for generating most of FineWoven Empire contents, using folders with [SKU pages](trash/layout/) and [text pages](trash/pages/).
