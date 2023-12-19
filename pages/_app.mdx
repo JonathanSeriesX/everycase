@@ -1,10 +1,11 @@
 import "nextra-theme-docs/style.css";
-import "styles/global.css";
+import "/styles/global.css";
 import "lightbox.js-react/dist/index.css"
 import { initLightboxJS } from 'lightbox.js-react';
 import React, { useEffect } from 'react';
-import { usePreserveScroll } from "components/ScrollPreserve.tsx";
+import { usePreserveScroll } from '/components/ScrollPreserve.tsx';
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function Nextra({ Component, pageProps }) {
   usePreserveScroll();
@@ -15,6 +16,7 @@ export default function Nextra({ Component, pageProps }) {
   return (
     <>
       <Analytics />
+      <SpeedInsights />
       <Component {...pageProps} />
       <script //Cloudflare Web Analytics snippet
         defer
