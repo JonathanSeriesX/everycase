@@ -1,3 +1,14 @@
+## Spring 2024 Collection
+
+### Silicone Case
+
+| Silicone Case | iPhone 15 | iPhone 15 Plus | iPhone 15 Pro | iPhone 15 Pro Max |
+| ------------- | --------- | -------------- | ------------- | ----------------- |
+| Light Blue    | MWND3ZM/A | MWNG3ZM/A      | MWNL3ZM/A     | MWNR3ZM/A         |
+| Pink          | MWNE3ZM/A | MWNE3ZM/A      | MWNJ3ZM/A     | MWNN3ZM/A         |
+| Soft Mint     | MWNC3ZM/A | MWNG3ZM/A      | MWNL3ZM/A     | MWNQ3ZM/A         |
+| Sunshine      | MWNA3ZM/A | MWNF3ZM/A      | MWNK3ZM/A     | MWNP3ZM/A         |
+
 ## Late 2023 Collection
 
 ### Silicone Case
