@@ -1,10 +1,28 @@
-import SingleImage from '/components/SingleImage'
+import LightboxComponent from '/components/LightboxComponent'
 import { Callout } from 'nextra/components'
 
 # iPhone 15 Silicone Case with MagSafe — Soft Mint
 
 <Callout type='info' emoji='👉🏻'>**MWNC3ZM** is an order number for this product, used for search engines, auction websites and such.</Callout>
 
-## Image
+## Image gallery
 
-<SingleImage image='https://everycase.imgix.net/everysource/MWNC3.webp' title='iPhone 15 Silicone Case with MagSafe — Soft Mint'/>
+<LightboxComponent
+    images={[
+      {
+        src: "https://cloudfront.everycase.org/everysource/MWNC3.webp"
+      },
+      {
+        src: "https://cloudfront.everycase.org/everysource/MWNC3_AV1.webp"
+      },
+      {
+        src: "https://cloudfront.everycase.org/everysource/MWNC3_AV2.webp"
+      },
+      {
+        src: "https://cloudfront.everycase.org/everysource/MWNC3_AV3.webp"
+      },
+      {
+        src: "https://cloudfront.everycase.org/everysource/MWNC3_AV4.webp"
+      }
+    ]}
+  />

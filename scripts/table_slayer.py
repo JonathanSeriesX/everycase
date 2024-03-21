@@ -93,7 +93,7 @@ def generate_sku_file_content(
     """Hardcoded path to folder with images"""
     matches = grep_sku_from_folder(
         cell_content[:5],
-        os.path.expanduser("/Volumes/Storage/Images/nobg-1536-webp-99"),
+        os.path.expanduser("/Volumes/Storage/Images/Clean"),
     )
 
     with open("trash/keyboards.txt", "r") as file:
