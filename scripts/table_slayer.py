@@ -1,4 +1,5 @@
 """Primary script that does all Markdown generation"""
+
 import os
 import re
 import json
@@ -91,7 +92,8 @@ def generate_sku_file_content(
 
     """Hardcoded path to folder with images"""
     matches = grep_sku_from_folder(
-        cell_content[:5], os.path.expanduser("~/Downloads/Images/nobg-1536-webp-99/")
+        cell_content[:5],
+        os.path.expanduser("/Volumes/Storage/Images/nobg-1536-webp-99"),
     )
 
     with open("trash/keyboards.txt", "r") as file:
@@ -217,10 +219,7 @@ def generate_tab_or_table(
         first_col = row[0]
         cell_content = row[1]
         new_cell = f"{cell_content[:5]}<wbr/>{cell_content[5:]}"
-        if get_mapped_name(file_name_without_extension).find("ancient"):
-            image_cell = f'<Link href="/{get_mapped_name(file_name_without_extension)}/{cell_content[:5]}"><img src="https://cloudfront.everycase.org/everypreview/{get_extended_sku(cell_content[:5])}.webp" alt="{first_col} {heading}"/></Link>'
-        else:
-            image_cell = f'<Link href="/{get_mapped_name(file_name_without_extension)}/{cell_content[:5]}"><img src="https://everycase.imgix.net/everypreview/{get_extended_sku(cell_content[:5])}.webp" alt="{first_col} {heading}"/></Link>'
+        image_cell = f'<Link href="/{get_mapped_name(file_name_without_extension)}/{cell_content[:5]}"><img src="https://cloudfront.everycase.org/everypreview/{get_extended_sku(cell_content[:5])}.webp" alt="{first_col} {heading}"/></Link>'
 
         table.append(f"| {first_col} | {new_cell} | {image_cell} |")
 
