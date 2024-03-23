@@ -356,26 +356,33 @@ def replace_mdx_content(filename):
     with open(filename, "r") as file:
         content = file.read()
 
-    def replace_single_mdx(match_obj):
-        # Extract the blocks of content
-        split_table_1_content = match_obj.group(2)
-        split_table_2_content = match_obj.group(4)
-        table_1_title = match_obj.group(1)
-        table_2_title = match_obj.group(3)
+    def replace_tables(match_obj):
+        # Extract the title and content of each table
+        tables = match_obj.groups()
+        tab_titles = []
+        tab_contents = []
+        for i in range(0, len(tables), 2):
+            tab_titles.append(tables[i])
+            tab_contents.append(tables[i + 1])
 
-        return f"""<Tabs items={{['{table_1_title}', '{table_2_title}']}}>
-  <Tabs.Tab>
-{split_table_1_content}
-  </Tabs.Tab>
-  <Tabs.Tab>
-{split_table_2_content}
-  </Tabs.Tab>
-</Tabs>"""
+        print(tab_titles)
+
+        # Generate Tabs component
+        tabs_markup = ""
+        for title, content in zip(tab_titles, tab_contents):
+            tabs_markup += f"""  <Tabs.Tab>
+    {content.strip()}
+    </Tabs.Tab>\n"""
+
+        return f"""<Tabs items={{[{', '.join([f"'{title.strip()}'" for title in tab_titles])}]}}>
+    {tabs_markup}</Tabs>"""
+
+    # Using a regex to extract and replace split tables
 
     # Using a regex to extract and replace split tables
     content = re.sub(
-        r'SPLIT_TABLE_1 = "(.*?)"\n\n(.*?)\n\nSPLIT_TABLE_2 = "(.*?)"\n\n(.*?)\n\nSPLIT_TABLE_END',
-        replace_single_mdx,
+        r'SPLIT_TABLE_1 = "(.*?)"\n\n(.*?)\n\nSPLIT_TABLE_2 = "(.*?)"\n\n(.*?)\n\n(?!SPLIT_TABLE_3)SPLIT_TABLE_END',
+        replace_tables,
         content,
         flags=re.DOTALL,
     )

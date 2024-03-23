@@ -1,4 +1,5 @@
 """Downloads images from Apple servers for SKUs mentioned in models.txt files"""
+
 import os
 import time
 import multiprocessing
@@ -42,7 +43,7 @@ def download_worker(task):
     except requests.exceptions.ConnectionError as e:
         print(f"Connection error while downloading {code}.{img_type}: {e}")
         time.sleep(5)
-        download_worker(task)  # Uncomment this if you want to retry
+        download_worker(task)
 
 
 def process_input_file(input_path, failed_downloads):
@@ -66,6 +67,9 @@ def process_input_file(input_path, failed_downloads):
     if folder_name:
         for model in models:
             tasks.append((model, folder_name, "png", failed_downloads))
+    else:
+        for model in models:
+            tasks.append((model, "Source_images", "png", failed_downloads))
 
     with Pool(cpu_count()) as p:
         p.map(download_worker, tasks)
