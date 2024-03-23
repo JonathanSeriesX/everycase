@@ -24,7 +24,6 @@ Or by using:
 
 - Wise — [Evgenii Ostrovskii](https://wise.com/share/evgeniio44)
 - IBAN — BE57 9676 4450 4035 (Evgenii Ostrovskii, TRWIBEB1XXX)
-- Binance ID — 726215787
 - \$DOGE — 9uh4zef9YuEt1shiGKFPE9idiFyj2EM39r
 - \$USDT-TRC20 — TLSbPQXFaF3zbrZykTBcqEWiv6xa7eDUKL
 - \$USDT-ERC20 — 0x0d93faacca02df0b83f4f379b9dad7ecc18b78ca
