@@ -127,7 +127,7 @@ def generate_sku_file_content(
             f"<Callout type='info' emoji='👉🏻'>**{cell_content[:7]}** {callout}"
             f"</Callout>\n\n"
             f"## Image\n\n"
-            f"<SingleImage image='https://everycase.imgix.net/everysource/{cell_content[:5]}.webp' title='{new_header[2:-2]}'/>\n"
+            f"<SingleImage image='https://cloudfront.everycase.org/everysource/{cell_content[:5]}.webp' title='{new_header[2:-2]}'/>\n"
         )
 
 
