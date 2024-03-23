@@ -23,10 +23,27 @@ table img {
 }
 
 .imageModal {
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    overflow: hidden;
+    /* Prevent image overflow */
     object-fit: contain;
     object-position: center;
     display: flex;
 }
+
+.imageModal img {
+    max-width: 100%;
+    /* Ensure image fits within modal */
+    max-height: 100%;
+    /* Ensure image fits within modal */
+    object-fit: contain;
+    /* Maintain aspect ratio while fitting */
+}
+
 
 .custom-thumbnail {
     margin: 5px;
