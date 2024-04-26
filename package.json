@@ -22,37 +22,37 @@
   "dependencies": {
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",
-    "lightbox.js-react": "^1.0.3",
+    "lightbox.js-react": "^1.0.7",
     "next": "~14.1.4",
     "next-pwa": "^5.6.0",
     "nextra": "^2.13.4",
     "nextra-theme-docs": "^2.13.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
     "react-markdown": "^9.0.1",
-    "sharp": "^0.33.2"
+    "sharp": "^0.33.3"
   },
   "devDependencies": {
     "@napi-rs/simple-git": "^0.1.16",
-    "@next/eslint-plugin-next": "^14.1.4",
-    "@types/node": "^20.11.30",
-    "@types/react": "^18.2.67",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
+    "@next/eslint-plugin-next": "^14.2.3",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
     "autoprefixer": "^10.4.19",
-    "cssnano": "^6.1.1",
+    "cssnano": "^7.0.0",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.1.4",
+    "eslint-config-next": "^14.2.3",
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.12",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.3"
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5"
   },
   "pnpm": {
     "overrides": {
-      "react-key-handler>react": "18.2.0",
-      "react-magnifier>react": "18.2.0"
+      "react-key-handler>react": "18.3.0",
+      "react-magnifier>react": "18.3.0"
     }
   }
 }
