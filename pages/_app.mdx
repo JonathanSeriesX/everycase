@@ -4,8 +4,6 @@ import "lightbox.js-react/dist/index.css"
 import { initLightboxJS } from 'lightbox.js-react';
 import React, { useEffect } from 'react';
 import { usePreserveScroll } from '/components/ScrollPreserve.tsx';
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function Nextra({ Component, pageProps }) {
   usePreserveScroll();
@@ -15,14 +13,7 @@ export default function Nextra({ Component, pageProps }) {
 
   return (
     <>
-      <Analytics />
-      <SpeedInsights />
       <Component {...pageProps} />
-      <script //Cloudflare Web Analytics snippet
-        defer
-        src='https://static.cloudflareinsights.com/beacon.min.js'
-        data-cf-beacon={`{"token": "${process.env.NEXT_PUBLIC_CLOUDFLARE_TOKEN}"}`}
-      ></script>
     </>
   );
 }
