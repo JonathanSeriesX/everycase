@@ -14,7 +14,7 @@ const logo = (
         marginRight: -5,
       }}
     >
-      FineWoven
+      Finest
     </span>
     <picture>
       <img
@@ -33,7 +33,7 @@ const logo = (
         marginRight: 15,
       }}
     >
-      Empire
+      Woven
     </span>
   </>
 );
@@ -59,21 +59,6 @@ const config: DocsThemeConfig = {
     component: undefined,
   },
   sidebar: {
-    titleComponent({ title, type }) {
-      const boldTitles = [
-        "Latest iPhone",
-        "Latest iPad",
-        "Other stuff",
-        "Pre-MagSafe iPhone",
-        "Pre-notch iPhone",
-        "Pre-Liquid iPad",
-        "Ancient History"
-      ];
-      if (boldTitles.includes(title)) {
-        return <span className="folder-name">{title}</span>;
-      }
-      return <>{title}</>;
-    },
     defaultMenuCollapseLevel: 2,
     toggleButton: true,
     autoCollapse: false
@@ -83,28 +68,15 @@ const config: DocsThemeConfig = {
   nextThemes: {
     defaultTheme: 'system'
   },
-  primaryHue: {
-    light: 10,
-    dark: 10
-  },
-  primarySaturation: {
-    light: 100,
-    dark: 100
-  },
-  useNextSeoProps() {
-    const { asPath } = useRouter();
-    var titleTemplate;
-    if (asPath !== '/') {
-      titleTemplate = '%s — FineWoven Empire'
-      return {
-        titleTemplate
-      }
-    } else {
-      titleTemplate = 'FineWoven Empire'
-      return {
-        titleTemplate
-      };
-    }
+  color: {
+    hue: {
+      light: 10,
+      dark: 10
+    },
+    saturation: {
+      light: 100,
+      dark: 100
+    },
   },
   toc: {
     float: true,
@@ -114,7 +86,7 @@ const config: DocsThemeConfig = {
     content: "Leave feedback →",
   },
   editLink: {
-    text: "Propose edits on GitHub →",
+    content: "Propose edits on GitHub →",
   },
   navigation: {
     prev: false,
