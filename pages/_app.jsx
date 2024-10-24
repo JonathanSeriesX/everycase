@@ -4,6 +4,7 @@ import "lightbox.js-react/dist/index.css"
 import { initLightboxJS } from 'lightbox.js-react';
 import React, { useEffect } from 'react';
 import { usePreserveScroll } from '/components/ScrollPreserve.tsx';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function Nextra({ Component, pageProps }) {
   usePreserveScroll();
@@ -14,6 +15,7 @@ export default function Nextra({ Component, pageProps }) {
   return (
     <>
       <Component {...pageProps} />
+      <Analytics />
     </>
   );
 }
