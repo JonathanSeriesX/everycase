@@ -133,29 +133,30 @@ def generate_sku_file_content(
 
 def write_meta_to_file(folder_path):
     """Creates _meta.json in given folder to hide all the entries"""
-    data = {
-        "*": {
-            "theme": {
-                "pagination": False,
-                "toc": True,
-                "breadcrumb": True,
-                "typesetting": "article",
-                "footer": False,
-                "sidebar": True,
-                "layout": "full",
-            },
-            "display": "hidden",
-        }
+    js_content = """export default {
+      '*': {
+        theme: {
+          pagination: false,
+          toc: true,
+          breadcrumb: true,
+          typesetting: 'article',
+          footer: false,
+          sidebar: true,
+          layout: 'full',
+        },
+        display: 'hidden',
+      },
     }
+    """
 
     # Ensure the folder exists
     os.makedirs(folder_path, exist_ok=True)
 
     # Create the full path to the _meta.json file
-    file_path = os.path.join(folder_path, "_meta.json")
+    file_path = os.path.join(folder_path, "_meta.js")
 
     with open(file_path, "w") as file:
-        json.dump(data, file, indent=2)
+        file.write(js_content)
 
 
 def get_mapped_name(name, config_file_path="trash/folders.txt"):
