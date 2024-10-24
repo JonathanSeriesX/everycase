@@ -1,5 +1,13 @@
 # Hello there!
 
+P.S. WELL, I've just checked analytics, and it seems like people are visiting this website! Which means I have to improve a lot here. Glad to see you here btw!
+
+I am currently refactoring the code of this website, and I will update the collections as soon as I'm done with that. Promise! Sorry for the delays.
+
+-----------
+
+Why?
+
 You may have heard about [EveryMac](https://everymac.com/), the old-school yet functional catalogue of Apple devices, complete with specs, order numbers, and more. You may have also used [Bandbreite](https://bandbreite.watch/), a sleek and modern app for collecting Apple Watch bands.
 
 And you might have wondered: shouldn't there be at least one resource dedicated to device cases manufactured by Apple? Describing that [Pink Citrus Leather Sleeve](latest-iphone/iphone-12/MHMN3) you slide your iPhone 12 mini into every day?
@@ -8,7 +16,7 @@ Perhaps a website designed for people who have never lost a thing in their lives
 
 I wondered too. Then I've decided to never wonder again and to build such a website; problem solved!
 
-FineWoven Empire turned out quite cool:
+Finest Woven turned out quite cool:
 
 - Free with no distractions
 - Modern look & feel
