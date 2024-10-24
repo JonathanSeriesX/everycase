@@ -1,4 +1,4 @@
-# LICENSE FOR FINEWOVEN EMPIRE WEBSITE
+# LICENSE FOR Finest Woven WEBSITE
 
 Copyright © 2023 Evgenii Ostrovskii
 

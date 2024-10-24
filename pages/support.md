@@ -1,6 +1,6 @@
 # It's free real website!
 
-And it respects visitors. That's why FineWoven Empire:
+And it respects visitors. That's why Finest Woven:
 
 - Does not track you in any way, shape, or form
 - Does not embed personalized ads
