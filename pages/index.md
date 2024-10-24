@@ -1,12 +1,12 @@
 # Hello there!
 
-P.S. WELL, I've just checked analytics, and it seems like people are visiting this website! Which means I have to improve a lot here. Glad to see you here btw!
+Update: WELL, I've just checked analytics, and it seems like people are visiting this website! Which means I have to improve a lot of stuff. Glad to see you here btw!
 
 I am currently refactoring the code of this website, and I will update the collections as soon as I'm done with that. Promise! Sorry for the delays.
 
 -----------
 
-Why?
+Why this exists?
 
 You may have heard about [EveryMac](https://everymac.com/), the old-school yet functional catalogue of Apple devices, complete with specs, order numbers, and more. You may have also used [Bandbreite](https://bandbreite.watch/), a sleek and modern app for collecting Apple Watch bands.
 
