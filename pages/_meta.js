@@ -71,5 +71,13 @@ export default {
     theme: {
       collapsed: true,
     },
+    collapsed: true,
+  },
+  sample: {
+    title: 'Test',
+    theme: {
+      collapsed: true,
+    },
+    display: 'hidden',
   },
 }

@@ -96,41 +96,6 @@ table img {
     /* Remove any margins */
 }
 
-table {
-    width: 100%;
-    max-width: 500px;
-    overflow-x: auto;
-    display: block;
-    /* word-break: break-word; */
-    box-sizing: border-box;
-}
-
-table,
-td,
-th {
-    margin: 0;
-    padding: 0;
-    white-space: pre-wrap;
-    word-break: keep-all;
-    box-sizing: border-box;
-    max-width: 512px;
-}
-
-td:nth-child(3) {
-    width: 45%;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.no-wide-third-row td:nth-child(3) {
-    width: 20%;
-    /* or whatever width you desire */
-    text-align: left;
-    /* or another alignment */
-    vertical-align: top;
-    /* or another alignment */
-}
-
 .logo {
     margin-top: 0px;
     margin-right: 4px;

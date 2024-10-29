@@ -1,5 +1,6 @@
 import nextra from 'nextra'
 import withPWA from 'next-pwa'
+import remarkMdxDisableExplicitJsx from 'remark-mdx-disable-explicit-jsx'
 
 const withNextra = nextra({
   theme: 'nextra-theme-docs',
@@ -9,6 +10,14 @@ const withNextra = nextra({
     codeblocks: false,
   },*/
   defaultShowCopyCode: true,
+  mdxOptions: {
+    remarkPlugins: [
+      [
+        remarkMdxDisableExplicitJsx,
+        { whiteList: ['table', 'thead', 'tbody', 'tr', 'th', 'td'] },
+      ],
+    ],
+  },
 })
 
 const baseConfig = {
