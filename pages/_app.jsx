@@ -6,6 +6,8 @@ import { NextUIProvider } from "@nextui-org/react"; // Import NextUIProvider
 import React, { useEffect } from "react";
 import { usePreserveScroll } from "/components/ScrollPreserve.tsx";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 
 export default function Nextra({ Component, pageProps }) {
   usePreserveScroll();
@@ -21,6 +23,7 @@ export default function Nextra({ Component, pageProps }) {
     <NextUIProvider> {/* Wrap everything with NextUIProvider */}
       <Component {...pageProps} />
       <Analytics />
+      <SpeedInsights />
     </NextUIProvider>
   );
 }
