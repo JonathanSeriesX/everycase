@@ -103,7 +103,7 @@ table img {
     width: 48px;
 }
 
-@font-face {
+/*@font-face {
     font-family: 'Tofino Variable';
     src: url('https://cloudfront.everycase.org/fonts/TofinoVariable.woff2') format('woff2-variations'),
         url('https://cloudfront.everycase.org/fonts/TofinoVariable.ttf') format("truetype");
@@ -111,23 +111,23 @@ table img {
     font-weight: 100 800;
     font-stretch: 100% 125%;
     font-style: oblique 0deg 1deg;
-    /* Italic axis is represented with oblique here, ranging from 0deg (no slant) to 1deg (full italic) */
     font-display: swap;
-}
-
-@font-face {
-    font-family: 'Quicksand';
-    src: url('https://cloudfront.everycase.org/fonts/Quicksand.woff2') format('woff2-variations'),
-        url('https://cloudfront.everycase.org/fonts/Quicksand-Light.ttf') format("truetype");
-    font-display: swap;
-}
+}*/
 
 body {
-    font-family: 'Tofino Variable', system-ui;
+    font-family: var(--font-tofino), 'Tofino Variable', system-ui;
     font-stretch: 101%;
     font-weight: 330;
     font-display: swap;
 }
+
+/*@font-face {
+    font-family: 'Quicksand';
+    src: url('https://cloudfront.everycase.org/fonts/Quicksand.woff2') format('woff2-variations'),
+        url('https://cloudfront.everycase.org/fonts/Quicksand-Light.ttf') format("truetype");
+    font-display: swap;
+}*/
+
 
 @-moz-document url-prefix() {
     body {

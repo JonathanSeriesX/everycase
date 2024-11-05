@@ -24,7 +24,7 @@
     "@tanstack/react-table": "^8.20.5",
     "@vercel/analytics": "^1.3.2",
     "@vercel/speed-insights": "^1.0.14",
-    "framer-motion": "^11.11.10",
+    "framer-motion": "^11.11.11",
     "lightbox.js-react": "^1.1.7",
     "next": "~15.0.2",
     "next-pwa": "^5.6.0",
@@ -39,20 +39,20 @@
   "devDependencies": {
     "@napi-rs/simple-git": "^0.1.19",
     "@next/eslint-plugin-next": "^15.0.2",
-    "@types/node": "^22.8.5",
+    "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
-    "@typescript-eslint/eslint-plugin": "^8.12.2",
-    "@typescript-eslint/parser": "^8.12.2",
+    "@typescript-eslint/eslint-plugin": "^8.13.0",
+    "@typescript-eslint/parser": "^8.13.0",
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.6",
-    "eslint": "^9.13.0",
+    "eslint": "^9.14.0",
     "eslint-config-next": "^15.0.2",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3",
-    "wrangler": "^3.84.0"
+    "wrangler": "^3.84.1"
   },
   "pnpm": {
     "overrides": {

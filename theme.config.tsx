@@ -2,12 +2,16 @@ import React from 'react'
 import type { DocsThemeConfig } from 'nextra-theme-docs'
 import { useConfig } from 'nextra-theme-docs'
 import { useRouter } from 'next/router'
+import { Quicksand } from 'next/font/google';
+
+const quicksand = Quicksand({ subsets: ['latin'], weight: ['300', '400'] });
 
 const logo = (
   <>
     <span
-      style={{
-        fontFamily: '"Quicksand", system-ui',
+        className={quicksand.className} // Apply the Quicksand font
+        style={{
+        //fontFamily: '"Quicksand", system-ui',
         fontSize: '26px',
         letterSpacing: '0px',
         fontWeight: 300,
@@ -24,8 +28,8 @@ const logo = (
       />
     </picture>
     <span
-      style={{
-        fontFamily: '"Quicksand", system-ui',
+        className={quicksand.className}
+        style={{
         fontSize: '26px',
         letterSpacing: '0px',
         fontWeight: 300,

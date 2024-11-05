@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Table, Td, Th, Tr } from 'nextra/components'
+
 
 const CaseTable = ({ cases }) => {
   const [sortField, setSortField] = useState('color');
@@ -16,28 +18,28 @@ const CaseTable = ({ cases }) => {
         <option value="sku">Sort by SKU</option>
       </select>
 
-      <table>
+      <Table>
         <thead>
-          <tr>
-            <th>Color</th>
-            <th>SKU</th>
-            <th>Tap for more:</th>
-          </tr>
+          <Tr>
+            <Th>Color</Th>
+            <Th>SKU</Th>
+            <Th>Tap for more:</Th>
+          </Tr>
         </thead>
         <tbody>
           {sortedCases.map((item) => (
-            <tr key={item.sku}>
-              <td>{item.color}</td>
-              <td>{item.sku}</td>
-              <td>
+            <Tr key={item.sku}>
+              <Td>{item.color}</Td>
+              <Td>{item.sku}</Td>
+              <Td>
                 <a href={`/latest-iphone/iphone-12/${item.sku}`}>
                   <img src={item.image} alt={item.color} />
                 </a>
-              </td>
-            </tr>
+              </Td>
+            </Tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </>
   );
 };
