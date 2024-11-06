@@ -1,10 +1,10 @@
 import React from 'react'
 //import { DocsThemeConfig } from 'nextra-theme-docs'
-import { useConfig } from 'nextra-theme-docs'
-import { useRouter } from 'next/router'
-import { Quicksand } from 'next/font/google';
+import {useConfig} from 'nextra-theme-docs'
+import {useRouter} from 'next/router'
+import {Quicksand} from 'next/font/google';
 
-const quicksand = Quicksand({ subsets: ['latin'], weight: ['300', '400'] });
+const quicksand = Quicksand({subsets: ['latin'], weight: ['300', '400']});
 
 const logo = (
     <>
@@ -43,9 +43,9 @@ const logo = (
 )
 
 function Head() {
-    const { title } = useConfig()
+    const {title} = useConfig()
     const router = useRouter()
-    const { asPath } = useRouter()
+    const {asPath} = useRouter()
 
     const baseURL = 'https://everycase.org'
     const currentURL = `${baseURL}${router.asPath}`
@@ -66,15 +66,15 @@ function Head() {
                 type="image/png"
                 sizes="512x512"
             />
-            <link rel="manifest" href="/manifest.json" />
-            <meta name="theme-color" content="#E3504F" />
-            <meta name="application-name" content="Finest Woven" />
+            <link rel="manifest" href="/manifest.json"/>
+            <meta name="theme-color" content="#E3504F"/>
+            <meta name="application-name" content="Finest Woven"/>
             <meta
                 name="description"
                 content="Library of Apple cases for iPhone, iPad, and Mac."
             />
 
-            <meta property="og:type" content="website" />
+            <meta property="og:type" content="website"/>
             {/* <meta property="og:title" content={title ? title : "EveryCase"} /> — managed by NextSeo plugin*/}
 
             <meta
@@ -85,26 +85,26 @@ function Head() {
                 property="og:image"
                 content="https://everycase.org/icons/back.jpg"
             />
-            <meta property="og:url" content={currentURL} />
-            <meta property="og:locale" content="en_GB" />
+            <meta property="og:url" content={currentURL}/>
+            <meta property="og:locale" content="en_GB"/>
 
             {/* Twitter Tags */}
             <meta
                 name="twitter:image"
                 content="https://everycase.org/icons/back.jpg"
             />
-            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:card" content="summary_large_image"/>
             <meta name="twitter:creator" content="@Jonathunky"></meta>
-            <meta name="twitter:title" content={titleTemplate} />
+            <meta name="twitter:title" content={titleTemplate}/>
             <meta
                 name="twitter:description"
                 content="Library of Apple cases for iPhone, iPad, and Mac."
             />
 
             {/* Apple Specific Tags */}
-            <meta name="apple-mobile-web-app-title" content="Finest Woven" />
-            <meta name="apple-mobile-web-app-capable" content="yes" />
-            <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+            <meta name="apple-mobile-web-app-title" content="Finest Woven"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+            <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
             <link
                 rel="apple-touch-icon"
                 sizes="180x180"
@@ -117,14 +117,14 @@ function Head() {
             />
 
             {/* Microsoft Specific Tags */}
-            <meta name="msapplication-config" content="none" />
-            <meta name="msapplication-TileColor" content="#FFE0F5" />
-            <meta name="msapplication-tap-highlight" content="no" />
+            <meta name="msapplication-config" content="none"/>
+            <meta name="msapplication-TileColor" content="#FFE0F5"/>
+            <meta name="msapplication-tap-highlight" content="no"/>
 
             {/* Miscellaneous */}
             {/* <meta name="robots" content="noindex" /> also managed by plugin */}
-            <meta name="format-detection" content="telephone=no" />
-            <meta name="mobile-web-app-capable" content="yes" />
+            <meta name="format-detection" content="telephone=no"/>
+            <meta name="mobile-web-app-capable" content="yes"/>
         </>
     )
 }
@@ -143,7 +143,7 @@ const config = {
         component: undefined,
     },
     sidebar: {
-        defaultMenuCollapseLevel: 2,
+        defaultMenuCollapseLevel: 1,
         toggleButton: true,
         autoCollapse: false,
     },
