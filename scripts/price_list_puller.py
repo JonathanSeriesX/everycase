@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 url_template = "https://www.apple.com/education/pricelists/pdfs/Apple_US_Education_Institution_Price_List-%m-%d-%Y.pdf"
 
 # Start and end dates for the year 2021
-start_date = datetime(2021, 1, 1)
-end_date = datetime(2021, 12, 31)
+start_date = datetime(2023, 1, 1)
+end_date = datetime(2024, 12, 31)
 
 
 # Define a function to check URL availability
