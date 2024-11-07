@@ -4,9 +4,6 @@
 .idea/
 .vscode/
 .obsidian/
-.prettierrc
-.prettierignore
-prettier.config.js
 
 # Building & Deploying
 .next/
