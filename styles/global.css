@@ -32,7 +32,6 @@ table img {
     /* Prevent image overflow */
     object-fit: contain;
     object-position: center;
-    display: flex;
 }
 
 .imageModal img {
@@ -44,11 +43,11 @@ table img {
     /* Maintain aspect ratio while fitting */
 }
 
-
 .custom-thumbnail {
     margin: 5px;
     padding: 3px;
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .custom-thumbnail:hover {
@@ -76,14 +75,14 @@ table img {
 }
 
 .image-gallery-thumbnail.active {
-    background-color: rgba(255, 224, 245, 0.0);
+    background-color: rgba(255, 224, 245, 0);
     /* Semi-transparent red background */
-    border: 2px solid #BF4F95;
-    box-shadow: 0px 0px 2px #BF4F95;
+    border: 2px solid #bf4f95;
+    box-shadow: 0px 0px 2px #bf4f95;
 }
 
 .image-gallery-thumbnail:hover {
-    border: 2px solid #FFE0F5;
+    border: 2px solid #ffe0f5;
     /* Adjust border width and style as needed */
 }
 
@@ -115,10 +114,9 @@ table img {
 }*/
 
 body {
-    font-family: var(--font-tofino), 'Tofino Variable', system-ui;
+    font-family: var(--font-tofino), "Tofino Variable", system-ui;
     font-stretch: 101%;
     font-weight: 330;
-    font-display: swap;
 }
 
 /*@font-face {
@@ -127,7 +125,6 @@ body {
         url('https://cloudfront.everycase.org/fonts/Quicksand-Light.ttf') format("truetype");
     font-display: swap;
 }*/
-
 
 @-moz-document url-prefix() {
     body {
@@ -141,7 +138,7 @@ body {
 em,
 i,
 .italic-class {
-    font-variation-settings: 'ital' 0.1 !important;
+    font-variation-settings: "ital" 0.1 !important;
     margin-left: -1px;
     /* pull the element to the left by 1px otherwise looks a bit weird */
     margin-right: 1px;
@@ -156,7 +153,7 @@ h6 {
     font-stretch: 102%;
 }
 
-.no-style-marker+table td:nth-child(3) {
+.no-style-marker + table td:nth-child(3) {
     width: auto;
     /* or your desired reset value */
     text-align: left;

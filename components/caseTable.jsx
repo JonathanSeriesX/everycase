@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import { Table, Td, Th, Tr } from 'nextra/components'
-
+import { useState } from "react";
+import { Table, Td, Th, Tr } from "nextra/components";
 
 const CaseTable = ({ cases }) => {
-  const [sortField, setSortField] = useState('color');
+  const [sortField, setSortField] = useState("color");
 
   const sortedCases = [...cases].sort((a, b) => {
     if (a[sortField] < b[sortField]) return -1;
