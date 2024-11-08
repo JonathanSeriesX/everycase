@@ -1,11 +1,11 @@
 import "nextra-theme-docs/style.css";
 import "/styles/global.css";
 import "lightbox.js-react/dist/index.css";
-import {initLightboxJS} from "lightbox.js-react";
-import React, {useEffect} from "react";
-import {usePreserveScroll} from "/components/ScrollPreserve.tsx";
-import {Analytics} from "@vercel/analytics/react";
-import {SpeedInsights} from '@vercel/speed-insights/next';
+import { initLightboxJS } from "lightbox.js-react";
+import React, { useEffect } from "react";
+import { usePreserveScroll } from "/components/ScrollPreserve.tsx";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import localFont from 'next/font/local'
 
 const tofino = localFont({
@@ -26,12 +26,12 @@ const tofino = localFont({
 });
 
 
-export default function Nextra({Component, pageProps}) {
+export default function Nextra({ Component, pageProps }) {
     usePreserveScroll();
 
     useEffect(() => {
         initLightboxJS(
-            process.env.NEXT_PUBLIC_LIGHTBOX_LICENSE_KEY,
+            process.env.LIGHTBOX_LICENSE_KEY,
             "individual"
         );
 
@@ -49,8 +49,8 @@ export default function Nextra({Component, pageProps}) {
     return (
         <main className={tofino.className}>
             <Component {...pageProps} />
-            <Analytics/>
-            <SpeedInsights/>
+            <Analytics />
+            <SpeedInsights />
         </main>
     );
 }
