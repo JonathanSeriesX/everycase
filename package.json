@@ -20,6 +20,7 @@
   },
   "homepage": "https://everycase.org",
   "dependencies": {
+    "@supabase/supabase-js": "^2.46.1",
     "@vercel/analytics": "^1.3.2",
     "@vercel/speed-insights": "^1.1.0",
     "lightbox.js-react": "^1.1.7",
