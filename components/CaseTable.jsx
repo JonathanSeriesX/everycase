@@ -22,7 +22,7 @@ const CaseTable = ({ model, material, season }) => {
       const { data, error } = await query;
 
       if (error) {
-        console.error("Error fetching cases:", error);
+        //console.error("Error fetching cases:", error);
       } else {
         setCases(data);
       }
@@ -57,11 +57,20 @@ const CaseTable = ({ model, material, season }) => {
             <Td>{item.colour}</Td>
             <Td>{item.SKU + "ZM/A"}</Td>
             <Td>
-              <Link href={"/latest-iphone/iphone-15/" + item.SKU}><Image
-                src={"https://cloudfront.everycase.org/everypreview/" + item.SKU + ".webp"}
-                width={400} height={400}
-                alt={"hello?" + item.model + " with " + item.colour + " " + item.material}
-              /></Link>
+              <Link href={"/latest-iphone/iphone-15/" + item.SKU}>
+                <div style={{
+                  width: "200px", height: "200px", overflow: "hidden", display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}>
+                  <Image
+                    src={"https://cloudfront.everycase.org/everypreview/" + item.SKU + ".webp"}
+                    width={200} height={200}
+                    alt={"hello?" + item.model + " with " + item.colour + " " + item.material}
+                    objectFit="contain"
+                  />
+                </div>
+              </Link>
             </Td>
           </Tr>
         ))}
