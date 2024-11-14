@@ -35,50 +35,55 @@ const baseConfig = {
   ],
   experimental: {
     scrollRestoration: true
+  },
+  async headers() {
+    return [
+      {
+        // matching all API routes
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload"
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff"
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY"
+          },
+          {
+            key: "Referrer-Policy",
+            value: "no-referrer-when-downgrade"
+          },
+          {
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self'; " +
+              "script-src 'self' https://static.cloudflareinsights.com 'sha256-iX9LRPdLBV4jlGfQ+1qGl2+8iQlVITwJKum0Gqg4bTQ=' 'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo='; " +
+              "style-src 'self' 'unsafe-inline'; " +
+              "font-src 'self' *.everycase.org; " +
+              "img-src 'self' *.everycase.org; " +
+              "connect-src 'self' https://vitals.vercel-insights.com/v1/vitals https://cloudflareinsights.com/cdn-cgi/rum https://lightboxjs-server.herokuapp.com/license; " +
+              "object-src 'none'; " +
+              "report-uri /api/csp-report"
+          }
+        ]
+      },
+      {
+        source: "/service-worker.js",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate"
+          }
+        ]
+      }
+    ];
   }
 };
 
-const headersFunction = async () => {
-  return [
-    {
-      // matching all API routes
-      source: "/(.*)",
-      headers: [
-        {
-          key: "Strict-Transport-Security",
-          value: "max-age=63072000; includeSubDomains; preload"
-        },
-        {
-          key: "X-Content-Type-Options",
-          value: "nosniff"
-        },
-        {
-          key: "X-Frame-Options",
-          value: "DENY"
-        },
-        {
-          key: "Referrer-Policy",
-          value: "no-referrer-when-downgrade"
-        },
-        {
-          key: "Content-Security-Policy",
-          value:
-            "default-src 'self'; script-src 'self' https://static.cloudflareinsights.com 'sha256-iX9LRPdLBV4jlGfQ+1qGl2+8iQlVITwJKum0Gqg4bTQ=' 'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo='; style-src 'self' 'unsafe-inline'; font-src 'self' *.everycase.org; img-src 'self' *.everycase.org everycase.imgix.net; connect-src 'self' https://vitals.vercel-insights.com/v1/vitals https://cloudflareinsights.com/cdn-cgi/rum https://lightboxjs-server.herokuapp.com/license; object-src 'none'; report-uri /api/csp-report"
-        }
-      ]
-    },
-    {
-      source: "/sw.js",
-      headers: [
-        {
-          key: "Cache-Control",
-          value: "public, max-age=0, must-revalidate"
-        }
-      ]
-    }
-  ];
-};
 
 export default withNextra({ ...baseConfig });
-
-export { headersFunction };
