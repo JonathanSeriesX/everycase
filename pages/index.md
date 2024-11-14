@@ -1,29 +1,11 @@
-# Hello there!
+# Hello there, and welcome!
 
-Update: WELL, I've just checked analytics, and it seems like people are visiting this website! Which means I have to improve a lot of stuff. Glad to see you here btw!
+You’ve stumbled upon a unique space dedicated to cataloging every accessory Apple has ever crafted.
+Accessories are an integral part of Apple’s design story, and I believe they [deserve](why.md) their own spotlight.
 
-I am currently refactoring the code of this website, and I will update the collections as soon as I'm done with that. Promise! Sorry for the delays.
+How to explore:
 
------------
+- Search for a specific accessory by SKU or product name 🏹
+- Use the sidebar to browse, currently organized by device 👈
 
-Why this exists?
-
-You may have heard about [EveryMac](https://everymac.com/), the old-school yet functional catalogue of Apple devices, complete with specs, order numbers, and more. You may have also used [Bandbreite](https://bandbreite.watch/), a sleek and modern app for collecting Apple Watch bands.
-
-And you might have wondered: shouldn't there be at least one resource dedicated to device cases manufactured by Apple? Describing that [Pink Citrus Leather Sleeve](latest-iphone/iphone-12/MHMN3) you slide your iPhone 12 mini into every day?
-
-Perhaps a website designed for people who have never lost a thing in their lives yet still bought an AirTag 4-pack with a bunch of [Loops](others/airtag#collections) just to show off their love for California Poppy? For people who perceive Apple as a fashion house first and a tech company second?
-
-I wondered too. Then I've decided to never wonder again and to build such a website; problem solved!
-
-Finest Woven turned out quite cool:
-
-- Free with no distractions
-- Modern look & feel
-- Full Dark Mode support
-- Incredible performance with more optimizations to come
-- Thousands of handcrafted transparent images of cases with more coming soon
-
-If you like what you see, please consider supporting me; [here's how](support).
-
-Thanks, and welcome 🎉
+Enjoy, and thank you for visiting!

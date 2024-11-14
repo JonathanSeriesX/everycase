@@ -4,6 +4,9 @@ import CaseTable from "./CaseTable"; // can't refer explicitly?
 const CaseTableTabs = ({ series, season, material }) => {
   let models;
   switch (series) {
+    case "iPhone 16":
+      models = ["iPhone 16", "iPhone 16 Plus", "iPhone 16 Pro", "iPhone 16 Pro Max"];
+      break;
     case "iPhone 15":
       models = ["iPhone 15", "iPhone 15 Plus", "iPhone 15 Pro", "iPhone 15 Pro Max"];
       break;

@@ -23,7 +23,7 @@
     "@supabase/supabase-js": "^2.46.1",
     "@vercel/analytics": "^1.4.0",
     "@vercel/speed-insights": "^1.1.0",
-    "lightbox.js-react": "^1.1.7",
+    "lightbox.js-react": "^1.1.8",
     "next": "~15.0.3",
     "nextra": "^3.2.3",
     "nextra-theme-docs": "^3.2.3",
