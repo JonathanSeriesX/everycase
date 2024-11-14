@@ -62,5 +62,9 @@ export default {
       collapsed: false
     },
     collapsed: false
+  },
+  items: {
+    title: "NULL",
+    display: "hidden"
   }
 };

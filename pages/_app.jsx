@@ -27,7 +27,7 @@ const tofino = localFont({
 
 
 export default function Nextra({ Component, pageProps }) {
-  //usePreserveScroll();
+  usePreserveScroll();
 
   useEffect(() => {
     initLightboxJS(
