@@ -1,5 +1,7 @@
 import nextra from "nextra";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 const withNextra = nextra({
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.jsx"
@@ -47,6 +49,14 @@ const baseConfig = {
             value: "max-age=63072000; includeSubDomains; preload"
           },
           {
+            key: "Access-Control-Allow-Origin",
+            value: "https://everycase.org"
+          },
+          {
+            key: "Permissions-Policy",
+            value: "geolocation=(), microphone=(), camera=(), gyroscope=(), magnetometer=(), payment=()"
+          },
+          {
             key: "X-Content-Type-Options",
             value: "nosniff"
           },
@@ -60,13 +70,15 @@ const baseConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value:
+            value: isDevelopment
+              ? "default-src *; script-src * 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src *; object-src 'none'"
+              :
               "default-src 'self'; " +
-              "script-src 'self' https://static.cloudflareinsights.com 'sha256-iX9LRPdLBV4jlGfQ+1qGl2+8iQlVITwJKum0Gqg4bTQ=' 'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo='; " +
+              "script-src 'self' https://static.cloudflareinsights.com https://vercel.live https://vercel-insights.com 'sha256-iX9LRPdLBV4jlGfQ+1qGl2+8iQlVITwJKum0Gqg4bTQ=' 'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo=' 'sha256-0Q45p6ODxDbb6JoBmPTEm/f0wPjrDDWqatAj8JtG+Rc='; " +
               "style-src 'self' 'unsafe-inline'; " +
               "font-src 'self' *.everycase.org; " +
               "img-src 'self' *.everycase.org; " +
-              "connect-src 'self' https://vitals.vercel-insights.com/v1/vitals https://cloudflareinsights.com/cdn-cgi/rum https://lightboxjs-server.herokuapp.com/license; " +
+              "connect-src 'self' https://vitals.vercel-insights.com/v1/vitals https://cloudflareinsights.com/cdn-cgi/rum https://lightboxjs-server.herokuapp.com/license https://xnbftjmzxkcjcyysytbh.supabase.co; " +
               "object-src 'none'; " +
               "report-uri /api/csp-report"
           }
