@@ -48,7 +48,7 @@ export const getStaticProps = async ({ params }) => {
     },
   };
 };
-
+//specify which pages must be pre-rendered
 export const getStaticPaths = async () => {
   const filePath = path.join(process.cwd(), 'public', 'filenames.txt');
   const fileContents = fs.readFileSync(filePath, 'utf-8');
