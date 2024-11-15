@@ -38,9 +38,10 @@ export const getStaticProps = async ({ params }) => {
     const modelNumberMatch = data.model.match(/iPhone (\d+)/);
     const isMagSafeModel = modelNumberMatch && parseInt(modelNumberMatch[1], 10) >= 12;
 
+    // Conditionally include the colour part
     const caseName = isMagSafeModel
-      ? `${data.model} ${data.kind} with MagSafe — ${data.colour}`
-      : `${data.model} ${data.kind} — ${data.colour}`;
+      ? `${data.model} ${data.kind} with MagSafe${data.colour !== "Clear Case" ? ` — ${data.colour}` : ""}`
+      : `${data.model} ${data.kind}${data.colour !== "Clear Case" ? ` — ${data.colour}` : ""}`;
 
     return {
       props: {

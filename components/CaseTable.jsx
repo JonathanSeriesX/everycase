@@ -24,7 +24,7 @@ const CaseTable = ({ model, material, season }) => {
       const { data, error } = await query;
 
       if (error) {
-        //console.error("Error fetching cases:", error);
+        console.error("Error fetching cases:", error);
       } else {
         setCases(data);
       }
@@ -68,8 +68,8 @@ const CaseTable = ({ model, material, season }) => {
                   <Image
                     src={"https://cloudfront.everycase.org/everypreview/" + item.SKU + ".webp"}
                     width={200} height={200}
-                    alt={"hello?" + item.model + " with " + item.colour + " " + item.material}
-                    objectFit="contain"
+                    alt={item.model + " " + item.material + " — " + item.colour}
+                    style={{ objectFit: "contain" }}
                   />
                 </div>
               </Link>
