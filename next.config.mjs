@@ -97,27 +97,37 @@ const baseConfig = {
         ]
       }
     ];
-  },// this path map here solves static pre-generation of [model].mdx
+  },// this path map here below solves static pre-generation of [model].mdx
   async exportPathMap() {
-    const filePath = path.join(process.cwd(), "public", "filenames.txt");
-    const fileContents = fs.readFileSync(filePath, "utf-8");
+    const csvPath = path.join(process.cwd(), "public", "skus.csv");
+    try {
+      const csvData = fs.readFileSync(csvPath, "utf-8");
+      console.log(`[exportPathMap] Read skus.csv successfully`);
+      const records = parse(csvData, {
+        columns: true, // Parse CSV into objects with column names as keys
+        skip_empty_lines: true // Skip empty lines
+      });
 
-    // Use a Set to store only unique SKUs (base names without variations)
-    const uniqueSKUs = new Set(
-      fileContents
-        .split("\n")
-        .map((line) => line.split("_")[0].trim()) // Extract the base SKU
-    );
+      // Use a Set to store unique SKUs
+      const uniqueSKUs = new Set(records.map((record) => record.SKU.trim()));
+      console.log(`[exportPathMap] Unique SKUs:`, uniqueSKUs);
 
-    const paths = {};
-    uniqueSKUs.forEach((sku) => {
-      paths[`/case/${sku}`] = { page: "/case/[model]", query: { model: sku } };
-    });
+      // Map each SKU to its respective page
+      const paths = {};
+      uniqueSKUs.forEach((sku) => {
+        paths[`/case/${sku}`] = { page: "/case/[model]", query: { model: sku } };
+      });
 
-    return {
-      "/": { page: "/" },
-      ...paths
-    };
+      return {
+        "/": { page: "/" },
+        ...paths
+      };
+    } catch (error) {
+      console.error(`[exportPathMap] Error:`, error);
+      return {
+        "/": { page: "/" }
+      };
+    }
   }
 };
 
