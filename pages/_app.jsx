@@ -25,7 +25,6 @@ const tofino = localFont({
   variable: "--font-tofino" // Define a custom CSS variable for easy usage
 });
 
-
 export default function Nextra({ Component, pageProps }) {
   usePreserveScroll();
 
@@ -35,15 +34,29 @@ export default function Nextra({ Component, pageProps }) {
       "individual"
     );
 
+    // Check if service workers are supported and avoid registering in unsupported environments
     if ("serviceWorker" in navigator && process.env.NODE_ENV !== "development") {
-      navigator.serviceWorker.register("/service-worker.js").catch((error) => {
-        console.error("Service worker registration failed:", error);
-      });
-    }
+      // Register service worker
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .then(() => {
+          console.log("Service worker registered successfully.");
+        })
+        .catch((error) => {
+          console.error("Service worker registration failed:", error);
+        });
 
-    navigator.serviceWorker.ready.then(() => {
-      console.log("Service worker is active and ready.");
-    });
+      // Check if service worker is ready, only if supported
+      navigator.serviceWorker.ready
+        .then(() => {
+          console.log("Service worker is active and ready.");
+        })
+        .catch((error) => {
+          console.error("Service worker readiness check failed:", error);
+        });
+    } else {
+      console.warn("Service workers are not supported in this environment.");
+    }
   }, []);
 
   return (
