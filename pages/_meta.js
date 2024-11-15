@@ -47,9 +47,6 @@ export default {
   others: {
     title: "Other stuff"
   },
-  "pre-magsafe-iphone": {
-    title: "Pre-MagSafe iPhone"
-  },
   "pre-notch-iphone": {
     title: "Pre-notch iPhone"
   },

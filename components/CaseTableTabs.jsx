@@ -22,6 +22,9 @@ const CaseTableTabs = ({ series, season, material }) => {
     case "iPhone 11":
       models = ["iPhone 11 Pro", "iPhone 11 Pro Max"];
       break;
+    case "iPhone Xs":
+      models = ["iPhone XS", "iPhone XS Max"];
+      break;
   }
 
   let names = models.map((model, index) => {

@@ -1,5 +1,4 @@
 import React from "react";
-//import { DocsThemeConfig } from 'nextra-theme-docs'
 import { useConfig } from "nextra-theme-docs";
 import { useRouter } from "next/router";
 import { Quicksand } from "next/font/google";
@@ -11,11 +10,10 @@ const logo = (
     <span
       className={quicksand.className} // Apply the Quicksand font
       style={{
-        //fontFamily: '"Quicksand", system-ui',
         fontSize: "26px",
         letterSpacing: "0px",
         fontWeight: 300,
-        marginRight: -5,
+        marginRight: -5
       }}
     >
       Finest
@@ -34,7 +32,7 @@ const logo = (
         letterSpacing: "0px",
         fontWeight: 300,
         marginLeft: -10,
-        marginRight: 15,
+        marginRight: 15
       }}
     >
       Woven
@@ -50,7 +48,7 @@ function Head() {
   const baseURL = "https://everycase.org";
   const currentURL = `${baseURL}${router.asPath}`;
 
-  var titleTemplate;
+  let titleTemplate;
   if (asPath !== "/") {
     titleTemplate = title + " — Finest Woven";
   } else {
@@ -75,7 +73,7 @@ function Head() {
       />
 
       <meta property="og:type" content="website" />
-      {/* <meta property="og:title" content={title ? title : "EveryCase"} /> — managed by NextSeo plugin*/}
+      <meta property="og:title" content={titleTemplate} />
 
       <meta
         property="og:description"
@@ -122,7 +120,7 @@ function Head() {
       <meta name="msapplication-tap-highlight" content="no" />
 
       {/* Miscellaneous */}
-      {/* <meta name="robots" content="noindex" /> also managed by plugin */}
+      <meta name="robots" content="index, follow" />
       <meta name="format-detection" content="telephone=no" />
       <meta name="mobile-web-app-capable" content="yes" />
     </>
@@ -134,48 +132,51 @@ const config = {
     //link: 'https://github.com/JonathanSeriesX/everycase',
   },
   search: {
-    placeholder: "Search...",
+    placeholder: "Search by color or SKU..."
   },
   logo: logo,
   docsRepositoryBase: "https://github.com/JonathanSeriesX/everycase/tree/main",
   footer: {
-    //text: "Yeah",
-    component: undefined,
+    component: undefined
   },
   sidebar: {
     defaultMenuCollapseLevel: 1,
     toggleButton: true,
-    autoCollapse: false,
+    autoCollapse: false
   },
   darkMode: true,
   nextThemes: {
-    defaultTheme: "system",
+    defaultTheme: "system"
   },
   color: {
     hue: {
       light: 10,
-      dark: 10,
+      dark: 10
     },
     saturation: {
       light: 100,
-      dark: 100,
-    },
+      dark: 100
+    }
   },
   toc: {
     float: true,
-    backToTop: true,
+    backToTop: true
   },
   feedback: {
-    content: "Leave feedback →",
+    //content: "Leave feedback →"
+    content: false
   },
   editLink: {
-    content: "Propose edits on GitHub →",
+    content: "Suggest edits →"
   },
   navigation: {
     prev: false,
-    next: false,
+    next: false
   },
   head: Head,
+  notFound: {
+    content: "We've moved things around. Please go to start page!"
+  }
 };
 
 export default config;
