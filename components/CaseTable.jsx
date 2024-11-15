@@ -4,6 +4,8 @@ import { supabase } from "./supabaseClient";
 import Link from "next/link";
 import Image from "next/image";
 
+// TODO научить работать без season или без material, с пустыми аргументами
+
 const CaseTable = ({ model, material, season }) => {
   const [cases, setCases] = useState([]);
   const [sortField] = useState("color");
