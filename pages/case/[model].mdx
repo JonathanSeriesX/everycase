@@ -20,10 +20,16 @@ export const getStaticProps = async ({ params }) => {
     .from('phone')
     .select('model, material, colour')
     .eq('SKU', model)
-    .single();  // since each SKU is unique
+    .maybeSingle();  // since each SKU is unique
 
   if (error) {
     console.error("Error fetching data from Supabase:", error);
+    return { notFound: true };
+  }
+
+  if (!data) {
+    // Handle case where no data is returned for the model
+    console.warn(`No data found for model: ${model}`);
     return { notFound: true };
   }
 
