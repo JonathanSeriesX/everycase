@@ -7,6 +7,7 @@ import Image from "next/image";
 const VerticalCarousel = ({ model, material, season }) => {
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isSmallViewport, setIsSmallViewport] = useState(false);
 
   useEffect(() => {
     const fetchCases = async () => {
@@ -32,49 +33,119 @@ const VerticalCarousel = ({ model, material, season }) => {
     fetchCases();
   }, [model, material, season]);
 
-  if (loading) return <p>Loading...</p>;
+  // Detect viewport size and update state
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallViewport(window.innerWidth < 768); // Define "small" as < 768px
+    };
 
+    handleResize(); // Check initially
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ overflowX: "auto", scrollBehavior: "smooth", WebkitOverflowScrolling: "touch" }}>
+        <Table>
+          <thead>
+          {/* Row 1: Dummy Image and Color Name */}
+          <Tr>
+            <Td style={{ padding: "0", verticalAlign: "top", textAlign: "center" }}>
+              <div
+                style={{
+                  width: isSmallViewport ? "100px" : "200px",
+                  height: isSmallViewport ? "100px" : "200px",
+                  backgroundColor: "#f0f0f0", // Placeholder background color
+                  marginTop: isSmallViewport ? "15px" : "30px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                {/* Dummy image placeholder */}
+              </div>
+              <strong style={{ textAlign: "center", marginTop: "8px", display: "block", color: "#ccc" }}>
+                Color
+              </strong>
+            </Td>
+          </Tr>
+
+          {/* Row 2: Dummy SKU */}
+          <Tr>
+            <Td style={{ textAlign: "center", padding: "0" }}>
+              <span style={{ color: "#ccc" }}>SKU</span>
+            </Td>
+          </Tr>
+          </thead>
+        </Table>
+      </div>
+    );
+  }
   return (
     <>
       <div style={{ overflowX: "auto", scrollBehavior: "smooth", WebkitOverflowScrolling: "touch" }}>
-        <Table style={{}}>
+        <Table>
           <thead>
+          {/* Row 1: Images and Color Names */}
           <Tr>
-            <Th>Colour</Th>
             {cases.map((item) => (
-              <Td key={item.SKU}>{item.colour}</Td>
-            ))}
-          </Tr>
-          <Tr>
-            <Th>SKU</Th>
-            {cases.map((item) => (
-              <Td key={item.SKU}>{item.SKU + "ZM/A"}</Td>
-            ))}
-          </Tr>
-          <Tr>
-            <Th>Tap for more:</Th>
-            {cases.map((item) => (
-              <Td key={item.SKU}>
+              <Td key={item.SKU} style={{ padding: "0", verticalAlign: "top" }}>
                 <Link href={"/case/" + item.SKU}>
                   <div
                     style={{
-                      width: "200px",
-                      height: "200px",
+                      width: isSmallViewport ? "100px" : "200px", // TODO figure out why I can't do more than 200
+                      height: isSmallViewport ? "100px" : "200px",
                       overflow: "hidden",
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center"
+                      justifyContent: "center",
+                      marginTop: isSmallViewport ? "15px" : "30px" // Dynamic margin
                     }}
                   >
                     <Image
                       src={"https://cloudfront.everycase.org/everypreview/" + item.SKU + ".webp"}
-                      width={400}
-                      height={400}
+                      width={512}
+                      height={512}
                       alt={`${item.model} ${item.material} — ${item.colour}`}
                       style={{ objectFit: "contain" }}
                     />
                   </div>
                 </Link>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "50px", // Adjust height as needed for vertical centering
+                    marginTop: "8px"
+                  }}
+                >
+                  <strong style={{ textAlign: "center", marginLeft: "5px", marginRight: "5px" }}>
+                    {item.colour === "Clear Case" ? item.model : item.colour}
+                  </strong>
+                </div>
+              </Td>
+            ))}
+          </Tr>
+
+          {/* Row 2: SKU */}
+          <Tr>
+            {cases.map((item) => (
+              <Td key={item.SKU} style={{ padding: "0" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "50px" // Adjust height as needed for vertical centering
+                  }}
+                >
+                    <span style={{ marginLeft: "4px", marginRight: "4px" }}>
+                      {item.SKU + (isSmallViewport ? "ZM" : "ZM/A")}
+                    </span>
+                </div>
               </Td>
             ))}
           </Tr>
@@ -85,5 +156,7 @@ const VerticalCarousel = ({ model, material, season }) => {
     </>
   );
 };
+
+//TODO alt text does not work on Next/images.........
 
 export default VerticalCarousel;

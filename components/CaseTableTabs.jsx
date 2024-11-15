@@ -1,5 +1,6 @@
 import { Tabs } from "nextra/components";
 import CaseTable from "./CaseTable"; // can't refer explicitly?
+import VerticalCarousel from "components/VerticalCarousel"; // can't refer explicitly?
 
 const CaseTableTabs = ({ series, season, material }) => {
   let models;
@@ -38,7 +39,7 @@ const CaseTableTabs = ({ series, season, material }) => {
     <Tabs items={names}>
       {models.map((model, index) => (
         <Tabs.Tab key={index} title={model}>
-          <CaseTable
+          <VerticalCarousel
             {...(model ? { model } : {})}
             {...(season ? { season } : {})}
             {...(material ? { material } : {})}
