@@ -63,5 +63,9 @@ export default {
   case: {
     title: "NULL",
     display: "hidden"
+  },
+  sample: {
+    title: "NULL",
+    display: "hidden"
   }
 };
