@@ -57,7 +57,7 @@ const CaseTable = ({ model, material, season }) => {
             <Td>{item.colour}</Td>
             <Td>{item.SKU + "ZM/A"}</Td>
             <Td>
-              <Link href={"/items/" + item.SKU}>
+              <Link href={"/case/" + item.SKU}>
                 <div style={{
                   width: "200px", height: "200px", overflow: "hidden", display: "flex",
                   alignItems: "center",

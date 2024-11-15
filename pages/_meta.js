@@ -38,8 +38,8 @@ export default {
     title: "Sorted by device:",
     type: "separator"
   },
-  "latest-iphone": {
-    title: "Latest iPhone"
+  "iphone": {
+    title: "iPhone"
   },
   "latest-ipad": {
     title: "Latest iPad"
@@ -63,7 +63,7 @@ export default {
     },
     collapsed: false
   },
-  items: {
+  case: {
     title: "NULL",
     display: "hidden"
   }
