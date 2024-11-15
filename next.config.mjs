@@ -1,4 +1,6 @@
 import nextra from "nextra";
+import fs from "fs";
+import path from "path";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
@@ -95,6 +97,27 @@ const baseConfig = {
         ]
       }
     ];
+  },// this path map here solves static pre-generation of [model].mdx
+  async exportPathMap() {
+    const filePath = path.join(process.cwd(), "public", "filenames.txt");
+    const fileContents = fs.readFileSync(filePath, "utf-8");
+
+    // Use a Set to store only unique SKUs (base names without variations)
+    const uniqueSKUs = new Set(
+      fileContents
+        .split("\n")
+        .map((line) => line.split("_")[0].trim()) // Extract the base SKU
+    );
+
+    const paths = {};
+    uniqueSKUs.forEach((sku) => {
+      paths[`/case/${sku}`] = { page: "/case/[model]", query: { model: sku } };
+    });
+
+    return {
+      "/": { page: "/" },
+      ...paths
+    };
   }
 };
 
