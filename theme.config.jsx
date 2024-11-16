@@ -80,7 +80,7 @@ function Head() {
       />
       <meta
         property="og:image"
-        content={`${baseURL}/api/og-image?page=${asPath}`}
+        content={`https://everycase.org/api/og-image?page=${asPath}`} // TODO maybe stop hardcoding things?
       />
       <meta property="og:url" content={currentURL} />
       <meta property="og:locale" content="en_GB" />
@@ -88,10 +88,10 @@ function Head() {
       {/* Twitter Tags */}
       <meta
         name="twitter:image"
-        content="https://everycase.org/icons/back.jpg"
+        content={`https://everycase.org/api/og-image?page=${asPath}`} // TODO same. Also needs cleanup
       />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:creator" content="@Jonathunky"></meta>
+      <meta name="twitter:creator" content="@JonathanSeriesX" />
       <meta name="twitter:title" content={titleTemplate} />
       <meta
         name="twitter:description"
