@@ -1,10 +1,8 @@
 import { Tabs } from "nextra/components";
-import CaseTable from "./CaseTable"; // can't refer explicitly?
-import VerticalCarousel from "components/VerticalCarousel"; // can't refer explicitly?
+import VerticalCarousel from "components/VerticalCarousel";
 
 const CaseTableTabs = ({ series, season, material, tabNames }) => {
   let models;
-  let displayName;
   switch (series) {
     case "iPhone 16":
       models = ["iPhone 16", "iPhone 16 Plus", "iPhone 16 Pro", "iPhone 16 Pro Max"];
@@ -39,7 +37,7 @@ const CaseTableTabs = ({ series, season, material, tabNames }) => {
     return index === 0 ? model : model.replace("iPhone ", "");
   });
 
-  const tabs = tabNames || models;
+  const tabs = tabNames || names;
 
   return (
     <Tabs items={tabs}>
