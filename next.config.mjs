@@ -77,7 +77,7 @@ const baseConfig = {
               "script-src blob: 'unsafe-inline' 'self' https://static.cloudflareinsights.com https://vercel.live https://vercel-insights.com 'sha256-iX9LRPdLBV4jlGfQ+1qGl2+8iQlVITwJKum0Gqg4bTQ=' 'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo=' 'sha256-0Q45p6ODxDbb6JoBmPTEm/f0wPjrDDWqatAj8JtG+Rc='; " +
               "style-src 'self' 'unsafe-inline' https://vercel.live; " +
               "font-src 'self' *.everycase.org https://vercel.live https://assets.vercel.com; " +
-              "img-src 'self' *.everycase.org https://vercel.live https://vercel.com data: blob:; " +
+              "img-src 'self' * *.everycase.org https://vercel.live https://vercel.com data: blob:; " +
               "connect-src 'self' https://vitals.vercel-insights.com/v1/vitals https://cloudflareinsights.com/cdn-cgi/rum https://lightboxjs-server.herokuapp.com/license https://xnbftjmzxkcjcyysytbh.supabase.co https://vercel.live wss://ws-us3.pusher.com; " +
               "frame-src 'self' https://vercel.live; " +
               "object-src 'none'; " +
