@@ -9,8 +9,9 @@
 .next/
 .eslintcache
 .env
-.vercel
 .env.local
+.vercel
+venv
 
 # Package management
 node_modules/

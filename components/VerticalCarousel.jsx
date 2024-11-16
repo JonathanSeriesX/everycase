@@ -13,11 +13,14 @@ const VerticalCarousel = ({ model, material, season }) => {
     const fetchCases = async () => {
       setLoading(true);
 
-      let query = supabase.from("phone").select("SKU, material, colour, model, season");
+      let query = supabase
+        .from("skus")
+        .select("SKU, kind, colour, model, season, alt_thumbnail");
 
-      if (model) query = query.eq("model", model);
-      if (material) query = query.eq("material", material);
-      if (season) query = query.eq("season", season);
+      if (model) query = query.ilike("model", model);
+      if (material) query = query.ilike("kind", material);
+      if (season) query = query.ilike("season", season);
+      //ILIKE because it's case-insensitive
 
       const { data, error } = await query;
 
@@ -107,7 +110,9 @@ const VerticalCarousel = ({ model, material, season }) => {
                     }}
                   >
                     <Image
-                      src={"https://cloudfront.everycase.org/everypreview/" + item.SKU + ".webp"}
+                      src={"https://cloudfront.everycase.org/everypreview/" +
+                        (item.alt_thumbnail || item.SKU).trim()
+                        + ".webp"}
                       width={512}
                       height={512}
                       alt={`${item.model} ${item.material} — ${item.colour}`}

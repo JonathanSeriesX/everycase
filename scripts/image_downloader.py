@@ -87,5 +87,5 @@ def remove_failed_models(file_path, failed_list):
 if __name__ == "__main__":
     manager = multiprocessing.Manager()
     failed_downloads = manager.list()
-    process_input_file("result.txt", failed_downloads)
-    remove_failed_models("result.txt", list(failed_downloads))
+    process_input_file("images_to_download.txt", failed_downloads)
+    remove_failed_models("images_to_download.txt", list(failed_downloads))

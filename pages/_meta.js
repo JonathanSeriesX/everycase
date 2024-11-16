@@ -38,10 +38,10 @@ export default {
     title: "Sorted by device:",
     type: "separator"
   },
-  "iphone": {
+  iphone: {
     title: "iPhone"
   },
-  "latest-ipad": {
+  ipad: {
     title: "Latest iPad"
   },
   others: {

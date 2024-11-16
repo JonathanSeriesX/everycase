@@ -18,8 +18,8 @@ def parse_markdown_table(md_table, season):
         for model, sku in zip(headers[1:], row[1:]):
             data.append(
                 {
-                    "SKU": sku.strip().replace("ZM/A", ""),
-                    "material": material,
+                    "SKU": sku.strip().replace("ZM/A", "").replace("LL/A", ""),
+                    "kind": material,
                     "colour": color,
                     "model": model.strip(),
                     "season": season,
@@ -43,7 +43,7 @@ def save_to_csv(df, file_path):
         combined_df = df
 
     # Save to CSV, overwriting with updated data
-    combined_df.to_csv(file_path, index=False, columns=["SKU", "material", "colour", "model", "season"])
+    combined_df.to_csv(file_path, index=False, columns=["SKU", "kind", "colour", "model", "season", "alt_thumbnail"])
     print(f"Data saved to '{file_path}' without duplicates.")
 
 

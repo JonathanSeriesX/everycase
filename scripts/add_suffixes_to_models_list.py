@@ -1,5 +1,5 @@
 # Define file paths
-input_file = 'models.txt'
+input_file = 'images_to_download.txt'
 output_file = 'models_with_suffixes.txt'
 
 # List of suffixes you want to add
