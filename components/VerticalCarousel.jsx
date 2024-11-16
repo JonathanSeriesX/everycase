@@ -91,6 +91,7 @@ const VerticalCarousel = ({ model, material, season }) => {
                       height={512}
                       alt={`${item.model} ${item.kind} — ${item.colour}`}
                       style={{ objectFit: "contain" }}
+                      loading="eager"
                     />
                   </div>
                 </Link>

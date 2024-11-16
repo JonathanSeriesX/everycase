@@ -9,3 +9,7 @@ How to explore:
 - Use the sidebar to browse, currently organized by device 👈
 
 Enjoy, and thank you for visiting!
+
+Here's my Pink Citrus setup, btw:
+
+![Pink Citrus](/assets/citrus.jpg)
