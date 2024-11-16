@@ -21,6 +21,15 @@ export default async function handler(req, res) {
       .toLowerCase(); // Convert to lowercase
     console.log("Extracted Model:", model);
 
+    if (!model.includes("iphone")) {
+      console.log("Non-iPhone model detected. Serving back.jpg...");
+      const backImagePath = path.join(process.cwd(), "public", "icons", "back.jpg");
+      const image = fs.readFileSync(backImagePath);
+
+      res.setHeader("Content-Type", "image/jpeg");
+      return res.send(image); // if not an iPhone then just serve back.jpg
+    }
+
     // Query the database for SKUs
     const { data: cases, error } = await supabase
       .from("skus")

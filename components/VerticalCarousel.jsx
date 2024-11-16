@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Table, Td, Th, Tr } from "nextra/components";
 import Link from "next/link";
 import Image from "next/image";
-import useFetchCases from "./useFetchCases";
+import useFetchCases from "./fetchSupabase";
 
 
 const VerticalCarousel = ({ model, material, season }) => {
@@ -69,7 +69,7 @@ const VerticalCarousel = ({ model, material, season }) => {
             {cases.map((item) => (
               <Td key={item.SKU}
                   style={{
-                    padding: "0", verticalAlign: "top", width: isSmallViewport ? "150px" : "200px"
+                    padding: "0", verticalAlign: "top", width: isSmallViewport ? "125px" : "200px"
                   }}>
                 <Link href={"/case/" + item.SKU}>
                   <div
@@ -87,7 +87,7 @@ const VerticalCarousel = ({ model, material, season }) => {
                       src={"https://cloudfront.everycase.org/everypreview/" +
                         (item.alt_thumbnail || item.SKU).trim()
                         + ".webp"}
-                      width={512}
+                      width={512} //does not affect anything anyway
                       height={512}
                       alt={`${item.model} ${item.kind} — ${item.colour}`}
                       style={{ objectFit: "contain" }}

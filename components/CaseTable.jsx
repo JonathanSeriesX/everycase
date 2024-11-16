@@ -4,6 +4,19 @@ import { supabase } from "./supabaseClient";
 import Link from "next/link";
 import Image from "next/image";
 
+
+/**
+ * DEPRECATED, TO BE REMOVED
+ * CaseTable Component
+ * 
+ * Displays a table of phone cases based on filters like model, material, and season.
+ * Fetches data from a Supabase database and displays it in a sortable table.
+ * 
+ * @param {string} model - The model of the phone to filter cases.
+ * @param {string} material - The material of the case to filter cases.
+ * @param {string} season - The season to filter cases.
+ * @returns {JSX.Element} A table of filtered phone cases.
+ */
 const CaseTable = ({ model, material, season }) => {
   const [cases, setCases] = useState([]);
   const [sortField] = useState("color");
@@ -45,35 +58,35 @@ const CaseTable = ({ model, material, season }) => {
     <>
       <Table>
         <thead>
-        <Tr>
-          <Th>Colour</Th>
-          <Th>SKU</Th>
-          <Th>Tap for more:</Th>
-        </Tr>
+          <Tr>
+            <Th>Colour</Th>
+            <Th>SKU</Th>
+            <Th>Tap for more:</Th>
+          </Tr>
         </thead>
         <tbody>
-        {sortedCases.map((item) => (
-          <Tr key={item.SKU}>
-            <Td>{item.colour}</Td>
-            <Td>{item.SKU + "ZM/A"}</Td>
-            <Td>
-              <Link href={"/case/" + item.SKU}>
-                <div style={{
-                  width: "200px", height: "200px", overflow: "hidden", display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}>
-                  <Image
-                    src={"https://cloudfront.everycase.org/everypreview/" + item.SKU + ".webp"}
-                    width={200} height={200}
-                    alt={item.model + " " + item.material + " — " + item.colour}
-                    style={{ objectFit: "contain" }}
-                  />
-                </div>
-              </Link>
-            </Td>
-          </Tr>
-        ))}
+          {sortedCases.map((item) => (
+            <Tr key={item.SKU}>
+              <Td>{item.colour}</Td>
+              <Td>{item.SKU + "ZM/A"}</Td>
+              <Td>
+                <Link href={"/case/" + item.SKU}>
+                  <div style={{
+                    width: "200px", height: "200px", overflow: "hidden", display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                    <Image
+                      src={"https://cloudfront.everycase.org/everypreview/" + item.SKU + ".webp"}
+                      width={200} height={200}
+                      alt={item.model + " " + item.material + " — " + item.colour}
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
+                </Link>
+              </Td>
+            </Tr>
+          ))}
         </tbody>
       </Table>
       {cases.length === 0 && <p>No cases found for model {model}.</p>}

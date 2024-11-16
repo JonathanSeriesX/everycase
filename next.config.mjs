@@ -1,6 +1,4 @@
 import nextra from "nextra";
-import fs from "fs";
-import path from "path";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
