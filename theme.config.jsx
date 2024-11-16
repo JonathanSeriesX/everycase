@@ -81,7 +81,7 @@ function Head() {
       />
       <meta
         property="og:image"
-        content={`/api/og-image?page=${router.asPath}`}
+        content={`${baseUrl}/api/og-image?page=${router.asPath}`}
       />
       <meta property="og:url" content={currentURL} />
       <meta property="og:locale" content="en_GB" />
