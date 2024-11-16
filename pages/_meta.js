@@ -64,7 +64,7 @@ export default {
     title: "NULL",
     display: "hidden"
   },
-  sample: {
+  offline: {
     title: "NULL",
     display: "hidden"
   }

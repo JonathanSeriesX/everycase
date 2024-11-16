@@ -1,6 +1,5 @@
 table {
     width: 100%;
-    max-width: 600px;
     overflow-x: auto;
     display: block;
     /* word-break: break-word; */
@@ -13,7 +12,15 @@ th {
     margin: 0;
     padding: 0;
     white-space: pre-wrap;
-    word-break: keep-all;
+    word-break: break-word;
     box-sizing: border-box;
-    max-width: 512px;
+}
+
+table img {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    display: inline-block;
+    margin: auto;
 }

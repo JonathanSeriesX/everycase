@@ -1,5 +1,7 @@
 import "nextra-theme-docs/style.css";
 import "/styles/global.css";
+import "/styles/tables.css";
+import "/styles/lightbox.css";
 import "lightbox.js-react/dist/index.css";
 import { initLightboxJS } from "lightbox.js-react";
 import React, { useEffect } from "react";

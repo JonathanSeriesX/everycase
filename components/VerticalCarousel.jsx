@@ -36,7 +36,7 @@ const VerticalCarousel = ({ model, material, season }) => {
   // Detect viewport size and update state
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallViewport(window.innerWidth < 768); // Define "small" as < 768px
+      setIsSmallViewport(window.innerWidth < 600); // Define "small" as < 768px
     };
 
     handleResize(); // Check initially
@@ -52,12 +52,11 @@ const VerticalCarousel = ({ model, material, season }) => {
           <thead>
           {/* Row 1: Dummy Image and Color Name */}
           <Tr>
-            <Td style={{ padding: "0", verticalAlign: "top", textAlign: "center" }}>
+            <Td style={{ padding: "0", verticalAlign: "top", width: isSmallViewport ? "150px" : "200px" }}>
               <div
                 style={{
-                  width: isSmallViewport ? "100px" : "200px",
-                  height: isSmallViewport ? "100px" : "200px",
-                  backgroundColor: "#f0f0f0", // Placeholder background color
+                  width: isSmallViewport ? "125px" : "200px",
+                  height: isSmallViewport ? "125px" : "200px",
                   marginTop: isSmallViewport ? "15px" : "30px",
                   display: "flex",
                   alignItems: "center",
@@ -67,7 +66,7 @@ const VerticalCarousel = ({ model, material, season }) => {
                 {/* Dummy image placeholder */}
               </div>
               <strong style={{ textAlign: "center", marginTop: "8px", display: "block", color: "#ccc" }}>
-                Color
+                Loading
               </strong>
             </Td>
           </Tr>
@@ -91,12 +90,15 @@ const VerticalCarousel = ({ model, material, season }) => {
           {/* Row 1: Images and Color Names */}
           <Tr>
             {cases.map((item) => (
-              <Td key={item.SKU} style={{ padding: "0", verticalAlign: "top" }}>
+              <Td key={item.SKU}
+                  style={{
+                    padding: "0", verticalAlign: "top", width: isSmallViewport ? "150px" : "200px"
+                  }}>
                 <Link href={"/case/" + item.SKU}>
                   <div
                     style={{
-                      width: isSmallViewport ? "100px" : "200px", // TODO figure out why I can't do more than 200
-                      height: isSmallViewport ? "100px" : "200px",
+                      width: isSmallViewport ? "125px" : "200px",
+                      height: isSmallViewport ? "125px" : "200px",
                       overflow: "hidden",
                       display: "flex",
                       alignItems: "center",
