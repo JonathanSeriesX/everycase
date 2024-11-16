@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     // Query the database for SKUs
     const { data: cases, error } = await supabase
       .from("skus")
-      .select("SKU")
+      .select("SKU, colour")
       .ilike("model", `%${model}%`);
 
     if (error) {
@@ -32,17 +32,34 @@ export default async function handler(req, res) {
       return res.status(500).send("Error fetching SKUs");
     }
 
-    if (!cases || cases.length < 4) {
-      return res.status(400).send("Not enough SKUs available for this model");
+    if (!cases) {
+      return res.status(400).send("No SKUs available for this model");
     }
 
-    // Randomly select four SKUs
-    const selectedCases = cases
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 4)
+    if (cases.length < 4) {
+      const randomCase = cases[Math.floor(Math.random() * cases.length)];
+      console.log("Returning single random case due to insufficient SKUs:", randomCase);
+      return res.json([randomCase]); // Respond with one random case
+    }
+
+    // Ensure unique colours and SKUs
+    const uniqueCasesByColor = Array.from(
+      cases.reduce((map, item) => {
+        if (!map.has(item.colour)) {
+          map.set(item.colour, item); // Store the first SKU for each unique colour
+        }
+        return map;
+      }, new Map()).values() // Extract the unique cases
+    );
+
+// Randomly shuffle the unique cases
+    const selectedCases = uniqueCasesByColor
+      .sort(() => 0.5 - Math.random()) // Shuffle
+      .slice(0, 4) // Select the first 4 unique cases
       .map((item) => `https://cloudfront.everycase.org/everysource/${item.SKU}.webp`);
 
-    console.log("Selected SKUs:", selectedCases);
+
+    console.log("Selected SKUs with unique colors:", selectedCases);
 
 
     const images = await Promise.all(
