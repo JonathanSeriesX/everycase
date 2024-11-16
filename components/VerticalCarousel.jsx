@@ -115,7 +115,7 @@ const VerticalCarousel = ({ model, material, season }) => {
                         + ".webp"}
                       width={512}
                       height={512}
-                      alt={`${item.model} ${item.material} — ${item.colour}`}
+                      alt={`${item.model} ${item.kind} — ${item.colour}`}
                       style={{ objectFit: "contain" }}
                     />
                   </div>

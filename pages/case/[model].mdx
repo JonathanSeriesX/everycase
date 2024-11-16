@@ -5,14 +5,14 @@ import path from 'path';
 import { parse } from 'csv-parse/sync';
 
 export const getStaticProps = async ({ params }) => {
-  console.log(`[getStaticProps] Received params:`, params); // Debugging params
+  //console.log(`[getStaticProps] Received params:`, params); // Debugging params
   const { model } = params;
 
   try {
     // Fetch SKU details from skus.csv
     const csvPath = path.join(process.cwd(), 'public', 'skus.csv');
     const csvData = fs.readFileSync(csvPath, 'utf-8');
-    console.log(`[getStaticProps] Read skus.csv successfully`); // Debugging
+    //console.log(`[getStaticProps] Read skus.csv successfully`); // Debugging
     const records = parse(csvData, {
       columns: true, // Parse into objects with column names
       skip_empty_lines: true, // Skip empty lines
@@ -27,12 +27,12 @@ export const getStaticProps = async ({ params }) => {
     // Fetch image filenames from filenames.txt
     const filePath = path.join(process.cwd(), 'public', 'filenames.txt');
     const fileContents = fs.readFileSync(filePath, 'utf-8');
-    console.log(`[getStaticProps] Read filenames.txt successfully`); // Debugging
+    //console.log(`[getStaticProps] Read filenames.txt successfully`); // Debugging
     const matchingModels = fileContents
       .split('\n')
       .filter((line) => line.startsWith(model))
       .map((line) => line.trim());
-    console.log(`[getStaticProps] Matching image filenames:`, matchingModels);
+    //console.log(`[getStaticProps] Matching image filenames:`, matchingModels);
 
     // Construct the case name
     const modelNumberMatch = data.model.match(/iPhone (\d+)/);
@@ -57,12 +57,12 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  console.log(`[getStaticPaths] Start generating paths`); // Debugging start
+  //console.log(`[getStaticPaths] Start generating paths`); // Debugging start
   try {
     // Fetch SKUs from skus.csv
     const csvPath = path.join(process.cwd(), 'public', 'skus.csv');
     const csvData = fs.readFileSync(csvPath, 'utf-8');
-    console.log(`[getStaticPaths] Read skus.csv successfully`); // Debugging
+    //console.log(`[getStaticPaths] Read skus.csv successfully`); // Debugging
     const records = parse(csvData, {
       columns: true, // Parse CSV into objects with column names as keys
       skip_empty_lines: true, // Skip empty lines
@@ -70,12 +70,12 @@ export const getStaticPaths = async () => {
 
     // Extract unique SKUs from the first column
     const uniqueSKUs = Array.from(new Set(records.map((record) => record.SKU.trim())));
-    console.log(`[getStaticPaths] Unique SKUs:`, uniqueSKUs);
+    //console.log(`[getStaticPaths] Unique SKUs:`, uniqueSKUs);
 
     const paths = uniqueSKUs.map((sku) => ({
       params: { model: sku },
     }));
-    console.log(`[getStaticPaths] Generated paths:`, paths);
+    //console.log(`[getStaticPaths] Generated paths:`, paths);
 
     return {
       paths,
@@ -91,7 +91,7 @@ export const getStaticPaths = async () => {
 };
 
 export default function ModelPage({ modelName, matchingModels, caseName }) {
-  console.log(`[ModelPage] Rendering page with props:`, { modelName, matchingModels, caseName }); // Debugging props
+  //console.log(`[ModelPage] Rendering page with props:`, { modelName, matchingModels, caseName }); // Debugging props
 
   const images = matchingModels.map((variant) => ({
     src: `https://cloudfront.everycase.org/everysource/${variant}.webp`,
