@@ -76,7 +76,7 @@ const baseConfig = {
               ? "default-src *; script-src * 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src *; connect-src *; object-src 'none'"
               :
               "default-src 'self'; " +
-              "script-src 'self' https://static.cloudflareinsights.com https://vercel.live https://vercel-insights.com 'sha256-iX9LRPdLBV4jlGfQ+1qGl2+8iQlVITwJKum0Gqg4bTQ=' 'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo=' 'sha256-0Q45p6ODxDbb6JoBmPTEm/f0wPjrDDWqatAj8JtG+Rc='; " +
+              "script-src blob: 'unsafe-inline' 'self' https://static.cloudflareinsights.com https://vercel.live https://vercel-insights.com 'sha256-iX9LRPdLBV4jlGfQ+1qGl2+8iQlVITwJKum0Gqg4bTQ=' 'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo=' 'sha256-0Q45p6ODxDbb6JoBmPTEm/f0wPjrDDWqatAj8JtG+Rc='; " +
               "style-src 'self' 'unsafe-inline' https://vercel.live; " +
               "font-src 'self' *.everycase.org https://vercel.live https://assets.vercel.com; " +
               "img-src 'self' *.everycase.org https://vercel.live https://vercel.com data: blob:; " +
@@ -97,37 +97,6 @@ const baseConfig = {
         ]
       }
     ];
-  },// this path map here below solves static pre-generation of [model].mdx
-  async exportPathMap() {
-    const csvPath = path.join(process.cwd(), "public", "skus.csv");
-    try {
-      const csvData = fs.readFileSync(csvPath, "utf-8");
-      console.log(`[exportPathMap] Read skus.csv successfully`);
-      const records = parse(csvData, {
-        columns: true, // Parse CSV into objects with column names as keys
-        skip_empty_lines: true // Skip empty lines
-      });
-
-      // Use a Set to store unique SKUs
-      const uniqueSKUs = new Set(records.map((record) => record.SKU.trim()));
-      console.log(`[exportPathMap] Unique SKUs:`, uniqueSKUs);
-
-      // Map each SKU to its respective page
-      const paths = {};
-      uniqueSKUs.forEach((sku) => {
-        paths[`/case/${sku}`] = { page: "/case/[model]", query: { model: sku } };
-      });
-
-      return {
-        "/": { page: "/" },
-        ...paths
-      };
-    } catch (error) {
-      console.error(`[exportPathMap] Error:`, error);
-      return {
-        "/": { page: "/" }
-      };
-    }
   }
 };
 

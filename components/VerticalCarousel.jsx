@@ -1,40 +1,14 @@
 import { useState, useEffect } from "react";
 import { Table, Td, Th, Tr } from "nextra/components";
-import { supabase } from "./supabaseClient";
 import Link from "next/link";
 import Image from "next/image";
+import useFetchCases from "./useFetchCases";
+
 
 const VerticalCarousel = ({ model, material, season }) => {
-  const [cases, setCases] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { cases, loading } = useFetchCases(model, material, season); // Use the custom hook
+
   const [isSmallViewport, setIsSmallViewport] = useState(false);
-
-  useEffect(() => {
-    const fetchCases = async () => {
-      setLoading(true);
-
-      let query = supabase
-        .from("skus")
-        .select("SKU, kind, colour, model, season, alt_thumbnail");
-
-      if (model) query = query.ilike("model", model);
-      if (material) query = query.ilike("kind", material);
-      if (season) query = query.ilike("season", season);
-      //ILIKE because it's case-insensitive
-
-      const { data, error } = await query;
-
-      if (error) {
-        console.error("Error fetching cases:", error);
-      } else {
-        setCases(data);
-      }
-
-      setLoading(false);
-    };
-
-    fetchCases();
-  }, [model, material, season]);
 
   // Detect viewport size and update state
   useEffect(() => {
@@ -164,6 +138,6 @@ const VerticalCarousel = ({ model, material, season }) => {
   );
 };
 
-//TODO alt text does not work on Next/images.........
+//TODO alt text does not work on Next/images.........?
 
 export default VerticalCarousel;
