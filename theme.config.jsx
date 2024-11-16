@@ -42,11 +42,10 @@ const logo = (
 
 function Head() {
   const { title } = useConfig();
-  const router = useRouter();
   const { asPath } = useRouter();
 
   const baseURL = "https://everycase.org";
-  const currentURL = `${baseURL}${router.asPath}`;
+  const currentURL = `${baseURL}${asPath}`;
 
   let titleTemplate;
   if (asPath !== "/") {
@@ -81,7 +80,7 @@ function Head() {
       />
       <meta
         property="og:image"
-        content={`${baseUrl}/api/og-image?page=${router.asPath}`}
+        content={`${baseURL}/api/og-image?page=${asPath}`}
       />
       <meta property="og:url" content={currentURL} />
       <meta property="og:locale" content="en_GB" />
