@@ -35,14 +35,21 @@
 }
 
 .custom-thumbnail {
-    margin: 5px;
-    padding: 3px;
+    margin: 0px;
+    padding: 0px;
     transition: transform 0.3s ease,
     border-color 0.3s ease;
 }
 
+.custom-thumbnail img {
+    /* Your custom styles here */
+    width: 200% !important; /* Ensures the image fits the width of the container */
+    height: 500px !important;
+    object-fit: contain !important;
+}
+
 .custom-thumbnail:hover {
-    transform: scale(1.09);
+    transform: scale(0.9);
 }
 
 

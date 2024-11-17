@@ -75,10 +75,11 @@ export const getStaticPaths = async () => {
 };
 
 export default function ModelPage({ modelName, matchingModels = [], caseName }) {
-  console.log(`[ModelPage] Rendering page with props:`, { modelName, matchingModels, caseName }); // Debugging props
+  //console.log(`[ModelPage] Rendering page with props:`, { modelName, matchingModels, caseName }); // Debugging props
 
   const images = matchingModels.map((variant) => ({
     src: `https://cloudfront.everycase.org/everysource/${variant}.webp`,
+    alt: caseName
   }));
 
   // TODO TITLE = COLOUR + KIND — FINEST WOVEN

@@ -1,5 +1,7 @@
 import React from "react";
 import { SlideshowLightbox } from "lightbox.js-react";
+import Image from "next/image";
+
 
 const LightboxComponent = ({ images }) => {
   return (
@@ -9,16 +11,21 @@ const LightboxComponent = ({ images }) => {
       showSlideshowIcon={false}
       theme="lightbox"
       slideDuration={20}
+      lightboxIdentifier="lightbox2"
       framework="next"
       thumbnailImgClass="custom-thumbnail"
       modalClose="clickOutside"
+      images={images}
     >
       {images.map((image, index) => (
-        <img
+        <Image
           key={index}
           className="w-full rounded"
+          data-lightboxjs="lightbox2"
           src={image.src}
-          alt={image.alt}
+          alt={image.alt || "Case"}
+          width={image.width || 500}
+          height={image.height || 500}
         />
       ))}
     </SlideshowLightbox>
