@@ -12,4 +12,4 @@ Enjoy, and thank you for visiting!
 
 Here's my Pink Citrus setup, btw:
 
-![Pink Citrus](/assets/citrus.jpg)
+![Pink Citrus](https://cloudfront.everycase.org/assets/citrus.webp)

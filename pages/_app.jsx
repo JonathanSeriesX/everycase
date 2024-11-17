@@ -16,11 +16,6 @@ const tofino = localFont({
       path: "../public/fonts/TofinoVariable.woff2",
       weight: "100 800",
       style: "oblique 0deg 1deg"
-    },
-    {
-      path: "../public/fonts/TofinoVariable.ttf",
-      weight: "100 800",
-      style: "oblique 0deg 1deg"
     }
   ],
   display: "swap",

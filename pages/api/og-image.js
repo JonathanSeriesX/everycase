@@ -22,12 +22,9 @@ export default async function handler(req, res) {
     console.log("Extracted Model:", model);
 
     if (!model.includes("iphone")) {
-      console.log("Non-iPhone model detected. Serving back.jpg...");
-      const backImagePath = path.join(process.cwd(), "public", "icons", "back.jpg");
-      const image = fs.readFileSync(backImagePath);
-
-      res.setHeader("Content-Type", "image/jpeg");
-      return res.send(image); // if not an iPhone then just serve back.jpg
+      console.log("Non-iPhone model detected. Serving dummy...");
+      const cdnImageUrl = "https://cloudfront.everycase.org/assets/og.webp";
+      return res.redirect(cdnImageUrl); // Redirect to the CDN-hosted image
     }
 
     // Query the database for SKUs

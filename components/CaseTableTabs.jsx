@@ -45,6 +45,18 @@ const CaseTableTabs = ({ series, season, material, tabNames }) => {
     case "iPad Pro M4":
       models = ["iPad Pro M4 11-inch", "iPad Pro M4 13-inch"];
       break;
+    case "iPad Pro A12X":
+      models = ["iPad Pro 11 A12X", "iPad Pro 12.9 A12X"];
+      break;
+    case "iPad Air M2":
+      models = ["iPad Air 11-inch", "iPad Air 13-inch"];
+      break;
+    case "iPad Pro M1":
+      models = ["iPad Pro 11 M1", "iPad Pro 12.9 M1"];
+      break;
+    default:
+      models = Array.isArray(series) ? series : [series];//but it should never happen? although.....
+      break;
   }
 
   // Format tab names; remove redundant prefixes for all but the first model

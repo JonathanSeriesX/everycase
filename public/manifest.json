@@ -1,11 +1,7 @@
 {
   "theme_color": "#E3504F",
   "background_color": "#FFE0F5",
-  "display_override": [
-    "window-controls-overlay",
-    "standalone",
-    "fullscreen"
-  ],
+  "display_override": ["window-controls-overlay", "standalone", "fullscreen"],
   "display": "minimal-ui",
   "scope": "https://everycase.org/",
   "start_url": "https://everycase.org/",
@@ -18,20 +14,6 @@
       "src": "/icons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Latest Drop",
-      "short_name": "Latest",
-      "description": "View latest collection released by Apple",
-      "url": "/iphone/16?source=pwa_shortcut",
-      "icons": [
-        {
-          "src": "/icons/fire.png",
-          "sizes": "512x512"
-        }
-      ]
     }
   ]
 }

@@ -42,7 +42,11 @@ export default {
     title: "iPhone"
   },
   ipad: {
-    title: "Latest iPad"
+    title: "iPad"
+  },
+  sep2: {
+    title: "Under construction:",
+    type: "separator"
   },
   others: {
     title: "Other stuff"
