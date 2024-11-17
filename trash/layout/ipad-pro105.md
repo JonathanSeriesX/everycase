@@ -25,7 +25,7 @@ It is unknown if anything has changed between these two keyboards.
 | Flamingo       | MQ4U2ZM/A   |
 | Pollen         | MQ4V2ZM/A   |
 
-<img src="/assets/2017-ipad-pro.jpg"></img>
+<img src="https://cloudfront.everycase.org/assets/2017-ipad-pro.jpg"></img>
 
 #### Leather Accesories
 

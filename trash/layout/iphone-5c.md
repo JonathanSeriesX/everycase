@@ -1,6 +1,6 @@
 ## Part numbers
 
-<img src="/assets/2013_5c.jpg"></img>
+<img src="https://cloudfront.everycase.org/assets/2013_5c.jpg"></img>
 
 | iPhone 5c | Case      |
 | --------- | --------- |

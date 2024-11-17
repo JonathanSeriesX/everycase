@@ -12,7 +12,7 @@
 
 ## Apple Pencil Case — Collections
 
-<img src="/assets/2017-pencil.jpg"></img>
+<img src="https://cloudfront.everycase.org/assets/2017-pencil.jpg"></img>
 
 ### WWDC 2017
 

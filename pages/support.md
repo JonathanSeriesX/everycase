@@ -20,7 +20,7 @@ Thanks ever so much!
 
 You can buy me a [nice latte](https://www.youtube.com/shorts/h75W1uhL-iQ) here:
 
-<a href="https://www.buymeacoffee.com/jonathunky" target="_blank"><img src="/assets/buymeacoffee.png" alt="Buy Me A Coffee" style="height: auto;width: 315px;" ></a>
+<a href="https://www.buymeacoffee.com/jonathunky" target="_blank"><img src="https://cloudfront.everycase.org/assets/buymeacoffee.png" alt="Buy Me A Coffee" style="height: auto;width: 315px;" ></a>
 
 Or by using:
 
