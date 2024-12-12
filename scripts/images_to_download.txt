@@ -1,19 +1,10 @@
 everyphone:
-MW993
-MW983
-MW973
-MWK43
-MWK33
-MWK23
-MWK83
-MWK63
-MWK73
-MWK53
-MWKD3
-MWKA3
-MWKC3
-MWK93
-MC2T4
-MC2U4
-MC2V4
-MC2Q4
+MA6W4,FineWoven Wallet,Black,MagSafe iPhone,Autumn 2024,
+MA6X4,FineWoven Wallet,Deep Blue,MagSafe iPhone,Autumn 2024,
+MA6Y4,FineWoven Wallet,Dark Green,MagSafe iPhone,Autumn 2024,
+MA7A4,FineWoven Wallet,Blackberry,MagSafe iPhone,Autumn 2024,
+MA7G4,FineWoven Key Ring,Black,AirTag,Autumn 2024,
+MA7K4,FineWoven Key Ring,Blackberry,AirTag,Autumn 2024,
+MA7L4,FineWoven Key Ring,Chartreuse,AirTag,Autumn 2024,
+MA7J4,FineWoven Key Ring,Dark Green,AirTag,Autumn 2024,
+MA7H4,FineWoven Key Ring,Deep Blue,AirTag,Autumn 2024,
