@@ -20,37 +20,42 @@
   },
   "homepage": "https://everycase.org",
   "dependencies": {
-    "@supabase/supabase-js": "^2.50.2",
+    "@supabase/supabase-js": "^2.57.3",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "csv-parse": "^5.6.0",
-    "lightbox.js-react": "^1.6.0",
-    "next": "~15.3.4",
+    "lightbox.js-react": "^1.6.2",
+    "next": "~15.5.2",
     "nextra": "^3.3.1",
     "nextra-theme-docs": "^3.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sharp": "^0.33.5",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^15.3.4",
+    "@next/eslint-plugin-next": "^15.5.2",
     "@types/node": "22.9.0",
-    "@types/react": "^19.1.8",
+    "@types/react": "^19.1.12",
     "autoprefixer": "^10.4.21",
-    "cssnano": "^7.0.7",
-    "eslint": "^9.29.0",
-    "eslint-config-next": "^15.3.4",
-    "eslint-config-prettier": "^9.1.0",
+    "cssnano": "^7.1.1",
+    "eslint": "^9.35.0",
+    "eslint-config-next": "^15.5.2",
+    "eslint-config-prettier": "^10.1.8",
     "postcss": "^8.5.6",
-    "prettier": "^3.6.1",
-    "prettier-plugin-tailwindcss": "^0.6.13",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.17"
   },
   "pnpm": {
     "overrides": {
       "react-key-handler>react": "18.3.1",
       "react-magnifier>react": "18.3.1"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@vercel/speed-insights",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
