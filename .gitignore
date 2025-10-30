@@ -1,0 +1,23 @@
+.DS_Store
+
+# Editing
+.idea/
+.vscode/
+.obsidian/
+
+# Building & Deploying
+.next/
+.eslintcache
+.env
+.env.local
+.vercel
+venv
+
+# Package management
+node_modules/
+yarn-error.log
+.pnpm-debug.log
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+.pnpm-store

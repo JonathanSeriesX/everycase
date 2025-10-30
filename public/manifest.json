@@ -1,0 +1,19 @@
+{
+  "theme_color": "#E3504F",
+  "background_color": "#FFE0F5",
+  "display_override": ["window-controls-overlay", "standalone", "fullscreen"],
+  "display": "minimal-ui",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Finest Woven",
+  "short_name": "everycase",
+  "description": "Catalogue of Apple cases for iPhone, iPad, and Mac.",
+  "orientation": "natural",
+  "icons": [
+    {
+      "src": "/icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

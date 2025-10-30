@@ -1,0 +1,24 @@
+{
+  "scripts": {
+    "dev": "next --turbopack",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0",
+    "lightbox.js-react": "^1.6.2",
+    "next": "^15.5.3",
+    "nextra": "^4.4.0",
+    "nextra-theme-docs": "^4.4.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.2",
+    "@types/react": "19.1.13",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.13",
+    "typescript": "5.9.2"
+  }
+}
