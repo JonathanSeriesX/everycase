@@ -1,10 +1,9 @@
 everyphone:
-MA6W4,FineWoven Wallet,Black,MagSafe iPhone,Autumn 2024,
-MA6X4,FineWoven Wallet,Deep Blue,MagSafe iPhone,Autumn 2024,
-MA6Y4,FineWoven Wallet,Dark Green,MagSafe iPhone,Autumn 2024,
-MA7A4,FineWoven Wallet,Blackberry,MagSafe iPhone,Autumn 2024,
-MA7G4,FineWoven Key Ring,Black,AirTag,Autumn 2024,
-MA7K4,FineWoven Key Ring,Blackberry,AirTag,Autumn 2024,
-MA7L4,FineWoven Key Ring,Chartreuse,AirTag,Autumn 2024,
-MA7J4,FineWoven Key Ring,Dark Green,AirTag,Autumn 2024,
-MA7H4,FineWoven Key Ring,Deep Blue,AirTag,Autumn 2024,
+MDTL4
+MDTD4
+MDTG4
+MDTN4
+MDTM4
+MDTK4
+MDTE4
+MDTC4

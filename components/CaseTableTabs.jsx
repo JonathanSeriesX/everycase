@@ -1,6 +1,5 @@
 import { Tabs } from "nextra/components";
-import VerticalCarousel from "components/VerticalCarousel";
-
+import VerticalCarousel from "./VerticalCarousel";
 
 /**
  * CaseTableTabs Component
@@ -15,20 +14,40 @@ import VerticalCarousel from "components/VerticalCarousel";
  * @returns {JSX.Element} Tabs displaying vertical carousels for filtered cases.
  */
 const CaseTableTabs = ({ series, season, material, tabNames }) => {
-  // Pre-defined batches to expand series when it's "iPhone 16" 
+  // Pre-defined batches to expand series when it's "iPhone 16"
   let models;
   switch (series) {
     case "iPhone 16":
-      models = ["iPhone 16", "iPhone 16 Plus", "iPhone 16 Pro", "iPhone 16 Pro Max"];
+      models = [
+        "iPhone 16",
+        "iPhone 16 Plus",
+        "iPhone 16 Pro",
+        "iPhone 16 Pro Max",
+      ];
       break;
     case "iPhone 15":
-      models = ["iPhone 15", "iPhone 15 Plus", "iPhone 15 Pro", "iPhone 15 Pro Max"];
+      models = [
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+      ];
       break;
     case "iPhone 14":
-      models = ["iPhone 14", "iPhone 14 Plus", "iPhone 14 Pro", "iPhone 14 Pro Max"];
+      models = [
+        "iPhone 14",
+        "iPhone 14 Plus",
+        "iPhone 14 Pro",
+        "iPhone 14 Pro Max",
+      ];
       break;
     case "iPhone 13":
-      models = ["iPhone 13", "iPhone 13 mini", "iPhone 13 Pro", "iPhone 13 Pro Max"];
+      models = [
+        "iPhone 13",
+        "iPhone 13 mini",
+        "iPhone 13 Pro",
+        "iPhone 13 Pro Max",
+      ];
       break;
     case "iPhone 12":
       models = ["iPhone 12 mini", "iPhone 12 & 12 Pro", "iPhone 12 Pro Max"];
@@ -55,7 +74,7 @@ const CaseTableTabs = ({ series, season, material, tabNames }) => {
       models = ["iPad Pro 11 M1", "iPad Pro 12.9 M1"];
       break;
     default:
-      models = Array.isArray(series) ? series : [series];//but it should never happen? although.....
+      models = Array.isArray(series) ? series : [series]; //but it should never happen? although.....
       break;
   }
 

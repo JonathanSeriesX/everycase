@@ -1,7 +1,8 @@
+"use client"
+
 import React from "react";
 import { SlideshowLightbox } from "lightbox.js-react";
 import Image from "next/image";
-
 
 const LightboxComponent = ({ images }) => {
   return (
@@ -10,7 +11,7 @@ const LightboxComponent = ({ images }) => {
       showThumbnails={true}
       showSlideshowIcon={false}
       theme="lightbox"
-      slideDuration={20}
+      slideDuration={0}
       lightboxIdentifier="lightbox2"
       framework="next"
       thumbnailImgClass="custom-thumbnail"
