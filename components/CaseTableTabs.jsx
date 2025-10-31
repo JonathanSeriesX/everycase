@@ -1,19 +1,19 @@
 import { Tabs } from "nextra/components";
 import VerticalCarousel from "./VerticalCarousel";
+import { getCasesForCollection } from "../lib/caseCatalog";
 
 /**
  * CaseTableTabs Component
  *
  * Provides beautifully styled tabs, each containing a vertical carousel of cases for similar models.
- * Supports filtering by season, material, and multiple model series.
+ * Supports filtering by material and multiple model series.
  *
  * @param {string} series - The series of devices (e.g., "iPhone 16") to display in tabs.
- * @param {string} season - The season to filter cases (e.g., "Autumn 2020").
  * @param {string} material - The material of the case to filter cases (e.g., "Leather Case").
  * @param {Array<string>} [tabNames] - Custom names for the tabs (optional). Defaults to formatted model names.
- * @returns {JSX.Element} Tabs displaying vertical carousels for filtered cases.
+ * @returns {JSX.Element} Tabs displaying vertical carousels for filtered cases across all seasons.
  */
-const CaseTableTabs = ({ series, season, material, tabNames }) => {
+const CaseTableTabs = ({ series, material, tabNames }) => {
   // Pre-defined batches to expand series when it's "iPhone 16"
   let models;
   switch (series) {
@@ -86,15 +86,17 @@ const CaseTableTabs = ({ series, season, material, tabNames }) => {
 
   const tabs = tabNames || names;
 
+  const visibleTabs = models.map((model, index) => ({
+    model,
+    label: tabs[index],
+    cases: getCasesForCollection({ model, material }),
+  }));
+
   return (
-    <Tabs items={tabs}>
-      {models.map((model, index) => (
-        <Tabs.Tab key={index} title={model}>
-          <VerticalCarousel
-            {...(model ? { model } : {})}
-            {...(season ? { season } : {})}
-            {...(material ? { material } : {})}
-          />
+    <Tabs items={visibleTabs.map((tab) => tab.label)}>
+      {visibleTabs.map(({ model, label, cases }, index) => (
+        <Tabs.Tab key={model ?? index} title={label}>
+          <VerticalCarousel model={model} material={material} cases={cases} />
         </Tabs.Tab>
       ))}
     </Tabs>
