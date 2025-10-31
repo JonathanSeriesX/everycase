@@ -93,10 +93,13 @@ const CaseTableTabs = ({ series, material, tabNames }) => {
   }));
 
   return (
-    <Tabs items={visibleTabs.map((tab) => tab.label)}>
-      {visibleTabs.map(({ model, label, cases }, index) => (
-        <Tabs.Tab key={model ?? index} title={label}>
-          <VerticalCarousel model={model} material={material} cases={cases} />
+    <Tabs items={tabs}>
+      {models.map((model, index) => (
+        <Tabs.Tab key={index} title={model}>
+          <VerticalCarousel
+            {...(model ? { model } : {})}
+            {...(material ? { material } : {})}
+          />
         </Tabs.Tab>
       ))}
     </Tabs>
