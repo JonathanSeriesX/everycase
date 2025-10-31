@@ -24,6 +24,10 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     imageSizes: [512, 1536],
   },
+  experimental: {
+    turbopackFileSystemCacheForDev: true,
+  },
+  allowedDevOrigins: ["*.orb.local"],
 };
 
 export default withNextra(nextConfig);
