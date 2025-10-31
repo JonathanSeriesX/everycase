@@ -5,7 +5,7 @@ import { Table } from "nextra/components";
 import Link from "next/link";
 import Image from "next/image";
 
-function useCases(model, material, season) {
+function useCases(model, material) {
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -14,7 +14,6 @@ function useCases(model, material, season) {
     const params = new URLSearchParams();
     if (model) params.set("model", model);
     if (material) params.set("material", material);
-    if (season) params.set("season", season);
 
     setLoading(true);
     fetch(`/api/cases?${params.toString()}`)
@@ -32,13 +31,13 @@ function useCases(model, material, season) {
     return () => {
       aborted = true;
     };
-  }, [model, material, season]);
+  }, [model, material]);
 
   return { cases, loading };
 }
 
-const VerticalCarousel = ({ model, material, season }) => {
-  const { cases, loading } = useCases(model, material, season);
+const VerticalCarousel = ({ model, material }) => {
+  const { cases, loading } = useCases(model, material);
 
   const [isSmallViewport, setIsSmallViewport] = useState(false);
 
@@ -100,6 +99,12 @@ const VerticalCarousel = ({ model, material, season }) => {
             <Table.Tr>
               <Table.Td style={{ textAlign: "center", padding: "0" }}>
                 <span style={{ color: "#ccc" }}>SKU</span>
+              </Table.Td>
+            </Table.Tr>
+
+            <Table.Tr>
+              <Table.Td style={{ textAlign: "center", padding: "0" }}>
+                <span style={{ color: "#ccc" }}>Season</span>
               </Table.Td>
             </Table.Tr>
           </tbody>
@@ -192,6 +197,26 @@ const VerticalCarousel = ({ model, material, season }) => {
                   >
                     <span style={{ marginLeft: "4px", marginRight: "4px" }}>
                       {item.SKU + (isSmallViewport ? "ZM" : "ZM/A")}
+                    </span>
+                  </div>
+                </Table.Td>
+              ))}
+            </Table.Tr>
+
+            {/* Row 3: Season */}
+            <Table.Tr>
+              {cases.map((item) => (
+                <Table.Td key={item.SKU} style={{ padding: "0" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "50px",
+                    }}
+                  >
+                    <span style={{ marginLeft: "4px", marginRight: "4px" }}>
+                      {item.season || "—"}
                     </span>
                   </div>
                 </Table.Td>
