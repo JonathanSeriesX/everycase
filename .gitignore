@@ -12,6 +12,7 @@
 .env.local
 .vercel
 venv
+_pagefind/
 
 # Package management
 node_modules/
