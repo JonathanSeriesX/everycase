@@ -34,7 +34,8 @@
         "openai.chatgpt",
         "bradlc.vscode-tailwindcss",
         "pflannery.vscode-versionlens",
-        "unifiedjs.vscode-mdx"
+        "unifiedjs.vscode-mdx",
+        "mechatroner.rainbow-csv"
       ]
     },
     "jetbrains": {

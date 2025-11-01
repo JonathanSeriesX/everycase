@@ -18,6 +18,16 @@ const CaseTableTabs = ({ models = [], material, tabNames }) => {
     return null;
   }
 
+  if (normalizedModels.length === 1) {
+    const [onlyModel] = normalizedModels;
+    return (
+      <VerticalCarousel
+        {...(onlyModel ? { model: onlyModel } : {})}
+        {...(material ? { material } : {})}
+      />
+    );
+  }
+
   const [firstModel] = normalizedModels;
   const prefix =
     typeof firstModel === "string" && firstModel.includes(" ")
