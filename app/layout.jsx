@@ -2,6 +2,8 @@ import { Footer, Layout, Navbar } from "nextra-theme-docs";
 import { Banner, Head, Search } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
 import { Quicksand } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../styles/globals.css";
 import localFont from "next/font/local";
 
@@ -167,6 +169,8 @@ export default async function RootLayout({ children }) {
           }}*/
         >
           {children}
+          <Analytics />
+          <SpeedInsights />
         </Layout>
       </body>
     </html>
