@@ -1,4 +1,4 @@
-export default {
+const config = {
   "*": {
     theme: {
       pagination: false,
@@ -14,3 +14,5 @@ export default {
   iphone_xr: "iPhone XR & 11",
   iphone_x: "iPhone X & Xs",
 };
+
+export default config;
