@@ -2,7 +2,6 @@ import { Footer, Layout, Navbar } from "nextra-theme-docs";
 import { Banner, Head, Search } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
 import { Quicksand } from "next/font/google";
-//import "nextra-theme-docs/style.css";
 import "../styles/globals.css";
 import localFont from "next/font/local";
 
@@ -64,24 +63,40 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: "Finest Woven",
-  description: "Library of Apple cases for iPhone, iPad, and Mac.",
+  //TODO adjustments here...
   applicationName: "Finest Woven",
-  robots: "index, follow",
+  title: {
+    default: "Finest Woven",
+    template: "%s — Finest Woven",
+  },
+  description: "Library of Apple cases for iPhone, iPad, and Mac.",
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: "/icons/icon-512x512.png",
     apple: "/icons/apple-touch-icon.png",
-    maskIcon: "/icons/safari-pinned-tab.svg",
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/icons/safari-pinned-tab.svg",
+      },
+    ],
   },
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   other: {
     "msapplication-config": "none",
     "msapplication-TileColor": "#FFE0F5",
     "msapplication-tap-highlight": "no",
-    "format-detection": "telephone=no",
     "mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style": "default",
   },
 };
 
