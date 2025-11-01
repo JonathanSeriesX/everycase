@@ -1,4 +1,8 @@
 {
+  "private": true,
+  "name": "everycase",
+  "version": "1.9.0",
+  "description": "A website describing every case made by Apple, Inc.",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -6,7 +10,19 @@
     "lint": "eslint .",
     "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jonathunky/everycase-2"
+  },
+  "author": "Jonathunky <jonathan@everycase.org>",
+  "license": "Custom",
+  "bugs": {
+    "url": "https://github.com/Jonathunky/everycase-2/issues"
+  },
+  "homepage": "https://everycase.org",
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "csv-parse": "^6.1.0",
     "lightbox.js-react": "^1.6.3",
     "next": "^16.0.1",
