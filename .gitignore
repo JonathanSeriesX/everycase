@@ -13,6 +13,7 @@
 .vercel
 venv
 _pagefind/
+next-env.d.ts
 
 # Package management
 node_modules/
