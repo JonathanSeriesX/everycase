@@ -33,7 +33,8 @@
         "esbenp.prettier-vscode",
         "openai.chatgpt",
         "bradlc.vscode-tailwindcss",
-        "pflannery.vscode-versionlens"
+        "pflannery.vscode-versionlens",
+        "unifiedjs.vscode-mdx"
       ]
     },
     "jetbrains": {
