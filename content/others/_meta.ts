@@ -2,7 +2,8 @@ export default {
   "*": {
     theme: {
       pagination: false,
-      toc: true
+      toc: true,
+      layout: "default"
     }
   },
   airtag: "AirTag",
@@ -10,4 +11,3 @@ export default {
   macbook: "MacBook Leather Sleeve",
   pencil: "Apple Pencil"
 };
-

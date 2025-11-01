@@ -3,6 +3,7 @@ const config = {
     theme: {
       //pagination: true,
       toc: true,
+      layout: "default",
     },
   },
   pro2024: "iPad Pro M4 / M5",

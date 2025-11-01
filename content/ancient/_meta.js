@@ -3,6 +3,7 @@ export default {
     theme: {
       pagination: false,
       toc: true,
+      layout: "default",
     },
   },
   'ipad-mini': 'iPad Mini 1–3',

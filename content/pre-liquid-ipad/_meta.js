@@ -3,6 +3,7 @@ export default {
     theme: {
       pagination: false,
       toc: true,
+      layout: "default",
     },
   },
   'ipad-pro105': 'iPad 10.5″ & 10.2″',

@@ -126,10 +126,6 @@ export default async function CasePage({ params }) {
   }));
   const metadata = {
     title: caseName,
-    theme: {
-      toc: false,
-      typesetting: "article",
-    },
   };
 
   return (

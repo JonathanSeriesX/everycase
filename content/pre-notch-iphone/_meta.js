@@ -3,6 +3,7 @@ export default {
     theme: {
       pagination: false,
       toc: true,
+      layout: "default",
     },
   },
   'iphone-7': 'iPhone 7, 8, Plus & SE',
