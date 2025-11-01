@@ -2,93 +2,42 @@ import { Tabs } from "nextra/components";
 import VerticalCarousel from "./VerticalCarousel";
 
 /**
- * CaseTableTabs Component
+ * Displays a tabbed view of case variants for a list of models.
  *
- * Provides beautifully styled tabs, each containing a vertical carousel of cases for similar models.
- * Supports filtering by material and multiple model series.
- *
- * @param {string} series - The series of devices (e.g., "iPhone 16") to display in tabs.
- * @param {string} material - The material of the case to filter cases (e.g., "Leather Case").
- * @param {Array<string>} [tabNames] - Custom names for the tabs (optional). Defaults to formatted model names.
- * @returns {JSX.Element} Tabs displaying vertical carousels for filtered cases across all seasons.
+ * @param {Object} props
+ * @param {string[]} props.models - Ordered list of device models to render tabs for.
+ * @param {string} [props.material] - Optional material filter passed to the carousel.
+ * @param {string[]} [props.tabNames] - Optional labels for the tabs. Must match the length of `models`.
  */
-const CaseTableTabs = ({ series, material, tabNames }) => {
-  // Pre-defined batches to expand series when it's "iPhone 16"
-  let models;
-  switch (series) {
-    case "iPhone 16":
-      models = [
-        "iPhone 16",
-        "iPhone 16 Plus",
-        "iPhone 16 Pro",
-        "iPhone 16 Pro Max",
-      ];
-      break;
-    case "iPhone 15":
-      models = [
-        "iPhone 15",
-        "iPhone 15 Plus",
-        "iPhone 15 Pro",
-        "iPhone 15 Pro Max",
-      ];
-      break;
-    case "iPhone 14":
-      models = [
-        "iPhone 14",
-        "iPhone 14 Plus",
-        "iPhone 14 Pro",
-        "iPhone 14 Pro Max",
-      ];
-      break;
-    case "iPhone 13":
-      models = [
-        "iPhone 13",
-        "iPhone 13 mini",
-        "iPhone 13 Pro",
-        "iPhone 13 Pro Max",
-      ];
-      break;
-    case "iPhone 12":
-      models = ["iPhone 12 mini", "iPhone 12 & 12 Pro", "iPhone 12 Pro Max"];
-      break;
-    case "iPhone 11 Pro":
-      models = ["iPhone 11 Pro", "iPhone 11 Pro Max"];
-      break;
-    case "iPhone Xs":
-      models = ["iPhone XS", "iPhone XS Max"];
-      break;
-    case "iPhone XR":
-      models = ["iPhone XR", "iPhone 11"];
-      break;
-    case "iPad Pro M4":
-      models = ["iPad Pro M4 11-inch", "iPad Pro M4 13-inch"];
-      break;
-    case "iPad Pro A12X":
-      models = ["iPad Pro 11 A12X", "iPad Pro 12.9 A12X"];
-      break;
-    case "iPad Air M2":
-      models = ["iPad Air 11-inch", "iPad Air 13-inch"];
-      break;
-    case "iPad Pro M1":
-      models = ["iPad Pro 11 M1", "iPad Pro 12.9 M1"];
-      break;
-    default:
-      models = Array.isArray(series) ? series : [series]; //but it should never happen? although.....
-      break;
+const CaseTableTabs = ({ models = [], material, tabNames }) => {
+  const normalizedModels = Array.isArray(models)
+    ? models.filter(Boolean)
+    : [];
+
+  if (normalizedModels.length === 0) {
+    return null;
   }
 
-  // Format tab names; remove redundant prefixes for all but the first model
-  // So we'd have "iPhone 13, 13 Pro, ..." instead of "iPhone 13, iPhone 13 Pro, ..."
-  let names = models.map((model, index) => {
-    return index === 0 ? model : model.replace("iPhone ", "");
+  const [firstModel] = normalizedModels;
+  const prefix =
+    typeof firstModel === "string" && firstModel.includes(" ")
+      ? `${firstModel.split(" ")[0]} `
+      : "";
+
+  const defaultTabNames = normalizedModels.map((model, index) => {
+    if (index === 0 || !prefix) return model;
+    return model.startsWith(prefix) ? model.slice(prefix.length) : model;
   });
 
-  const tabs = tabNames || names;
+  const labels =
+    Array.isArray(tabNames) && tabNames.length === normalizedModels.length
+      ? tabNames
+      : defaultTabNames;
 
   return (
-    <Tabs items={tabs}>
-      {models.map((model, index) => (
-        <Tabs.Tab key={index} title={model}>
+    <Tabs items={labels}>
+      {normalizedModels.map((model, index) => (
+        <Tabs.Tab key={model ?? index} title={labels[index] ?? model}>
           <VerticalCarousel
             {...(model ? { model } : {})}
             {...(material ? { material } : {})}
