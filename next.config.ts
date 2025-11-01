@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
     imageSizes: [512, 1536],
   },
   experimental: {
-    turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForDev: false,
   },
   allowedDevOrigins: ["*.orb.local"],
 };
