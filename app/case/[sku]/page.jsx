@@ -98,7 +98,7 @@ export async function generateMetadata({ params }) {
   if (!data) return {};
 
   const caseName = getCaseName(data);
-  const title = `${caseName} — Finest Woven`;
+  const title = caseName;
   const images = listVariantsForSku(sku).map((variant) =>
     resolveImageSource(variant)
   );
@@ -106,7 +106,7 @@ export async function generateMetadata({ params }) {
   return {
     title,
     openGraph: {
-      title,
+      title: `${caseName} — Finest Woven`,
       images: images.map((src) => ({ url: src, alt: caseName })),
     },
   };
