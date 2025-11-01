@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { notFound } from 'next/navigation';
 import { Callout } from 'nextra/components';
+import { useMDXComponents } from '../../../mdx-components';
 import LightboxComponent from '../../../components/LightboxComponent';
 import { getAllCasesFromCSV } from '../../../lib/getCasesFromCSV';
 
@@ -70,6 +71,8 @@ function getCaseName(data) {
   return `${data.model} ${data.kind}${magSafePart}${colourPart}`.trim();
 }
 
+const Wrapper = useMDXComponents().wrapper;
+
 export async function generateStaticParams() {
   const seen = new Set();
   const params = [];
@@ -115,22 +118,29 @@ export default async function CasePage({ params }) {
     src: resolveImageSource(variant),
     alt: caseName,
   }));
+  const metadata = {
+    title: caseName,
+    theme: {
+      toc: false,
+      typesetting: 'article',
+    },
+  };
 
   return (
-    <main>
-      <h1 className="_mt-2 _text-4xl _font-bold _tracking-tight _text-slate-900 dark:_text-slate-100">
-        {caseName}
-      </h1>
-      <Callout type="info" emoji="👉🏻">
-        <strong>{orderNumber}</strong> is an order number for this product, used for search engines, auction websites
-        and such.
-      </Callout>
-      <h2 className="_mt-6 _text-2xl _font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100">
-        Image gallery
-      </h2>
-      <div className="_mt-4">
-        <LightboxComponent images={images} />
+    <Wrapper toc={[]} metadata={metadata}>
+      <div className="nx-space-y-6">
+        <header className="nx-space-y-2">
+          <h1>{caseName}</h1>
+          <Callout type="info" emoji="👉🏻">
+            <strong>{orderNumber}</strong> is an order number for this product, used for search engines, auction
+            websites and such.
+          </Callout>
+        </header>
+        <section className="nx-space-y-2">
+          <h2>Image gallery</h2>
+          <LightboxComponent images={images} />
+        </section>
       </div>
-    </main>
+    </Wrapper>
   );
 }
