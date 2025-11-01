@@ -135,11 +135,11 @@ export default async function RootLayout({ children }) {
           navbar={navbar}
           search={<Search placeholder="Search by color or SKU..." />}
           pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/JonathanSeriesX/everyfruitcase-4/tree/main"
+          docsRepositoryBase="https://github.com/JonathanSeriesX/everyfruitcase-4/tree/main" //TODO update
           footer={<></>}
           toc={{
             float: true,
-            //backToTop: true,
+            backToTop: true,
           }}
           sidebar={{
             defaultMenuCollapseLevel: 1,
