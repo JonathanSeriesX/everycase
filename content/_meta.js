@@ -1,4 +1,4 @@
-export default {
+const config = {
   "*": {
     theme: {
       pagination: false,
@@ -41,14 +41,16 @@ export default {
   iphone: {
     title: "iPhone",
   },
-  ipad: {
-    title: "iPad",
-  },
   sep2: {
     title: "Under construction:",
     type: "separator",
+  },
+  ipad: {
+    title: "iPad",
   },
   others: {
     title: "Others",
   },
 };
+
+export default config;
