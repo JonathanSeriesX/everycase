@@ -5,31 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
-.folder-name {
-  font-weight: 500;
-}
-
-/* Limit content images without affecting UI icons or logos */
-.nextra-content img {
-  height: auto;
-  width: 100%;
-  max-width: 768px;
-  display: block;
-}
-
+/* removal of tab highlighting */
 [role="tab"]:focus,
 .subheading-anchor:focus {
-  /* to remove tab highlighting */
   outline: none !important;
   box-shadow: none !important;
   background-color: transparent !important;
-}
-
-.logo {
-  margin-top: 0px;
-  margin-right: 4px;
-  height: 48px;
-  width: 48px;
 }
 
 body {
@@ -38,6 +19,7 @@ body {
   font-weight: 330;
 }
 
+/* hack to avoid broken fonts in Firefox */
 @-moz-document url-prefix() {
   body {
     font-family: system-ui;
@@ -47,15 +29,16 @@ body {
   }
 }
 
+/* fix for italic text */
 em,
 i,
 .italic-class {
   font-variation-settings: "ital" 0.1 !important;
   margin-left: -1px;
-  /* pull the element to the left by 1px otherwise looks a bit weird */
   margin-right: 1px;
 }
 
+/* title colors */
 h1,
 h2,
 h3,
@@ -64,14 +47,4 @@ h5,
 h6 {
   font-stretch: 102%;
   color: #e3504f !important;
-  /* sRGB color */
-}
-
-/* kill if I don't plan to use footnotes */
-.footnotes::before {
-  margin-top: 10rem;
-  content: "\A\A__________________";
-  white-space: pre;
-  /* Use pre to preserve whitespace and line breaks */
-  color: #f0f0f0;
 }
