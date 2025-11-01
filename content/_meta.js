@@ -34,11 +34,19 @@ export default {
     title: "Leave your mark ♥",
     type: "page",
   },
+  sep1: {
+    title: "Sorted by device:",
+    type: "separator",
+  },
   iphone: {
     title: "iPhone",
   },
   ipad: {
     title: "iPad",
+  },
+  sep2: {
+    title: "Under construction:",
+    type: "separator",
   },
   others: {
     title: "Others",

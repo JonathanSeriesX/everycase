@@ -1,5 +1,5 @@
 import { Footer, Layout, Navbar } from "nextra-theme-docs";
-import { Banner, Head } from "nextra/components";
+import { Banner, Head, Search } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
 import { Quicksand } from "next/font/google";
 //import "nextra-theme-docs/style.css";
@@ -133,6 +133,7 @@ export default async function RootLayout({ children }) {
         <Layout
           //banner={banner}
           navbar={navbar}
+          search={<Search placeholder="Search by color or SKU..." />}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/JonathanSeriesX/everyfruitcase-4/tree/main"
           footer={<></>}
