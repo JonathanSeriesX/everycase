@@ -2,13 +2,13 @@ export default {
   "*": {
     theme: {
       pagination: false,
-      toc: true,
+      toc: false,
     },
   },
   index: {
     title: "🏡 Home",
     theme: {
-      breadcrumb: true,
+      breadcrumb: false,
       typesetting: "article",
       footer: false,
       sidebar: true,
@@ -33,10 +33,6 @@ export default {
   support: {
     title: "Leave your mark ♥",
     type: "page",
-  },
-  case: {
-    title: "case",
-    display: "hidden",
   },
   iphone: {
     title: "iPhone",
