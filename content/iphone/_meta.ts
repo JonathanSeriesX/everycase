@@ -3,6 +3,7 @@ const config = {
     theme: {
       pagination: false,
       toc: true,
+      layout: "default",
     },
   },
   iphone_16: "iPhone 16, Plus, Pro, Max",
