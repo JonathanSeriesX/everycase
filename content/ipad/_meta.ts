@@ -1,14 +1,15 @@
-export default {
+const config = {
   "*": {
     theme: {
-      pagination: false,
-      toc: true
-    }
+      //pagination: true,
+      toc: true,
+    },
   },
-  "M4": "iPad Pro M4",
-  "pro2020": "iPad Pro (2020)",
-  "mini6": "iPad mini 6",
-  "air2020": "iPad Air (2020)",
-  "10": "iPad (10th gen)"
+  M4: "iPad Pro M4 / M5",
+  air2020: "iPad Air / Pro (2018)",
+  ipad10: "iPad 11-inch / A14 / A16",
+  pro2020: "iPad Pro A12Z / M1 / M2",
+  mini6: "iPad mini A15 / A17 Pro",
 };
 
+export default config;
