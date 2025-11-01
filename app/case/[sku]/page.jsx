@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
 import { Callout } from "nextra/components";
-import { useMDXComponents } from "../../../mdx-components";
+import { useMDXComponents as getMDXComponents } from "../../../mdx-components";
 import LightboxComponent from "../../../components/LightboxComponent";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 
@@ -72,7 +72,7 @@ function getCaseName(data) {
   return `${data.model} ${data.kind}${magSafePart}${colourPart}`.trim();
 }
 
-const mdxComponents = useMDXComponents();
+const mdxComponents = getMDXComponents();
 const Wrapper = mdxComponents.wrapper;
 const Heading1 = mdxComponents.h1 ?? ((props) => <h1 {...props} />);
 const Heading2 = mdxComponents.h2 ?? ((props) => <h2 {...props} />);
