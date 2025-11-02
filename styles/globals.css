@@ -13,6 +13,12 @@
   background-color: transparent !important;
 }
 
+/* text alignment in search box */
+.nextra-search input[type="search"] {
+  padding-top: 0.7rem;
+  padding-bottom: 0.4rem;
+}
+
 body {
   font-family: var(--font-tofino), "Tofino Variable", system-ui;
   font-stretch: 101%;
