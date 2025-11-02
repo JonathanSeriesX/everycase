@@ -10,7 +10,7 @@ And most likely never will. It's also dead fast, **100% non-intrusive**, and use
 privacy-preserving [Vercel Analytics](https://vercel.com/docs/analytics).
 
 So I'm once again asking for your support if you enjoy it, and for
-your [feedback](https://github.com/Jonathunky/everyfruitcase/issues/new?title=General%20Feedback&labels=feedback).
+your [feedback](https://github.com/JonathanSeriesX/everycase/issues/new?title=General%20Feedback&labels=feedback).
 
 Thanks ever so much!
 
