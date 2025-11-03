@@ -5,7 +5,7 @@ url_template = "https://www.apple.com/education/pricelists/pdfs/Apple_US_Educati
 
 # Start and end dates for the year 2021
 start_date = datetime(2023, 1, 1)
-end_date = datetime(2024, 12, 31)
+end_date = datetime(2025, 12, 31)
 
 
 # Define a function to check URL availability
