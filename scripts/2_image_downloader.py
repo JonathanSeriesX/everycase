@@ -13,7 +13,7 @@ BASE_URL_PNG = "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com
 BASE_URL_JPG = "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/{code}?wid=1024&hei=1024&fmt=jpg&qlt=95"
 DEFAULT_FOLDER = "Source_images"
 SCRIPT_DIR = Path(__file__).resolve().parent
-IMAGES_TO_DOWNLOAD_PATH = SCRIPT_DIR / "images_to_download.txt"
+IMAGES_TO_DOWNLOAD_PATH = SCRIPT_DIR / "1_images_to_download.txt"
 SOURCE_IMAGES_PATH = SCRIPT_DIR / "source_images.txt"
 SUFFIXES = [
     "AV01",
@@ -111,7 +111,9 @@ def download_worker(task):
         download_worker(task)
 
 
-def build_tasks(input_path: Path, existing_codes: Set[str], failed_downloads, successful_downloads):
+def build_tasks(
+    input_path: Path, existing_codes: Set[str], failed_downloads, successful_downloads
+):
     if not input_path.exists():
         raise FileNotFoundError(f"Input file not found: {input_path}")
 
@@ -131,7 +133,9 @@ def build_tasks(input_path: Path, existing_codes: Set[str], failed_downloads, su
                 if code in existing_codes:
                     continue
                 folder = current_folder or DEFAULT_FOLDER
-                tasks.append((code, folder, "png", failed_downloads, successful_downloads))
+                tasks.append(
+                    (code, folder, "png", failed_downloads, successful_downloads)
+                )
 
     return tasks
 
@@ -143,7 +147,9 @@ if __name__ == "__main__":
     failed_downloads = manager.list()
     successful_downloads = manager.list()
 
-    tasks = build_tasks(IMAGES_TO_DOWNLOAD_PATH, existing_codes, failed_downloads, successful_downloads)
+    tasks = build_tasks(
+        IMAGES_TO_DOWNLOAD_PATH, existing_codes, failed_downloads, successful_downloads
+    )
 
     if not tasks:
         print("No new images to download.")
