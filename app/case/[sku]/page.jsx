@@ -20,6 +20,9 @@ function loadCases() {
       colour: (record.colour || "").trim(),
       kind: (record.kind || "").trim(),
       model: (record.model || "").trim(),
+      name: (record.name || "").trim(),
+      season: (record.season || "").trim(),
+      alt_thumbnail: (record.alt_thumbnail || "").trim(),
     }));
   }
   return cachedCases;
@@ -32,7 +35,7 @@ function findCaseBySku(sku) {
 function loadVariantFilenames() {
   if (cachedVariantFilenames) return cachedVariantFilenames;
 
-  const filePath = path.join(process.cwd(), "scripts", "filenames.txt");
+  const filePath = path.join(process.cwd(), "scripts", "processed_images.txt");
   try {
     const fileContents = fs.readFileSync(filePath, "utf-8");
     cachedVariantFilenames = fileContents
@@ -64,6 +67,9 @@ function resolveImageSource(variant) {
 }
 
 function getCaseName(data) {
+  const explicitName = (data.name || "").trim();
+  if (explicitName) return explicitName;
+
   const modelMatch = data.model.match(/iPhone\s+(\d+)/i);
   const isMagSafeModel = modelMatch && parseInt(modelMatch[1], 10) >= 12;
   const colourPart =
