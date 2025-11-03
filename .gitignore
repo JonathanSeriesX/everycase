@@ -1,6 +1,7 @@
 # Garbage
 .DS_Store
 pdfs/
+imgs/
 
 # Editing
 .idea/
@@ -16,6 +17,7 @@ pdfs/
 venv
 _pagefind/
 next-env.d.ts
+__pycache__
 
 # Package management
 node_modules/
