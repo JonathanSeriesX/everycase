@@ -1,7 +1,9 @@
 # Garbage
 .DS_Store
-pdfs/
-imgs/
+1_sources/
+2_clean/
+3_compressed_sources/
+4_compressed_previews/
 
 # Editing
 .idea/
