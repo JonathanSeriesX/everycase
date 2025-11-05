@@ -28,6 +28,30 @@ const nextConfig: NextConfig = {
     turbopackFileSystemCacheForDev: false,
   },
   allowedDevOrigins: ["*.orb.local"],
+  async rewrites() {
+    return [
+      {
+        source: '/wp-login.php',
+        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+      },
+      {
+        source: '/wordpress/wp-login.php',
+        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+      },
+      {
+        source: '/wp/wp-login.php',
+        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+      },
+      {
+        source: '/wp/wp-admin.php',
+        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+      },
+      {
+        source: '/wp/wp-admin/',
+        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+      },
+    ];
+  },
 };
 
 export default withNextra(nextConfig);
