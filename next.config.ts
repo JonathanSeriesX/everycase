@@ -31,32 +31,38 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: '/wp-login.php',
-        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+        source: "/wp-login.php",
+        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
       },
       {
-        source: '/wordpress/wp-login.php',
-        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+        source: "/wordpress/wp-login.php",
+        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
       },
       {
-        source: '/wp/wp-login.php',
-        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+        source: "/wp/wp-login.php",
+        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
       },
       {
-        source: '/wp/wp-admin.php',
-        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+        source: "/wp/wp-admin.php",
+        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
       },
       {
-        source: '/wp/wp-admin/',
-        destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+        source: "/wp/wp-admin",
+        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
       },
       {
-        source: '/apple-touch-icon.png',
-        destination: 'https://cloudfront.everycase.org/assets/apple-touch-icon.png',
+        source: "/wp-admin",
+        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
       },
       {
-        source: '/apple-touch-icon-precomposed.png',
-        destination: 'https://cloudfront.everycase.org/assets/apple-touch-icon.png',
+        source: "/apple-touch-icon.png",
+        destination:
+          "https://cloudfront.everycase.org/assets/apple-touch-icon.png",
+      },
+      {
+        source: "/apple-touch-icon-precomposed.png",
+        destination:
+          "https://cloudfront.everycase.org/assets/apple-touch-icon.png",
       },
     ];
   },
