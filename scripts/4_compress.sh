@@ -8,10 +8,16 @@ mkdir -p "$folder_y" "$folder_z"
 for f in "$folder_x"/*.png; do
   [ -f "$f" ] || continue
   base="$(basename "${f%.*}")"
-  out="$folder_z/$base.avif"
-  if [ ! -e "$out" ]; then
+  out_avif="$folder_z/$base.avif"
+  if [ ! -e "$out_avif" ]; then
     magick "$f" -resize 512x512 -quality 95 -strip -filter Lanczos \
-      -define avif:codec=aom -define avif:speed=0 "$out"
+      -define avif:codec=aom -define avif:speed=0 "$out_avif"
+  fi
+
+  out_webp="$folder_z/$base.webp"
+  if [ ! -e "$out_webp" ]; then
+    magick "$f" -resize 512x512 -quality 95 -strip -filter Lanczos \
+      -define webp:method=6 "$out_webp"
   fi
 done
 

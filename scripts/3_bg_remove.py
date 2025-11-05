@@ -23,8 +23,8 @@ import numpy as np
 # Configuration
 # -----------------------------------------------------------------------------
 
-INPUT_DIR = Path("imgs")  # : set to your source folder
-OUTPUT_DIR = Path("pdfs")  # : set to your destination folder
+INPUT_DIR = Path("1_sources")  # : set to your source folder
+OUTPUT_DIR = Path("2_clean")  # : set to your destination folder
 RECURSIVE = False  # Set True to crawl subfolders
 NUM_WORKERS = 8  # Increase for faster throughput
 
