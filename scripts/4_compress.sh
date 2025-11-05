@@ -31,6 +31,3 @@ for f in "$folder_x"/*.png; do
       -strip -filter Lanczos -define avif:codec=aom -define avif:speed=0 "$out"
   fi
 done
-
-rclone copy "$folder_y" R2:everycase-images/everyimage --progress --exclude '.DS_Store'
-rclone copy "$folder_z" R2:everycase-images/everypreview --progress --exclude '.DS_Store'
