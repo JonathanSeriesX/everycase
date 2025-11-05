@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import nextra from "nextra";
 
 const withNextra = nextra({
-  whiteListTagsStyling: ["h1"],
+  //whiteListTagsStyling: ["h1"],
 });
 
 const nextConfig: NextConfig = {
@@ -49,6 +49,14 @@ const nextConfig: NextConfig = {
       {
         source: '/wp/wp-admin/',
         destination: 'https://cloudfront.everycase.org/assets/surprise.mp4',
+      },
+      {
+        source: '/apple-touch-icon.png',
+        destination: 'https://cloudfront.everycase.org/assets/apple-touch-icon.png',
+      },
+      {
+        source: '/apple-touch-icon-precomposed.png',
+        destination: 'https://cloudfront.everycase.org/assets/apple-touch-icon.png',
       },
     ];
   },
