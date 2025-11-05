@@ -11,7 +11,6 @@ Requires: opencv-python, numpy
 """
 
 from __future__ import annotations
-
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Iterable
@@ -29,13 +28,12 @@ RECURSIVE = False  # Set True to crawl subfolders
 NUM_WORKERS = 8  # Increase for faster throughput
 
 # GrabCut tuning
-GC_ITERATIONS = 5  # More iterations → tighter matte, slower runtime
+GC_ITERATIONS = 7  # More iterations → tighter matte, slower runtime
 BORDER_PX = 1  # Pixels at borders forced to background
-WHITE_TOLERANCE = 6  # Allowed diff from pure white during flood fill
-SHADOW_EXPAND = 2  # Dilate background mask to catch soft shadows
-CORE_ERODE = 3  # Erode probable-foreground to derive certain foreground
+WHITE_TOLERANCE = 10  # Allowed diff from pure white during flood fill
+SHADOW_EXPAND = 4  # Dilate background mask to catch soft shadows
+CORE_ERODE = 2  # Erode probable-foreground to derive certain foreground
 ALPHA_BLUR = 0.6  # Gaussian sigma applied to alpha for smooth edges
-
 
 # -----------------------------------------------------------------------------
 # Helpers
@@ -124,11 +122,13 @@ def process_image(inp: Path, out_root: Path) -> bool:
     out_path = out_root / inp.relative_to(INPUT_DIR)
     out_path = out_path.with_name(out_path.stem + ".png")
 
+    """
     if out_path.exists():
         print(
             f"[skip] {inp.name} → {out_path.relative_to(out_root)} (already processed)"
         )
         return True
+    """
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
