@@ -1,13 +1,14 @@
 # Development plans
 
-The development of Finest Woven is being driven exclusively on pure enthusiasm and only happens when I have free time
-, so I can't provide you with any timeframes (:
+The development of Finest Woven is being driven exclusively on pure enthusiasm and only happens when I have free time, so I can't provide you with any timeframes (:
 
-I plan to introduce following features by Spring 2025:
+As of November 2025, I finally rewrote this website with latest Nextra version; now I have to adapt & fix older pages and collections before I can move on with new features...
 
-- Introduction of much more potent case view than just tables
+Then maybe you'll see:
+
 - Ability to sign up (with Apple!) and manage your own collection
 - Option to sort cases not only by device but also by collection (year)
-- Bluesky page with cool content
+- Bluesky page with thematic content
 - More content here on this site (like my notes & thoughts)
-- More & more images (I do transparent backgrounds manually, it takes time.......)
+
+P.S. Thank you for visiting! It means the world to me.
