@@ -14,6 +14,9 @@ const config = {
   iphone_11: "iPhone 11 Pro, Max",
   iphone_xr: "iPhone XR & 11",
   iphone_x: "iPhone X & Xs",
+  'iphone-7': 'iPhone 7, 8, Plus & SE',
+  'iphone-6': 'iPhone 6, 6s, Plus',
+  'iphone-5s': 'iPhone 5, 5s, SE',
 };
 
 export default config;
