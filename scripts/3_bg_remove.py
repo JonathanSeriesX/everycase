@@ -122,13 +122,11 @@ def process_image(inp: Path, out_root: Path) -> bool:
     out_path = out_root / inp.relative_to(INPUT_DIR)
     out_path = out_path.with_name(out_path.stem + ".png")
 
-    """
     if out_path.exists():
         print(
             f"[skip] {inp.name} → {out_path.relative_to(out_root)} (already processed)"
         )
         return True
-    """
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
 

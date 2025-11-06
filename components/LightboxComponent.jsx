@@ -3,10 +3,11 @@
 import { ImageZoom } from "nextra/components";
 
 const LightboxComponent = ({ images }) => {
-  const columnTemplate = "repeat(auto-fit, minmax(240px, 1fr))";
-  const maxColumns = 3;
+  const minColumnWidth = 240;
+  const maxColumns = 4;
   const gap = 16; // matches Tailwind gap-4
-  const maxWidth = `calc(${maxColumns} * 240px + ${(maxColumns - 1) * gap}px)`;
+  const columnTemplate = `repeat(auto-fit, minmax(min(50%, ${minColumnWidth}px), 1fr))`;
+  const maxWidth = `${maxColumns * minColumnWidth + (maxColumns - 1) * gap}px`;
 
   return (
     <div
