@@ -15,7 +15,7 @@
       "type": "image/png"
     },
     {
-      "src": "bw.png",
+      "src": "/icons/bw.png",
       "purpose": "monochrome maskable",
       "type": "image/png"
     }

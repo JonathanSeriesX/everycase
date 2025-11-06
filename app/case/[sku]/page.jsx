@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
 import { Callout } from "nextra/components";
+import { Cards } from "nextra/components";
 import { useMDXComponents as getMDXComponents } from "../../../mdx-components";
 import LightboxComponent from "../../../components/LightboxComponent";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
