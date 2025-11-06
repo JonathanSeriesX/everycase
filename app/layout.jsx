@@ -160,7 +160,7 @@ export default async function RootLayout({ children }) {
     <html
       lang="en"
       dir="ltr"
-      //suppressHydrationWarning // Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
+      suppressHydrationWarning // because I use too many addons in my browser
     >
       <Head
         color={{
