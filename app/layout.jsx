@@ -7,7 +7,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../styles/globals.css";
 import localFont from "next/font/local";
 
-const quicksand = Quicksand({ subsets: ["latin"], weight: ["300", "400"] });
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  weight: ["300", "400"],
+  variable: "--font-quicksand",
+});
 const tofino = localFont({
   src: [
     {
@@ -152,21 +156,18 @@ export default async function RootLayout({ children }) {
           navbar={navbar}
           search={<Search placeholder="Search by color or SKU..." />}
           pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/JonathanSeriesX/everyfruitcase-4/tree/main" //TODO update
+          docsRepositoryBase="https://github.com/JonathanSeriesX/everycase/tree/main"
           footer={<></>}
           toc={{
             float: true,
             backToTop: true,
+            //extraContent: <p className="x:text-xs x:text-gray-100">( ͡° ͜ʖ ͡°)</p>,
           }}
           sidebar={{
             defaultMenuCollapseLevel: 1,
             toggleButton: true,
             autoCollapse: false,
           }}
-
-          /* darkMode={{
-            defaultTheme: "system",
-          }}*/
         >
           {children}
           <Analytics />
