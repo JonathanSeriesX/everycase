@@ -1,19 +1,22 @@
 {
   "theme_color": "#E3504F",
-  "background_color": "#FFE0F5",
-  "display_override": ["window-controls-overlay", "standalone", "fullscreen"],
+  "display_override": ["standalone", "browser"],
   "display": "minimal-ui",
   "scope": "/",
   "start_url": "/",
   "name": "Finest Woven",
-  "short_name": "everycase",
-  "description": "Catalogue of Apple cases for iPhone, iPad, and Mac.",
-  "orientation": "natural",
+  "short_name": "EveryCase",
+  "description": "The only catalogue of all the Apple cases ever released for iPhone, iPad, and Mac.",
+  "orientation": "any",
   "icons": [
     {
-      "src": "/icons/android-chrome-512x512.png",
+      "src": "/icons/512_w_shadow.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "bw.png",
+      "purpose": "monochrome maskable"
     }
   ]
 }
