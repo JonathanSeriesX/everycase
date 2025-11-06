@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function NotFound() {
   return (
-    <NotFoundPage content="Submit an issue" labels="broken-link">
+    <NotFoundPage content="Report a broken link" labels="broken-link">
       <Image
         src="https://cloudfront.everycase.org/index.jpeg"
         alt="This bot is cooler btw"
@@ -11,7 +11,7 @@ export default function NotFound() {
         height={400}
       />
       <br />
-      <h1>The cake might not be the truth.</h1>
+      <h1>The cake may not be the truth.</h1>
     </NotFoundPage>
   );
 }
