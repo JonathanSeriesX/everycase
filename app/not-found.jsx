@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <NotFoundPage content="Submit an issue" labels="broken-link">
       <Image
-        src="https://r2.everycase.org/index.jpeg"
+        src="https://cloudfront.everycase.org/index.jpeg"
         alt="This bot is cooler btw"
         width={750}
         height={400}
