@@ -1,55 +1,64 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import PhotoAlbum from "react-photo-album";
+import { ColumnsPhotoAlbum } from "react-photo-album";
 import Lightbox from "yet-another-react-lightbox";
 import Download from "yet-another-react-lightbox/plugins/download";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import "react-photo-album/styles.css";
+import "react-photo-album/columns.css";
 import "yet-another-react-lightbox/styles.css";
 
-const DEFAULT_DIMENSION = 1600;
+const DEFAULT_DIMENSION = 2048;
+const DOWNLOAD_BASE_URL =
+  "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 
-function buildFilename(alt = "", index = 0, src = "") {
-  const base =
-    alt
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "") || "case";
-  const suffix = index + 1;
-  const extensionMatch = src.match(/\.(\w+)(?:[#?].*)?$/);
-  const extension = extensionMatch ? extensionMatch[1] : "jpg";
-  return `${base}-${suffix}.${extension}`;
-}
+const buildDownloadUrl = (src) => {
+  const filename = src?.split("/").pop() ?? "";
+  const [code] = filename.split(".");
+
+  return code ? `${DOWNLOAD_BASE_URL}/${code}?wid=2560&hei=2560&fmt=avif` : src;
+};
+
+const buildFilename = (src) => {
+  const filename = src?.split("/").pop() ?? "";
+  const [code] = filename.split(".");
+
+  return code ? `${code}.avif` : src;
+};
 
 const LightboxComponent = ({ images }) => {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
 
   const slides = useMemo(
     () =>
-      images.map((image, index) => ({
+      images.map((image) => ({
         src: image.src,
         alt: image.alt || "Case image",
         width: image.width || DEFAULT_DIMENSION,
         height: image.height || DEFAULT_DIMENSION,
-        downloadFilename: buildFilename(image.alt, index, image.src),
-        downloadUrl: image.src,
+        downloadFilename: buildFilename(image.src),
+        downloadUrl: buildDownloadUrl(image.src),
       })),
     [images]
   );
 
   return (
     <>
-      <PhotoAlbum
-        layout="rows"
-        targetRowHeight={300}
-        spacing={12}
+      <ColumnsPhotoAlbum
+        layout="columns"
+        columns={(containerWidth) => {
+          if (containerWidth < 480) return 2;
+          if (containerWidth < 800) return 3;
+          return 4;
+        }}
+        spacing={0}
         photos={slides}
         onClick={({ index }) => setLightboxIndex(index)}
         componentsProps={{
           imageProps: {
             loading: "lazy",
-            className: "rounded-md shadow-sm transition-transform duration-150 ease-out hover:scale-[1.01]",
+            className:
+              "rounded-md shadow-sm transition-transform duration-150 ease-out hover:scale-[1.01]",
           },
         }}
       />
@@ -59,14 +68,9 @@ const LightboxComponent = ({ images }) => {
         index={lightboxIndex}
         close={() => setLightboxIndex(-1)}
         plugins={[Zoom, Download]}
-        animation={{ fade: 150, swipe: 200, zoom: 250 }}
+        animation={{ fade: 220, swipe: 280, zoom: 320 }}
         controller={{ closeOnBackdropClick: true }}
         zoom={{ maxZoomPixelRatio: 1.5, zoomInMultiplier: 1.25 }}
-        download={{
-          buttonTitle: "Download image",
-          filename: (slide, { index }) =>
-            slide.downloadFilename ?? buildFilename(slide.alt, index, slide.src),
-        }}
       />
     </>
   );
