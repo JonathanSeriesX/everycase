@@ -16,7 +16,8 @@
     },
     {
       "src": "bw.png",
-      "purpose": "monochrome maskable"
+      "purpose": "monochrome maskable",
+      "type": "image/png"
     }
   ]
 }

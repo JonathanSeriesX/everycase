@@ -39,7 +39,7 @@ const logo = (
     </span>
     <picture>
       <img
-        src="/icons/icon-512x512.png"
+        src="/icons/apple-touch-icon.png"
         alt="Finest Woven Logo"
         style={{
           marginTop: "0px",
@@ -109,6 +109,11 @@ export const metadata = {
         alt: "Multiple iPhone 13 models displayed in Apple's silicone cases",
       },
     ],
+  },
+  twitter: {
+    card: "summary",
+    creator: "@JonathanSeriesX",
+    //<meta name="twitter:site" content="@everycase" />
   },
   manifest: "/manifest.json",
   appleWebApp: {
