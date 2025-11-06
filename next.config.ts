@@ -1,6 +1,23 @@
 import type { NextConfig } from "next";
 import nextra from "nextra";
 
+const surpriseTargets = [
+  "/wp-admin",
+  "/wp-admin.php",
+  "/wp-login",
+  "/wp-login.php",
+  "/wp-config.php",
+  "/wp/wp-admin",
+  "/wp/wp-admin.php",
+  "/wp/wp-login",
+  "/wp/wp-login.php",
+];
+
+const iconTargets = [
+  "/apple-touch-icon.png",
+  "/apple-touch-icon-precomposed.png",
+];
+
 const withNextra = nextra({
   //whiteListTagsStyling: ["h1"],
 });
@@ -30,40 +47,15 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["*.orb.local"],
   async rewrites() {
     return [
-      {
-        source: "/wp-login.php",
+      ...surpriseTargets.map((source) => ({
+        source,
         destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
-      },
-      {
-        source: "/wordpress/wp-login.php",
-        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
-      },
-      {
-        source: "/wp/wp-login.php",
-        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
-      },
-      {
-        source: "/wp/wp-admin.php",
-        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
-      },
-      {
-        source: "/wp/wp-admin",
-        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
-      },
-      {
-        source: "/wp-admin",
-        destination: "https://cloudfront.everycase.org/assets/surprise.mp4",
-      },
-      {
-        source: "/apple-touch-icon.png",
+      })),
+      ...iconTargets.map((source) => ({
+        source,
         destination:
           "https://cloudfront.everycase.org/assets/apple-touch-icon.png",
-      },
-      {
-        source: "/apple-touch-icon-precomposed.png",
-        destination:
-          "https://cloudfront.everycase.org/assets/apple-touch-icon.png",
-      },
+      })),
     ];
   },
 };
