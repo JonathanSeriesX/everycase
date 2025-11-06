@@ -85,12 +85,13 @@ export const metadata = {
     follow: true,
   },
   icons: {
-    icon: "/icons/icon-512x512.png",
+    icon: "/icons/512_w_shadow.png",
     apple: "/icons/apple-touch-icon.png",
     other: [
       {
         rel: "mask-icon",
-        url: "/icons/safari-pinned-tab.svg",
+        url: "/icons/bw.svg",
+        color: "#E3504F",
       },
     ],
   },
