@@ -5,12 +5,7 @@ import { Table } from "nextra/components";
 import Link from "next/link";
 import Image from "next/image";
 
-const VerticalCarouselClient = ({
-  cases = [],
-  model,
-  material,
-  season,
-}) => {
+const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
   const [isSmallViewport, setIsSmallViewport] = useState(false);
 
   useEffect(() => {
@@ -67,7 +62,7 @@ const VerticalCarouselClient = ({
                         height={512}
                         alt={`${item.model} ${item.kind} — ${item.colour}`}
                         style={{ objectFit: "contain" }}
-                        loading="eager"
+                        //loading="eager"
                       />
                     </div>
                   </Link>

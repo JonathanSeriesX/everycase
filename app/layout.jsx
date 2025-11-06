@@ -69,7 +69,6 @@ export const viewport = {
 };
 
 export const metadata = {
-  //TODO adjustments here...
   applicationName: "Finest Woven",
   title: {
     default: "Finest Woven",
@@ -87,6 +86,16 @@ export const metadata = {
       {
         rel: "mask-icon",
         url: "/icons/safari-pinned-tab.svg",
+      },
+    ],
+  },
+  openGraph: {
+    images: [
+      {
+        url: "https://cloudfront.everycase.org/assets/og.webp",
+        width: 2000,
+        height: 1000,
+        //alt: 'Next.js',
       },
     ],
   },
