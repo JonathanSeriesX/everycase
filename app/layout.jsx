@@ -68,13 +68,18 @@ export const viewport = {
   themeColor: "#E3504F",
 };
 
+const baseTitle = {
+  default: "Finest Woven",
+  template: "%s — Finest Woven",
+};
+
+const baseDescription =
+  "The only catalogue of all the Apple cases ever released for iPhone, iPad, and Mac.";
+
 export const metadata = {
   applicationName: "Finest Woven",
-  title: {
-    default: "Finest Woven",
-    template: "%s — Finest Woven",
-  },
-  description: "Library of Apple cases for iPhone, iPad, and Mac.",
+  title: baseTitle,
+  description: baseDescription,
   robots: {
     index: true,
     follow: true,
@@ -90,12 +95,17 @@ export const metadata = {
     ],
   },
   openGraph: {
+    title: baseTitle,
+    description: baseDescription,
+    siteName: "Finest Woven",
+    locale: "en_GB",
+    type: "website",
     images: [
       {
         url: "https://cloudfront.everycase.org/assets/og.webp",
         width: 2000,
         height: 1000,
-        //alt: 'Next.js',
+        alt: "Multiple iPhone 13 models displayed in Apple's silicone cases",
       },
     ],
   },
@@ -104,14 +114,10 @@ export const metadata = {
     capable: true,
     statusBarStyle: "default",
   },
-  formatDetection: {
-    telephone: false,
-  },
   other: {
     "msapplication-config": "none",
     "msapplication-TileColor": "#FFE0F5",
     "msapplication-tap-highlight": "no",
-    "mobile-web-app-capable": "yes",
   },
 };
 
@@ -148,7 +154,7 @@ export default async function RootLayout({ children }) {
     <html
       lang="en"
       dir="ltr"
-      suppressHydrationWarning // Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
+      //suppressHydrationWarning // Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
     >
       <Head
         color={{
