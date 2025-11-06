@@ -16,7 +16,8 @@
 .env
 .env.local
 .vercel
-venv
+.venv
+venv/
 _pagefind/
 next-env.d.ts
 __pycache__
