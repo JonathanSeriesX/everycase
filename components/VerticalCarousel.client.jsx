@@ -35,6 +35,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
             <Table.Tr>
               {cases.map((item, index) => {
                 const isPriorityImage = index < 5;
+                const imageAlt = `${item.model} ${item.kind} — ${item.colour}`;
                 return (
                   <Table.Td
                     key={item.SKU}
@@ -62,11 +63,12 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
                           ).trim()}.webp`}
                           width={512}
                           height={512}
-                          alt={`${item.model} ${item.kind} — ${item.colour}`}
+                          alt={imageAlt}
                           style={{ objectFit: "contain" }}
                           fetchPriority={isPriorityImage ? "high" : "low"}
                           loading={isPriorityImage ? "eager" : "lazy"}
-                          unoptimized="true"
+                          unoptimized
+                          title={imageAlt}
                         />
                       </div>
                     </Link>

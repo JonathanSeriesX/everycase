@@ -39,15 +39,30 @@ const CaseTableTabs = ({ models = [], material, tabNames }) => {
     return model.startsWith(prefix) ? model.slice(prefix.length) : model;
   });
 
+  const storageKey =
+    normalizedModels.length === 0
+      ? undefined
+      : [
+          "case-table-tabs",
+          material ? material.replace(/\s+/g, "-").toLowerCase() : "all",
+          normalizedModels
+            .map((model, idx) =>
+              typeof model === "string"
+                ? model.replace(/\s+/g, "-").toLowerCase()
+                : `index-${idx}`,
+            )
+            .join("|"),
+        ].join(":");
+
   const labels =
     Array.isArray(tabNames) && tabNames.length === normalizedModels.length
       ? tabNames
       : defaultTabNames;
 
   return (
-    <Tabs items={labels}>
+    <Tabs items={labels} {...(storageKey ? { storageKey } : {})}>
       {normalizedModels.map((model, index) => (
-        <Tabs.Tab key={model ?? index} title={labels[index] ?? model}>
+        <Tabs.Tab key={model ?? index}>
           <VerticalCarousel
             {...(model ? { model } : {})}
             {...(material ? { material } : {})}
