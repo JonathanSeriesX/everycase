@@ -23,7 +23,7 @@ const LightboxComponent = ({ images }) => {
             width={image.width || 500}
             height={image.height || 500}
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-            unoptimized
+            unoptimized="true"
           />
         </div>
       ))}

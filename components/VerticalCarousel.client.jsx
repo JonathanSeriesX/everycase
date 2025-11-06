@@ -33,60 +33,65 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
         <Table>
           <tbody>
             <Table.Tr>
-              {cases.map((item) => (
-                <Table.Td
-                  key={item.SKU}
-                  style={{
-                    padding: "0",
-                    verticalAlign: "top",
-                    width: isSmallViewport ? "125px" : "200px",
-                  }}
-                >
-                  <Link href={`/case/${item.SKU}`}>
+              {cases.map((item, index) => {
+                const isPriorityImage = index < 5;
+                return (
+                  <Table.Td
+                    key={item.SKU}
+                    style={{
+                      padding: "0",
+                      verticalAlign: "top",
+                      width: isSmallViewport ? "125px" : "200px",
+                    }}
+                  >
+                    <Link href={`/case/${item.SKU}`}>
+                      <div
+                        style={{
+                          width: isSmallViewport ? "125px" : "200px",
+                          height: isSmallViewport ? "125px" : "200px",
+                          overflow: "hidden",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginTop: isSmallViewport ? "15px" : "30px",
+                        }}
+                      >
+                        <Image
+                          src={`https://cloudfront.everycase.org/everypreview/${(
+                            item.alt_thumbnail || item.SKU
+                          ).trim()}.webp`}
+                          width={512}
+                          height={512}
+                          alt={`${item.model} ${item.kind} — ${item.colour}`}
+                          style={{ objectFit: "contain" }}
+                          fetchPriority={isPriorityImage ? "high" : "low"}
+                          loading={isPriorityImage ? "eager" : "lazy"}
+                          unoptimized="true"
+                        />
+                      </div>
+                    </Link>
                     <div
                       style={{
-                        width: isSmallViewport ? "125px" : "200px",
-                        height: isSmallViewport ? "125px" : "200px",
-                        overflow: "hidden",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        marginTop: isSmallViewport ? "15px" : "30px",
+                        height: "50px",
+                        marginTop: "8px",
                       }}
                     >
-                      <Image
-                        src={`https://cloudfront.everycase.org/everypreview/${(
-                          item.alt_thumbnail || item.SKU
-                        ).trim()}.webp`}
-                        width={512}
-                        height={512}
-                        alt={`${item.model} ${item.kind} — ${item.colour}`}
-                        style={{ objectFit: "contain" }}
-                        //loading="eager"
-                      />
+                      <strong
+                        style={{
+                          textAlign: "center",
+                          marginLeft: "5px",
+                          marginRight: "5px",
+                        }}
+                      >
+                        {showModelPrefix(item.colour)}
+                      </strong>
                     </div>
-                  </Link>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "50px",
-                      marginTop: "8px",
-                    }}
-                  >
-                    <strong
-                      style={{
-                        textAlign: "center",
-                        marginLeft: "5px",
-                        marginRight: "5px",
-                      }}
-                    >
-                      {showModelPrefix(item.colour)}
-                    </strong>
-                  </div>
-                </Table.Td>
-              ))}
+                  </Table.Td>
+                );
+              })}
             </Table.Tr>
             <Table.Tr>
               {cases.map((item) => (
