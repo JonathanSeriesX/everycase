@@ -16,6 +16,8 @@ const config = {
   "ipad-pro-97": "iPad Pro 9.7″",
   "ipad-mini-4": "iPad mini 4–5",
   "ipad-air-2013": "iPad Air 1–2 & iPad 5–6",
+  "ipad-mini-2012": "iPad Mini 1–3",
+  "ipad-2": "iPad 2–4",
 };
 
 export default config;

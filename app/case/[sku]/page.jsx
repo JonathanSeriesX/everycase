@@ -12,7 +12,7 @@ export const dynamicParams = false;
 
 const IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
-const EXTENSION = "?wid=2048&hei=2048&fmt=png-alpha";
+const EXTENSION = "?wid=1536&hei=1536&fmt=png-alpha";
 
 let cachedCases;
 let cachedVariantFilenames;
