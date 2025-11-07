@@ -8,22 +8,26 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "react-photo-album/columns.css";
 import "yet-another-react-lightbox/styles.css";
 
-const DEFAULT_DIMENSION = 2048;
-const DOWNLOAD_BASE_URL =
+const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
+const DOWNLOAD_IMAGE_PARAMS = "?wid=4608&hei=4608&fmt=png-alpha";
+const DEFAULT_DIMENSION = 2048;
+
+const getAppleImageCode = (src) => {
+  if (!src) return "";
+  const [path] = src.split("?");
+  return path?.split("/").pop() ?? "";
+};
 
 const buildDownloadUrl = (src) => {
-  const filename = src?.split("/").pop() ?? "";
-  const [code] = filename.split(".");
-
-  return code ? `${DOWNLOAD_BASE_URL}/${code}?wid=2560&hei=2560&fmt=avif` : src;
+  const code = getAppleImageCode(src);
+  return code ? `${APPLE_IMAGE_BASE_URL}/${code}${DOWNLOAD_IMAGE_PARAMS}` : src;
 };
 
 const buildFilename = (src) => {
-  const filename = src?.split("/").pop() ?? "";
-  const [code] = filename.split(".");
+  const code = getAppleImageCode(src);
 
-  return code ? `${code}.avif` : src;
+  return code ? `${code}.png` : src;
 };
 
 const LightboxComponent = ({ images }) => {
