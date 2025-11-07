@@ -142,9 +142,6 @@ export default async function CasePage({ params }) {
             <strong>{orderNumber}</strong> is an order number for this product,
             used for search engines, auction websites and such.
           </Callout>
-          ```js copy
-          {orderNumber}
-          ```
         </header>
         <section className="nx-space-y-2">
           <Heading2>Image gallery</Heading2>
