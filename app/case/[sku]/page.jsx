@@ -10,6 +10,10 @@ import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
+const IMAGE_BASE_URL =
+  "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
+const EXTENSION = "?wid=2048&hei=2048&fmt=png-alpha";
+
 let cachedCases;
 let cachedVariantFilenames;
 
@@ -57,14 +61,8 @@ function listVariantsForSku(sku) {
 }
 
 function resolveImageSource(variant) {
-  const hasExtension = /\.[a-z0-9]+$/i.test(variant);
-  const isGalleryShot = variant.includes("_AV");
-  const baseUrl = isGalleryShot
-    ? "https://cloudfront.everycase.org/everyimage/"
-    : "https://cloudfront.everycase.org/everysource/";
-  const extension = isGalleryShot ? "avif" : "webp";
-
-  return `${baseUrl}${variant}${hasExtension ? "" : `.${extension}`}`;
+  const code = (variant || "").trim();
+  return `${IMAGE_BASE_URL}/${code}${EXTENSION}`;
 }
 
 function getCaseName(data) {
@@ -144,6 +142,9 @@ export default async function CasePage({ params }) {
             <strong>{orderNumber}</strong> is an order number for this product,
             used for search engines, auction websites and such.
           </Callout>
+          ```js copy
+          {orderNumber}
+          ```
         </header>
         <section className="nx-space-y-2">
           <Heading2>Image gallery</Heading2>
