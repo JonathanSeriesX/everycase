@@ -1,4 +1,5 @@
 @import "nextra-theme-docs/style.css";
+@import "../styles/lightbox.css";
 
 @tailwind base;
 @tailwind components;
@@ -52,41 +53,4 @@ h5,
 h6 {
   font-stretch: 102%;
   color: #e3504f !important;
-}
-
-/* Yet Another React Lightbox theme tweaks */
-:root {
-  --lightbox-glass: rgba(255, 255, 255, 0.72);
-  --lightbox-glass-shadow: 0 25px 80px rgba(15, 23, 42, 0.25);
-  --yarl__container_background_color: var(--lightbox-glass);
-  --yarl__color_backdrop: rgba(250, 249, 245, 0.65);
-  --yarl__button_background_color: rgba(255, 255, 255, 0.2);
-  --yarl__button_border: 1px solid rgba(15, 23, 42, 0.12);
-  --yarl__color_button: rgba(17, 24, 39, 0.72);
-  --yarl__color_button_active: rgba(17, 24, 39, 0.94);
-  --yarl__button_filter: drop-shadow(0 8px 28px rgba(15, 23, 42, 0.2));
-  --yarl__color_button_disabled: rgba(71, 85, 105, 0.4);
-}
-
-html:not([data-theme="dark"]) .yarl__container,
-html:not(.dark) .yarl__container {
-  backdrop-filter: blur(32px) saturate(135%);
-  box-shadow: var(--lightbox-glass-shadow);
-}
-
-html[data-theme="dark"],
-html.dark {
-  --yarl__container_background_color: rgba(4, 6, 12, 0.92);
-  --yarl__color_backdrop: rgba(0, 0, 0, 0.92);
-  --yarl__button_background_color: rgba(10, 15, 25, 0.55);
-  --yarl__button_border: 1px solid rgba(255, 255, 255, 0.08);
-  --yarl__color_button: rgba(255, 255, 255, 0.85);
-  --yarl__color_button_active: rgba(255, 255, 255, 1);
-  --yarl__button_filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.65));
-  --yarl__color_button_disabled: rgba(226, 232, 240, 0.45);
-}
-
-html[data-theme="dark"] .yarl__container,
-html.dark .yarl__container {
-  backdrop-filter: blur(18px);
 }
