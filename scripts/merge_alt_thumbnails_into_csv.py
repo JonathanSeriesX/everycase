@@ -1,11 +1,10 @@
 import csv
 
 
-
 # File paths (replace with your actual paths)
-csv_file_path = "cases.csv"
-txt_file_path = "additional_skus.txt"
-output_csv_file_path = "updated_cases.csv"
+csv_file_path = "database.csv"
+txt_file_path = "alt_thumbnails.txt"
+output_csv_file_path = "updated_database.csv"
 
 # Load SKUs from the text file into a dictionary for quick lookup
 sku_mapping = {}
@@ -30,7 +29,9 @@ with open(csv_file_path, "r") as csv_file:
         base_sku = row[0]  # The SKU is in the first column
         if not row[5]:  # Check if the alt_thumbnail column is empty
             if base_sku in sku_mapping:
-                row[5] = sku_mapping[base_sku]  # Append the matching full SKU to the last column
+                row[5] = sku_mapping[
+                    base_sku
+                ]  # Append the matching full SKU to the last column
         updated_rows.append(row)
 
 # Write the updated rows to a new CSV file

@@ -16,5 +16,3 @@ Current roadmap:
 ## Licence
 
 This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Nextra Docs theme, which is licensed under the MIT Licence.
-
-The original content and modifications introduced by me have their own [loicense](LICENCE.md).
