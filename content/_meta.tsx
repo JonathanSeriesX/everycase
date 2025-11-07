@@ -1,3 +1,5 @@
+import { GitHubIcon } from "nextra/icons";
+
 const config = {
   "*": {
     theme: {
@@ -24,7 +26,28 @@ const config = {
     type: "page",
   },
   roadmap: {
-    title: "Roadmap ➤",
+    title: (
+      <span
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "0.375rem",
+          whiteSpace: "nowrap",
+        }}
+      >
+        Roadmap
+        <GitHubIcon
+          aria-hidden
+          style={{
+            width: 16,
+            height: 16,
+            display: "inline-block",
+            verticalAlign: "middle",
+          }}
+        />
+      </span>
+    ),
+    href: "https://github.com/JonathanSeriesX/everycase#readme",
     type: "page",
   },
   about: {
@@ -32,7 +55,7 @@ const config = {
     type: "page",
   },
   support: {
-    title: "Leave your mark ♥",
+    title: "Support me ♥",
     type: "page",
   },
   sep1: {

@@ -35,6 +35,11 @@ const nextConfig: NextConfig = {
         hostname: "cloudfront.everycase.org",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "store.storeimages.cdn-apple.com",
+        pathname: "/**",
+      },
     ],
     unoptimized: true,
     //quality: 100,

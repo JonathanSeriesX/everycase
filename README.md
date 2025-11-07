@@ -2,8 +2,19 @@
 
 This is a working repo for the [Finest Woven](https://everycase.org/) website.
 
-I am working on many fixes and updates.
+The development of Finest Woven is being driven exclusively on pure enthusiasm and only happens when I have free time, so I can’t provide you with any timeframes (:
+
+Current roadmap:
+
+- Fix pages with older collections
+- Fix image datasets
+- Option to sort cases not only by device but also by collection (year)
+- Ability to sign up (with Apple!) and manage your own collection
+- More content (like my notes & thoughts)
+- Bluesky page?
 
 ## Licence
 
-This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Docs template, which is licensed under the MIT Licence. The original content and modifications introduced by Finest Woven have their own [loicense](LICENCE.md).
+This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Nextra Docs theme, which is licensed under the MIT Licence.
+
+The original content and modifications introduced by me have their own [loicense](LICENCE.md).

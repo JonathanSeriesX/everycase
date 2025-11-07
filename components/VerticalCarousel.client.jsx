@@ -5,6 +5,10 @@ import { Table } from "nextra/components";
 import Link from "next/link";
 import Image from "next/image";
 
+const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
+// /MF039 will be put in between these two
+const CAROUSEL_IMAGE_BASE_FORMAT = "webp";
+
 const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
   const [isSmallViewport, setIsSmallViewport] = useState(false);
 
@@ -38,6 +42,10 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
                 const imageAlt = `${item.model} ${item.kind}${
                   item.kind === "Clear Case" ? "" : ` — ${item.colour}`
                 }`;
+                const imageCode = (item.alt_thumbnail || item.SKU || "").trim();
+                const imageSrc = imageCode
+                  ? `${CAROUSEL_IMAGE_BASE_URL}/${imageCode}.${CAROUSEL_IMAGE_BASE_FORMAT}`
+                  : "";
                 return (
                   <Table.Td
                     key={item.SKU}
@@ -60,9 +68,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
                         }}
                       >
                         <Image
-                          src={`https://cloudfront.everycase.org/everypreview/${(
-                            item.alt_thumbnail || item.SKU
-                          ).trim()}.webp`}
+                          src={imageSrc}
                           width={512}
                           height={512}
                           alt={imageAlt}
