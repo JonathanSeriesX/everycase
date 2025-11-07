@@ -9,7 +9,7 @@ from typing import Iterable, List, Set
 
 import requests
 
-BASE_URL_PNG = "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is/{code}?wid=4608&hei=4608&fmt=png"
+BASE_URL_PNG = "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is/{code}?wid=4608&hei=4608&fmt=png-alpha"
 BASE_URL_JPG = "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/{code}?wid=1024&hei=1024&fmt=jpg&qlt=95"
 DEFAULT_FOLDER = "Source_images"
 SCRIPT_DIR = Path(__file__).resolve().parent

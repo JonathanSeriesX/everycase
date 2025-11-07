@@ -36,7 +36,7 @@ function findCaseBySku(sku) {
 function loadVariantFilenames() {
   if (cachedVariantFilenames) return cachedVariantFilenames;
 
-  const filePath = path.join(process.cwd(), "scripts", "processed_images.txt");
+  const filePath = path.join(process.cwd(), "scripts", "source_images.txt");
   try {
     const fileContents = fs.readFileSync(filePath, "utf-8");
     cachedVariantFilenames = fileContents
