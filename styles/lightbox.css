@@ -34,3 +34,48 @@ html[data-theme="dark"] .yarl__container,
 html.dark .yarl__container {
   backdrop-filter: blur(18px);
 }
+
+.yarl__button.lightbox-format-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: var(--yarl__button_padding, 8px);
+  gap: 0;
+}
+
+.lightbox-format-link__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: inherit;
+  gap: 0.25rem;
+}
+
+.lightbox-format-link__text {
+  line-height: 1;
+}
+
+.lightbox-format-link__icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  stroke-width: 2;
+}
+
+.yarl__button.lightbox-format-link[data-format="avif"] .lightbox-format-link__badge {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: #f8fafc;
+}
+
+.yarl__button.lightbox-format-link[data-format="png"] .lightbox-format-link__badge {
+  background: linear-gradient(135deg, #0ea5e9, #059669);
+  color: #ecfdf5;
+}
