@@ -113,7 +113,7 @@ const LightboxComponent = ({ images }) => {
             <FormatLinkButton
               key="lightbox-format-jpg"
               format="jpg"
-              label="Open a high-quality JPG image in a new tab (up to ~500 KB)"
+              label="Open a medium-res JPG image in a new tab (up to ~500 KB)"
               shortLabel=".jpg"
             />,
             <FormatLinkButton
