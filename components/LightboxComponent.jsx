@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { LinkArrowIcon } from "nextra/icons";
-import { ColumnsPhotoAlbum } from "react-photo-album";
+import { MasonryPhotoAlbum } from "react-photo-album";
 import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "react-photo-album/columns.css";
@@ -81,11 +81,11 @@ const LightboxComponent = ({ images }) => {
 
   return (
     <>
-      <ColumnsPhotoAlbum
+      <MasonryPhotoAlbum
         layout="columns"
         columns={(containerWidth) => {
-          if (containerWidth < 480) return 2;
-          if (containerWidth < 800) return 3;
+          if (containerWidth < 600) return 2;
+          if (containerWidth < 1000) return 3;
           return 4;
         }}
         spacing={0}
@@ -119,7 +119,7 @@ const LightboxComponent = ({ images }) => {
             <FormatLinkButton
               key="lightbox-format-png"
               format="png"
-              label="Open PNG image in new tab"
+              label="Opens a high-res PNG image in a new tab (up to ~10 MB)"
               shortLabel=".png"
             />,
             "zoom",
