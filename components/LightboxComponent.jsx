@@ -12,7 +12,7 @@ const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const FORMAT_PARAMS = {
   avif: "?wid=4608&hei=4608&fmt=avif",
-  png: "?wid=4608&hei=4608&png-alpha",
+  png: "?wid=4608&hei=4608&fmt=png-alpha",
 };
 const DEFAULT_DIMENSION = 2048;
 
