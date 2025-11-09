@@ -44,7 +44,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     //quality: 100,
     formats: ["image/avif", "image/webp"],
-    imageSizes: [512, 1536],
+    imageSizes: [512],
+    minimumCacheTTL: 2678400, // 31 days
   },
   experimental: {
     turbopackFileSystemCacheForDev: false,
