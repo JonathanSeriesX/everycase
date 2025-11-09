@@ -11,7 +11,7 @@ import "yet-another-react-lightbox/styles.css";
 const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const FORMAT_PARAMS = {
-  avif: "?wid=2560&hei=2560&fmt=jpg&qlt=90",
+  jpg: "?wid=2560&hei=2560&fmt=jpg&qlt=90",
   png: "?wid=4608&hei=4608&fmt=png-alpha",
 };
 const DEFAULT_DIMENSION = 2048;
@@ -72,7 +72,7 @@ const LightboxComponent = ({ images }) => {
         width: image.width || DEFAULT_DIMENSION,
         height: image.height || DEFAULT_DIMENSION,
         formatLinks: {
-          avif: image.formatLinks?.avif || buildFormatLink(image.src, "avif"),
+          jpg: image.formatLinks?.jpg || buildFormatLink(image.src, "jpg"),
           png: image.formatLinks?.png || buildFormatLink(image.src, "png"),
         },
       })),
@@ -111,8 +111,8 @@ const LightboxComponent = ({ images }) => {
         toolbar={{
           buttons: [
             <FormatLinkButton
-              key="lightbox-format-avif"
-              format="avif"
+              key="lightbox-format-jpg"
+              format="jpg"
               label="Open a high-quality JPG image in a new tab (up to ~500 KB)"
               shortLabel=".jpg"
             />,
