@@ -51,6 +51,25 @@ const nextConfig: NextConfig = {
     turbopackFileSystemCacheForDev: false,
   },
   allowedDevOrigins: ["*.orb.local"],
+  async redirects() {
+    return [
+      {
+        source: "/pre-notch-iphone/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/pre-liquid-ipad/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/ancient/:path*",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       ...surpriseTargets.map((source) => ({
