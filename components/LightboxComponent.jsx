@@ -4,15 +4,16 @@ import { useMemo, useState } from "react";
 import { LinkArrowIcon } from "nextra/icons";
 import { ColumnsPhotoAlbum } from "react-photo-album";
 import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
-import Download from "yet-another-react-lightbox/plugins/download";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "react-photo-album/columns.css";
 import "yet-another-react-lightbox/styles.css";
 
 const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
-const DOWNLOAD_IMAGE_PARAMS = "?wid=4608&hei=4608&fmt=png-alpha";
-const FORMAT_LINK_BASE_URL = "https://example.com";
+const FORMAT_PARAMS = {
+  avif: "?wid=4608&hei=4608&fmt=avif",
+  png: "?wid=4608&hei=4608&png-alpha",
+};
 const DEFAULT_DIMENSION = 2048;
 
 const getAppleImageCode = (src) => {
@@ -21,24 +22,13 @@ const getAppleImageCode = (src) => {
   return path?.split("/").pop() ?? "";
 };
 
-const buildDownloadUrl = (src) => {
+const buildFormatLink = (src, format) => {
   const code = getAppleImageCode(src);
-  return code ? `${APPLE_IMAGE_BASE_URL}/${code}${DOWNLOAD_IMAGE_PARAMS}` : src;
-};
-
-const buildFormatLink = (src, extension) => {
-  const code = getAppleImageCode(src);
-  if (code) {
-    return `${FORMAT_LINK_BASE_URL}/${code}.${extension}`;
+  const params = FORMAT_PARAMS[format];
+  if (code && params) {
+    return `${APPLE_IMAGE_BASE_URL}/${code}${params}`;
   }
-
-  return `${FORMAT_LINK_BASE_URL}/image.${extension}`;
-};
-
-const buildFilename = (src) => {
-  const code = getAppleImageCode(src);
-
-  return code ? `${code}.png` : src;
+  return src;
 };
 
 const FormatLinkButton = ({ format, label, shortLabel }) => {
@@ -81,8 +71,6 @@ const LightboxComponent = ({ images }) => {
         alt: image.alt || "Case image",
         width: image.width || DEFAULT_DIMENSION,
         height: image.height || DEFAULT_DIMENSION,
-        downloadFilename: buildFilename(image.src),
-        downloadUrl: buildDownloadUrl(image.src),
         formatLinks: {
           avif: image.formatLinks?.avif || buildFormatLink(image.src, "avif"),
           png: image.formatLinks?.png || buildFormatLink(image.src, "png"),
@@ -116,7 +104,7 @@ const LightboxComponent = ({ images }) => {
         open={lightboxIndex >= 0}
         index={lightboxIndex}
         close={() => setLightboxIndex(-1)}
-        plugins={[Zoom, Download]}
+        plugins={[Zoom]}
         animation={{ fade: 220, swipe: 280, zoom: 320 }}
         controller={{ closeOnBackdropClick: true }}
         zoom={{ maxZoomPixelRatio: 1.5, zoomInMultiplier: 1.25 }}
@@ -134,7 +122,6 @@ const LightboxComponent = ({ images }) => {
               label="Open PNG image in new tab"
               shortLabel=".png"
             />,
-            "download",
             "zoom",
             "close",
           ],
