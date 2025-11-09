@@ -11,7 +11,7 @@ import "yet-another-react-lightbox/styles.css";
 const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const FORMAT_PARAMS = {
-  avif: "?wid=4608&hei=4608&fmt=avif",
+  avif: "?wid=2560&hei=2560&fmt=jpg&qlt=90",
   png: "?wid=4608&hei=4608&fmt=png-alpha",
 };
 const DEFAULT_DIMENSION = 2048;
@@ -113,13 +113,13 @@ const LightboxComponent = ({ images }) => {
             <FormatLinkButton
               key="lightbox-format-avif"
               format="avif"
-              label="Open AVIF image in new tab"
-              shortLabel=".avif"
+              label="Open a high-quality JPG image in a new tab (up to ~500 KB)"
+              shortLabel=".jpg"
             />,
             <FormatLinkButton
               key="lightbox-format-png"
               format="png"
-              label="Opens a high-res PNG image in a new tab (up to ~10 MB)"
+              label="Opens an ultra hi-res PNG image in a new tab (up to ~10 MB)"
               shortLabel=".png"
             />,
             "zoom",
