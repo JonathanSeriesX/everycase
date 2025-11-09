@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { LinkArrowIcon } from "nextra/icons";
 import { ColumnsPhotoAlbum } from "react-photo-album";
-import Lightbox from "yet-another-react-lightbox";
+import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import Download from "yet-another-react-lightbox/plugins/download";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "react-photo-album/columns.css";
@@ -11,6 +12,7 @@ import "yet-another-react-lightbox/styles.css";
 const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const DOWNLOAD_IMAGE_PARAMS = "?wid=4608&hei=4608&fmt=png-alpha";
+const FORMAT_LINK_BASE_URL = "https://example.com";
 const DEFAULT_DIMENSION = 2048;
 
 const getAppleImageCode = (src) => {
@@ -24,10 +26,49 @@ const buildDownloadUrl = (src) => {
   return code ? `${APPLE_IMAGE_BASE_URL}/${code}${DOWNLOAD_IMAGE_PARAMS}` : src;
 };
 
+const buildFormatLink = (src, extension) => {
+  const code = getAppleImageCode(src);
+  if (code) {
+    return `${FORMAT_LINK_BASE_URL}/${code}.${extension}`;
+  }
+
+  return `${FORMAT_LINK_BASE_URL}/image.${extension}`;
+};
+
 const buildFilename = (src) => {
   const code = getAppleImageCode(src);
 
   return code ? `${code}.png` : src;
+};
+
+const FormatLinkButton = ({ format, label, shortLabel }) => {
+  const { currentSlide } = useLightboxState();
+  const href = currentSlide?.formatLinks?.[format];
+
+  if (!href) {
+    return null;
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="yarl__button lightbox-format-link"
+      title={label}
+      aria-label={label}
+      data-format={format}
+    >
+      <span className="lightbox-format-link__badge">
+        <span className="lightbox-format-link__text">{shortLabel}</span>
+        <LinkArrowIcon
+          aria-hidden="true"
+          focusable="false"
+          className="lightbox-format-link__icon"
+        />
+      </span>
+    </a>
+  );
 };
 
 const LightboxComponent = ({ images }) => {
@@ -42,6 +83,10 @@ const LightboxComponent = ({ images }) => {
         height: image.height || DEFAULT_DIMENSION,
         downloadFilename: buildFilename(image.src),
         downloadUrl: buildDownloadUrl(image.src),
+        formatLinks: {
+          avif: image.formatLinks?.avif || buildFormatLink(image.src, "avif"),
+          png: image.formatLinks?.png || buildFormatLink(image.src, "png"),
+        },
       })),
     [images]
   );
@@ -75,6 +120,25 @@ const LightboxComponent = ({ images }) => {
         animation={{ fade: 220, swipe: 280, zoom: 320 }}
         controller={{ closeOnBackdropClick: true }}
         zoom={{ maxZoomPixelRatio: 1.5, zoomInMultiplier: 1.25 }}
+        toolbar={{
+          buttons: [
+            <FormatLinkButton
+              key="lightbox-format-avif"
+              format="avif"
+              label="Open AVIF image in new tab"
+              shortLabel=".avif"
+            />,
+            <FormatLinkButton
+              key="lightbox-format-png"
+              format="png"
+              label="Open PNG image in new tab"
+              shortLabel=".png"
+            />,
+            "download",
+            "zoom",
+            "close",
+          ],
+        }}
       />
     </>
   );
