@@ -19,6 +19,19 @@
   padding-bottom: 0.4rem;
 }
 
+/* Prevent long-press selection highlights on interactive controls */
+button,
+[role="button"],
+[role="tab"],
+summary,
+details summary {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   font-family: var(--font-tofino), "Tofino Variable", system-ui;
   font-stretch: 101%;

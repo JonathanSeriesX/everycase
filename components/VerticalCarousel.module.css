@@ -67,6 +67,11 @@
   gap: 0.9rem;
   text-decoration: none;
   color: inherit;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Image well that keeps the product centered */
@@ -151,6 +156,11 @@
   text-decoration: none;
   cursor: pointer;
   gap: 0.35rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Wrap link-specific affordances (underline animation) */
