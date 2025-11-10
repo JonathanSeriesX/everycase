@@ -3,15 +3,11 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  CopyIcon,
-  CheckIcon,
-  LinkArrowIcon,
-} from "nextra/icons";
+import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
 import styles from "./VerticalCarousel.module.css";
 
 const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
-// /MF039 will be put in between these two
+// /MF039. will be put in between these two
 const CAROUSEL_IMAGE_BASE_FORMAT = "webp";
 
 const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
@@ -30,7 +26,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
   const [copiedSku, setCopiedSku] = useState(null);
 
   const sortedCases = [...cases].sort((a, b) =>
-    (a.SKU || "").localeCompare(b.SKU || ""),
+    (a.SKU || "").localeCompare(b.SKU || "")
   );
 
   const displayLabel = (itemColour, itemModel) => {
@@ -114,7 +110,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
                     onClick={() =>
                       copySku(
                         item.SKU + (isSmallViewport ? "ZM" : "ZM/A"),
-                        item.SKU,
+                        item.SKU
                       )
                     }
                   >
