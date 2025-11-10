@@ -32,6 +32,25 @@ details summary {
   -webkit-tap-highlight-color: transparent;
 }
 
+.lightbox-grid {
+  padding: 0;
+}
+
+.lightbox-tile {
+  padding: 10;
+  margin: 10;
+  border: none;
+  background: transparent;
+  outline: none !important;
+  cursor: pointer;
+}
+
+.lightbox-tile:focus,
+.lightbox-tile:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 body {
   font-family: var(--font-tofino), "Tofino Variable", system-ui;
   font-stretch: 101%;

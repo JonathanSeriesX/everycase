@@ -2,10 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { LinkArrowIcon } from "nextra/icons";
-import { MasonryPhotoAlbum } from "react-photo-album";
 import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import "react-photo-album/columns.css";
 import "yet-another-react-lightbox/styles.css";
 
 const APPLE_IMAGE_BASE_URL =
@@ -79,26 +77,37 @@ const LightboxComponent = ({ images }) => {
     [images]
   );
 
+  const minColumnWidth = 240;
+  const maxColumns = 4;
+  const gap = 12; // ~gap-3
+  const columnTemplate = `repeat(auto-fit, minmax(min(50%, ${minColumnWidth}px), 1fr))`;
+  const maxWidth = `${maxColumns * minColumnWidth + (maxColumns - 1) * gap}px`;
+
   return (
     <>
-      <MasonryPhotoAlbum
-        layout="columns"
-        columns={(containerWidth) => {
-          if (containerWidth < 600) return 2;
-          if (containerWidth < 1000) return 3;
-          return 4;
-        }}
-        spacing={0}
-        photos={slides}
-        onClick={({ index }) => setLightboxIndex(index)}
-        componentsProps={{
-          imageProps: {
-            loading: "lazy",
-            className:
-              "rounded-md shadow-sm transition-transform duration-150 ease-out hover:scale-[1.01]",
-          },
-        }}
-      />
+      <div
+        className="lightbox-grid not-prose grid w-full gap-3 mx-auto"
+        style={{ gridTemplateColumns: columnTemplate, maxWidth }}
+      >
+        {slides.map((slide, index) => (
+          <button
+            key={slide.src ?? index}
+            type="button"
+            className="lightbox-tile relative w-full overflow-hidden"
+            onClick={() => setLightboxIndex(index)}
+            aria-label={`Open ${slide.alt || "case image"}`}
+          >
+            <img
+              src={slide.src}
+              alt={slide.alt || "Case image"}
+              loading="lazy"
+              width={slide.width}
+              height={slide.height}
+              className="block h-auto w-full object-contain"
+            />
+          </button>
+        ))}
+      </div>
       <Lightbox
         slides={slides}
         open={lightboxIndex >= 0}

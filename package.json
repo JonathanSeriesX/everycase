@@ -29,7 +29,6 @@
     "nextra-theme-docs": "^4.6.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-photo-album": "^3.2.1",
     "yet-another-react-lightbox": "^3.25.0"
   },
   "devDependencies": {
