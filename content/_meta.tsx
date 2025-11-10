@@ -75,10 +75,6 @@ const config = {
   others: {
     title: "Others",
   },
-  trash: {
-    title: "Trash",
-    display: "hidden",
-  },
 };
 
 export default config;
