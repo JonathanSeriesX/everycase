@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { LinkArrowIcon } from "nextra/icons";
 import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Image from "next/image";
 import "yet-another-react-lightbox/styles.css";
 
 const APPLE_IMAGE_BASE_URL =
@@ -97,13 +98,14 @@ const LightboxComponent = ({ images }) => {
             onClick={() => setLightboxIndex(index)}
             aria-label={`Open ${slide.alt || "case image"}`}
           >
-            <img
+            <Image
               src={slide.src}
               alt={slide.alt || "Case image"}
               loading="lazy"
               width={slide.width}
               height={slide.height}
               className="block h-auto w-full object-contain"
+              unoptimized="true"
             />
           </button>
         ))}
