@@ -32,6 +32,33 @@ details summary {
   -webkit-tap-highlight-color: transparent;
 }
 
+.subheading-anchor:focus,
+.subheading-anchor:focus-visible,
+button:focus,
+button:focus-visible,
+[role="button"]:focus,
+[role="button"]:focus-visible,
+[role="tab"]:focus,
+[role="tab"]:focus-visible,
+[role="menuitem"]:focus,
+[role="menuitem"]:focus-visible,
+[role="menuitemradio"]:focus,
+[role="menuitemradio"]:focus-visible,
+[role="option"]:focus,
+[role="option"]:focus-visible,
+a:focus,
+a:focus-visible,
+select:focus,
+select:focus-visible,
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
 .lightbox-grid {
   padding: 0;
 }
