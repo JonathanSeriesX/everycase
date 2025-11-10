@@ -1,6 +1,6 @@
-folder_x="2_clean"
-folder_y="3_compressed_sources"
-folder_z="4_compressed_previews"
+folder_x="1_sources"
+folder_y="2_compressed_sources"
+folder_z="3_compressed_previews"
 
 mkdir -p "$folder_y" "$folder_z"
 
