@@ -1,0 +1,188 @@
+.carouselWrapper {
+  width: 100%;
+  --case-card-min-width: 190px; /* tweak to change columns */
+}
+
+.cardTrack {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--case-card-min-width), 1fr)
+  );
+  gap: 0.85rem clamp(0.85rem, 1vw, 1.25rem);
+  padding: 0.15rem 0 0.35rem;
+}
+
+.caseCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 0.9rem;
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0.55)
+    ),
+    rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(15, 12, 26, 0.08);
+  box-shadow:
+    0 25px 45px rgba(15, 12, 26, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(28px);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 180ms ease;
+}
+
+.caseCard::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 19px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.14),
+    transparent 55%
+  );
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.caseCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 20px 45px rgba(15, 12, 26, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.cardLink {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.imageShell {
+  border-radius: 16px;
+  min-height: 165px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.4)
+  );
+  overflow: hidden;
+  box-shadow: inset 0 1px 15px rgba(15, 18, 28, 0.08);
+}
+
+.image {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  text-align: center;
+}
+
+.caseTitle {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.metaRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.metaBadge {
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(15, 12, 26, 0.08);
+  color: rgba(15, 18, 28, 0.7);
+  backdrop-filter: blur(18px);
+}
+
+.metaBadgeSecondary {
+  background: rgba(15, 18, 28, 0.05);
+}
+
+.emptyState {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px dashed rgba(15, 12, 26, 0.15);
+  color: rgba(15, 18, 28, 0.7);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .cardTrack {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .imageShell {
+    min-height: 140px;
+  }
+}
+
+:global(html[class~="dark"]) .caseCard {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.28),
+      rgba(255, 255, 255, 0.04)
+    ),
+    rgba(26, 28, 33, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 25px 50px rgba(4, 9, 18, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+:global(html[class~="dark"]) .caseCard:hover {
+  box-shadow:
+    0 20px 45px rgba(8, 8, 10, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+:global(html[class~="dark"]) .imageShell {
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(255, 255, 255, 0.42),
+    rgba(255, 255, 255, 0.05)
+  );
+  box-shadow: inset 0 1px 12px rgba(0, 0, 0, 0.12);
+}
+
+:global(html[class~="dark"]) .metaBadge {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+:global(html[class~="dark"]) .metaBadgeSecondary {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+:global(html[class~="dark"]) .emptyState {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+}

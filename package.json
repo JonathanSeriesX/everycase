@@ -1,6 +1,6 @@
 {
   "name": "everycase",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "private": true,
   "description": "A website describing every case made by Apple, Inc.",
   "author": "Evgenii <jonathan@everycase.org>",
@@ -33,7 +33,7 @@
     "yet-another-react-lightbox": "^3.25.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.16",
+    "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "autoprefixer": "^10.4.21",
@@ -41,7 +41,7 @@
     "eslint-config-next": "^16.0.1",
     "pagefind": "^1.4.0",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.16",
+    "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3"
   }
 }
