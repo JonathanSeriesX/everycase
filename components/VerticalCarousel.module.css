@@ -88,13 +88,6 @@
   height: 100%;
 }
 
-.cardContent {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  text-align: center;
-}
-
 .caseTitle {
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -102,14 +95,23 @@
   font-size: 1rem;
 }
 
+.linkTitle {
+  display: block;
+  margin-top: 0.4rem;
+}
+
 .metaRow {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
+  margin-top: 0.6rem;
 }
 
 .metaBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.25rem 0.65rem;
   border-radius: 9999px;
   font-size: 0.8rem;
@@ -120,8 +122,71 @@
   backdrop-filter: blur(18px);
 }
 
+.actionBadge {
+  cursor: pointer;
+  gap: 0.35rem;
+  transition: transform 120ms ease, box-shadow 120ms ease, color 120ms ease;
+}
+
+.actionBadge:active {
+  transform: scale(0.97);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
 .metaBadgeSecondary {
   background: rgba(15, 18, 28, 0.05);
+  text-decoration: none;
+  cursor: pointer;
+  gap: 0.35rem;
+}
+
+.linkBadge {
+  color: inherit;
+  position: relative;
+}
+
+.linkBadge:hover::after,
+.linkBadge:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.linkBadge::after {
+  content: "";
+  position: absolute;
+  bottom: 0.2rem;
+  left: 0.6rem;
+  right: 0.6rem;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 140ms ease;
+}
+
+.iconSwap {
+  position: relative;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.iconLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.iconVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.iconHidden {
+  opacity: 0;
+  transform: scale(0.75);
 }
 
 .emptyState {
@@ -180,9 +245,14 @@
 
 :global(html[class~="dark"]) .metaBadgeSecondary {
   background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 :global(html[class~="dark"]) .emptyState {
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.7);
+}
+.icon {
+  width: 1rem;
+  height: 1rem;
 }
