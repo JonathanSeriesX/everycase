@@ -1,8 +1,10 @@
+/* Host element around the whole carousel so we can tweak grid density via CSS var */
 .carouselWrapper {
   width: 100%;
   --case-card-min-width: 180px; /* tweak to change columns */
 }
 
+/* Responsive grid that lays out the case cards */
 .cardTrack {
   display: grid;
   grid-template-columns: repeat(
@@ -13,6 +15,7 @@
   padding: 0.15rem 0 0.35rem;
 }
 
+/* Frosted-glass card container */
 .caseCard {
   position: relative;
   overflow: hidden;
@@ -32,6 +35,7 @@
     box-shadow 180ms ease;
 }
 
+/* Subtle internal sheen highlight */
 .caseCard::after {
   content: "";
   position: absolute;
@@ -46,6 +50,7 @@
   pointer-events: none;
 }
 
+/* Lift + glow the card on hover */
 .caseCard:hover {
   transform: translateY(-4px);
   border-color: rgba(255, 255, 255, 0.25);
@@ -53,16 +58,18 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
+/* Clickable region (image + title) that links to the case page */
 .cardLink {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.9rem;
   text-decoration: none;
   color: inherit;
 }
 
+/* Image well that keeps the product centered */
 .imageShell {
   border-radius: 16px;
   min-height: 165px;
@@ -78,12 +85,14 @@
   box-shadow: inset 0 1px 15px rgba(15, 18, 28, 0.08);
 }
 
+/* Prevents stretched thumbnails */
 .image {
   object-fit: contain;
   width: 100%;
   height: 100%;
 }
 
+/* Base styling for the title text */
 .caseTitle {
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -91,11 +100,13 @@
   font-size: 1rem;
 }
 
+/* Ensures the linked title breaks onto its own line below the image */
 .linkTitle {
   display: block;
   margin-top: 0.4rem;
 }
 
+/* Column of pill badges under each card */
 .metaRow {
   display: flex;
   flex-direction: column;
@@ -104,6 +115,7 @@
   margin-top: 0.6rem;
 }
 
+/* Shared pill styling (used by SKU + season buttons) */
 .metaBadge {
   display: inline-flex;
   align-items: center;
@@ -118,17 +130,20 @@
   backdrop-filter: blur(18px);
 }
 
+/* Extra affordances for the copy-to-clipboard badge */
 .actionBadge {
   cursor: pointer;
   gap: 0.35rem;
   transition: transform 120ms ease, box-shadow 120ms ease, color 120ms ease;
 }
 
+/* Compact press feedback on copy badge */
 .actionBadge:active {
   transform: scale(0.97);
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
+/* Season badge shares the glass look but uses link color for text */
 .metaBadgeSecondary {
   background: rgba(255, 255, 255, 0.75);
   border: 1px solid rgba(15, 12, 26, 0.08);
@@ -138,6 +153,7 @@
   gap: 0.35rem;
 }
 
+/* Wrap link-specific affordances (underline animation) */
 .linkBadge {
   position: relative;
 }
@@ -147,6 +163,7 @@
   transform: scaleX(1);
 }
 
+/* Animated underline for the link badge */
 .linkBadge::after {
   content: "";
   position: absolute;
@@ -160,12 +177,14 @@
   transition: transform 140ms ease;
 }
 
+/* Container for the swap animation between copy/check icons */
 .iconSwap {
   position: relative;
   width: 1.1rem;
   height: 1.1rem;
 }
 
+/* Absolutes layered icons to fade/scale between each other */
 .iconLayer {
   position: absolute;
   inset: 0;
@@ -174,16 +193,19 @@
   transition: opacity 160ms ease, transform 160ms ease;
 }
 
+/* Fully-visible state used when icon is active */
 .iconVisible {
   opacity: 1;
   transform: scale(1);
 }
 
+/* Hidden state for the inactive icon */
 .iconHidden {
   opacity: 0;
   transform: scale(0.75);
 }
 
+/* Empty results messaging */
 .emptyState {
   margin-top: 1rem;
   padding: 1rem;
@@ -193,6 +215,7 @@
   text-align: center;
 }
 
+/* Stack the grid tighter on small screens */
 @media (max-width: 600px) {
   .cardTrack {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -204,6 +227,7 @@
   }
 }
 
+/* Dark mode adjustments keep the frosted look readable */
 :global(html[class~="dark"]) .caseCard {
   background: linear-gradient(
       135deg,
@@ -221,6 +245,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
+/* Dark mode variant of the image well highlight */
 :global(html[class~="dark"]) .imageShell {
   background: radial-gradient(
     circle at 30% 20%,
@@ -230,22 +255,27 @@
   box-shadow: inset 0 1px 12px rgba(0, 0, 0, 0.12);
 }
 
+/* Dark mode pill treatment for SKU badge */
 :global(html[class~="dark"]) .metaBadge {
   background: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: rgba(255, 255, 255, 0.82);
 }
 
+/* Dark mode pill treatment for season link */
 :global(html[class~="dark"]) .metaBadgeSecondary {
   background: rgba(255, 255, 255, 0.18);
   border-color: rgba(255, 255, 255, 0.3);
   color: var(--nextra-link-color, #ff4d4d);
 }
 
+/* Dark mode empty-state border/text tweaks */
 :global(html[class~="dark"]) .emptyState {
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.7);
 }
+
+/* Shared icon sizing for copy / check / arrow glyphs */
 .icon {
   width: 1rem;
   height: 1rem;
