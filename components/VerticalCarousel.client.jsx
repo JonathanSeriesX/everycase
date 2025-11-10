@@ -22,8 +22,22 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const showModelPrefix = (colour) =>
-    colour === "Clear Case" ? model : colour;
+  const sortedCases = [...cases].sort((a, b) =>
+    (a.SKU || "").localeCompare(b.SKU || ""),
+  );
+
+  const displayLabel = (itemColour, itemModel) => {
+    if (
+      typeof material === "string" &&
+      material.trim().toLowerCase() === "clear case"
+    ) {
+      return itemModel || model;
+    }
+    if (itemColour === "Clear Case") {
+      return model || itemModel;
+    }
+    return itemColour;
+  };
 
   return (
     <>
@@ -37,7 +51,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
         <Table>
           <tbody>
             <Table.Tr>
-              {cases.map((item, index) => {
+              {sortedCases.map((item, index) => {
                 const isPriorityImage = index < 5;
                 const imageAlt = `${item.model} ${item.kind}${
                   item.kind === "Clear Case" ? "" : ` — ${item.colour}`
@@ -96,7 +110,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
                           marginRight: "5px",
                         }}
                       >
-                        {showModelPrefix(item.colour)}
+                        {displayLabel(item.colour, item.model)}
                       </strong>
                     </div>
                   </Table.Td>
@@ -104,7 +118,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
               })}
             </Table.Tr>
             <Table.Tr>
-              {cases.map((item) => (
+              {sortedCases.map((item) => (
                 <Table.Td key={item.SKU} style={{ padding: "0" }}>
                   <div
                     style={{
@@ -122,7 +136,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
               ))}
             </Table.Tr>
             <Table.Tr>
-              {cases.map((item) => (
+              {sortedCases.map((item) => (
                 <Table.Td key={item.SKU} style={{ padding: "0" }}>
                   <div
                     style={{
@@ -142,7 +156,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
           </tbody>
         </Table>
       </div>
-      {cases.length === 0 && (
+      {sortedCases.length === 0 && (
         <p>
           No cases found for model {model}
           {material ? ` — ${material}` : ""}
