@@ -165,7 +165,8 @@ export default async function RootLayout({ children }) {
       <Head
         color={{
           hue: 0,
-          saturation: 100,
+          saturation: 73,
+          lightness: 60,
         }}
       >
         {/* Your additional tags should be passed as `children` of `<Head>` element */}
