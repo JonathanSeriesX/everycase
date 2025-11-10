@@ -136,7 +136,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
                       />
                     </span>
                   </button>
-                  <a
+                  <Link
                     className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
                     href={buildSeasonLink(item.season)}
                     target="_blank"
@@ -144,7 +144,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
                   >
                     <span>{item.season || "—"}</span>
                     <LinkArrowIcon className={styles.icon} aria-hidden />
-                  </a>
+                  </Link>
                 </div>
               </article>
             );
