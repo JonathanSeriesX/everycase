@@ -2,71 +2,130 @@ import { Tabs } from "nextra/components";
 import VerticalCarousel from "./VerticalCarousel";
 
 /**
- * Displays a tabbed view of case variants for a list of models.
+ * Displays a tabbed view of case variants with per-tab queries.
  *
  * @param {Object} props
- * @param {string[]} props.models - Ordered list of device models to render tabs for.
- * @param {string} [props.material] - Optional material filter passed to the carousel.
- * @param {string[]} [props.tabNames] - Optional labels for the tabs. Must match the length of `models`.
+ * @param {Array<{
+ *   label?: string,
+ *   model?: string,
+ *   material?: string,
+ *   season?: string,
+ * }>} props.tabs - Ordered list of tab definitions.
+ * @param {string[]} [props.tabNames] - Optional labels for the tabs. Must match the length of `tabs`.
  */
-const CaseTableTabs = ({ models = [], material, tabNames }) => {
-  const normalizedModels = Array.isArray(models)
-    ? models.filter(Boolean)
+const CaseTableTabs = ({ tabs = [], tabNames = [] }) => {
+  const sanitize = (value) => {
+    if (typeof value !== "string") return undefined;
+    const trimmed = value.trim();
+    return trimmed.length === 0 ? undefined : trimmed;
+  };
+
+  const normalizedTabs = Array.isArray(tabs)
+    ? tabs
+        .map((tab, index) => {
+          if (!tab || typeof tab !== "object") return null;
+          const query = {
+            model: sanitize(tab.model),
+            material: sanitize(tab.material),
+            season: sanitize(tab.season),
+          };
+
+          const rawLabel = sanitize(tab.label);
+          const keyFromLabel = rawLabel
+            ? rawLabel.toLowerCase().replace(/\s+/g, "-")
+            : null;
+
+          const fallbackKeyParts = ["model", "material", "season"]
+            .map((field) =>
+              query[field]
+                ? query[field].toLowerCase().replace(/\s+/g, "-")
+                : `any-${field}`,
+            )
+            .join(".");
+
+          const key =
+            sanitize(tab.id) ||
+            sanitize(tab.key) ||
+            keyFromLabel ||
+            `${fallbackKeyParts}:${index}`;
+
+          return {
+            key,
+            label: rawLabel,
+            query,
+          };
+        })
+        .filter(Boolean)
     : [];
 
-  if (normalizedModels.length === 0) {
+  if (normalizedTabs.length === 0) {
     return null;
   }
 
-  if (normalizedModels.length === 1) {
-    const [onlyModel] = normalizedModels;
-    return (
-      <VerticalCarousel
-        {...(onlyModel ? { model: onlyModel } : {})}
-        {...(material ? { material } : {})}
-      />
-    );
+  if (normalizedTabs.length === 1) {
+    const [singleTab] = normalizedTabs;
+    return <VerticalCarousel {...singleTab.query} />;
   }
 
-  const [firstModel] = normalizedModels;
+  const allModels = normalizedTabs
+    .map((tab) => tab.query.model)
+    .filter(Boolean);
+  const firstModel = allModels[0];
   const prefix =
-    typeof firstModel === "string" && firstModel.includes(" ")
-      ? `${firstModel.split(" ")[0]} `
+    allModels.length > 1 &&
+    typeof firstModel === "string" &&
+    firstModel.includes(" ")
+      ? (() => {
+          const candidate = `${firstModel.split(" ")[0]} `;
+          const appliesToAll = normalizedTabs.every((tab, index) => {
+            if (index === 0) return true;
+            const { model } = tab.query;
+            return model ? model.startsWith(candidate) : false;
+          });
+          return appliesToAll ? candidate : "";
+        })()
       : "";
 
-  const defaultTabNames = normalizedModels.map((model, index) => {
-    if (index === 0 || !prefix) return model;
-    return model.startsWith(prefix) ? model.slice(prefix.length) : model;
+  const resolvedLabels = normalizedTabs.map((tab, index) => {
+    if (tab.label) return tab.label;
+
+    if (
+      Array.isArray(tabNames) &&
+      tabNames.length === normalizedTabs.length &&
+      tabNames[index]
+    ) {
+      return tabNames[index];
+    }
+
+    const { model, material, season } = tab.query;
+    if (model) {
+      if (!prefix || index === 0) return model;
+      return model.startsWith(prefix) ? model.slice(prefix.length) : model;
+    }
+
+    return material || season || `Tab ${index + 1}`;
   });
 
-  const storageKey =
-    normalizedModels.length === 0
-      ? undefined
-      : [
-          "case-table-tabs",
-          material ? material.replace(/\s+/g, "-").toLowerCase() : "all",
-          normalizedModels
-            .map((model, idx) =>
-              typeof model === "string"
-                ? model.replace(/\s+/g, "-").toLowerCase()
-                : `index-${idx}`,
-            )
-            .join("|"),
-        ].join(":");
-
-  const labels =
-    Array.isArray(tabNames) && tabNames.length === normalizedModels.length
-      ? tabNames
-      : defaultTabNames;
+  const storageKey = [
+    "case-table-tabs",
+    normalizedTabs
+      .map(({ query }) =>
+        ["model", "material", "season"]
+          .map((field) =>
+            query[field]
+              ? query[field].replace(/\s+/g, "-").toLowerCase()
+              : `any-${field}`,
+          )
+          .join("."),
+      )
+      .join("|"),
+  ].join(":");
 
   return (
-    <Tabs items={labels} {...(storageKey ? { storageKey } : {})}>
-      {normalizedModels.map((model, index) => (
-        <Tabs.Tab key={model ?? index}>
-          <VerticalCarousel
-            {...(model ? { model } : {})}
-            {...(material ? { material } : {})}
-          />
+    <Tabs items={resolvedLabels} storageKey={storageKey}>
+      {normalizedTabs.map((tab, index) => (
+        <Tabs.Tab key={`${tab.key}-${index}`}>
+          <VerticalCarousel {...tab.query} />
         </Tabs.Tab>
       ))}
     </Tabs>

@@ -31,12 +31,28 @@ iPad Air 2 Smart Case is exclusive to iPad Air 2.
 
 ### Smart Cover
 
-<CaseTableTabs models={["iPad Air 1-2"]} material="Smart Cover" />
+<CaseTableTabs
+  tabs={[
+    {
+      model: "iPad Air 1-2",
+      material: "Smart Cover",
+    },
+  ]}
+/>
 
 ### Smart Case
 
 <CaseTableTabs
-  models={["iPad Air 1", "iPad Air 2"]}
-  tabNames={["iPad Air 1", "iPad Air 2"]}
-  material="Smart Case"
+  tabs={[
+    {
+      label: "iPad Air 1",
+      model: "iPad Air 1",
+      material: "Smart Case",
+    },
+    {
+      label: "iPad Air 2",
+      model: "iPad Air 2",
+      material: "Smart Case",
+    },
+  ]}
 />
