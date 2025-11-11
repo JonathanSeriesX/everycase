@@ -76,6 +76,10 @@ const config = {
   others: {
     title: "Others",
   },
+  sep3: {
+    title: "Sorted by year:",
+    type: "separator",
+  },
 };
 
 export default config;

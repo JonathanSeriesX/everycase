@@ -15,7 +15,7 @@ const sortCasesBySku = (caseList = []) =>
 const buildSeasonLink = (seasonLabel) => {
   if (!seasonLabel) return "https://example.com/season/unknown";
   const normalized = seasonLabel.trim().replace(/\s+/g, "_");
-  return `https://example.com/season/${encodeURIComponent(normalized)}`;
+  return ``; //https://example.com/season/${encodeURIComponent(normalized)}
 };
 
 const formatSkuLabel = (sku) => (sku || "").replace(/zm\/?a?$/i, "");
@@ -59,7 +59,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
   const displayLabel = useCallback(
     (itemColour, itemModel) =>
       getDisplayLabel(itemColour, itemModel, model, material),
-    [material, model],
+    [material, model]
   );
 
   const copySku = useCallback((skuWithSuffix, key) => {
