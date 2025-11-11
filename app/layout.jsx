@@ -74,7 +74,7 @@ const baseTitle = {
 };
 
 const baseDescription =
-  "The only catalogue of all the Apple cases ever released for iPhone, iPad, and Mac.";
+  "The only catalogue of all the Apple accessories ever released for iPhone, iPad, and Mac.";
 
 export const metadata = {
   applicationName: "Finest Woven",
