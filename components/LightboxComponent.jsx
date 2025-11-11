@@ -14,6 +14,7 @@ const FORMAT_PARAMS = {
   png: "?wid=4608&hei=4608&fmt=png-alpha",
 };
 const DEFAULT_DIMENSION = 2048;
+const GRID_CONFIG = { minColumnWidth: 240, maxColumns: 4, gap: 12 };
 
 const getAppleImageCode = (src) => {
   if (!src) return "";
@@ -30,6 +31,22 @@ const buildFormatLink = (src, format) => {
   return src;
 };
 
+// Ensures download buttons always point at Apple's pristine sources.
+const buildFormatLinks = (image) => ({
+  jpg: image.formatLinks?.jpg || buildFormatLink(image.src, "jpg"),
+  png: image.formatLinks?.png || buildFormatLink(image.src, "png"),
+});
+
+// Lightbox slides capture every bit of data needed for the zoom/gallery views.
+const createSlide = (image) => ({
+  src: image.src,
+  alt: image.alt || "Case image",
+  width: image.width || DEFAULT_DIMENSION,
+  height: image.height || DEFAULT_DIMENSION,
+  formatLinks: buildFormatLinks(image),
+});
+
+// Custom toolbar button that piggybacks on the lightbox context.
 const FormatLinkButton = ({ format, label, shortLabel }) => {
   const { currentSlide } = useLightboxState();
   const href = currentSlide?.formatLinks?.[format];
@@ -60,35 +77,25 @@ const FormatLinkButton = ({ format, label, shortLabel }) => {
   );
 };
 
-const LightboxComponent = ({ images }) => {
+const LightboxComponent = ({ images = [] }) => {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
 
-  const slides = useMemo(
-    () =>
-      images.map((image) => ({
-        src: image.src,
-        alt: image.alt || "Case image",
-        width: image.width || DEFAULT_DIMENSION,
-        height: image.height || DEFAULT_DIMENSION,
-        formatLinks: {
-          jpg: image.formatLinks?.jpg || buildFormatLink(image.src, "jpg"),
-          png: image.formatLinks?.png || buildFormatLink(image.src, "png"),
-        },
-      })),
-    [images]
-  );
+  // Precompute lightbox slides with download helpers to keep render lean.
+  const slides = useMemo(() => images.map(createSlide), [images]);
 
-  const minColumnWidth = 240;
-  const maxColumns = 4;
-  const gap = 12; // ~gap-3
-  const columnTemplate = `repeat(auto-fit, minmax(min(50%, ${minColumnWidth}px), 1fr))`;
-  const maxWidth = `${maxColumns * minColumnWidth + (maxColumns - 1) * gap}px`;
+  const gridStyle = useMemo(() => {
+    const { minColumnWidth, maxColumns, gap } = GRID_CONFIG;
+    return {
+      gridTemplateColumns: `repeat(auto-fit, minmax(min(50%, ${minColumnWidth}px), 1fr))`,
+      maxWidth: `${maxColumns * minColumnWidth + (maxColumns - 1) * gap}px`,
+    };
+  }, []);
 
   return (
     <>
       <div
         className="lightbox-grid not-prose grid w-full gap-3 mx-auto"
-        style={{ gridTemplateColumns: columnTemplate, maxWidth }}
+        style={gridStyle}
       >
         {slides.map((slide, index) => (
           <button
@@ -105,7 +112,7 @@ const LightboxComponent = ({ images }) => {
               width={slide.width}
               height={slide.height}
               className="block h-auto w-full object-contain"
-              unoptimized="true"
+              unoptimized
             />
           </button>
         ))}
