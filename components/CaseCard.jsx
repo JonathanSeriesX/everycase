@@ -15,6 +15,22 @@ const APPLE_FALLBACK_PARAMS = "?wid=512&hei=512&fmt=png-alpha";
 const CASE_IMAGE_SIZE = 512;
 const PRIORITY_IMAGE_COUNT = 5;
 
+// Helpers keep the render block lean and make fallback handling testable.
+const sanitizeImageCode = (item) =>
+  (item?.alt_thumbnail || item?.SKU || "").trim();
+
+const buildCarouselImageSrc = (code) =>
+  code ? `${CAROUSEL_IMAGE_BASE_URL}/${code}.${CAROUSEL_IMAGE_BASE_FORMAT}` : "";
+
+const buildAppleFallbackImageSrc = (code) =>
+  code ? `${APPLE_IMAGE_BASE_URL}/${code}${APPLE_FALLBACK_PARAMS}` : "";
+
+const buildImageAlt = ({ model = "", kind = "", colour = "" }) => {
+  const normalizedKind = kind || "Case";
+  const isClearCase = normalizedKind === "Clear Case";
+  return `${model} ${normalizedKind}${isClearCase ? "" : ` — ${colour}`}`.trim();
+};
+
 const CaseCard = ({
   item,
   index,
@@ -26,25 +42,21 @@ const CaseCard = ({
   copySku,
 }) => {
   const isPriorityImage = index < PRIORITY_IMAGE_COUNT;
-  const imageAlt = `${item.model} ${item.kind}${
-    item.kind === "Clear Case" ? "" : ` — ${item.colour}`
-  }`;
-  const imageCode = (item.alt_thumbnail || item.SKU || "").trim();
-  const imageSrc = imageCode
-    ? `${CAROUSEL_IMAGE_BASE_URL}/${imageCode}.${CAROUSEL_IMAGE_BASE_FORMAT}`
-    : "";
-  const fallbackImageSrc = imageCode
-    ? `${APPLE_IMAGE_BASE_URL}/${imageCode}${APPLE_FALLBACK_PARAMS}`
-    : "";
-  const [imgSrc, setImgSrc] = useState(imageSrc);
+  const imageAlt = buildImageAlt(item);
+  const imageCode = sanitizeImageCode(item);
+  const primaryImageSrc = buildCarouselImageSrc(imageCode);
+  const fallbackImageSrc = buildAppleFallbackImageSrc(imageCode);
+  const [imgSrc, setImgSrc] = useState(primaryImageSrc);
   useEffect(() => {
-    setImgSrc(imageSrc);
-  }, [imageSrc]);
+    setImgSrc(primaryImageSrc);
+  }, [primaryImageSrc]);
 
+  // Toggle to Apple's CDN if CloudFront's webp rendition fails.
   const handleImageError = () => {
-    if (fallbackImageSrc && imgSrc !== fallbackImageSrc) {
-      setImgSrc(fallbackImageSrc);
-    }
+    if (!fallbackImageSrc) return;
+    setImgSrc((currentSrc) =>
+      currentSrc === fallbackImageSrc ? currentSrc : fallbackImageSrc,
+    );
   };
 
   return (
