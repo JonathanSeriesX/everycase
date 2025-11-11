@@ -13,9 +13,9 @@ const sortCasesBySku = (caseList = []) =>
 
 // Builds a stable link so users can jump to the season table when curious.
 const buildSeasonLink = (seasonLabel) => {
-  if (!seasonLabel) return "https://example.com/season/unknown";
-  const normalized = seasonLabel.trim().replace(/\s+/g, "_");
-  return ``; //https://example.com/season/${encodeURIComponent(normalized)}
+  if (!seasonLabel) return "/years";
+  const normalized = seasonLabel.trim().replace(/\s+/g, "-").toLowerCase();
+  return `/years#${encodeURIComponent(normalized)}`;
 };
 
 const formatSkuLabel = (sku) => (sku || "").replace(/zm\/?a?$/i, "");
