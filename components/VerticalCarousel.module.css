@@ -163,28 +163,22 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Wrap link-specific affordances (underline animation) */
+/* Inline-flex wrapper so Nextra's anchor arrow can be positioned precisely */
 .linkBadge {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
 }
 
-.linkBadge:hover::after,
-.linkBadge:focus-visible::after {
-  transform: scaleX(1);
-}
-
-/* Animated underline for the link badge */
-.linkBadge::after {
-  content: "";
-  position: absolute;
-  bottom: 0.2rem;
-  left: 0.6rem;
-  right: 0.6rem;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 140ms ease;
+/* Tighten spacing + nudge the auto-appended arrow upward */
+.linkBadge :global(svg) {
+  margin-left: -0rem;
+  transform: translateY(-0.2rem);
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
 }
 
 /* Container for the swap animation between copy/check icons */
