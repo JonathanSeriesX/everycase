@@ -6,6 +6,7 @@ const config = {
       pagination: false,
       toc: false,
       layout: "full",
+      timestamp: false,
     },
   },
   index: {
