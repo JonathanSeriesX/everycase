@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
@@ -8,6 +9,9 @@ import styles from "./VerticalCarousel.module.css";
 const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
 // /MF039. will be put in between these two
 const CAROUSEL_IMAGE_BASE_FORMAT = "webp";
+const APPLE_IMAGE_BASE_URL =
+  "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
+const APPLE_FALLBACK_PARAMS = "?wid=512&hei=512&fmt=png-alpha";
 const CASE_IMAGE_SIZE = 512;
 const PRIORITY_IMAGE_COUNT = 5;
 
@@ -29,6 +33,19 @@ const CaseCard = ({
   const imageSrc = imageCode
     ? `${CAROUSEL_IMAGE_BASE_URL}/${imageCode}.${CAROUSEL_IMAGE_BASE_FORMAT}`
     : "";
+  const fallbackImageSrc = imageCode
+    ? `${APPLE_IMAGE_BASE_URL}/${imageCode}${APPLE_FALLBACK_PARAMS}`
+    : "";
+  const [imgSrc, setImgSrc] = useState(imageSrc);
+  useEffect(() => {
+    setImgSrc(imageSrc);
+  }, [imageSrc]);
+
+  const handleImageError = () => {
+    if (fallbackImageSrc && imgSrc !== fallbackImageSrc) {
+      setImgSrc(fallbackImageSrc);
+    }
+  };
 
   return (
     <article className={styles.caseCard}>
@@ -39,7 +56,7 @@ const CaseCard = ({
       >
         <div className={styles.imageShell}>
           <Image
-            src={imageSrc}
+            src={imgSrc}
             width={CASE_IMAGE_SIZE}
             height={CASE_IMAGE_SIZE}
             alt={imageAlt}
@@ -48,6 +65,7 @@ const CaseCard = ({
             loading={isPriorityImage ? "eager" : "lazy"}
             unoptimized
             title={imageAlt}
+            onError={handleImageError}
           />
         </div>
         <strong className={`${styles.caseTitle} ${styles.linkTitle}`}>
