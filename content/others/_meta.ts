@@ -1,13 +1,15 @@
-export default {
+const config = {
   "*": {
     theme: {
       pagination: false,
       toc: true,
-      layout: "default"
-    }
+      layout: "default",
+    },
   },
   airtag: "AirTag",
   wallet: "MagSafe Wallet",
   macbook: "MacBook Leather Sleeve",
-  pencil: "Apple Pencil"
+  pencil: "Apple Pencil",
 };
+
+export default config;
