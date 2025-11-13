@@ -64,8 +64,8 @@ textarea:focus-visible {
 }
 
 .lightbox-tile {
-  padding: 10;
-  margin: 10;
+  padding: 10px;
+  margin: 10px;
   border: none;
   background: transparent;
   outline: none !important;

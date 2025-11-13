@@ -8,7 +8,7 @@ import styles from "./VerticalCarousel.module.css";
 
 const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
 // /MF039. will be put in between these two
-const CAROUSEL_IMAGE_FORMATS = ["avif", "webp"];
+const CAROUSEL_IMAGE_FORMATS = ["avif"];
 const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const APPLE_FALLBACK_PARAMS = "?wid=512&hei=512&fmt=png-alpha";
@@ -75,6 +75,7 @@ const CaseCard = ({
         href={`/case/${item.SKU}`}
         className={styles.cardLink}
         aria-label={`${item.model} ${item.kind}`}
+        prefetch={false}
       >
         <div className={styles.imageShell}>
           <Image

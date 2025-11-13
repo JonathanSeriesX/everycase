@@ -47,16 +47,4 @@ printf '%s\0' "${png_files[@]}" |
       -strip -filter Lanczos -define webp:method=6 "$out"
   '
 
-echo "Compressing WebP previews with $jobs jobs..."
-printf '%s\0' "${png_files[@]}" |
-  parallel -0 --jobs "$jobs" --halt soon,fail=1 '
-    file="{}"
-    base="${file##*/}"
-    base="${base%.*}"
-    out="$folder_a/$base.webp"
-    [ -e "$out" ] && exit 0
-    magick "$file" -resize 512x512 -define quality=90 \
-      -strip -filter Lanczos -define webp:method=6 "$out"
-  '
-
 echo "Done."
