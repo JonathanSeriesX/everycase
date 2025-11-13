@@ -10,12 +10,12 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "/icons/512_w_shadow.png",
+      "src": "https://cloudfront.everycase.org/icons/512_w_shadow.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/icons/bw.png",
+      "src": "https://cloudfront.everycase.org/icons/bw.png",
       "purpose": "monochrome maskable",
       "type": "image/png"
     }
