@@ -1,0 +1,4 @@
+label,match,skus,glob,extra_suffixes,left,top,right,bottom,output_subdir,output_suffix
+MagSafe Wallets,"name~Wallet with MagSafe",,,_AV1,404,808,404,0,"",""
+AirTag Key Rings,"name~Key Ring",,,,404,608,404,200,"",_cut
+"iPhone Leather Sleeves","name~Leather Sleeve with MagSafe;model~iPhone",,,,1104,250,1104,1958,"",_cut

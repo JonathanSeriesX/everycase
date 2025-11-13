@@ -1,6 +1,6 @@
-folder_x="1_sources"
-folder_y="2_compressed_sources"
-folder_z="3_compressed_previews"
+folder_x="/Volumes/Storage/Images/1_final-sources"
+folder_y="/Volumes/Storage/Images/2_compressed-sources"
+folder_z="/Volumes/Storage/Images/3_compressed-previews"
 
 mkdir -p "$folder_y" "$folder_z"
 
