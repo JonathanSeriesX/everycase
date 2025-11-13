@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
@@ -8,7 +8,7 @@ import styles from "./VerticalCarousel.module.css";
 
 const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
 // /MF039. will be put in between these two
-const CAROUSEL_IMAGE_BASE_FORMAT = "webp";
+const CAROUSEL_IMAGE_FORMATS = ["avif", "webp"];
 const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const APPLE_FALLBACK_PARAMS = "?wid=512&hei=512&fmt=png-alpha";
@@ -19,8 +19,8 @@ const PRIORITY_IMAGE_COUNT = 5;
 const sanitizeImageCode = (item) =>
   (item?.alt_thumbnail || item?.SKU || "").trim();
 
-const buildCarouselImageSrc = (code) =>
-  code ? `${CAROUSEL_IMAGE_BASE_URL}/${code}.${CAROUSEL_IMAGE_BASE_FORMAT}` : "";
+const buildCarouselImageSrc = (code, format) =>
+  code && format ? `${CAROUSEL_IMAGE_BASE_URL}/${code}.${format}` : "";
 
 const buildAppleFallbackImageSrc = (code) =>
   code ? `${APPLE_IMAGE_BASE_URL}/${code}${APPLE_FALLBACK_PARAMS}` : "";
@@ -28,7 +28,9 @@ const buildAppleFallbackImageSrc = (code) =>
 const buildImageAlt = ({ model = "", kind = "", colour = "" }) => {
   const normalizedKind = kind || "Case";
   const isClearCase = normalizedKind === "Clear Case";
-  return `${model} ${normalizedKind}${isClearCase ? "" : ` — ${colour}`}`.trim();
+  return `${model} ${normalizedKind}${
+    isClearCase ? "" : ` — ${colour}`
+  }`.trim();
 };
 
 const CaseCard = ({
@@ -44,20 +46,28 @@ const CaseCard = ({
   const isPriorityImage = index < PRIORITY_IMAGE_COUNT;
   const imageAlt = buildImageAlt(item);
   const imageCode = sanitizeImageCode(item);
-  const primaryImageSrc = buildCarouselImageSrc(imageCode);
   const fallbackImageSrc = buildAppleFallbackImageSrc(imageCode);
-  const [imgSrc, setImgSrc] = useState(primaryImageSrc);
-  useEffect(() => {
-    setImgSrc(primaryImageSrc);
-  }, [primaryImageSrc]);
-
-  // Toggle to Apple's CDN if CloudFront's webp rendition fails.
-  const handleImageError = () => {
-    if (!fallbackImageSrc) return;
-    setImgSrc((currentSrc) =>
-      currentSrc === fallbackImageSrc ? currentSrc : fallbackImageSrc,
+  const candidateSources = useMemo(() => {
+    const carouselSources = CAROUSEL_IMAGE_FORMATS.map((format) =>
+      buildCarouselImageSrc(imageCode, format)
     );
+    return [...carouselSources, fallbackImageSrc].filter(Boolean);
+  }, [fallbackImageSrc, imageCode]);
+  const [sourceIndex, setSourceIndex] = useState(0);
+
+  useEffect(() => {
+    setSourceIndex(0);
+  }, [candidateSources]);
+
+  // Step through CloudFront formats before falling back to Apple's CDN.
+  const handleImageError = () => {
+    setSourceIndex((currentIndex) => {
+      const nextIndex = currentIndex + 1;
+      return nextIndex < candidateSources.length ? nextIndex : currentIndex;
+    });
   };
+
+  const imgSrc = candidateSources[sourceIndex] || "";
 
   return (
     <article className={styles.caseCard}>

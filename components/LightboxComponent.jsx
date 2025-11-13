@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LinkArrowIcon } from "nextra/icons";
 import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -9,6 +9,8 @@ import "yet-another-react-lightbox/styles.css";
 
 const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
+const LIGHTBOX_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everyimage";
+const LIGHTBOX_IMAGE_FORMAT = "webp";
 const FORMAT_PARAMS = {
   jpg: "?wid=2560&hei=2560&fmt=jpg&qlt=90",
   png: "?wid=4608&hei=4608&fmt=png-alpha",
@@ -31,6 +33,18 @@ const buildFormatLink = (src, format) => {
   return src;
 };
 
+const buildCarouselImageSrc = (code) =>
+  code ? `${LIGHTBOX_IMAGE_BASE_URL}/${code}.${LIGHTBOX_IMAGE_FORMAT}` : "";
+
+const buildSlideSources = (src) => {
+  const code = (getAppleImageCode(src) || "").split(".")[0];
+  const cloudfrontSrc = buildCarouselImageSrc(code);
+  if (cloudfrontSrc && cloudfrontSrc !== src) {
+    return [cloudfrontSrc, src].filter(Boolean);
+  }
+  return [src].filter(Boolean);
+};
+
 // Ensures download buttons always point at Apple's pristine sources.
 const buildFormatLinks = (image) => ({
   jpg: image.formatLinks?.jpg || buildFormatLink(image.src, "jpg"),
@@ -39,11 +53,13 @@ const buildFormatLinks = (image) => ({
 
 // Lightbox slides capture every bit of data needed for the zoom/gallery views.
 const createSlide = (image) => ({
+  originalSrc: image.src,
   src: image.src,
   alt: image.alt || "Case image",
   width: image.width || DEFAULT_DIMENSION,
   height: image.height || DEFAULT_DIMENSION,
   formatLinks: buildFormatLinks(image),
+  sources: buildSlideSources(image.src),
 });
 
 // Custom toolbar button that piggybacks on the lightbox context.
@@ -81,7 +97,42 @@ const LightboxComponent = ({ images = [] }) => {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
 
   // Precompute lightbox slides with download helpers to keep render lean.
-  const slides = useMemo(() => images.map(createSlide), [images]);
+  const baseSlides = useMemo(() => images.map(createSlide), [images]);
+  const [sourceIndices, setSourceIndices] = useState(() =>
+    baseSlides.map(() => 0)
+  );
+
+  useEffect(() => {
+    setSourceIndices(baseSlides.map(() => 0));
+  }, [baseSlides]);
+
+  const slides = useMemo(
+    () =>
+      baseSlides.map((slide, index) => {
+        const activeIndex = sourceIndices[index] ?? 0;
+        const fallbackSources = slide.sources || [];
+        const resolvedSrc =
+          fallbackSources[activeIndex] ||
+          fallbackSources[0] ||
+          slide.originalSrc ||
+          slide.src;
+        return { ...slide, src: resolvedSrc };
+      }),
+    [baseSlides, sourceIndices]
+  );
+
+  const advanceSlideSource = (slideIndex) => {
+    const sources = baseSlides[slideIndex]?.sources || [];
+    if (sources.length <= 1) return;
+    setSourceIndices((previous) => {
+      const prevIndex = previous[slideIndex] ?? 0;
+      const nextIndex = Math.min(prevIndex + 1, sources.length - 1);
+      if (nextIndex === prevIndex) return previous;
+      const next = [...previous];
+      next[slideIndex] = nextIndex;
+      return next;
+    });
+  };
 
   const gridStyle = useMemo(() => {
     const { minColumnWidth, maxColumns, gap } = GRID_CONFIG;
@@ -99,7 +150,7 @@ const LightboxComponent = ({ images = [] }) => {
       >
         {slides.map((slide, index) => (
           <button
-            key={slide.src ?? index}
+            key={slide.originalSrc ?? slide.src ?? index}
             type="button"
             className="lightbox-tile relative w-full overflow-hidden"
             onClick={() => setLightboxIndex(index)}
@@ -113,6 +164,7 @@ const LightboxComponent = ({ images = [] }) => {
               height={slide.height}
               className="block h-auto w-full object-contain"
               unoptimized
+              onError={() => advanceSlideSource(index)}
             />
           </button>
         ))}
