@@ -4,30 +4,24 @@ folder_z="3_compressed_previews"
 
 mkdir -p "$folder_y" "$folder_z"
 
-# Previews (512px, q=95)
+# Previews (512px avif, q=90)
 for f in "$folder_x"/*.png; do
   [ -f "$f" ] || continue
   base="$(basename "${f%.*}")"
   out_avif="$folder_z/$base.avif"
   if [ ! -e "$out_avif" ]; then
-    magick "$f" -resize 512x512 -quality 95 -strip -filter Lanczos \
+    magick "$f" -resize 512x512 -quality 90 -strip -filter Lanczos \
       -define avif:codec=aom -define avif:speed=0 "$out_avif"
-  fi
-
-  out_webp="$folder_z/$base.webp"
-  if [ ! -e "$out_webp" ]; then
-    magick "$f" -resize 512x512 -quality 95 -strip -filter Lanczos \
-      -define webp:method=6 "$out_webp"
   fi
 done
 
-# Sources (1536px, lossless)
+# Sources (2048px webp, lossless)
 for f in "$folder_x"/*.png; do
   [ -f "$f" ] || continue
   base="$(basename "${f%.*}")"
-  out="$folder_y/$base.avif"
+  out="$folder_y/$base.webp"
   if [ ! -e "$out" ]; then
-    magick "$f" -resize 1536x1536 -quality 100 -define avif:lossless=true \
-      -strip -filter Lanczos -define avif:codec=aom -define avif:speed=0 "$out"
+    magick "$f" -resize 2048x2048 -define webp:lossless=true \
+      -strip -filter Lanczos -define webp:method=6 "$out"
   fi
 done
