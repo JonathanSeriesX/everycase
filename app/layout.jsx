@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../styles/globals.css";
 import localFont from "next/font/local";
+import Image from "next/image";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -38,9 +39,11 @@ const logo = (
       Finest
     </span>
     <picture>
-      <img
-        src="/icons/apple-touch-icon.png"
+      <Image
+        src="https://cloudfront.everycase.org/icons/apple-touch-icon.png"
         alt="Finest Woven Logo"
+        width={48}
+        height={48}
         style={{
           marginTop: "0px",
           marginRight: "4px",
@@ -85,12 +88,12 @@ export const metadata = {
     follow: true,
   },
   icons: {
-    icon: "/icons/512_w_shadow.png",
-    apple: "/icons/apple-touch-icon.png",
+    icon: "https://cloudfront.everycase.org/icons/512_w_shadow.png",
+    apple: "https://cloudfront.everycase.org/icons/apple-touch-icon.png",
     other: [
       {
         rel: "mask-icon",
-        url: "/icons/bw.svg",
+        url: "https://cloudfront.everycase.org/icons/bw.svg",
         color: "#E3504F",
       },
     ],

@@ -79,7 +79,7 @@ const nextConfig: NextConfig = {
       ...iconTargets.map((source) => ({
         source,
         destination:
-          "https://cloudfront.everycase.org/assets/apple-touch-icon.png",
+          "https://cloudfront.everycase.org/icons/apple-touch-icon.png",
       })),
     ];
   },
