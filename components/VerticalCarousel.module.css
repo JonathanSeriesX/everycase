@@ -5,7 +5,7 @@
 
 .cardTrack {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 0.9rem clamp(0.9rem, 2vw, 1.15rem);
   padding: 0.25rem 0 0.5rem;
   justify-items: left;
@@ -33,25 +33,11 @@
     box-shadow 180ms ease;
 }
 
-.caseCard::after {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: 24px;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.2),
-    transparent 60%
-  );
-  opacity: 0.55;
-  pointer-events: none;
-}
-
 @media (hover: hover) and (pointer: fine) {
   .caseCard:hover {
-    transform: translateY(-4px);
+    transform: scale(1.02);
     border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 20px 45px rgba(15, 12, 26, 0.2),
+    box-shadow: 0 25px 55px rgba(15, 12, 26, 0.22),
       inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 }
