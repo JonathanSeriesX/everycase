@@ -1,7 +1,8 @@
 /* Host element around the whole carousel so we can tweak grid density via CSS var */
 .carouselWrapper {
   width: 100%;
-  --case-card-min-width: 145px; /* tweak to change columns */
+  --case-card-min-size: 155px; /* smallest card width */
+  --case-card-max-size: 235px; /* cap so cards don't get huge */
 }
 
 /* Responsive grid that lays out the case cards */
@@ -9,7 +10,10 @@
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(var(--case-card-min-width), 12rem)
+    minmax(
+      var(--case-card-min-size),
+      clamp(var(--case-card-min-size), 22vw, var(--case-card-max-size))
+    )
   );
   justify-content: left;
   gap: 0.85rem clamp(0.85rem, 1vw, 1.25rem);
@@ -23,7 +27,8 @@
   border-radius: 35px;
   padding: 0.9rem;
   width: 100%;
-  max-width: 20rem;
+  min-width: var(--case-card-min-size);
+  max-width: var(--case-card-max-size);
   justify-self: start;
   background: linear-gradient(
       140deg,
@@ -82,7 +87,8 @@
 /* Image well that keeps the product centered */
 .imageShell {
   border-radius: 24px;
-  min-height: 165px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,6 +101,12 @@
   box-shadow: inset 0 1px 15px rgba(15, 18, 28, 0.08);
 }
 
+@supports not (aspect-ratio: 1 / 1) {
+  .imageShell {
+    min-height: 165px;
+  }
+}
+
 /* Prevents stretched thumbnails */
 .image {
   object-fit: contain;
@@ -104,7 +116,7 @@
 
 /* Base styling for the title text */
 .caseTitle {
-  font-weight: 600;
+  font-weight: 550;
   letter-spacing: 0.01em;
   text-align: center;
   font-size: 1rem;
@@ -226,18 +238,6 @@
   border: 1px dashed rgba(15, 12, 26, 0.15);
   color: rgba(15, 18, 28, 0.7);
   text-align: center;
-}
-
-/* Stack the grid tighter on small screens */
-@media (max-width: 600px) {
-  .cardTrack {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.75rem;
-  }
-
-  .imageShell {
-    min-height: 140px;
-  }
 }
 
 /* Dark mode adjustments keep the frosted look readable */
