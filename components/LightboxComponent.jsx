@@ -11,6 +11,9 @@ const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const LIGHTBOX_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everyimage";
 const LIGHTBOX_IMAGE_FORMAT = "webp";
+const LIGHTBOX_PREVIEW_BASE_URL =
+  "https://cloudfront.everycase.org/everypreview";
+const LIGHTBOX_PREVIEW_FORMAT = "avif";
 const FORMAT_PARAMS = {
   jpg: "?wid=2560&hei=2560&fmt=jpg&qlt=90",
   png: "?wid=4608&hei=4608&fmt=png-alpha",
@@ -36,6 +39,13 @@ const buildFormatLink = (src, format) => {
 const buildCarouselImageSrc = (code) =>
   code ? `${LIGHTBOX_IMAGE_BASE_URL}/${code}.${LIGHTBOX_IMAGE_FORMAT}` : "";
 
+const buildPreviewImageSrc = (src) => {
+  const code = getAppleImageCode(src);
+  return code
+    ? `${LIGHTBOX_PREVIEW_BASE_URL}/${code}.${LIGHTBOX_PREVIEW_FORMAT}`
+    : "";
+};
+
 const buildSlideSources = (src) => {
   const code = (getAppleImageCode(src) || "").split(".")[0];
   const cloudfrontSrc = buildCarouselImageSrc(code);
@@ -60,6 +70,7 @@ const createSlide = (image) => ({
   height: image.height || DEFAULT_DIMENSION,
   formatLinks: buildFormatLinks(image),
   sources: buildSlideSources(image.src),
+  previewSrc: image.previewSrc || buildPreviewImageSrc(image.src),
 });
 
 // Custom toolbar button that piggybacks on the lightbox context.
@@ -163,6 +174,8 @@ const LightboxComponent = ({ images = [] }) => {
               width={slide.width}
               height={slide.height}
               className="block h-auto w-full object-contain"
+              placeholder={slide.previewSrc ? "blur" : undefined}
+              blurDataURL={slide.previewSrc || undefined}
               unoptimized
               onError={() => advanceSlideSource(index)}
             />
