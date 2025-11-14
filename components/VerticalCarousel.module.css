@@ -1,7 +1,7 @@
 /* Host element around the whole carousel so we can tweak grid density via CSS var */
 .carouselWrapper {
   width: 100%;
-  --case-card-min-width: 180px; /* tweak to change columns */
+  --case-card-min-width: 145px; /* tweak to change columns */
 }
 
 /* Responsive grid that lays out the case cards */
@@ -9,8 +9,9 @@
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(var(--case-card-min-width), 1fr)
+    minmax(var(--case-card-min-width), 12rem)
   );
+  justify-content: left;
   gap: 0.85rem clamp(0.85rem, 1vw, 1.25rem);
   padding: 0.15rem 0 0.35rem;
 }
