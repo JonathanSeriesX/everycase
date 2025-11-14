@@ -118,7 +118,7 @@ const CaseCard = ({
             />
           </span>
         </button>
-        <Link
+        {/*<Link
           className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
           href={buildSeasonLink(item.season)}
           target="_blank"
@@ -126,7 +126,7 @@ const CaseCard = ({
         >
           <span>{item.season || "—"}</span>
           <LinkArrowIcon className={styles.icon} aria-hidden />
-        </Link>
+        </Link> */}
       </div>
     </article>
   );
