@@ -26,7 +26,14 @@ const tofino = localFont({
 });
 
 const logo = (
-  <>
+  <span
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      flexShrink: 0,
+      whiteSpace: "nowrap",
+    }}
+  >
     <span
       className={quicksand.className} // Apply the Quicksand font
       style={{
@@ -38,7 +45,12 @@ const logo = (
     >
       Finest
     </span>
-    <picture>
+    <picture
+      style={{
+        display: "inline-flex",
+        flexShrink: 0,
+      }}
+    >
       <Image
         src="https://cloudfront.everycase.org/icons/apple-touch-icon.png"
         alt="Finest Woven Logo"
@@ -64,7 +76,7 @@ const logo = (
     >
       Woven
     </span>
-  </>
+  </span>
 );
 
 export const viewport = {
