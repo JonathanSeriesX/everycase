@@ -76,9 +76,13 @@ const config = {
   others: {
     title: "Others",
   },
-  sep3: {
+  /* sep3: {
     title: "Sorted by year:",
     type: "separator",
+  },*/
+  years: {
+    title: "Years & Years",
+    display: "hidden",
   },
 };
 

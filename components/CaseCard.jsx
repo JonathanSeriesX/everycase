@@ -127,6 +127,11 @@ const CaseCard = ({
           <span>{item.season || "—"}</span>
           <LinkArrowIcon className={styles.icon} aria-hidden />
         </Link> */}
+        <span
+          className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
+        >
+          {item.season || "—"}
+        </span>
       </div>
     </article>
   );
