@@ -209,6 +209,11 @@ export default async function RootLayout({ children }) {
           {children}
           <Analytics />
           <SpeedInsights />
+          <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "95e2bceaf09643619d934557acc8f72d"}'
+          ></script>
         </Layout>
       </body>
     </html>
