@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
@@ -53,17 +53,21 @@ const CaseCard = ({
     );
     return [...carouselSources, fallbackImageSrc].filter(Boolean);
   }, [fallbackImageSrc, imageCode]);
-  const [sourceIndex, setSourceIndex] = useState(0);
-
-  useEffect(() => {
-    setSourceIndex(0);
-  }, [candidateSources]);
+  const sourceKey = candidateSources.join("|");
+  const [sourceState, setSourceState] = useState({ key: sourceKey, index: 0 });
+  const sourceIndex = sourceState.key === sourceKey ? sourceState.index : 0;
 
   // Step through CloudFront formats before falling back to Apple's CDN.
   const handleImageError = () => {
-    setSourceIndex((currentIndex) => {
+    setSourceState((currentState) => {
+      const currentIndex =
+        currentState.key === sourceKey ? currentState.index : 0;
       const nextIndex = currentIndex + 1;
-      return nextIndex < candidateSources.length ? nextIndex : currentIndex;
+      return {
+        key: sourceKey,
+        index:
+          nextIndex < candidateSources.length ? nextIndex : currentIndex,
+      };
     });
   };
 
