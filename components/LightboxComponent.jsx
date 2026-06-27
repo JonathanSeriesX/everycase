@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { LinkArrowIcon } from "nextra/icons";
 import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -109,39 +109,43 @@ const LightboxComponent = ({ images = [] }) => {
 
   // Precompute lightbox slides with download helpers to keep render lean.
   const baseSlides = useMemo(() => images.map(createSlide), [images]);
-  const [sourceIndices, setSourceIndices] = useState(() =>
-    baseSlides.map(() => 0)
-  );
+  const sourceKey = baseSlides
+    .map((slide) => slide.sources.join("|"))
+    .join("||");
+  const [sourceState, setSourceState] = useState({
+    key: sourceKey,
+    indices: baseSlides.map(() => 0),
+  });
 
-  useEffect(() => {
-    setSourceIndices(baseSlides.map(() => 0));
-  }, [baseSlides]);
-
-  const slides = useMemo(
-    () =>
-      baseSlides.map((slide, index) => {
-        const activeIndex = sourceIndices[index] ?? 0;
-        const fallbackSources = slide.sources || [];
-        const resolvedSrc =
-          fallbackSources[activeIndex] ||
-          fallbackSources[0] ||
-          slide.originalSrc ||
-          slide.src;
-        return { ...slide, src: resolvedSrc };
-      }),
-    [baseSlides, sourceIndices]
-  );
+  const slides = useMemo(() => {
+    const sourceIndices =
+      sourceState.key === sourceKey ? sourceState.indices : [];
+    return baseSlides.map((slide, index) => {
+      const activeIndex = sourceIndices[index] ?? 0;
+      const fallbackSources = slide.sources || [];
+      const resolvedSrc =
+        fallbackSources[activeIndex] ||
+        fallbackSources[0] ||
+        slide.originalSrc ||
+        slide.src;
+      return { ...slide, src: resolvedSrc };
+    });
+  }, [baseSlides, sourceKey, sourceState]);
 
   const advanceSlideSource = (slideIndex) => {
     const sources = baseSlides[slideIndex]?.sources || [];
     if (sources.length <= 1) return;
-    setSourceIndices((previous) => {
+    setSourceState((previousState) => {
+      const previous =
+        previousState.key === sourceKey ? previousState.indices : [];
       const prevIndex = previous[slideIndex] ?? 0;
       const nextIndex = Math.min(prevIndex + 1, sources.length - 1);
-      if (nextIndex === prevIndex) return previous;
+      if (previousState.key === sourceKey && nextIndex === prevIndex) {
+        return previousState;
+      }
       const next = [...previous];
       next[slideIndex] = nextIndex;
-      return next;
+      return { key: sourceKey, indices: next };
     });
   };
 
