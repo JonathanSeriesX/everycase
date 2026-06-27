@@ -21,27 +21,27 @@
     "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind"
   },
   "dependencies": {
-    "@vercel/analytics": "2.0.1",
-    "@vercel/speed-insights": "2.0.0",
-    "csv-parse": "7.0.0",
-    "next": "16.2.9",
-    "nextra": "4.6.1",
-    "nextra-theme-docs": "4.6.1",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
-    "yet-another-react-lightbox": "3.32.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "csv-parse": "^7.0.0",
+    "next": "^16.2.9",
+    "nextra": "^4.6.1",
+    "nextra-theme-docs": "^4.6.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "yet-another-react-lightbox": "^3.32.0",
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.3.1",
-    "@types/node": "26.0.1",
-    "@types/react": "19.2.17",
-    "autoprefixer": "10.5.2",
-    "eslint": "9.39.4",
-    "eslint-config-next": "16.2.9",
-    "pagefind": "1.5.2",
-    "postcss": "8.5.15",
-    "tailwindcss": "4.3.1",
-    "typescript": "6.0.3"
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^26.0.1",
+    "@types/react": "^19.2.17",
+    "autoprefixer": "^10.5.2",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.9",
+    "pagefind": "^1.5.2",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^6.0.3"
   }
 }
