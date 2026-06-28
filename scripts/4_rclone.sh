@@ -1,7 +1,10 @@
-folder_y="/Volumes/Storage/Images/2_compressed-sources"
-folder_z="/Volumes/Storage/Images/3_compressed-avif-previews"
-folder_a="/Volumes/Storage/Images/3_compressed-webp-previews"
+# Paths/remote default to the canonical layout but can be overridden by the
+# environment (assets.py sets these from its single CONFIG block).
+folder_y="${COMPRESSED_SOURCES:-/Volumes/Storage/Images/2_compressed-sources}"
+folder_z="${AVIF_PREVIEWS:-/Volumes/Storage/Images/3_compressed-avif-previews}"
+folder_a="${WEBP_PREVIEWS:-/Volumes/Storage/Images/3_compressed-webp-previews}"
+remote="${R2_REMOTE:-R2:everycase-images}"
 
-rclone copy "$folder_y" R2:everycase-images/everyimage --progress --exclude '.DS_Store'
-rclone copy "$folder_z" R2:everycase-images/everypreview --progress --exclude '.DS_Store'
-rclone copy "$folder_a" R2:everycase-images/everypreview --progress --exclude '.DS_Store'
+rclone copy "$folder_y" "$remote/everyimage" --progress --exclude '.DS_Store'
+rclone copy "$folder_z" "$remote/everypreview" --progress --exclude '.DS_Store'
+rclone copy "$folder_a" "$remote/everypreview" --progress --exclude '.DS_Store'

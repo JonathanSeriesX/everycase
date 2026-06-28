@@ -1,4 +1,8 @@
-"""Download Apple images using explicit per-line resolutions."""
+"""Download Apple images using explicit per-line resolutions.
+
+Missing Apple CDN variants are expected: HTTP 404 responses are skipped safely.
+Successful asset codes are appended to source_images.txt for gallery discovery.
+"""
 
 import argparse
 import multiprocessing
@@ -7,13 +11,14 @@ import time
 from dataclasses import dataclass
 from multiprocessing import Pool
 from pathlib import Path
-from typing import List, Tuple
+from typing import Iterable, List, Set, Tuple
 
 import requests
 
 BASE_URL_TEMPLATE = "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is/{code}?wid={wid}&hei={hei}&fmt=png-alpha"
 SCRIPT_DIR = Path(__file__).resolve().parent
 IMAGES_TO_DOWNLOAD_PATH = SCRIPT_DIR / "list.txt"
+SOURCE_IMAGES_PATH = SCRIPT_DIR / "source_images.txt"
 DEFAULT_TARGET_FOLDER = SCRIPT_DIR / "lower-res-redownload"
 
 
@@ -49,6 +54,8 @@ def parse_tasks(file_path: Path, target_folder: Path) -> List[DownloadTask]:
             line = raw_line.strip()
             if not line or line.startswith("#"):
                 continue
+            if line.endswith(":"):
+                continue
             if "," not in line:
                 print(f"Skipping line without comma: '{line}'")
                 continue
@@ -74,10 +81,31 @@ def parse_tasks(file_path: Path, target_folder: Path) -> List[DownloadTask]:
     return tasks
 
 
+def load_existing_codes(path: Path) -> Set[str]:
+    if not path.exists():
+        return set()
+    with path.open("r", encoding="utf-8") as file:
+        return {line.strip() for line in file if line.strip()}
+
+
+def append_codes(path: Path, codes: Iterable[str]) -> None:
+    codes = list(codes)
+    if not codes:
+        return
+    with path.open("a", encoding="utf-8") as file:
+        for code in codes:
+            file.write(f"{code}\n")
+
+
 def download_image(task: DownloadTask, failed_list, success_list) -> bool:
     os.makedirs(task.folder, exist_ok=True)
     file_save_path = task.folder / f"{task.code}.png"
     url = BASE_URL_TEMPLATE.format(code=task.code, wid=task.width, hei=task.height)
+
+    if file_save_path.is_file() and file_save_path.stat().st_size > 0:
+        print(f"Skipping existing image {file_save_path}")
+        success_list.append(task.code)
+        return True
 
     try:
         response = requests.get(url, stream=True, timeout=15)
@@ -88,9 +116,23 @@ def download_image(task: DownloadTask, failed_list, success_list) -> bool:
         failed_list.append(task.code)
         return False
 
-    if response.status_code >= 400 or "Asset Not Found" in response.text:
+    if response.status_code == 404:
         response.close()
-        print(f"Image {task.code}.png not found!")
+        print(f"Skipping unavailable image {task.code}.png (HTTP 404)")
+        failed_list.append(task.code)
+        return False
+
+    if response.status_code >= 400:
+        status_code = response.status_code
+        response.close()
+        print(f"Skipping {task.code}.png (HTTP {status_code})")
+        failed_list.append(task.code)
+        return False
+
+    content_type = response.headers.get("content-type", "").lower()
+    if not content_type.startswith("image/"):
+        response.close()
+        print(f"Skipping {task.code}.png (unexpected content type: {content_type})")
         failed_list.append(task.code)
         return False
 
@@ -140,6 +182,7 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
+    existing_codes = load_existing_codes(SOURCE_IMAGES_PATH)
 
     manager = multiprocessing.Manager()
     failed_downloads = manager.list()
@@ -164,6 +207,16 @@ if __name__ == "__main__":
     else:
         with Pool(args.processes) as pool:
             pool.map(download_worker, worker_payloads)
+
+    successful_set = set(successful_downloads)
+    ordered_new_codes = []
+    seen = set()
+    for task in tasks:
+        code = task.code
+        if code in successful_set and code not in existing_codes and code not in seen:
+            seen.add(code)
+            ordered_new_codes.append(code)
+    append_codes(SOURCE_IMAGES_PATH, ordered_new_codes)
 
     if failed_downloads:
         print("\nFailed downloads:")
