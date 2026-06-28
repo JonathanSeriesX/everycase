@@ -27,6 +27,7 @@ const normalizeTabs = (tabs = []) => {
         model: sanitize(tab.model),
         material: sanitize(tab.material),
         season: sanitize(tab.season),
+        exactMaterial: tab.exactMaterial === true,
       };
 
       const rawLabel = sanitize(tab.label);
@@ -118,6 +119,7 @@ const buildStorageKey = (tabs) => {
  *   model?: string,
  *   material?: string,
  *   season?: string,
+ *   exactMaterial?: boolean,
  * }>} props.tabs - Ordered list of tab definitions.
  * @param {string[]} [props.tabNames] - Optional labels for the tabs. Must match the length of `tabs`.
  */
