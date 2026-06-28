@@ -8,9 +8,14 @@ import {
 const getCachedCases = cache(() => getAllCasesFromCSV());
 
 const VerticalCarousel = (props) => {
-  const { model, material, season } = props;
+  const { model, material, season, exactMaterial } = props;
   const allCases = getCachedCases();
-  const cases = filterCases(allCases, { model, material, season });
+  const cases = filterCases(allCases, {
+    model,
+    material,
+    season,
+    exactMaterial,
+  });
 
   return <VerticalCarouselClient {...props} cases={cases} />;
 };
