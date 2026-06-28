@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Adjust these paths to wherever your sources and outputs live.
-folder_x="/Volumes/Storage/Images/1_final-sources"
-folder_y="/Volumes/Storage/Images/2_compressed-sources"
-folder_z="/Volumes/Storage/Images/3_compressed-avif-previews"
-folder_a="/Volumes/Storage/Images/3_compressed-webp-previews"
+# Paths default to the canonical layout but can be overridden by the
+# environment (assets.py sets these from its single CONFIG block).
+folder_x="${FINAL_SOURCES:-/Volumes/Storage/Images/1_final-sources}"
+folder_y="${COMPRESSED_SOURCES:-/Volumes/Storage/Images/2_compressed-sources}"
+folder_z="${AVIF_PREVIEWS:-/Volumes/Storage/Images/3_compressed-avif-previews}"
+folder_a="${WEBP_PREVIEWS:-/Volumes/Storage/Images/3_compressed-webp-previews}"
 jobs="${MAX_JOBS:-10}"
 
 command -v parallel >/dev/null 2>&1 || {
@@ -30,6 +31,8 @@ printf '%s\0' "${png_files[@]}" |
     base="${file##*/}"
     base="${base%.*}"
     out="$folder_z/$base.avif"
+    # Drop a stale output if the source has changed since it was created.
+    [ -e "$out" ] && [ "$file" -nt "$out" ] && rm -f "$out"
     [ -e "$out" ] && exit 0
     magick "$file" -resize 512x512 -quality 90 -strip -filter Lanczos \
       -define avif:codec=aom -define avif:speed=0 "$out"
@@ -42,6 +45,8 @@ printf '%s\0' "${png_files[@]}" |
     base="${file##*/}"
     base="${base%.*}"
     out="$folder_y/$base.webp"
+    # Drop a stale output if the source has changed since it was created.
+    [ -e "$out" ] && [ "$file" -nt "$out" ] && rm -f "$out"
     [ -e "$out" ] && exit 0
     magick "$file" -resize 2048x2048 -define webp:lossless=true \
       -strip -filter Lanczos -define webp:method=6 "$out"

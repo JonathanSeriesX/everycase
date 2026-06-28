@@ -1,0 +1,7 @@
+# Asset pipeline (assets.py, batch_cropper.py, image downloader)
+Pillow
+requests
+
+# Pricing scripts (pdf_processor.py, price_list_puller.py)
+pandas
+pdfplumber
