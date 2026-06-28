@@ -1,5 +1,4 @@
-import { Tabs } from "nextra/components";
-import Link from "next/link";
+import CaseTableTabs from "../../components/CaseTableTabs";
 
 # MacBook Leather Sleeve
 
@@ -23,45 +22,27 @@ And trust me on this: this is the only reason why Apple continues to sell the M2
 
 ## Leather Sleeve models
 
-<Tabs items={['MacBook 12″', 'Air & Pro 13″', 'Pro 15″', 'Pro 16″']}>
-
-<Tabs.Tab>
-
-| Color | SKU | Tap for more: |
-| --- | --- | --- |
-| Black | MTEG2<wbr/>ZM/A | <Link href="/case/MTEG2"><img src="https://cloudfront.everycase.org/everypreview/MTEG2.webp" alt="Black MacBook 12″"/></Link> |
-| Midnight Blue | MQG02<wbr/>ZM/A | <Link href="/case/MQG02"><img src="https://cloudfront.everycase.org/everypreview/MQG02.webp" alt="Midnight Blue MacBook 12″"/></Link> |
-| Saddle Brown | MQG12<wbr/>ZM/A | <Link href="/case/MQG12"><img src="https://cloudfront.everycase.org/everypreview/MQG12.webp" alt="Saddle Brown MacBook 12″"/></Link> |
-
-</Tabs.Tab>
-
-<Tabs.Tab>
-
-| Color | SKU | Tap for more: |
-| --- | --- | --- |
-| Black | MTEH2<wbr/>ZM/A | <Link href="/case/MTEH2"><img src="https://cloudfront.everycase.org/everypreview/MTEH2.webp" alt="Black MacBook Air & Pro 13″"/></Link> |
-| Midnight Blue | MRQL2<wbr/>ZM/A | <Link href="/case/MRQL2"><img src="https://cloudfront.everycase.org/everypreview/MRQL2.webp" alt="Midnight Blue MacBook Air & Pro 13″"/></Link> |
-| Saddle Brown | MRQM2<wbr/>ZM/A | <Link href="/case/MRQM2"><img src="https://cloudfront.everycase.org/everypreview/MRQM2.webp" alt="Saddle Brown MacBook Air & Pro 13″"/></Link> |
-
-</Tabs.Tab>
-
-<Tabs.Tab>
-
-| Color | SKU | Tap for more: |
-| --- | --- | --- |
-| Black | MTEJ2<wbr/>ZM/A | <Link href="/case/MTEJ2"><img src="https://cloudfront.everycase.org/everypreview/MTEJ2.webp" alt="Black MacBook Pro 15″"/></Link> |
-| Midnight Blue | MRQU2<wbr/>ZM/A | <Link href="/case/MRQU2"><img src="https://cloudfront.everycase.org/everypreview/MRQU2.webp" alt="Midnight Blue MacBook Pro 15″"/></Link> |
-| Saddle Brown | MRQV2<wbr/>ZM/A | <Link href="/case/MRQV2"><img src="https://cloudfront.everycase.org/everypreview/MRQV2.webp" alt="Saddle Brown MacBook Pro 15″"/></Link> |
-
-</Tabs.Tab>
-
-<Tabs.Tab>
-
-| Color | SKU | Tap for more: |
-| --- | --- | --- |
-| Black | MWVA2<wbr/>ZM/A | <Link href="/case/MWVA2"><img src="https://cloudfront.everycase.org/everypreview/MWVA2.webp" alt="Black MacBook Pro 16″"/></Link> |
-| Midnight Blue | MWVC2<wbr/>ZM/A | <Link href="/case/MWVC2"><img src="https://cloudfront.everycase.org/everypreview/MWVC2.webp" alt="Midnight Blue MacBook Pro 16″"/></Link> |
-| Saddle Brown | MWV92<wbr/>ZM/A | <Link href="/case/MWV92"><img src="https://cloudfront.everycase.org/everypreview/MWV92.webp" alt="Saddle Brown MacBook Pro 16″"/></Link> |
-
-</Tabs.Tab>
-</Tabs>
+<CaseTableTabs
+  tabs={[
+    {
+      label: "MacBook 12″",
+      model: "MacBook 12",
+      material: "Leather Sleeve",
+    },
+    {
+      label: "Air & Pro 13″",
+      model: "MacBook Pro 13",
+      material: "Leather Sleeve",
+    },
+    {
+      label: "Pro 15″",
+      model: "MacBook Pro 15",
+      material: "Leather Sleeve",
+    },
+    {
+      label: "Pro 16″",
+      model: "MacBook Pro 16",
+      material: "Leather Sleeve",
+    },
+  ]}
+/>
