@@ -5,6 +5,7 @@
 .idea/
 .vscode/
 .obsidian/
+.claude/
 
 # Building & Deploying
 .next/

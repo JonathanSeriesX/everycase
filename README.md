@@ -16,3 +16,7 @@ Current roadmap:
 ## Licence
 
 This project is based on Shu Ding's [Nextra](https://github.com/shuding/nextra/) / Nextra Docs theme, which is licensed under the MIT Licence.
+
+## Notes to myself
+
+- 'source_images.txt' is a list of image files that excludes some images I don't want to see on case pages, such as /case/MHMP3
