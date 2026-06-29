@@ -50,8 +50,6 @@ a:focus,
 a:focus-visible,
 select:focus,
 select:focus-visible,
-input:focus,
-input:focus-visible,
 textarea:focus,
 textarea:focus-visible {
   outline: none !important;
