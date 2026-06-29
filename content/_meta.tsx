@@ -22,41 +22,12 @@ const config = {
     },
     display: "hidden",
   },
-  why: {
-    title: "Why? ✦",
-    type: "page",
-  },
-  roadmap: {
-    title: (
-      <span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "0.375rem",
-          whiteSpace: "nowrap",
-        }}
-      >
-        Roadmap
-        <GitHubIcon
-          aria-hidden
-          style={{
-            width: 16,
-            height: 16,
-            display: "inline-block",
-            verticalAlign: "middle",
-          }}
-        />
-      </span>
-    ),
-    href: "https://github.com/JonathanSeriesX/everycase#readme",
-    type: "page",
-  },
   about: {
     title: "Credits ★",
     type: "page",
   },
   support: {
-    title: "Support me ♥",
+    title: "Support this ♥",
     type: "page",
   },
   sep1: {

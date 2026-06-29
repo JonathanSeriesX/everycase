@@ -16,7 +16,7 @@ Thanks ever so much!
 
 ---
 
-#### Ways to support me:
+### Ways to support me:
 
 You can buy me a [nice latte](https://www.youtube.com/shorts/h75W1uhL-iQ) here:
 
@@ -24,19 +24,11 @@ You can buy me a [nice latte](https://www.youtube.com/shorts/h75W1uhL-iQ) here:
 
 Or by using:
 
-- Wise — [Evgenii Ostrovskii](https://wise.com/share/evgeniio44)
-- IBAN — BE57 9676 4450 4035 (Evgenii Ostrovskii, TRWIBEB1XXX)
-- \$DOGE — 9uh4zef9YuEt1shiGKFPE9idiFyj2EM39r
-- \$USDT-TRC20 — TLSbPQXFaF3zbrZykTBcqEWiv6xa7eDUKL
-- \$USDT-ERC20 — 0x0d93faacca02df0b83f4f379b9dad7ecc18b78ca
+- [Revolut](https://revolut.me/evgenii69)
+- \$DOGE — DCC1hzkqFazBZ3oemGKaLRxkVCGVrV9psa
+- \$USDT-TRC20 — TNhgaQw2n9WxsddLhaXnx1HvEEYsScmsrW
 
 Noticeable contributions will be acknowledged in [Credits](about#contributors--patrons) if you so desire
-
----
-
-#### Or become a site sponsor!
-
-If whatever you're doing is really cool, I'd be happy to display a static ad for your business.
 
 ---
 
