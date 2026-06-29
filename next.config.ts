@@ -54,11 +54,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/why",
-        destination: "/#why-this-exists",
-        permanent: true,
-      },
-      {
         source: "/pre-notch-iphone/:path*",
         destination: "/",
         permanent: true,
