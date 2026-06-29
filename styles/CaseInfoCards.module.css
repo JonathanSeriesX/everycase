@@ -12,11 +12,9 @@
   border-radius: 22px;
   padding: 0.9rem 1.1rem;
   background: rgba(252, 248, 250, 0.64);
-  border: 1px solid rgba(255, 255, 255, 0.96);
+  border: none;
   box-shadow: 0 24px 55px rgba(50, 42, 48, 0.16),
-    0 3px 12px rgba(50, 42, 48, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    inset 0 0 0 1px rgba(105, 96, 103, 0.08);
+    0 3px 12px rgba(50, 42, 48, 0.08);
   -webkit-backdrop-filter: blur(42px) saturate(145%);
   backdrop-filter: blur(42px) saturate(145%);
 }
@@ -133,9 +131,8 @@
       rgba(255, 255, 255, 0.04)
     ),
     rgba(26, 28, 33, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 18px 40px rgba(4, 9, 18, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border: none;
+  box-shadow: 0 18px 40px rgba(4, 9, 18, 0.5);
 }
 
 :global(html[class~="dark"]) .label,

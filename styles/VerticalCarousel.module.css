@@ -20,11 +20,9 @@
   width: 100%;
   max-width: 250px;
   background: rgba(252, 248, 250, 0.64);
-  border: 1px solid rgba(255, 255, 255, 0.96);
+  border: none;
   box-shadow: 0 35px 70px rgba(50, 42, 48, 0.2),
-    0 4px 14px rgba(50, 42, 48, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    inset 0 0 0 1px rgba(105, 96, 103, 0.08);
+    0 4px 14px rgba(50, 42, 48, 0.09);
   -webkit-backdrop-filter: blur(42px) saturate(145%);
   backdrop-filter: blur(42px) saturate(145%);
   transition: transform 160ms ease, border-color 160ms ease,
@@ -34,11 +32,9 @@
 @media (hover: hover) and (pointer: fine) {
   .caseCard:hover {
     transform: scale(1.02);
-    border-color: rgba(255, 255, 255, 1);
+    border-color: transparent;
     box-shadow: 0 30px 64px rgba(50, 42, 48, 0.22),
-      0 4px 14px rgba(50, 42, 48, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 1),
-      inset 0 0 0 1px rgba(105, 96, 103, 0.09);
+      0 4px 14px rgba(50, 42, 48, 0.1);
   }
 }
 
@@ -217,14 +213,12 @@
       rgba(255, 255, 255, 0.04)
     ),
     rgba(26, 28, 33, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 25px 50px rgba(4, 9, 18, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border: none;
+  box-shadow: 0 25px 50px rgba(4, 9, 18, 0.55);
 }
 
 :global(html[class~="dark"]) .caseCard:hover {
-  box-shadow: 0 20px 45px rgba(8, 8, 10, 0.65),
-    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  box-shadow: 0 20px 45px rgba(8, 8, 10, 0.65);
 }
 
 :global(html[class~="dark"]) .imageShell {
