@@ -23,6 +23,18 @@ const tofino = localFont({
   ],
   display: "swap",
   variable: "--font-tofino", // Define a custom CSS variable for easy usage
+  // TofinoVariable's baked-in metrics are top-heavy: with USE_TYPO_METRICS set,
+  // the em box is ascent 0.760 / descent 0.240 while cap height is only 0.707.
+  // That leaves ~0.053em above the capitals but 0.240em below the baseline, so
+  // text sits high inside every line box and no amount of line-height/flex
+  // centering can fix it. We override the metrics so the cap block is centered:
+  //   ascent - capHeight === descent  (0.854 - 0.707 === 0.146)
+  // line-gap-override keeps `line-height: normal` at the original 1.2em.
+  declarations: [
+    { prop: "ascent-override", value: "85.4%" },
+    { prop: "descent-override", value: "14.6%" },
+    { prop: "line-gap-override", value: "20%" },
+  ],
 });
 
 const logo = (
