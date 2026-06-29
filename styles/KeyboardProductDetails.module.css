@@ -27,17 +27,22 @@
 
 .languageSelect {
   min-width: min(100%, 15rem);
-  /* No fixed height: symmetric vertical padding lets every browser — including
-     Safari, which ignores line-height and won't re-center text inside a forced
-     height — vertically center the value natively. text-align(-last) centers it
-     horizontally; the UA reserves its own space for the dropdown arrow. */
-  padding: 0.5rem 0.6rem;
+  /* Custom chevron so we control its gap from the right edge. padding-left is
+     matched to that gap (both 0.85rem) so the value text and the arrow are
+     equally inset; padding-right just reserves room for the chevron. */
+  padding: 0.5rem 2rem 0.5rem 0.85rem;
   border: 1px solid rgba(15, 23, 42, 0.18);
   border-radius: 0.5rem;
   background-color: white;
   color: inherit;
   font: inherit;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%2364748b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 0.8rem;
 }
 
 @media (max-width: 600px) {
@@ -64,4 +69,6 @@
 :global(html[class~="dark"]) .languageSelect {
   border-color: rgba(255, 255, 255, 0.16);
   background-color: rgb(24, 24, 27);
+  /* lighter chevron for the dark background */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23a1a1aa' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
 }
