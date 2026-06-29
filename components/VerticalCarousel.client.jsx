@@ -71,7 +71,13 @@ const getDisplayLabel = (itemColour, itemModel, model, material) => {
   return itemColour;
 };
 
-const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
+const VerticalCarouselClient = ({
+  cases = [],
+  model,
+  material,
+  season,
+  standalone = false,
+}) => {
   const [copiedSku, setCopiedSku] = useState(null);
 
   const sortedCases = useMemo(() => sortCases(cases), [cases]);
@@ -101,7 +107,11 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
 
   return (
     <>
-      <div className={styles.carouselWrapper}>
+      <div
+        className={`${styles.carouselWrapper}${
+          standalone ? ` ${styles.standalone}` : ""
+        }`}
+      >
         <div className={styles.cardTrack}>
           {sortedCases.map((item, index) => (
             <CaseCard

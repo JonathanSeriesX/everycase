@@ -146,7 +146,7 @@ const CaseTableTabs = ({ tabs = [], tabNames = [] }) => {
 
   if (normalizedTabs.length === 1) {
     const [singleTab] = normalizedTabs;
-    return <VerticalCarousel {...singleTab.query} />;
+    return <VerticalCarousel {...singleTab.query} standalone />;
   }
 
   const resolvedLabels = resolveLabels(normalizedTabs, tabNames);
