@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../styles/globals.css";
 import Image from "next/image";
+import SidebarAccordion from "../components/SidebarAccordion";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -200,6 +201,7 @@ export default async function RootLayout({ children }) {
             autoCollapse: false,
           }}
         >
+          <SidebarAccordion />
           {children}
           <Analytics />
           <SpeedInsights />
