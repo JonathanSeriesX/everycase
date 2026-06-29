@@ -1,4 +1,4 @@
-SKU,regions,kind,colour,model,season,alt_thumbnail,alt_resolution,MSRP,edu_price,name
+SKU,regions,kind,colour,model,season,alt_thumbnail,alt_sku,MSRP,edu_price,name
 MHVQ4,ZM,Silicone Case,Bright Guava,iPhone 17,Spring 2026,,,49.00,,iPhone 17 Silicone Case with MagSafe — Bright Guava
 MHVM4,ZM,Silicone Case,Vanilla,iPhone 17,Spring 2026,,,49.00,,iPhone 17 Silicone Case with MagSafe — Vanilla
 MHVT4,ZM,Silicone Case,Electric Lavender,iPhone 17,Spring 2026,,,49.00,,iPhone 17 Silicone Case with MagSafe — Electric Lavender
@@ -164,10 +164,10 @@ MT4L3,ZM,FineWoven Case,Mulberry,iPhone 15 Pro,Autumn 2023,,,59.00,,iPhone 15 Pr
 MT4Q3,ZM,FineWoven Case,Pacific Blue,iPhone 15 Pro,Autumn 2023,,,59.00,,iPhone 15 Pro FineWoven Case with MagSafe — Pacific Blue
 MT4U3,ZM,FineWoven Case,Evergreen,iPhone 15 Pro,Autumn 2023,,,59.00,,iPhone 15 Pro FineWoven Case with MagSafe — Evergreen
 MT223,ZM,Clear Case,Clear Case,iPhone 15 Pro,Autumn 2023,MT223_AV2,,49.00,,iPhone 15 Pro Clear Case with MagSafe
-MT103,ZM,Silicone Case,Black,iPhone 15 Plus,Autumn 2023,,,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Black
-MT123,ZM,Silicone Case,Storm Blue,iPhone 15 Plus,Autumn 2023,,,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Storm Blue
-MT133,ZM,Silicone Case,Clay,iPhone 15 Plus,Autumn 2023,,,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Clay
-MT143,ZM,Silicone Case,Light Pink,iPhone 15 Plus,Autumn 2023,,,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Light Pink
+MT103,ZM,Silicone Case,Black,iPhone 15 Plus,Autumn 2023,,MXQR3,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Black
+MT123,ZM,Silicone Case,Storm Blue,iPhone 15 Plus,Autumn 2023,,MXQT3,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Storm Blue
+MT133,ZM,Silicone Case,Clay,iPhone 15 Plus,Autumn 2023,,MXQU3,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Clay
+MT143,ZM,Silicone Case,Light Pink,iPhone 15 Plus,Autumn 2023,,MXQV3,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Light Pink
 MT163,ZM,Silicone Case,Guava,iPhone 15 Plus,Autumn 2023,,,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Guava
 MT173,ZM,Silicone Case,Orange Sorbet,iPhone 15 Plus,Autumn 2023,,,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Orange Sorbet
 MT183,ZM,Silicone Case,Cypress,iPhone 15 Plus,Autumn 2023,,,49.00,,iPhone 15 Plus Silicone Case with MagSafe — Cypress
@@ -177,11 +177,11 @@ MT473,ZM,FineWoven Case,Taupe,iPhone 15 Plus,Autumn 2023,,,59.00,,iPhone 15 Plus
 MT4A3,ZM,FineWoven Case,Mulberry,iPhone 15 Plus,Autumn 2023,,,59.00,,iPhone 15 Plus FineWoven Case with MagSafe — Mulberry
 MT4D3,ZM,FineWoven Case,Pacific Blue,iPhone 15 Plus,Autumn 2023,,,59.00,,iPhone 15 Plus FineWoven Case with MagSafe — Pacific Blue
 MT4F3,ZM,FineWoven Case,Evergreen,iPhone 15 Plus,Autumn 2023,,,59.00,,iPhone 15 Plus FineWoven Case with MagSafe — Evergreen
-MT213,ZM,Clear Case,Clear Case,iPhone 15 Plus,Autumn 2023,MT213_AV1,,49.00,,iPhone 15 Plus Clear Case with MagSafe
-MT0J3,ZM,Silicone Case,Black,iPhone 15,Autumn 2023,,,49.00,,iPhone 15 Silicone Case with MagSafe — Black
-MT0N3,ZM,Silicone Case,Storm Blue,iPhone 15,Autumn 2023,,,49.00,,iPhone 15 Silicone Case with MagSafe — Storm Blue
-MT0Q3,ZM,Silicone Case,Clay,iPhone 15,Autumn 2023,,,49.00,,iPhone 15 Silicone Case with MagSafe — Clay
-MT0U3,ZM,Silicone Case,Light Pink,iPhone 15,Autumn 2023,,,49.00,,iPhone 15 Silicone Case with MagSafe — Light Pink
+MT213,ZM,Clear Case,Clear Case,iPhone 15 Plus,Autumn 2023,MT213_AV1,MXRL3,49.00,,iPhone 15 Plus Clear Case with MagSafe
+MT0J3,ZM,Silicone Case,Black,iPhone 15,Autumn 2023,,MXPD3,49.00,,iPhone 15 Silicone Case with MagSafe — Black
+MT0N3,ZM,Silicone Case,Storm Blue,iPhone 15,Autumn 2023,,MXPF3,49.00,,iPhone 15 Silicone Case with MagSafe — Storm Blue
+MT0Q3,ZM,Silicone Case,Clay,iPhone 15,Autumn 2023,,MXPG3,49.00,,iPhone 15 Silicone Case with MagSafe — Clay
+MT0U3,ZM,Silicone Case,Light Pink,iPhone 15,Autumn 2023,,MXPH3,49.00,,iPhone 15 Silicone Case with MagSafe — Light Pink
 MT0V3,ZM,Silicone Case,Guava,iPhone 15,Autumn 2023,,,49.00,,iPhone 15 Silicone Case with MagSafe — Guava
 MT0W3,ZM,Silicone Case,Orange Sorbet,iPhone 15,Autumn 2023,,,49.00,,iPhone 15 Silicone Case with MagSafe — Orange Sorbet
 MT0X3,ZM,Silicone Case,Cypress,iPhone 15,Autumn 2023,,,49.00,,iPhone 15 Silicone Case with MagSafe — Cypress
@@ -191,7 +191,7 @@ MT3C3,ZM,FineWoven Case,Taupe,iPhone 15,Autumn 2023,,,59.00,,iPhone 15 FineWoven
 MT3E3,ZM,FineWoven Case,Mulberry,iPhone 15,Autumn 2023,,,59.00,,iPhone 15 FineWoven Case with MagSafe — Mulberry
 MT3G3,ZM,FineWoven Case,Pacific Blue,iPhone 15,Autumn 2023,,,59.00,,iPhone 15 FineWoven Case with MagSafe — Pacific Blue
 MT3J3,ZM,FineWoven Case,Evergreen,iPhone 15,Autumn 2023,,,59.00,,iPhone 15 FineWoven Case with MagSafe — Evergreen
-MT203,ZM,Clear Case,Clear Case,iPhone 15,Autumn 2023,MT203_AV2,,49.00,,iPhone 15 Clear Case with MagSafe
+MT203,ZM,Clear Case,Clear Case,iPhone 15,Autumn 2023,MT203_AV2,MXRK3,49.00,,iPhone 15 Clear Case with MagSafe
 MQUL3,ZM,Silicone Case,Canary Yellow,iPhone 14 Pro Max,Spring 2023,,,49.00,,iPhone 14 Pro Max Silicone Case with MagSafe — Canary Yellow
 MQUN3,ZM,Silicone Case,Olive,iPhone 14 Pro Max,Spring 2023,,,49.00,,iPhone 14 Pro Max Silicone Case with MagSafe — Olive
 MQUP3,ZM,Silicone Case,Sky,iPhone 14 Pro Max,Spring 2023,,,49.00,,iPhone 14 Pro Max Silicone Case with MagSafe — Sky
@@ -236,10 +236,10 @@ MPPJ3,ZM,Leather Case,Ink,iPhone 14 Pro,Autumn 2022,,,59.00,,iPhone 14 Pro Leath
 MPPK3,ZM,Leather Case,Umber,iPhone 14 Pro,Autumn 2022,,,59.00,,iPhone 14 Pro Leather Case with MagSafe — Umber
 MPPL3,ZM,Leather Case,Orange,iPhone 14 Pro,Autumn 2022,,,59.00,,iPhone 14 Pro Leather Case with MagSafe — Orange
 MPU63,ZM,Clear Case,Clear Case,iPhone 14 Pro,Autumn 2022,,,49.00,,iPhone 14 Pro Clear Case with MagSafe
-MPT33,ZM,Silicone Case,Midnight,iPhone 14 Plus,Autumn 2022,,,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Midnight
-MPT53,ZM,Silicone Case,Storm Blue,iPhone 14 Plus,Autumn 2022,,,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Storm Blue
-MPT63,ZM,Silicone Case,PRODUCT(RED),iPhone 14 Plus,Autumn 2022,,,49.00,,iPhone 14 Plus Silicone Case with MagSafe — PRODUCT(RED)
-MPT73,ZM,Silicone Case,Chalk Pink,iPhone 14 Plus,Autumn 2022,,,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Chalk Pink
+MPT33,ZM,Silicone Case,Midnight,iPhone 14 Plus,Autumn 2022,,MW4Y3,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Midnight
+MPT53,ZM,Silicone Case,Storm Blue,iPhone 14 Plus,Autumn 2022,,MW503,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Storm Blue
+MPT63,ZM,Silicone Case,PRODUCT(RED),iPhone 14 Plus,Autumn 2022,,MW513,49.00,,iPhone 14 Plus Silicone Case with MagSafe — PRODUCT(RED)
+MPT73,ZM,Silicone Case,Chalk Pink,iPhone 14 Plus,Autumn 2022,,MW523,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Chalk Pink
 MPT83,ZM,Silicone Case,Lilac,iPhone 14 Plus,Autumn 2022,,,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Lilac
 MPT93,ZM,Silicone Case,Elderberry,iPhone 14 Plus,Autumn 2022,,,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Elderberry
 MPTC3,ZM,Silicone Case,Succulent,iPhone 14 Plus,Autumn 2022,,,49.00,,iPhone 14 Plus Silicone Case with MagSafe — Succulent
@@ -249,11 +249,11 @@ MPPA3,ZM,Leather Case,Forest Green,iPhone 14 Plus,Autumn 2022,,,59.00,,iPhone 14
 MPPC3,ZM,Leather Case,Ink,iPhone 14 Plus,Autumn 2022,,,59.00,,iPhone 14 Plus Leather Case with MagSafe — Ink
 MPPD3,ZM,Leather Case,Umber,iPhone 14 Plus,Autumn 2022,,,59.00,,iPhone 14 Plus Leather Case with MagSafe — Umber
 MPPF3,ZM,Leather Case,Orange,iPhone 14 Plus,Autumn 2022,,,59.00,,iPhone 14 Plus Leather Case with MagSafe — Orange
-MPU43,ZM,Clear Case,Clear Case,iPhone 14 Plus,Autumn 2022,MPU43_AV1,,49.00,,iPhone 14 Plus Clear Case with MagSafe
-MPRU3,ZM,Silicone Case,Midnight,iPhone 14,Autumn 2022,,,49.00,,iPhone 14 Silicone Case with MagSafe — Midnight
-MPRV3,ZM,Silicone Case,Storm Blue,iPhone 14,Autumn 2022,,,49.00,,iPhone 14 Silicone Case with MagSafe — Storm Blue
-MPRW3,ZM,Silicone Case,PRODUCT(RED),iPhone 14,Autumn 2022,,,49.00,,iPhone 14 Silicone Case with MagSafe — PRODUCT(RED)
-MPRX3,ZM,Silicone Case,Chalk Pink,iPhone 14,Autumn 2022,,,49.00,,iPhone 14 Silicone Case with MagSafe — Chalk Pink
+MPU43,ZM,Clear Case,Clear Case,iPhone 14 Plus,Autumn 2022,MPU43_AV1,MW4T3,49.00,,iPhone 14 Plus Clear Case with MagSafe
+MPRU3,ZM,Silicone Case,Midnight,iPhone 14,Autumn 2022,,MW5R3,49.00,,iPhone 14 Silicone Case with MagSafe — Midnight
+MPRV3,ZM,Silicone Case,Storm Blue,iPhone 14,Autumn 2022,,MW5T3,49.00,,iPhone 14 Silicone Case with MagSafe — Storm Blue
+MPRW3,ZM,Silicone Case,PRODUCT(RED),iPhone 14,Autumn 2022,,MW5U3,49.00,,iPhone 14 Silicone Case with MagSafe — PRODUCT(RED)
+MPRX3,ZM,Silicone Case,Chalk Pink,iPhone 14,Autumn 2022,,MW5V3,49.00,,iPhone 14 Silicone Case with MagSafe — Chalk Pink
 MPRY3,ZM,Silicone Case,Lilac,iPhone 14,Autumn 2022,,,49.00,,iPhone 14 Silicone Case with MagSafe — Lilac
 MPT03,ZM,Silicone Case,Elderberry,iPhone 14,Autumn 2022,,,49.00,,iPhone 14 Silicone Case with MagSafe — Elderberry
 MPT13,ZM,Silicone Case,Succulent,iPhone 14,Autumn 2022,,,49.00,,iPhone 14 Silicone Case with MagSafe — Succulent
@@ -263,7 +263,7 @@ MPP53,ZM,Leather Case,Forest Green,iPhone 14,Autumn 2022,,,59.00,,iPhone 14 Leat
 MPP63,ZM,Leather Case,Ink,iPhone 14,Autumn 2022,,,59.00,,iPhone 14 Leather Case with MagSafe — Ink
 MPP73,ZM,Leather Case,Umber,iPhone 14,Autumn 2022,,,59.00,,iPhone 14 Leather Case with MagSafe — Umber
 MPP83,ZM,Leather Case,Orange,iPhone 14,Autumn 2022,,,59.00,,iPhone 14 Leather Case with MagSafe — Orange
-MPU13,ZM,Clear Case,Clear Case,iPhone 14,Autumn 2022,MPU13_AV4,,49.00,,iPhone 14 Clear Case with MagSafe
+MPU13,ZM,Clear Case,Clear Case,iPhone 14,Autumn 2022,MPU13_AV4,MW5Q3,49.00,,iPhone 14 Clear Case with MagSafe
 MQDQ3,ZM,Smart Folio,White,iPad 10,Autumn 2022,,,79.00,,Smart Folio for iPad (10th Generation) — White
 MQDR3,ZM,Smart Folio,Lemonade,iPad 10,Autumn 2022,,,79.00,,Smart Folio for iPad (10th Generation) — Lemonade
 MQDT3,ZM,Smart Folio,Watermelon,iPad 10,Autumn 2022,,,79.00,,Smart Folio for iPad (10th Generation) — Watermelon
@@ -339,15 +339,15 @@ MM253,ZM,Silicone Case,Pink Pomelo,iPhone 13,Autumn 2021,,,49.00,,iPhone 13 Sili
 MM263,ZM,Silicone Case,Clover,iPhone 13,Autumn 2021,,,49.00,,iPhone 13 Silicone Case with MagSafe — Clover
 MM273,ZM,Silicone Case,Blue Jay,iPhone 13,Autumn 2021,,,49.00,,iPhone 13 Silicone Case with MagSafe — Blue Jay
 MM283,ZM,Silicone Case,Chalk Pink,iPhone 13,Autumn 2021,,,49.00,,iPhone 13 Silicone Case with MagSafe — Chalk Pink
-MM293,ZM,Silicone Case,Abyss Blue,iPhone 13,Autumn 2021,,,49.00,,iPhone 13 Silicone Case with MagSafe — Abyss Blue
-MM2A3,ZM,Silicone Case,Midnight,iPhone 13,Autumn 2021,,,49.00,,iPhone 13 Silicone Case with MagSafe — Midnight
-MM2C3,ZM,Silicone Case,PRODUCT(RED),iPhone 13,Autumn 2021,,,49.00,,iPhone 13 Silicone Case with MagSafe — PRODUCT(RED)
+MM293,ZM,Silicone Case,Abyss Blue,iPhone 13,Autumn 2021,,MC2Y4,49.00,,iPhone 13 Silicone Case with MagSafe — Abyss Blue
+MM2A3,ZM,Silicone Case,Midnight,iPhone 13,Autumn 2021,,MC4A4,49.00,,iPhone 13 Silicone Case with MagSafe — Midnight
+MM2C3,ZM,Silicone Case,PRODUCT(RED),iPhone 13,Autumn 2021,,MC4E4,49.00,,iPhone 13 Silicone Case with MagSafe — PRODUCT(RED)
 MM103,ZM,Leather Case,Golden Brown,iPhone 13,Autumn 2021,,,59.00,,iPhone 13 Leather Case with MagSafe — Golden Brown
 MM143,ZM,Leather Case,Dark Cherry,iPhone 13,Autumn 2021,,,59.00,,iPhone 13 Leather Case with MagSafe — Dark Cherry
 MM163,ZM,Leather Case,Wisteria,iPhone 13,Autumn 2021,,,59.00,,iPhone 13 Leather Case with MagSafe — Wisteria
 MM173,ZM,Leather Case,Sequoia Green,iPhone 13,Autumn 2021,,,59.00,,iPhone 13 Leather Case with MagSafe — Sequoia Green
 MM183,ZM,Leather Case,Midnight,iPhone 13,Autumn 2021,,,59.00,,iPhone 13 Leather Case with MagSafe — Midnight
-MM2X3,ZM,Clear Case,Clear Case,iPhone 13,Autumn 2021,MM2X3_AV2,,49.00,,iPhone 13 Clear Case with MagSafe
+MM2X3,ZM,Clear Case,Clear Case,iPhone 13,Autumn 2021,MM2X3_AV2,MC2W4,49.00,,iPhone 13 Clear Case with MagSafe
 MM6G3,ZM,Smart Folio,Black,iPad mini 6,Autumn 2021,,,59.00,,Smart Folio for iPad mini 6 — Black
 MM6H3,ZM,Smart Folio,White,iPad mini 6,Autumn 2021,,,59.00,,Smart Folio for iPad mini 6 — White
 MM6J3,ZM,Smart Folio,Electric Orange,iPad mini 6,Autumn 2021,,,59.00,,Smart Folio for iPad mini 6 — Electric Orange
@@ -881,7 +881,7 @@ MF045,LL,Leather Case,Black,iPhone 5s-SE,Autumn 2013,,,39.00,,iPhone 5s Leather 
 MF046,LL,Leather Case,Red,iPhone 5s-SE,Autumn 2013,,,39.00,,iPhone 5s Leather Case — Red
 MMHG2,ZM,Leather Case,Midnight Blue,iPhone 5s-SE,Spring 2016,,,39.00,,iPhone SE Leather Case — Midnight Blue
 MMHH2,ZM,Leather Case,Black,iPhone 5s-SE,Spring 2016,,,39.00,,iPhone SE Leather Case — Black
-MNYV2,ZM,Leather Case,PRODUCT(RED),iPhone 5s-SE,November 2016,,,39.00,,iPhone SE Leather Case — PRODUCT(RED)
+MNYV2,ZM,Leather Case,PRODUCT(RED),iPhone 5s-SE,November 2016,,MR622,39.00,,iPhone SE Leather Case — PRODUCT(RED)
 MNYW2,ZM,Leather Case,Saddle Brown,iPhone 5s-SE,Spring 2017,,,39.00,,iPhone SE Leather Case — Saddle Brown
 MF035,ZM,Silicone Case,Blue,iPhone 5c,Autumn 2013,,,29.00,,iPhone 5c Case — Blue
 MF036,ZM,Silicone Case,Pink,iPhone 5c,Autumn 2013,,,29.00,,iPhone 5c Case — Pink
@@ -951,10 +951,10 @@ MGTV2,ZM,Smart Case,Black,iPad Air 2,Autumn 2014,,,79.00,,iPad Air 2 Smart Case 
 MGTW2,ZM,Smart Case,PRODUCT(RED),iPad Air 2,Autumn 2014,,,79.00,,iPad Air 2 Smart Case — PRODUCT(RED)
 MQ4L2,ZM,Smart Cover,Charcoal Gray,iPad Air 1-2,Spring 2017,MQ4L2_AV1_SILVER,,39.00,,iPad Smart Cover — Charcoal Gray
 MQ4M2,ZM,Smart Cover,White,iPad Air 1-2,Spring 2017,MQ4M2_AV1_SILVER,,39.00,,iPad Smart Cover — White
-MQ4N2,ZM,Smart Cover,PRODUCT(RED),iPad Air 1-2,Spring 2017,MQ4N2_AV1_SILVER,,39.00,,iPad Smart Cover — PRODUCT(RED)
+MQ4N2,ZM,Smart Cover,PRODUCT(RED),iPad Air 1-2,Spring 2017,MQ4N2_AV1_SILVER,MR632,39.00,,iPad Smart Cover — PRODUCT(RED)
 MQ4P2,ZM,Smart Cover,Midnight Blue,iPad Air 1-2,Spring 2017,MQ4P2_AV1_SILVER,,39.00,,iPad Smart Cover — Midnight Blue
 MQ4Q2,ZM,Smart Cover,Pink Sand,iPad Air 1-2,Spring 2017,MQ4Q2_AV1_SILVER,,39.00,,iPad Smart Cover — Pink Sand
-MJYR2,LL,Smart Keyboard,Black,iPad Pro 12.9 1-2,Autumn 2015,,,169.00,,Smart Keyboard for iPad Pro 12.9″ — Black
+MJYR2,LL,Smart Keyboard,Black,iPad Pro 12.9 1-2,Autumn 2015,,MNKT2,169.00,,Smart Keyboard for iPad Pro 12.9″ — Black
 MK0L2,ZM,Polyurethane Smart Cover,Charcoal Gray,iPad Pro 12.9 1-2,Autumn 2015,,,59.00,,Smart Cover for iPad Pro 12.9″ — Charcoal Gray
 MLJK2,ZM,Polyurethane Smart Cover,White,iPad Pro 12.9 1-2,Autumn 2015,,,59.00,,Smart Cover for iPad Pro 12.9″ — White
 MK0D2,ZM,Silicone Case,Charcoal Gray,iPad Pro 12.9 A9X,Autumn 2015,,,79.00,,Silicone Case for iPad Pro 12.9″ — Charcoal Gray
