@@ -54,7 +54,13 @@ textarea:focus,
 textarea:focus-visible {
   outline: none !important;
   box-shadow: none !important;
-  background-color: transparent !important;
+}
+
+.nextra-search input[type="search"]:focus,
+.nextra-search input[type="search"]:focus-visible {
+  outline: 2px solid var(--nextra-link-color, #e3504f) !important;
+  outline-offset: 2px;
+  box-shadow: none !important;
 }
 
 .lightbox-grid {
