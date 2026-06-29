@@ -155,6 +155,7 @@ const footer = <Footer>MITS {new Date().getFullYear()} © Nextra.</Footer>;
 const navbar = (
   <Navbar
     logo={logo}
+    projectLink="https://github.com/JonathanSeriesX/everycase#readme"
     //search={{ placeholder: 'Search by color or SKU...' }} — doesn't work...
     /*
     if I create twatter account, it goes here:
