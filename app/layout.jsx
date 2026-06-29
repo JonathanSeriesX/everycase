@@ -5,7 +5,6 @@ import { Quicksand } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../styles/globals.css";
-import localFont from "next/font/local";
 import Image from "next/image";
 
 const quicksand = Quicksand({
@@ -13,32 +12,6 @@ const quicksand = Quicksand({
   weight: ["300", "400"],
   variable: "--font-quicksand",
 });
-const tofino = localFont({
-  src: [
-    {
-      path: "../public/fonts/TofinoVariable.woff2",
-      weight: "100 800",
-      style: "oblique 0deg 1deg",
-    },
-  ],
-  display: "swap",
-  variable: "--font-tofino", // Define a custom CSS variable for easy usage
-  // TofinoVariable's baked-in metrics are top-heavy: with USE_TYPO_METRICS set,
-  // the em box is ascent 0.760 / descent 0.240 while cap height is only 0.707,
-  // so text sits high in every line box. These overrides re-balance the box to
-  // geometric cap-centering (ascent - capHeight === descent), which both engines
-  // agree on. Note: do NOT push past this to chase optical centering — biasing
-  // the baseline lower fixes Chrome but moves Safari the OPPOSITE way (WebKit and
-  // Blink place the baseline differently from overridden metrics). Optical
-  // centering belongs in text-box-trim on the specific elements, not here.
-  // line-gap-override keeps `line-height: normal` at the original 1.2em.
-  declarations: [
-    { prop: "ascent-override", value: "85.4%" },
-    { prop: "descent-override", value: "14.6%" },
-    { prop: "line-gap-override", value: "20%" },
-  ],
-});
-
 const logo = (
   <span
     style={{
@@ -199,10 +172,16 @@ export default async function RootLayout({ children }) {
           lightness: 60,
         }}
       >
-        {/* Your additional tags should be passed as `children` of `<Head>` element */}
+        <link
+          rel="preload"
+          href="https://cloudfront.everycase.org/fonts/TofinoVariableOffset.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
       </Head>
 
-      <body className={tofino.className}>
+      <body>
         <Layout
           //banner={banner}
           navbar={navbar}
