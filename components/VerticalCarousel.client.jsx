@@ -99,7 +99,7 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
       </div>
       {sortedCases.length === 0 && (
         <p className={styles.emptyState}>
-          No cases found for model {model}
+          No cases found for model {Array.isArray(model) ? model.join(", ") : model}
           {material ? ` — ${material}` : ""}
           {season ? ` — ${season}` : ""}.
         </p>
