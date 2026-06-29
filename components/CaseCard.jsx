@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
+import { formatOrderNumber, getPreferredRegion } from "../lib/productRegions";
 import styles from "./VerticalCarousel.module.css";
 
 const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
@@ -36,7 +37,6 @@ const buildImageAlt = ({ model = "", kind = "", colour = "" }) => {
 const CaseCard = ({
   item,
   index,
-  isSmallViewport,
   copiedSku,
   displayLabel,
   buildSeasonLink,
@@ -72,6 +72,10 @@ const CaseCard = ({
   };
 
   const imgSrc = candidateSources[sourceIndex] || "";
+  const orderNumber = formatOrderNumber(
+    item.SKU,
+    getPreferredRegion(item.regions),
+  );
 
   return (
     <article className={styles.caseCard}>
@@ -103,10 +107,9 @@ const CaseCard = ({
         <button
           type="button"
           className={`${styles.metaBadge} ${styles.actionBadge}`}
-          aria-label="Copy SKU with suffix"
-          onClick={() =>
-            copySku(item.SKU + (isSmallViewport ? "ZM" : "ZM/A"), item.SKU)
-          }
+          aria-label={`Copy ${orderNumber}`}
+          title={`Copy ${orderNumber}`}
+          onClick={() => copySku(orderNumber, item.SKU)}
         >
           <span>{formatSkuLabel(item.SKU)}</span>
           <span className={styles.iconSwap} aria-hidden="true">
