@@ -175,7 +175,7 @@ export async function generateMetadata({ params }) {
   return {
     title,
     openGraph: {
-      title: `${caseName} — Finest Woven`,
+      title,
       images: images.map((src) => ({ url: src, alt: caseName })),
     },
   };

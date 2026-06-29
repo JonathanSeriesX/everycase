@@ -9,7 +9,7 @@ const COPY_RESET_TIMEOUT = 1000;
 // A single bordered, liquid-glass card. `wide` makes it span the full grid row.
 export const InfoCard = ({ label, children, wide = false }) => (
   <div className={`${styles.card} ${wide ? styles.cardWide : ""}`}>
-    <span className={styles.label}>{label}</span>
+    <span className={styles.label}>{label}{" "}</span>
     {children}
   </div>
 );
@@ -25,7 +25,8 @@ export const StatCard = ({ label, value }) => (
 export const CopyChip = ({ value }) => {
   const [copied, setCopied] = useState(false);
 
-  const copy = useCallback(() => {
+  const copy = useCallback((e) => {
+    e.currentTarget.blur();
     if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
       return;
     }
@@ -65,22 +66,30 @@ export const CopyChip = ({ value }) => {
 
 // The order-number card. `skuGroups` is [{ label, orderNumbers }]; a single
 // group with a null label renders as a plain row of chips (no sub-heading).
-const OrderNumbersCard = ({ skuGroups }) => (
-  <InfoCard label="Find this case by" wide>
-    {skuGroups.map((group, index) => (
-      <div key={group.label ?? index} className={styles.skuGroup}>
-        {group.label && (
-          <span className={styles.skuGroupLabel}>{group.label}</span>
-        )}
-        <div className={styles.chipRow}>
-          {group.orderNumbers.map((orderNumber) => (
-            <CopyChip key={orderNumber} value={orderNumber} />
-          ))}
+const OrderNumbersCard = ({ skuGroups }) => {
+  const totalOrderNumbers = skuGroups.reduce(
+    (total, group) => total + group.orderNumbers.length,
+    0
+  );
+  const label = totalOrderNumbers === 1 ? "Order number" : "Order numbers";
+
+  return (
+    <InfoCard label={label} wide>
+      {skuGroups.map((group, index) => (
+        <div key={group.label ?? index} className={styles.skuGroup}>
+          {group.label && (
+            <span className={styles.skuGroupLabel}>{group.label}{" "}</span>
+          )}
+          <div className={styles.chipRow}>
+            {group.orderNumbers.map((orderNumber) => (
+              <CopyChip key={orderNumber} value={orderNumber} />
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
-  </InfoCard>
-);
+      ))}
+    </InfoCard>
+  );
+};
 
 const CaseInfoCards = ({
   skuGroups = null,
