@@ -33,8 +33,8 @@ const tofino = localFont({
   // centering belongs in text-box-trim on the specific elements, not here.
   // line-gap-override keeps `line-height: normal` at the original 1.2em.
   declarations: [
-    { prop: "ascent-override", value: "89%" },
-    { prop: "descent-override", value: "11%" },
+    { prop: "ascent-override", value: "85.4%" },
+    { prop: "descent-override", value: "14.6%" },
     { prop: "line-gap-override", value: "20%" },
   ],
 });
@@ -170,7 +170,7 @@ const navbar = (
   <Navbar
     logo={logo}
     projectLink="https://github.com/JonathanSeriesX/everycase#readme"
-    //search={{ placeholder: 'Search by color or SKU...' }} — doesn't work...
+    //search={{ placeholder: 'Search by colour or SKU...' }} — doesn't work...
     /*
     if I create twatter account, it goes here:
     chatLink="https://twitter.com/shuding_"
@@ -206,7 +206,7 @@ export default async function RootLayout({ children }) {
         <Layout
           //banner={banner}
           navbar={navbar}
-          search={<Search placeholder="Search by color or SKU..." />}
+          search={<Search placeholder="Search by colour or SKU..." />}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/JonathanSeriesX/everycase/tree/main"
           footer={<></>}
