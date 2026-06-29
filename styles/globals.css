@@ -19,6 +19,20 @@
   align-items: center;
 }
 
+/* Nextra ships the icon with a top margin for its default top-aligned layout;
+   drop it so the icon sits on the vertical centre line. */
+.nextra-callout > div:first-child svg {
+  margin-top: 0;
+}
+
+/* Nextra hides the TOC below its `xl` breakpoint (1280px) via `max-xl:hidden`.
+   Reveal it one breakpoint earlier so it opens at >=1024px. */
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .nextra-toc {
+    display: block;
+  }
+}
+
 /* Prevent long-press selection highlights on interactive controls */
 button,
 [role="button"],
