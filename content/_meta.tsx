@@ -23,7 +23,7 @@ const config = {
     display: "hidden",
   },
   about: {
-    title: "Credits ★",
+    title: "About ★",
     type: "page",
   },
   support: {
