@@ -2,10 +2,15 @@ import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
 import { Callout } from "nextra/components";
-import { Cards } from "nextra/components";
 import { useMDXComponents as getMDXComponents } from "../../../mdx-components";
 import LightboxComponent from "../../../components/LightboxComponent";
+import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
+import {
+  formatOrderNumber,
+  isKeyboardProduct,
+  parseRegionCodes,
+} from "../../../lib/productRegions";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -28,6 +33,7 @@ function loadCases() {
       name: (record.name || "").trim(),
       season: (record.season || "").trim(),
       alt_thumbnail: (record.alt_thumbnail || "").trim(),
+      regions: (record.regions || "").trim(),
     }));
   }
   return cachedCases;
@@ -47,7 +53,7 @@ function loadVariantFilenames() {
       .split("\n")
       .map((line) => line.trim())
       .filter(Boolean);
-  } catch (error) {
+  } catch {
     cachedVariantFilenames = [];
   }
 
@@ -56,8 +62,17 @@ function loadVariantFilenames() {
 
 function listVariantsForSku(sku) {
   const variantLines = loadVariantFilenames();
-  const variants = variantLines.filter((line) => line.startsWith(sku));
+  const variants = variantLines.filter(
+    (line) => line === sku || line.startsWith(`${sku}_`),
+  );
   return variants.length > 0 ? variants : [sku];
+}
+
+function listVariantsForRegion(sku, region) {
+  const prefix = `${sku}${region}`;
+  return loadVariantFilenames().filter(
+    (line) => line === prefix || line.startsWith(`${prefix}_`),
+  );
 }
 
 function resolveImageSource(variant) {
@@ -75,6 +90,48 @@ function getCaseName(data) {
     data.colour && data.colour !== "Clear Case" ? ` — ${data.colour}` : "";
   const magSafePart = isMagSafeModel ? " with MagSafe" : "";
   return `${data.model} ${data.kind}${magSafePart}${colourPart}`.trim();
+}
+
+function buildImages(variants, caseName) {
+  return variants.map((variant) => ({
+    src: resolveImageSource(variant),
+    alt: caseName,
+  }));
+}
+
+function OrderNumberCallout({ sku, regions }) {
+  const orderNumbers = regions.map((region) => formatOrderNumber(sku, region));
+
+  if (orderNumbers.length === 0) {
+    return (
+      <Callout type="warning" emoji="👉🏻">
+        <strong>{sku}</strong> is the base SKU. Its regional suffix is not
+        available in the catalogue yet.
+      </Callout>
+    );
+  }
+
+  if (orderNumbers.length === 1) {
+    return (
+      <Callout type="info" emoji="👉🏻">
+        <strong>{orderNumbers[0]}</strong> is the order number for this product,
+        used for search engines, auction websites and such.
+      </Callout>
+    );
+  }
+
+  return (
+    <Callout type="info" emoji="👉🏻">
+      This product was sold under the order numbers{" "}
+      {orderNumbers.map((orderNumber, index) => (
+        <span key={orderNumber}>
+          {index > 0 && ", "}
+          <strong>{orderNumber}</strong>
+        </span>
+      ))}
+      .
+    </Callout>
+  );
 }
 
 const mdxComponents = getMDXComponents();
@@ -105,7 +162,7 @@ export async function generateMetadata({ params }) {
   const caseName = getCaseName(data);
   const title = caseName;
   const images = listVariantsForSku(sku).map((variant) =>
-    resolveImageSource(variant)
+    resolveImageSource(variant),
   );
 
   return {
@@ -124,30 +181,50 @@ export default async function CasePage({ params }) {
   if (!data) return notFound();
 
   const caseName = getCaseName(data);
-  const orderNumber = `${sku}ZM/A`;
-  const images = listVariantsForSku(sku).map((variant) => ({
-    src: resolveImageSource(variant),
-    alt: caseName,
-  }));
+  const regions = parseRegionCodes(data.regions);
+  const isKeyboard = isKeyboardProduct(data.kind);
+  const defaultImages = buildImages(listVariantsForSku(sku), caseName);
+  const keyboardRegionOptions = isKeyboard
+    ? regions.map((region) => {
+        const regionalVariants = listVariantsForRegion(sku, region);
+        const useRegionalImages =
+          region !== "LL" && regionalVariants.length > 0;
+        return {
+          region,
+          images: useRegionalImages
+            ? buildImages(regionalVariants, caseName)
+            : defaultImages,
+        };
+      })
+    : [];
   const metadata = {
     title: caseName,
   };
 
+  const galleryHeading = <Heading2 id="image-gallery">Image gallery</Heading2>;
+
   return (
-    <Wrapper toc={[]} metadata={metadata}>
-      <div className="nx-space-y-6">
-        <header className="nx-space-y-2">
-          <Heading1>{caseName}</Heading1>
-          <Callout type="info" emoji="👉🏻">
-            <strong>{orderNumber}</strong> is an order number for this product,
-            used for search engines, auction websites and such.
-          </Callout>
-        </header>
-        <section className="nx-space-y-2">
-          <Heading2>Image gallery</Heading2>
-          <LightboxComponent images={images} />
+    <Wrapper
+      toc={[{ depth: 2, value: "Image gallery", id: "image-gallery" }]}
+      metadata={metadata}
+    >
+      <header>
+        <Heading1>{caseName}</Heading1>
+        {!isKeyboard && <OrderNumberCallout sku={sku} regions={regions} />}
+      </header>
+      {isKeyboard ? (
+        <KeyboardProductDetails
+          sku={sku}
+          regionOptions={keyboardRegionOptions}
+          fallbackImages={defaultImages}
+          galleryHeading={galleryHeading}
+        />
+      ) : (
+        <section>
+          {galleryHeading}
+          <LightboxComponent images={defaultImages} />
         </section>
-      </div>
+      )}
     </Wrapper>
   );
 }
