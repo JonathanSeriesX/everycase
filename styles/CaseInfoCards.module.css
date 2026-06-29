@@ -1,0 +1,157 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+/* liquid-glass card shell, matching the case cards */
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  padding: 0.9rem 1.1rem;
+  background: linear-gradient(
+      140deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(240, 248, 255, 0.45)
+    ),
+    rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 18px 40px rgba(15, 12, 26, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(34px) saturate(135%);
+}
+
+.cardWide {
+  grid-column: 1 / -1;
+}
+
+.label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(15, 18, 28, 0.55);
+}
+
+.value {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(15, 18, 28, 0.92);
+}
+
+/* order-number groups */
+.skuGroup {
+  margin-top: 0.55rem;
+}
+
+.skuGroup:first-of-type {
+  margin-top: 0.55rem;
+}
+
+.skuGroupLabel {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(15, 18, 28, 0.55);
+  margin-bottom: 0.4rem;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* copyable order-number pill */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.32rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 550;
+  background-color: #fff;
+  border: 1px solid rgba(15, 18, 28, 0.12);
+  color: rgba(15, 18, 28, 0.9);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, color 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chip:active {
+  transform: scale(0.97);
+  background-color: rgba(243, 244, 246, 1);
+  color: rgba(15, 18, 28, 0.95);
+  box-shadow: inset 0 2px 4px rgba(15, 18, 28, 0.08);
+}
+
+.chipValue {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+  letter-spacing: 0.01em;
+}
+
+/* icon swapper (copy → check) */
+.iconSwap {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.iconLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.iconVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.iconHidden {
+  opacity: 0;
+  transform: scale(0.75);
+}
+
+/* dark mode */
+:global(html[class~="dark"]) .card {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.28),
+      rgba(255, 255, 255, 0.04)
+    ),
+    rgba(26, 28, 33, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 18px 40px rgba(4, 9, 18, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+:global(html[class~="dark"]) .label,
+:global(html[class~="dark"]) .skuGroupLabel {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+:global(html[class~="dark"]) .value {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+:global(html[class~="dark"]) .chip {
+  background: rgba(19, 19, 22, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+:global(html[class~="dark"]) .chip:active {
+  background: rgba(28, 28, 34, 0.92);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+}

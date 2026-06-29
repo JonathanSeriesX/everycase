@@ -1,13 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Callout } from "nextra/components";
 import LightboxComponent from "./LightboxComponent";
+import CaseInfoCards, { InfoCard, StatCard, CopyChip } from "./CaseInfoCards";
 import {
   formatOrderNumber,
   getKeyboardLanguageName,
   getPreferredRegion,
 } from "../lib/productRegions";
+import cardStyles from "../styles/CaseInfoCards.module.css";
 import styles from "../styles/KeyboardProductDetails.module.css";
 
 const KeyboardProductDetails = ({
@@ -15,6 +16,7 @@ const KeyboardProductDetails = ({
   regionOptions = [],
   fallbackImages = [],
   galleryHeading,
+  info = {},
 }) => {
   const defaultRegion = getPreferredRegion(
     regionOptions.map((option) => option.region),
@@ -30,10 +32,12 @@ const KeyboardProductDetails = ({
   if (!selectedOption) {
     return (
       <>
-        <Callout type="warning" emoji="👉🏻">
-          <strong>{sku}</strong> is the base SKU. Its keyboard language suffix
-          is not available in the catalogue yet.
-        </Callout>
+        <CaseInfoCards
+          releaseDate={info.releaseDate}
+          reReleaseDate={info.reReleaseDate}
+          msrp={info.msrp}
+          eduPrice={info.eduPrice}
+        />
         <section>
           {galleryHeading}
           <LightboxComponent images={fallbackImages} />
@@ -47,29 +51,36 @@ const KeyboardProductDetails = ({
 
   return (
     <>
-      <Callout type="info" emoji="👉🏻">
-        <strong>{orderNumber}</strong> is the order number for the {languageName}{" "}
-        keyboard.
-      </Callout>
-      <div className={styles.languagePicker}>
-        <label className={styles.languageLabel} htmlFor="keyboard-language">
-          Keyboard language
-          <span className={styles.languageHint}>
-            Updates the order number and gallery
-          </span>
-        </label>
-        <select
-          id="keyboard-language"
-          className={styles.languageSelect}
-          value={selectedOption.region}
-          onChange={(event) => setSelectedRegion(event.target.value)}
-        >
-          {regionOptions.map((option) => (
-            <option key={option.region} value={option.region}>
-              {getKeyboardLanguageName(option.region)} — {option.region}
-            </option>
-          ))}
-        </select>
+      <div className={cardStyles.grid}>
+        <InfoCard label="Order number" wide>
+          <div className={styles.keyboardOrderRow}>
+            {/* keyed so the copy state resets when the language changes */}
+            <CopyChip key={selectedOption.region} value={orderNumber} />
+            <select
+              id="keyboard-language"
+              aria-label="Keyboard language"
+              className={styles.languageSelect}
+              value={selectedOption.region}
+              onChange={(event) => setSelectedRegion(event.target.value)}
+            >
+              {regionOptions.map((option) => (
+                <option key={option.region} value={option.region}>
+                  {getKeyboardLanguageName(option.region)}
+                </option>
+              ))}
+            </select>
+          </div>
+        </InfoCard>
+        {info.releaseDate && (
+          <StatCard label="Released" value={info.releaseDate} />
+        )}
+        {info.reReleaseDate && (
+          <StatCard label="Re-released" value={info.reReleaseDate} />
+        )}
+        {info.msrp && <StatCard label="MSRP" value={info.msrp} />}
+        {info.eduPrice && (
+          <StatCard label="Education price" value={info.eduPrice} />
+        )}
       </div>
       <section>
         {galleryHeading}

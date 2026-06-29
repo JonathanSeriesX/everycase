@@ -14,6 +14,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Centre the callout icon against its text block. */
+.nextra-callout {
+  align-items: center;
+}
+
 /* Prevent long-press selection highlights on interactive controls */
 button,
 [role="button"],
