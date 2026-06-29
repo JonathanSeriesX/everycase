@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useCallback } from "react";
-import styles from "./VerticalCarousel.module.css";
+import styles from "../styles/VerticalCarousel.module.css";
 import CaseCard from "./CaseCard";
 
 const COPY_BADGE_RESET_TIMEOUT = 1600;
