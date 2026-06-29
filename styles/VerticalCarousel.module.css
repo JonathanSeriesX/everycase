@@ -19,16 +19,14 @@
   padding: 0.9rem;
   width: 100%;
   max-width: 250px;
-  background: linear-gradient(
-      140deg,
-      rgba(255, 255, 255, 0.9),
-      rgba(240, 248, 255, 0.45)
-    ),
-    rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 35px 65px rgba(15, 12, 26, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(34px) saturate(135%);
+  background: rgba(252, 248, 250, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.96);
+  box-shadow: 0 35px 70px rgba(50, 42, 48, 0.2),
+    0 4px 14px rgba(50, 42, 48, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(105, 96, 103, 0.08);
+  -webkit-backdrop-filter: blur(42px) saturate(145%);
+  backdrop-filter: blur(42px) saturate(145%);
   transition: transform 160ms ease, border-color 160ms ease,
     box-shadow 180ms ease;
 }
@@ -36,9 +34,11 @@
 @media (hover: hover) and (pointer: fine) {
   .caseCard:hover {
     transform: scale(1.02);
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 25px 55px rgba(15, 12, 26, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    border-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 30px 64px rgba(50, 42, 48, 0.22),
+      0 4px 14px rgba(50, 42, 48, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      inset 0 0 0 1px rgba(105, 96, 103, 0.09);
   }
 }
 
@@ -129,9 +129,13 @@
 
 .actionBadge:active {
   transform: scale(0.97);
-  background-color: rgba(243, 244, 246, 1);
-  color: rgba(15, 18, 28, 0.95);
   box-shadow: inset 0 2px 4px rgba(15, 18, 28, 0.08);
+}
+
+.actionBadge:focus,
+.actionBadge:focus-visible {
+  background-color: #fff !important;
+  color: rgba(15, 18, 28, 0.85) !important;
 }
 
 .metaBadgeSecondary {
@@ -148,8 +152,13 @@
 }
 
 .metaBadgeSecondary:active {
-  background-color: rgba(243, 244, 246, 1);
   box-shadow: inset 0 2px 4px rgba(15, 18, 28, 0.08);
+}
+
+.metaBadgeSecondary:focus,
+.metaBadgeSecondary:focus-visible {
+  background-color: #fff !important;
+  color: var(--nextra-link-color, #e3504f) !important;
 }
 
 .linkBadge {
@@ -241,8 +250,19 @@
 
 :global(html[class~="dark"]) .metaBadgeSecondary:active,
 :global(html[class~="dark"]) .actionBadge:active {
-  background: rgba(28, 28, 34, 0.92);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+:global(html[class~="dark"]) .actionBadge:focus,
+:global(html[class~="dark"]) .actionBadge:focus-visible {
+  background-color: rgb(19, 19, 22) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+:global(html[class~="dark"]) .metaBadgeSecondary:focus,
+:global(html[class~="dark"]) .metaBadgeSecondary:focus-visible {
+  background-color: rgb(19, 19, 22) !important;
+  color: var(--nextra-link-color, #ff4d4d) !important;
 }
 
 :global(html[class~="dark"]) .emptyState {
