@@ -6,9 +6,50 @@ import CaseCard from "./CaseCard";
 
 const COPY_BADGE_RESET_TIMEOUT = 1600;
 
-// Keep SKU ordering predictable even if CSV order changes between builds.
-const sortCasesBySku = (caseList = []) =>
-  [...caseList].sort((a, b) => (a?.SKU || "").localeCompare(b?.SKU || ""));
+// Seasons are written as "<Season|Month> <Year>" (e.g. "Autumn 2023",
+// "November 2016"). Map the leading word to a representative month so we can
+// order chronologically, interleaving named seasons with explicit months.
+const SEASON_MONTH = {
+  spring: 3,
+  summer: 6,
+  autumn: 9,
+  fall: 9,
+  winter: 12,
+  january: 1,
+  february: 2,
+  march: 3,
+  april: 4,
+  may: 5,
+  june: 6,
+  july: 7,
+  august: 8,
+  september: 9,
+  october: 10,
+  november: 11,
+  december: 12,
+};
+
+// Sortable key: year * 100 + month. Unknown/blank seasons sort last.
+const seasonSortKey = (season) => {
+  const match = String(season || "")
+    .trim()
+    .toLowerCase()
+    .match(/^([a-z]+)\s+(\d{4})$/);
+  if (!match) return Number.MAX_SAFE_INTEGER;
+  const month = SEASON_MONTH[match[1]] ?? 6;
+  return parseInt(match[2], 10) * 100 + month;
+};
+
+// Order cards oldest → newest by season, then alphabetically by colour, with
+// SKU as a final tiebreaker so ordering stays stable between builds.
+const sortCases = (caseList = []) =>
+  [...caseList].sort((a, b) => {
+    const seasonDelta = seasonSortKey(a?.season) - seasonSortKey(b?.season);
+    if (seasonDelta !== 0) return seasonDelta;
+    const colourDelta = (a?.colour || "").localeCompare(b?.colour || "");
+    if (colourDelta !== 0) return colourDelta;
+    return (a?.SKU || "").localeCompare(b?.SKU || "");
+  });
 
 // Builds a stable link so users can jump to the season table when curious.
 const buildSeasonLink = (seasonLabel) => {
@@ -33,7 +74,7 @@ const getDisplayLabel = (itemColour, itemModel, model, material) => {
 const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
   const [copiedSku, setCopiedSku] = useState(null);
 
-  const sortedCases = useMemo(() => sortCasesBySku(cases), [cases]);
+  const sortedCases = useMemo(() => sortCases(cases), [cases]);
 
   // Map colour/model labels consistently across sections of the UI.
   const displayLabel = useCallback(

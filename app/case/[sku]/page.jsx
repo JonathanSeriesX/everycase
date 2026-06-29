@@ -5,6 +5,7 @@ import { useMDXComponents as getMDXComponents } from "../../../mdx-components";
 import LightboxComponent from "../../../components/LightboxComponent";
 import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
 import CaseInfoCards from "../../../components/CaseInfoCards";
+import SidebarFolderOpener from "../../../components/SidebarFolderOpener";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 import { getReleaseDate } from "../../../lib/releaseDates";
 import {
@@ -80,6 +81,15 @@ function listVariantsForRegion(sku, region) {
 function resolveImageSource(variant) {
   const code = (variant || "").trim();
   return `${IMAGE_BASE_URL}/${code}${EXTENSION}`;
+}
+
+// Maps a case to its sidebar folder so we can keep that folder open even though
+// case pages live outside the content tree. The three folders are iphone / ipad
+// / others; AirTag, Mac, iPod, Pencil and MagSafe wallets all live under others.
+function getCategoryRoute(model) {
+  if (/^iPhone\b/i.test(model)) return "/iphone";
+  if (/^iPad\b/i.test(model)) return "/ipad";
+  return "/others";
 }
 
 function getCaseName(data) {
@@ -215,6 +225,7 @@ export default async function CasePage({ params }) {
       toc={[{ depth: 2, value: "Image gallery", id: "image-gallery" }]}
       metadata={metadata}
     >
+      <SidebarFolderOpener categoryRoute={getCategoryRoute(data.model)} />
       <header>
         <Heading1>{caseName}</Heading1>
         {!isKeyboard && <CaseInfoCards {...info} />}
