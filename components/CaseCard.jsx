@@ -109,7 +109,10 @@ const CaseCard = ({
           className={`${styles.metaBadge} ${styles.actionBadge}`}
           aria-label={`Copy ${orderNumber}`}
           title={`Copy ${orderNumber}`}
-          onClick={() => copySku(orderNumber, item.SKU)}
+          onClick={(e) => {
+            copySku(orderNumber, item.SKU);
+            e.currentTarget.blur();
+          }}
         >
           <span>{formatSkuLabel(item.SKU)}</span>
           <span className={styles.iconSwap} aria-hidden="true">
