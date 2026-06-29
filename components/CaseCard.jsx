@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
 import { formatOrderNumber, getPreferredRegion } from "../lib/productRegions";
-import styles from "./VerticalCarousel.module.css";
+import styles from "../styles/VerticalCarousel.module.css";
 
 const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
 // /MF039. will be put in between these two

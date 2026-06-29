@@ -8,7 +8,7 @@ import {
   getKeyboardLanguageName,
   getPreferredRegion,
 } from "../lib/productRegions";
-import styles from "./KeyboardProductDetails.module.css";
+import styles from "../styles/KeyboardProductDetails.module.css";
 
 const KeyboardProductDetails = ({
   sku,
