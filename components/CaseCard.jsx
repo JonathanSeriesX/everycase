@@ -125,6 +125,7 @@ const CaseCard = ({
             />
           </span>
         </button>
+        {" "}
         {/*<Link
           className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
           href={buildSeasonLink(item.season)}
