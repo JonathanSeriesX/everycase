@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback } from "react";
 import styles from "./VerticalCarousel.module.css";
 import CaseCard from "./CaseCard";
 
-const SMALL_VIEWPORT_BREAKPOINT = 600;
 const COPY_BADGE_RESET_TIMEOUT = 1600;
 
 // Keep SKU ordering predictable even if CSV order changes between builds.
@@ -31,26 +30,7 @@ const getDisplayLabel = (itemColour, itemModel, model, material) => {
   return itemColour;
 };
 
-// Lightweight viewport tracker for toggling SKU suffixes on mobile.
-const useSmallViewport = (breakpoint = SMALL_VIEWPORT_BREAKPOINT) => {
-  const [isSmallViewport, setIsSmallViewport] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return undefined;
-    const handleResize = () => {
-      setIsSmallViewport(window.innerWidth < breakpoint);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [breakpoint]);
-
-  return isSmallViewport;
-};
-
 const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
-  const isSmallViewport = useSmallViewport();
   const [copiedSku, setCopiedSku] = useState(null);
 
   const sortedCases = useMemo(() => sortCasesBySku(cases), [cases]);
@@ -87,7 +67,6 @@ const VerticalCarouselClient = ({ cases = [], model, material, season }) => {
               key={item.SKU}
               item={item}
               index={index}
-              isSmallViewport={isSmallViewport}
               copiedSku={copiedSku}
               displayLabel={displayLabel}
               buildSeasonLink={buildSeasonLink}

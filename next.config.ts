@@ -50,7 +50,7 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForDev: false,
   },
-  allowedDevOrigins: ["*.orb.local"],
+  allowedDevOrigins: ["*.orb.local", "127.0.0.1"],
   async redirects() {
     return [
       {

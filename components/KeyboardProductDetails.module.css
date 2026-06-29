@@ -1,0 +1,63 @@
+.languagePicker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 0.75rem;
+  background: rgba(248, 250, 252, 0.72);
+}
+
+.languageLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.languageHint {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: rgba(71, 85, 105, 0.9);
+}
+
+.languageSelect {
+  min-width: min(100%, 15rem);
+  padding: 0.5rem 2.25rem 0.5rem 0.7rem;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  border-radius: 0.5rem;
+  background-color: white;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .languagePicker {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .languageSelect {
+    width: 100%;
+  }
+}
+
+:global(html[class~="dark"]) .languagePicker {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(30, 41, 59, 0.45);
+}
+
+:global(html[class~="dark"]) .languageHint {
+  color: rgba(203, 213, 225, 0.82);
+}
+
+:global(html[class~="dark"]) .languageSelect {
+  border-color: rgba(255, 255, 255, 0.16);
+  background-color: rgb(24, 24, 27);
+}
