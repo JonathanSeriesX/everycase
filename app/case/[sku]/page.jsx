@@ -110,22 +110,21 @@ function buildCaseInfo(data, regions) {
   // No regional suffix on record → fall back to the bare SKU as the order number.
   const orderRegions = regions.length > 0 ? regions : [""];
 
+  const allOrderNumbers = orderRegions.map((region) =>
+    formatOrderNumber(sku, region),
+  );
+  if (altSku) {
+    allOrderNumbers.push(
+      ...orderRegions.map((region) => formatOrderNumber(altSku, region))
+    );
+  }
+
   const skuGroups = [
     {
-      label: altSku ? "Original" : null,
-      orderNumbers: orderRegions.map((region) =>
-        formatOrderNumber(sku, region),
-      ),
+      label: null,
+      orderNumbers: allOrderNumbers,
     },
   ];
-  if (altSku) {
-    skuGroups.push({
-      label: "Re-release",
-      orderNumbers: orderRegions.map((region) =>
-        formatOrderNumber(altSku, region),
-      ),
-    });
-  }
 
   const msrp = (data.MSRP || "").trim();
   const eduPriceRaw = (data.edu_price || "").trim();

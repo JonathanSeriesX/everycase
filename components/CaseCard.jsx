@@ -26,14 +26,6 @@ const buildCarouselImageSrc = (code, format) =>
 const buildAppleFallbackImageSrc = (code) =>
   code ? `${APPLE_IMAGE_BASE_URL}/${code}${APPLE_FALLBACK_PARAMS}` : "";
 
-const buildImageAlt = ({ model = "", kind = "", colour = "" }) => {
-  const normalizedKind = kind || "Case";
-  const isClearCase = normalizedKind === "Clear Case";
-  return `${model} ${normalizedKind}${
-    isClearCase ? "" : ` — ${colour}`
-  }`.trim();
-};
-
 const CaseCard = ({
   item,
   index,
@@ -44,12 +36,12 @@ const CaseCard = ({
   copySku,
 }) => {
   const isPriorityImage = index < PRIORITY_IMAGE_COUNT;
-  const imageAlt = buildImageAlt(item);
+  const imageAlt = (item.name || "").trim();
   const imageCode = sanitizeImageCode(item);
   const fallbackImageSrc = buildAppleFallbackImageSrc(imageCode);
   const candidateSources = useMemo(() => {
     const carouselSources = CAROUSEL_IMAGE_FORMATS.map((format) =>
-      buildCarouselImageSrc(imageCode, format)
+      buildCarouselImageSrc(imageCode, format),
     );
     return [...carouselSources, fallbackImageSrc].filter(Boolean);
   }, [fallbackImageSrc, imageCode]);
@@ -65,8 +57,7 @@ const CaseCard = ({
       const nextIndex = currentIndex + 1;
       return {
         key: sourceKey,
-        index:
-          nextIndex < candidateSources.length ? nextIndex : currentIndex,
+        index: nextIndex < candidateSources.length ? nextIndex : currentIndex,
       };
     });
   };
@@ -82,7 +73,7 @@ const CaseCard = ({
       <Link
         href={`/case/${item.SKU}`}
         className={styles.cardLink}
-        aria-label={`${item.model} ${item.kind}`}
+        aria-label={imageAlt || undefined}
         prefetch={false}
       >
         <div className={styles.imageShell}>
@@ -95,7 +86,7 @@ const CaseCard = ({
             fetchPriority={isPriorityImage ? "high" : "low"}
             loading={isPriorityImage ? "eager" : "lazy"}
             unoptimized
-            title={imageAlt}
+            title={imageAlt || undefined}
             onError={handleImageError}
           />
         </div>
@@ -127,8 +118,7 @@ const CaseCard = ({
               }`}
             />
           </span>
-        </button>
-        {" "}
+        </button>{" "}
         {/*<Link
           className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
           href={buildSeasonLink(item.season)}
