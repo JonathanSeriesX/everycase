@@ -24,15 +24,17 @@ const tofino = localFont({
   display: "swap",
   variable: "--font-tofino", // Define a custom CSS variable for easy usage
   // TofinoVariable's baked-in metrics are top-heavy: with USE_TYPO_METRICS set,
-  // the em box is ascent 0.760 / descent 0.240 while cap height is only 0.707.
-  // That leaves ~0.053em above the capitals but 0.240em below the baseline, so
-  // text sits high inside every line box and no amount of line-height/flex
-  // centering can fix it. We override the metrics so the cap block is centered:
-  //   ascent - capHeight === descent  (0.854 - 0.707 === 0.146)
+  // the em box is ascent 0.760 / descent 0.240 while cap height is only 0.707,
+  // so text sits high in every line box. These overrides re-balance the box to
+  // geometric cap-centering (ascent - capHeight === descent), which both engines
+  // agree on. Note: do NOT push past this to chase optical centering — biasing
+  // the baseline lower fixes Chrome but moves Safari the OPPOSITE way (WebKit and
+  // Blink place the baseline differently from overridden metrics). Optical
+  // centering belongs in text-box-trim on the specific elements, not here.
   // line-gap-override keeps `line-height: normal` at the original 1.2em.
   declarations: [
-    { prop: "ascent-override", value: "85.4%" },
-    { prop: "descent-override", value: "14.6%" },
+    { prop: "ascent-override", value: "89%" },
+    { prop: "descent-override", value: "11%" },
     { prop: "line-gap-override", value: "20%" },
   ],
 });
