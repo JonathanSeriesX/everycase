@@ -1,41 +1,30 @@
-.languagePicker {
+.keyboardOrderRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  border-radius: 0.75rem;
-  background: rgba(248, 250, 252, 0.72);
+  gap: 0.6rem;
+  margin-top: 0.5rem;
 }
 
-.languageLabel {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: inherit;
-}
-
-.languageHint {
+.keyboardHint {
+  display: block;
+  margin-top: 0.6rem;
   font-size: 0.75rem;
-  font-weight: 400;
-  color: rgba(71, 85, 105, 0.9);
+  color: rgba(15, 18, 28, 0.6);
 }
 
 .languageSelect {
-  min-width: min(100%, 15rem);
+  min-width: min(100%, 13rem);
   /* Custom chevron so we control its gap from the right edge. padding-left is
      matched to that gap (both 0.85rem) so the value text and the arrow are
      equally inset; padding-right just reserves room for the chevron. */
-  padding: 0.5rem 2rem 0.5rem 0.85rem;
+  padding: 0.45rem 2rem 0.45rem 0.85rem;
   border: 1px solid rgba(15, 23, 42, 0.18);
-  border-radius: 0.5rem;
+  border-radius: 9999px;
   background-color: white;
   color: inherit;
   font: inherit;
+  font-size: 0.9rem;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -46,10 +35,9 @@
 }
 
 @media (max-width: 600px) {
-  .languagePicker {
+  .keyboardOrderRow {
     align-items: stretch;
     flex-direction: column;
-    gap: 0.65rem;
   }
 
   .languageSelect {
@@ -57,12 +45,7 @@
   }
 }
 
-:global(html[class~="dark"]) .languagePicker {
-  border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(30, 41, 59, 0.45);
-}
-
-:global(html[class~="dark"]) .languageHint {
+:global(html[class~="dark"]) .keyboardHint {
   color: rgba(203, 213, 225, 0.82);
 }
 

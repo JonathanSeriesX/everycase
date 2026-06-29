@@ -1,13 +1,15 @@
 import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
-import { Callout } from "nextra/components";
 import { useMDXComponents as getMDXComponents } from "../../../mdx-components";
 import LightboxComponent from "../../../components/LightboxComponent";
 import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
+import CaseInfoCards from "../../../components/CaseInfoCards";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
+import { getReleaseDate } from "../../../lib/releaseDates";
 import {
   formatOrderNumber,
+  formatPrice,
   isKeyboardProduct,
   parseRegionCodes,
 } from "../../../lib/productRegions";
@@ -99,39 +101,44 @@ function buildImages(variants, caseName) {
   }));
 }
 
-function OrderNumberCallout({ sku, regions }) {
-  const orderNumbers = regions.map((region) => formatOrderNumber(sku, region));
+// Gather everything the info cards need: copyable order numbers, the release
+// date (and a re-release date when the case came back under an alt SKU), MSRP
+// and, for keyboards, the education price when it differs from MSRP.
+function buildCaseInfo(data, regions) {
+  const sku = data.SKU;
+  const altSku = (data.alt_sku || "").trim();
+  // No regional suffix on record → fall back to the bare SKU as the order number.
+  const orderRegions = regions.length > 0 ? regions : [""];
 
-  if (orderNumbers.length === 0) {
-    return (
-      <Callout type="warning" emoji="👉🏻">
-        <strong>{sku}</strong> is the base SKU. Its regional suffix is not
-        available in the catalogue yet.
-      </Callout>
-    );
+  const skuGroups = [
+    {
+      label: altSku ? "Original" : null,
+      orderNumbers: orderRegions.map((region) =>
+        formatOrderNumber(sku, region),
+      ),
+    },
+  ];
+  if (altSku) {
+    skuGroups.push({
+      label: "Re-release",
+      orderNumbers: orderRegions.map((region) =>
+        formatOrderNumber(altSku, region),
+      ),
+    });
   }
 
-  if (orderNumbers.length === 1) {
-    return (
-      <Callout type="info" emoji="👉🏻">
-        <strong>{orderNumbers[0]}</strong> is the order number for this product,
-        used for search engines, auction websites and such.
-      </Callout>
-    );
-  }
+  const msrp = (data.MSRP || "").trim();
+  const eduPriceRaw = (data.edu_price || "").trim();
+  const eduDiffers =
+    eduPriceRaw && Number(eduPriceRaw) !== Number(msrp || NaN);
 
-  return (
-    <Callout type="info" emoji="👉🏻">
-      This product was sold under the order numbers{" "}
-      {orderNumbers.map((orderNumber, index) => (
-        <span key={orderNumber}>
-          {index > 0 && ", "}
-          <strong>{orderNumber}</strong>
-        </span>
-      ))}
-      .
-    </Callout>
-  );
+  return {
+    skuGroups,
+    releaseDate: getReleaseDate(sku),
+    reReleaseDate: altSku ? getReleaseDate(altSku) : "",
+    msrp: formatPrice(msrp),
+    eduPrice: eduDiffers ? formatPrice(eduPriceRaw) : "",
+  };
 }
 
 const mdxComponents = getMDXComponents();
@@ -183,6 +190,7 @@ export default async function CasePage({ params }) {
   const caseName = getCaseName(data);
   const regions = parseRegionCodes(data.regions);
   const isKeyboard = isKeyboardProduct(data.kind);
+  const info = buildCaseInfo(data, regions);
   const defaultImages = buildImages(listVariantsForSku(sku), caseName);
   const keyboardRegionOptions = isKeyboard
     ? regions.map((region) => {
@@ -210,7 +218,7 @@ export default async function CasePage({ params }) {
     >
       <header>
         <Heading1>{caseName}</Heading1>
-        {!isKeyboard && <OrderNumberCallout sku={sku} regions={regions} />}
+        {!isKeyboard && <CaseInfoCards {...info} />}
       </header>
       {isKeyboard ? (
         <KeyboardProductDetails
@@ -218,6 +226,7 @@ export default async function CasePage({ params }) {
           regionOptions={keyboardRegionOptions}
           fallbackImages={defaultImages}
           galleryHeading={galleryHeading}
+          info={info}
         />
       ) : (
         <section>

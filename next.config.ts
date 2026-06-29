@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import nextra from "nextra";
+import { getAltSkuRedirects } from "./lib/altSkus.js";
 
 const surpriseTargets = [
   "/wp-admin",
@@ -68,6 +69,8 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      // Re-released cases (alt_sku) redirect to their original case page.
+      ...getAltSkuRedirects(),
     ];
   },
   async rewrites() {
