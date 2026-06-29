@@ -97,7 +97,15 @@ def append_codes(path: Path, codes: Iterable[str]) -> None:
             file.write(f"{code}\n")
 
 
-def download_image(task: DownloadTask, failed_list, success_list) -> bool:
+def download_image(task: DownloadTask, failed_list, success_list, resolved_list) -> bool:
+    """Download one image.
+
+    A code is "resolved" — safe to remove from list.txt — only on a definitive
+    outcome: the file already exists, the download succeeds, or the CDN returns
+    404 (the image will never exist). Transient/unknown errors (connection
+    drops, retries exceeded, other HTTP codes, bad content type) are NOT
+    resolved, so their lines stay in list.txt for a future retry.
+    """
     os.makedirs(task.folder, exist_ok=True)
     file_save_path = task.folder / f"{task.code}.png"
     url = BASE_URL_TEMPLATE.format(code=task.code, wid=task.width, hei=task.height)
@@ -105,6 +113,7 @@ def download_image(task: DownloadTask, failed_list, success_list) -> bool:
     if file_save_path.is_file() and file_save_path.stat().st_size > 0:
         print(f"Skipping existing image {file_save_path}")
         success_list.append(task.code)
+        resolved_list.append(task.code)
         return True
 
     try:
@@ -120,6 +129,7 @@ def download_image(task: DownloadTask, failed_list, success_list) -> bool:
         response.close()
         print(f"Skipping unavailable image {task.code}.png (HTTP 404)")
         failed_list.append(task.code)
+        resolved_list.append(task.code)
         return False
 
     if response.status_code >= 400:
@@ -144,17 +154,53 @@ def download_image(task: DownloadTask, failed_list, success_list) -> bool:
 
     print(f"Downloaded {task.code}.png ({task.width}x{task.height}) to {task.folder}")
     success_list.append(task.code)
+    resolved_list.append(task.code)
     return True
 
 
 def download_worker(task):
-    download_task, failed_downloads, successful_downloads = task
+    download_task, failed_downloads, successful_downloads, resolved_downloads = task
     try:
-        download_image(download_task, failed_downloads, successful_downloads)
+        download_image(
+            download_task, failed_downloads, successful_downloads, resolved_downloads
+        )
     except requests.exceptions.ConnectionError as err:
         print(f"Connection error while downloading {download_task.code}.png: {err}")
         time.sleep(5)
         download_worker(task)
+
+
+def remove_resolved_lines(path: Path, resolved_codes: Set[str]) -> int:
+    """Drop resolved task lines from list.txt, preserving everything else.
+
+    Comments, blank lines, and headers (e.g. 'folder:') are kept verbatim.
+    Returns the number of lines removed.
+    """
+    if not resolved_codes or not path.exists():
+        return 0
+
+    kept: List[str] = []
+    removed = 0
+    with path.open("r", encoding="utf-8") as file:
+        for raw_line in file:
+            stripped = raw_line.strip()
+            is_task = (
+                stripped
+                and not stripped.startswith("#")
+                and not stripped.endswith(":")
+                and "," in stripped
+            )
+            if is_task and stripped.split(",", 1)[0].strip() in resolved_codes:
+                removed += 1
+                continue
+            kept.append(raw_line)
+
+    if removed:
+        tmp_path = path.with_suffix(path.suffix + ".tmp")
+        with tmp_path.open("w", encoding="utf-8") as file:
+            file.writelines(kept)
+        os.replace(tmp_path, path)
+    return removed
 
 
 def parse_args() -> argparse.Namespace:
@@ -187,6 +233,7 @@ if __name__ == "__main__":
     manager = multiprocessing.Manager()
     failed_downloads = manager.list()
     successful_downloads = manager.list()
+    resolved_downloads = manager.list()
 
     input_file = (
         args.input_file
@@ -200,7 +247,10 @@ if __name__ == "__main__":
     )
 
     tasks = parse_tasks(input_file, target_folder)
-    worker_payloads = [(task, failed_downloads, successful_downloads) for task in tasks]
+    worker_payloads = [
+        (task, failed_downloads, successful_downloads, resolved_downloads)
+        for task in tasks
+    ]
 
     if not worker_payloads:
         print("No images to process.")
@@ -217,6 +267,10 @@ if __name__ == "__main__":
             seen.add(code)
             ordered_new_codes.append(code)
     append_codes(SOURCE_IMAGES_PATH, ordered_new_codes)
+
+    removed = remove_resolved_lines(input_file, set(resolved_downloads))
+    if removed:
+        print(f"\nRemoved {removed} resolved line(s) from {input_file.name}.")
 
     if failed_downloads:
         print("\nFailed downloads:")
