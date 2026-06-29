@@ -5,18 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* removal of tab highlighting */
-[role="tab"]:focus,
-.subheading-anchor:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  background-color: transparent !important;
-}
-
-/* Vertical centering of single-line text is handled at the source by the
-   ascent/descent overrides on the Tofino font (see app/layout.jsx). These
-   rules just give the chrome a stable line box to center within — no
-   font-specific padding nudges. */
+/* Single-line text is centered at the source by the ascent/descent overrides
+   on the Tofino font (see app/layout.jsx), so no font-specific padding/
+   line-height nudges are needed here. These rules are just box styling:
+   align-items centers the callout icon against multi-line text; the search
+   input keeps a fixed control height to match the language picker. */
 .nextra-callout {
   align-items: center;
 }
@@ -24,7 +17,6 @@
 .nextra-search input[type="search"] {
   height: 2.25rem;
   padding-block: 0;
-  line-height: 1;
 }
 
 /* Prevent long-press selection highlights on interactive controls */
@@ -100,10 +92,10 @@ body {
   }
 }
 
-/* fix for italic text */
+/* fix for italic text — the variable font has no true italic axis, so nudge
+   the slant and correct the optical side-bearing */
 em,
-i,
-.italic-class {
+i {
   font-variation-settings: "ital" 0.1 !important;
   margin-left: -1px;
   margin-right: 1px;

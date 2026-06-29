@@ -160,14 +160,6 @@
   white-space: nowrap;
 }
 
-.linkBadge :global(svg) {
-  margin-left: 0;
-  transform: translateY(-0.2rem);
-  width: 0.9rem;
-  height: 0.9rem;
-  flex-shrink: 0;
-}
-
 /* icon swapper */
 .iconSwap {
   position: relative;
