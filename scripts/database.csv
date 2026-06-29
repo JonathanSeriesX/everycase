@@ -644,11 +644,11 @@ MRW62,Clear Case,Clear Case,iPhone XR,Autumn 2018,MRW62_AV4,,39.00,iPhone XR Cle
 MRXD2,Smart Folio,Charcoal Gray,iPad Pro 12.9 A12X,Autumn 2018,,,99.00,Smart Folio for iPad Pro 12.9″ — Charcoal Gray
 MRXE2,Smart Folio,White,iPad Pro 12.9 A12X,Autumn 2018,,,99.00,Smart Folio for iPad Pro 12.9″ — White
 MVQN2,Smart Folio,Pink Sand,iPad Pro 12.9 A12X,Autumn 2018,,,99.00,Smart Folio for iPad Pro 12.9″ — Pink Sand
-MU8H2,Keyboard Folio,Black,iPad Pro 12.9 A12X,Autumn 2018,,,199.00,Keyboard Folio for iPad Pro 12.9″ — Black
+MU8H2,Smart Keyboard Folio,Black,iPad Pro 12.9 A12X,Autumn 2018,,,199.00,Smart Keyboard Folio for iPad Pro 12.9″ — Black
 MRX72,Smart Folio,Charcoal Gray,iPad Pro 11 A12X,Autumn 2018,,,79.00,Smart Folio for iPad Pro 11″ — Charcoal Gray
 MRX82,Smart Folio,White,iPad Pro 11 A12X,Autumn 2018,,,79.00,Smart Folio for iPad Pro 11″ — White
 MRX92,Smart Folio,Pink Sand,iPad Pro 11 A12X,Autumn 2018,,,79.00,Smart Folio for iPad Pro 11″ — Pink Sand
-MU8G2,Keyboard Folio,Black,iPad Pro 11 A12X,Autumn 2018,,,179.00,Keyboard Folio for iPad Pro 11″ — Black
+MU8G2,Smart Keyboard Folio,Black,iPad Pro 11 A12X,Autumn 2018,,,179.00,Smart Keyboard Folio for iPad Pro 11″ — Black
 MRRC2,Silicone Case,Peach,iPhone X,Summer 2018,,,39.00,iPhone X Silicone Case — Peach
 MRRD2,Silicone Case,Sky Blue,iPhone X,Summer 2018,,,39.00,iPhone X Silicone Case — Sky Blue
 MRRE2,Silicone Case,Marine Green,iPhone X,Summer 2018,,,39.00,iPhone X Silicone Case — Marine Green
@@ -1298,3 +1298,16 @@ MR552,Pencil Case,PRODUCT(RED),Apple Pencil,Autumn 2017,,,29.00,Apple Pencil Cas
 MR582,Pencil Case,Fuchsia,Apple Pencil,Autumn 2017,,,29.00,Apple Pencil Case — Fuchsia
 MRFN2,Pencil Case,Electric Blue,Apple Pencil,Spring 2018,,,29.00,Apple Pencil Case — Electric Blue
 MRFP2,Pencil Case,Soft Pink,Apple Pencil,Spring 2018,,,29.00,Apple Pencil Case — Soft Pink
+MDEJ4,Smart Folio,White,iPad 10,Spring 2025,,,79.00,Smart Folio for iPad (A16) — White
+MDEN4,Smart Folio,Lemonade,iPad 10,Spring 2025,,,79.00,Smart Folio for iPad (A16) — Lemonade
+MDEP4,Smart Folio,Watermelon,iPad 10,Spring 2025,,,79.00,Smart Folio for iPad (A16) — Watermelon
+MDEQ4,Smart Folio,Sky,iPad 10,Spring 2025,,,79.00,Smart Folio for iPad (A16) — Sky
+MWR03,Magic Keyboard,White,iPad Pro 11-inch (M4),Spring 2024,,,299.00,Magic Keyboard for iPad Pro 11″ (M4 / M5) — White
+MWR23,Magic Keyboard,Black,iPad Pro 11-inch (M4),Spring 2024,,,299.00,Magic Keyboard for iPad Pro 11″ (M4 / M5) — Black
+MWR43,Magic Keyboard,White,iPad Pro 13-inch (M4),Spring 2024,,,349.00,Magic Keyboard for iPad Pro 13″ (M4 / M5) — White
+MWR53,Magic Keyboard,Black,iPad Pro 13-inch (M4),Spring 2024,,,349.00,Magic Keyboard for iPad Pro 13″ (M4 / M5) — Black
+MDFV4,Magic Keyboard,White,iPad Air 11-inch,Spring 2025,,,269.00,Magic Keyboard for iPad Air 11″ (M3 / M4) — White
+MDFW4,Magic Keyboard,White,iPad Air 13-inch,Spring 2025,,,319.00,Magic Keyboard for iPad Air 13″ (M3 / M4) — White
+MGYX4,Magic Keyboard,Black,iPad Air 11-inch,Autumn 2025,,,269.00,Magic Keyboard for iPad Air 11″ (M3 / M4) — Black
+MGYY4,Magic Keyboard,Black,iPad Air 13-inch,Autumn 2025,,,319.00,Magic Keyboard for iPad Air 13″ (M3 / M4) — Black
+MXTF2,Polyurethane Smart Cover,Surf Blue,iPad 10.5,Spring 2020,,,49.00,Smart Cover for iPad Air 3 — Surf Blue
