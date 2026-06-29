@@ -93,10 +93,10 @@ MCFC4,LL,Beats Case,Midnight Black,iPhone 16,Autumn 2024,,,49.00,,Beats iPhone 1
 MCFD4,LL,Beats Case,Summit Stone,iPhone 16,Autumn 2024,,,49.00,,Beats iPhone 16 Case with MagSafe — Summit Stone
 MCFE4,LL,Beats Case,Riptide Blue,iPhone 16,Autumn 2024,,,49.00,,Beats iPhone 16 Case with MagSafe — Riptide Blue
 MCFF4,LL,Beats Case,Sunset Purple,iPhone 16,Autumn 2024,,,49.00,,Beats iPhone 16 Case with MagSafe — Sunset Purple
-MC2Q4,ZM,Smart Folio,Charcoal Gray,iPad mini (A17 Pro),Autumn 2024,,,59.00,,Smart Folio for iPad mini (A17 Pro) — Charcoal Gray
-MC2T4,ZM,Smart Folio,Light Violet,iPad mini (A17 Pro),Autumn 2024,,,59.00,,Smart Folio for iPad mini (A17 Pro) — Light Violet
-MC2U4,ZM,Smart Folio,Denim,iPad mini (A17 Pro),Autumn 2024,,,59.00,,Smart Folio for iPad mini (A17 Pro) — Denim
-MC2V4,ZM,Smart Folio,Sage,iPad mini (A17 Pro),Autumn 2024,,,59.00,,Smart Folio for iPad mini (A17 Pro) — Sage
+MC2Q4,ZM,Smart Folio,Charcoal Gray,iPad mini 6,Autumn 2024,,,59.00,,Smart Folio for iPad mini (A17 Pro) — Charcoal Gray
+MC2T4,ZM,Smart Folio,Light Violet,iPad mini 6,Autumn 2024,,,59.00,,Smart Folio for iPad mini (A17 Pro) — Light Violet
+MC2U4,ZM,Smart Folio,Denim,iPad mini 6,Autumn 2024,,,59.00,,Smart Folio for iPad mini (A17 Pro) — Denim
+MC2V4,ZM,Smart Folio,Sage,iPad mini 6,Autumn 2024,,,59.00,,Smart Folio for iPad mini (A17 Pro) — Sage
 MA6W4,ZM,FineWoven Wallet,Black,MagSafe iPhone,Autumn 2024,,,59.00,,iPhone FineWoven Wallet with MagSafe — Black
 MA6X4,ZM,FineWoven Wallet,Deep Blue,MagSafe iPhone,Autumn 2024,,,59.00,,iPhone FineWoven Wallet with MagSafe — Deep Blue
 MA6Y4,ZM,FineWoven Wallet,Dark Green,MagSafe iPhone,Autumn 2024,,,59.00,,iPhone FineWoven Wallet with MagSafe — Dark Green
@@ -396,7 +396,7 @@ MJMA3,ZM,Smart Folio,White,iPad Pro 11 M1,Spring 2021,,,79.00,,Smart Folio for i
 MJMC3,ZM,Smart Folio,Deep Navy,iPad Pro 11 M1,Spring 2021,,,79.00,,Smart Folio for iPad Pro 11″ — Deep Navy
 MJMD3,ZM,Smart Folio,Mallard Green,iPad Pro 11 M1,Spring 2021,,,79.00,,Smart Folio for iPad Pro 11″ — Mallard Green
 MJMF3,ZM,Smart Folio,Electric Orange,iPad Pro 11 M1,Spring 2021,,,79.00,,Smart Folio for iPad Pro 11″ — Electric Orange
-MJQJ3,AB B D DK E EQ F J KU LA LC LL PO RS SM T UA,Magic Keyboard,White,iPad Pro 11 M1,Spring 2021,,,279.00,279.00,Magic Keyboard for iPad Pro 11″ — White
+MJQJ3,AB B D DK E EQ F J KU LA LC LL PO RS SM T UA,Magic Keyboard,White,iPad Pro 11 M1,Spring 2021,MJQJ3_AV1,,279.00,279.00,Magic Keyboard for iPad Pro 11″ — White
 MJM23,ZM,Smart Folio,Electric Orange,iPad Air 11-inch,Spring 2021,,,79.00,,Smart Folio for iPad Air 11″ — Electric Orange
 MJM53,ZM,Smart Folio,Mallard Green,iPad Air 11-inch,Spring 2021,,,79.00,,Smart Folio for iPad Air 11″ — Mallard Green
 MHKN3,ZM,Silicone Case,Kumquat,iPhone 12 mini,Autumn 2020,MHKN3_AV01,,49.00,,iPhone 12 mini Silicone Case with MagSafe — Kumquat
@@ -954,7 +954,8 @@ MQ4M2,ZM,Smart Cover,White,iPad Air 1-2,Spring 2017,MQ4M2_AV1_SILVER,,39.00,,iPa
 MQ4N2,ZM,Smart Cover,PRODUCT(RED),iPad Air 1-2,Spring 2017,MQ4N2_AV1_SILVER,MR632,39.00,,iPad Smart Cover — PRODUCT(RED)
 MQ4P2,ZM,Smart Cover,Midnight Blue,iPad Air 1-2,Spring 2017,MQ4P2_AV1_SILVER,,39.00,,iPad Smart Cover — Midnight Blue
 MQ4Q2,ZM,Smart Cover,Pink Sand,iPad Air 1-2,Spring 2017,MQ4Q2_AV1_SILVER,,39.00,,iPad Smart Cover — Pink Sand
-MJYR2,LL,Smart Keyboard,Black,iPad Pro 12.9 1-2,Autumn 2015,,MNKT2,169.00,,Smart Keyboard for iPad Pro 12.9″ — Black
+MJYR2,LL,Smart Keyboard,Black,iPad Pro 12.9 1-2,Autumn 2015,,,169.00,,Smart Keyboard for iPad Pro 12.9″ — Black
+MNKT2,AB B D DK E EQ F J KU LC PO RS SF T,Smart Keyboard,Black,iPad Pro 12.9 1-2,Spring 2018,,,169.00,,Smart Keyboard for iPad Pro 12.9″
 MK0L2,ZM,Polyurethane Smart Cover,Charcoal Gray,iPad Pro 12.9 1-2,Autumn 2015,,,59.00,,Smart Cover for iPad Pro 12.9″ — Charcoal Gray
 MLJK2,ZM,Polyurethane Smart Cover,White,iPad Pro 12.9 1-2,Autumn 2015,,,59.00,,Smart Cover for iPad Pro 12.9″ — White
 MK0D2,ZM,Silicone Case,Charcoal Gray,iPad Pro 12.9 A9X,Autumn 2015,,,79.00,,Silicone Case for iPad Pro 12.9″ — Charcoal Gray
