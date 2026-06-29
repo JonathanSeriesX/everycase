@@ -1,23 +1,18 @@
 @import "nextra-theme-docs/style.css";
 @import "../styles/lightbox.css";
 
+@font-face {
+  font-family: "Tofino Variable";
+  src: url("https://cloudfront.everycase.org/fonts/TofinoVariableOffset.woff2")
+    format("woff2");
+  font-display: swap;
+  font-style: oblique 0deg 1deg;
+  font-weight: 100 800;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Single-line text is centered at the source by the ascent/descent overrides
-   on the Tofino font (see app/layout.jsx), so no font-specific padding/
-   line-height nudges are needed here. These rules are just box styling:
-   align-items centers the callout icon against multi-line text; the search
-   input keeps a fixed control height to match the language picker. */
-.nextra-callout {
-  align-items: center;
-}
-
-.nextra-search input[type="search"] {
-  height: 2.25rem;
-  padding-block: 0;
-}
 
 /* Prevent long-press selection highlights on interactive controls */
 button,
@@ -77,7 +72,7 @@ textarea:focus-visible {
 }
 
 body {
-  font-family: var(--font-tofino), "Tofino Variable", system-ui;
+  font-family: "Tofino Variable", system-ui;
   font-stretch: 101%;
   font-weight: 330;
 }
