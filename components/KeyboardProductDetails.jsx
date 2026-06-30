@@ -2,7 +2,12 @@
 
 import { useMemo, useState } from "react";
 import LightboxComponent from "./LightboxComponent";
-import CaseInfoCards, { InfoCard, StatCard, CopyChip } from "./CaseInfoCards";
+import CaseInfoCards, {
+  CompatibilityCard,
+  CopyChip,
+  InfoCard,
+  StatCard,
+} from "./CaseInfoCards";
 import {
   formatOrderNumber,
   getKeyboardLanguageName,
@@ -37,6 +42,7 @@ const KeyboardProductDetails = ({
           reReleaseDate={info.reReleaseDate}
           msrp={info.msrp}
           eduPrice={info.eduPrice}
+          compatibleModels={info.compatibleModels}
         />
         <section>
           {galleryHeading}
@@ -52,25 +58,28 @@ const KeyboardProductDetails = ({
   return (
     <>
       <div className={cardStyles.grid}>
-        <InfoCard label="Order number" wide>
-          <div className={styles.keyboardOrderRow}>
-            {/* keyed so the copy state resets when the language changes */}
-            <CopyChip key={selectedOption.region} value={orderNumber} />
-            <select
-              id="keyboard-language"
-              aria-label="Keyboard language"
-              className={styles.languageSelect}
-              value={selectedOption.region}
-              onChange={(event) => setSelectedRegion(event.target.value)}
-            >
-              {regionOptions.map((option) => (
-                <option key={option.region} value={option.region}>
-                  {getKeyboardLanguageName(option.region)}
-                </option>
-              ))}
-            </select>
-          </div>
-        </InfoCard>
+        <div className={cardStyles.primaryRow}>
+          <InfoCard label="Order number">
+            <div className={styles.keyboardOrderRow}>
+              {/* keyed so the copy state resets when the language changes */}
+              <CopyChip key={selectedOption.region} value={orderNumber} />
+              <select
+                id="keyboard-language"
+                aria-label="Keyboard language"
+                className={styles.languageSelect}
+                value={selectedOption.region}
+                onChange={(event) => setSelectedRegion(event.target.value)}
+              >
+                {regionOptions.map((option) => (
+                  <option key={option.region} value={option.region}>
+                    {getKeyboardLanguageName(option.region)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </InfoCard>
+          <CompatibilityCard compatibleModels={info.compatibleModels} />
+        </div>
         {info.releaseDate && (
           <StatCard label="Released" value={info.releaseDate} />
         )}
