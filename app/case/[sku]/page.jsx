@@ -264,8 +264,6 @@ export default async function CasePage({ params }) {
     title: caseName,
   };
 
-  const galleryHeading = <Heading2 id="image-gallery">Image gallery</Heading2>;
-
   return (
     <Wrapper
       toc={[{ depth: 2, value: "Image gallery", id: "image-gallery" }]}
@@ -280,12 +278,11 @@ export default async function CasePage({ params }) {
           sku={sku}
           regionOptions={keyboardRegionOptions}
           fallbackImages={defaultImages}
-          galleryHeading={galleryHeading}
           info={info}
         />
       ) : (
         <section>
-          {galleryHeading}
+          <Heading2 id="image-gallery">Image gallery</Heading2>
           <LightboxComponent images={defaultImages} />
         </section>
       )}

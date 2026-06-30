@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useMDXComponents } from "../mdx-components";
 import LightboxComponent from "./LightboxComponent";
 import CaseInfoCards, {
   CompatibilityCard,
@@ -20,9 +21,11 @@ const KeyboardProductDetails = ({
   sku,
   regionOptions = [],
   fallbackImages = [],
-  galleryHeading,
   info = {},
 }) => {
+  const mdxComponents = useMDXComponents();
+  const Heading2 = mdxComponents.h2 ?? ((props) => <h2 {...props} />);
+  const galleryHeading = <Heading2 id="image-gallery">Image gallery</Heading2>;
   const defaultRegion = getPreferredRegion(
     regionOptions.map((option) => option.region),
   );
