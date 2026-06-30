@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../styles/globals.css";
 import Image from "next/image";
+import HashNavigation from "../components/HashNavigation.client";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -181,6 +182,7 @@ export default async function RootLayout({ children }) {
       </Head>
 
       <body>
+        <HashNavigation />
         <Layout
           //banner={banner}
           navbar={navbar}
@@ -188,6 +190,8 @@ export default async function RootLayout({ children }) {
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/JonathanSeriesX/everycase/tree/main"
           footer={<></>}
+          editLink={<></>}
+          feedback={{ content: "Something is wrong on this page?" }}
           toc={{
             float: true,
             backToTop: true,
