@@ -48,7 +48,8 @@
 }
 
 /* order-number groups */
-.skuGroup {
+.skuGroup,
+.similaritiesRow {
   margin-top: 0.55rem;
 }
 
@@ -74,10 +75,6 @@
   margin-top: 0.55rem;
 }
 
-.identicalRow {
-  margin-top: 0.75rem;
-}
-
 /* copyable order-number pill */
 .chip {
   display: inline-flex;
@@ -92,8 +89,13 @@
   border: 1px solid rgba(15, 18, 28, 0.12);
   color: rgba(15, 18, 28, 0.9);
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease, color 120ms ease;
   -webkit-tap-highlight-color: transparent;
+}
+
+.actionChip {
+  transform-origin: center;
+  transition: transform 120ms ease, box-shadow 120ms ease, color 120ms ease;
+  will-change: transform;
 }
 
 .compatibilityChip {
@@ -126,7 +128,7 @@
   color: inherit;
 }
 
-.chip:hover {
+.actionChip:hover {
   transform: scale(1.025);
 }
 

@@ -46,7 +46,7 @@ export const CopyChip = ({ value }) => {
   return (
     <button
       type="button"
-      className={styles.chip}
+      className={`${styles.chip} ${styles.actionChip}`}
       onClick={copy}
       aria-label={`Copy ${value}`}
       title={`Copy ${value}`}
@@ -78,7 +78,7 @@ export const CompatibilityCard = ({ compatibleModels = [] }) => {
   if (compatibleModels.length === 0) return null;
 
   return (
-    <InfoCard label="Compatibility">
+    <InfoCard label="Compatible with">
       <div className={`${styles.chipRow} ${styles.compatibilityRow}`}>
         {compatibleModels.map((model) => (
           <CompatibilityChip key={model} value={model} />
@@ -88,17 +88,17 @@ export const CompatibilityCard = ({ compatibleModels = [] }) => {
   );
 };
 
-const IdenticalCasesCard = ({ cases }) => {
+const SimilarCasesCard = ({ cases }) => {
   if (cases.length === 0) return null;
 
   return (
-    <InfoCard label="Identical to" wide>
-      <div className={`${styles.chipRow} ${styles.identicalRow}`}>
+    <InfoCard label="Similar to" wide>
+      <div className={`${styles.chipRow} ${styles.similaritiesRow}`}>
         {cases.map((item) => (
           <Link
             key={item.SKU}
             href={`/case/${item.SKU}`}
-            className={`${styles.chip} ${styles.linkChip}`}
+            className={`${styles.chip} ${styles.actionChip} ${styles.linkChip}`}
             title={item.name}
             aria-label={`${item.name} (${item.SKU})`}
           >
@@ -146,7 +146,7 @@ const OrderNumbersCard = ({ skuGroups }) => {
 const CaseInfoCards = ({
   skuGroups = null,
   compatibleModels = [],
-  identicalCases = [],
+  similarCases = [],
   releaseSku = "",
   reReleaseSku = "",
   releaseDate = "",
@@ -163,7 +163,7 @@ const CaseInfoCards = ({
         <CompatibilityCard compatibleModels={compatibleModels} />
       </div>
     )}
-    <IdenticalCasesCard cases={identicalCases} />
+    <SimilarCasesCard cases={similarCases} />
     {releaseDate && (
       <StatCard
         label={releaseSku ? `${releaseSku} released on` : "Released on"}
@@ -172,9 +172,7 @@ const CaseInfoCards = ({
     )}
     {reReleaseDate && (
       <StatCard
-        label={
-          reReleaseSku ? `${reReleaseSku} released on` : "Re-released on"
-        }
+        label={reReleaseSku ? `${reReleaseSku} released on` : "Re-released on"}
         value={reReleaseDate}
       />
     )}
