@@ -45,10 +45,11 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     //quality: 100,
     formats: ["image/avif", "image/webp"],
-    imageSizes: [512],
+    imageSizes: [512, 2048],
     minimumCacheTTL: 2678400, // 31 days
   },
   experimental: {
+    appNewScrollHandler: true,
     turbopackFileSystemCacheForDev: false,
   },
   allowedDevOrigins: ["*.orb.local", "127.0.0.1"],
