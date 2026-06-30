@@ -6,6 +6,7 @@ import LightboxComponent from "../../../components/LightboxComponent";
 import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
 import CaseInfoCards from "../../../components/CaseInfoCards";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV.mjs";
+import { getCompatibleModels } from "../../../lib/getCompatibleModels.mjs";
 import { getReleaseDate } from "../../../lib/releaseDates";
 import {
   formatOrderNumber,
@@ -142,6 +143,7 @@ function buildCaseInfo(data, regions) {
 
   return {
     skuGroups,
+    compatibleModels: getCompatibleModels(data.model),
     releaseDate: getReleaseDate(sku),
     reReleaseDate: altSku ? getReleaseDate(altSku) : "",
     msrp: [

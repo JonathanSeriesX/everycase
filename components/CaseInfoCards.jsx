@@ -67,6 +67,26 @@ export const CopyChip = ({ value }) => {
   );
 };
 
+const CompatibilityChip = ({ value }) => (
+  <span className={`${styles.chip} ${styles.compatibilityChip}`}>
+    <span className={styles.compatibilityValue}>{value}</span>
+  </span>
+);
+
+export const CompatibilityCard = ({ compatibleModels = [] }) => {
+  if (compatibleModels.length === 0) return null;
+
+  return (
+    <InfoCard label="Compatibility">
+      <div className={`${styles.chipRow} ${styles.compatibilityRow}`}>
+        {compatibleModels.map((model) => (
+          <CompatibilityChip key={model} value={model} />
+        ))}
+      </div>
+    </InfoCard>
+  );
+};
+
 // The order-number card. `skuGroups` is [{ label, orderNumbers }]; a single
 // group with a null label renders as a plain row of chips (no sub-heading).
 const OrderNumbersCard = ({ skuGroups }) => {
@@ -77,7 +97,7 @@ const OrderNumbersCard = ({ skuGroups }) => {
   const label = totalOrderNumbers === 1 ? "Order number" : "Order numbers";
 
   return (
-    <InfoCard label={label} wide>
+    <InfoCard label={label}>
       {skuGroups.map((group, index) => (
         <div key={group.label ?? index} className={styles.skuGroup}>
           {group.label && (
@@ -96,14 +116,20 @@ const OrderNumbersCard = ({ skuGroups }) => {
 
 const CaseInfoCards = ({
   skuGroups = null,
+  compatibleModels = [],
   releaseDate = "",
   reReleaseDate = "",
   msrp = "",
   eduPrice = "",
 }) => (
   <div className={styles.grid}>
-    {skuGroups && skuGroups.length > 0 && (
-      <OrderNumbersCard skuGroups={skuGroups} />
+    {((skuGroups && skuGroups.length > 0) || compatibleModels.length > 0) && (
+      <div className={styles.primaryRow}>
+        {skuGroups && skuGroups.length > 0 && (
+          <OrderNumbersCard skuGroups={skuGroups} />
+        )}
+        <CompatibilityCard compatibleModels={compatibleModels} />
+      </div>
     )}
     {releaseDate && <StatCard label="Released on" value={releaseDate} />}
     {reReleaseDate && <StatCard label="Re-released on" value={reReleaseDate} />}
