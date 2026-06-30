@@ -21,12 +21,17 @@ async function resolveOgImage(mdxPath) {
   }
 }
 
-function withOgImage(metadata, imageUrl) {
+function withOgImage(metadata, imageUrl, parentMetadata) {
   const baseMetadata = metadata ?? {};
+  const parentOpenGraph = parentMetadata.openGraph ?? {};
+  const parentTwitter = parentMetadata.twitter ?? {};
   return {
     ...baseMetadata,
     openGraph: {
       ...baseMetadata.openGraph,
+      siteName: baseMetadata.openGraph?.siteName ?? parentOpenGraph.siteName,
+      locale: baseMetadata.openGraph?.locale ?? parentOpenGraph.locale,
+      type: baseMetadata.openGraph?.type ?? parentOpenGraph.type,
       images: [
         {
           url: imageUrl,
@@ -38,7 +43,9 @@ function withOgImage(metadata, imageUrl) {
     },
     twitter: {
       ...baseMetadata.twitter,
-      card: "summary",
+      creator: baseMetadata.twitter?.creator ?? parentTwitter.creator,
+      site: baseMetadata.twitter?.site ?? parentTwitter.site,
+      card: "summary_large_image",
       images: [imageUrl],
     },
   };
@@ -46,12 +53,13 @@ function withOgImage(metadata, imageUrl) {
 
 export const generateStaticParams = generateStaticParamsFor("mdxPath");
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props, parent) {
   const params = await props.params;
   const mdxPath = params.mdxPath ?? [];
   const { metadata } = await importPage(mdxPath);
   const baseMetadata = metadata ?? {};
   const imageUrl = await resolveOgImage(mdxPath);
+  const parentMetadata = await parent;
 
   if (mdxPath.length === 0) {
     return withOgImage(
@@ -62,10 +70,11 @@ export async function generateMetadata(props) {
         },
       },
       imageUrl,
+      parentMetadata,
     );
   }
 
-  return withOgImage(baseMetadata, imageUrl);
+  return withOgImage(baseMetadata, imageUrl, parentMetadata);
 }
 
 const Wrapper = getMDXComponents().wrapper;

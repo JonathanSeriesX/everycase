@@ -114,7 +114,7 @@ export const metadata = {
     ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     creator: "@JonathanSeriesX",
     //<meta name="twitter:site" content="@everycase" />
   },
