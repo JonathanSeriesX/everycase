@@ -6,7 +6,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../styles/globals.css";
 import Image from "next/image";
-import SidebarAccordion from "../components/SidebarAccordion";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -143,7 +142,7 @@ const footer = <Footer>MITS {new Date().getFullYear()} © Nextra.</Footer>;
 const navbar = (
   <Navbar
     logo={logo}
-    projectLink="https://github.com/JonathanSeriesX/everycase#readme"
+    //projectLink="https://github.com/JonathanSeriesX/everycase#readme"
     //search={{ placeholder: 'Search by colour or SKU...' }} — doesn't work...
     /*
     if I create twatter account, it goes here:
@@ -201,7 +200,6 @@ export default async function RootLayout({ children }) {
             autoCollapse: false,
           }}
         >
-          <SidebarAccordion />
           {children}
           <Analytics />
           <SpeedInsights />
