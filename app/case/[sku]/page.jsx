@@ -7,7 +7,7 @@ import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
 import CaseInfoCards from "../../../components/CaseInfoCards";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV.mjs";
 import { getCompatibleModels } from "../../../lib/getCompatibleModels.mjs";
-import { getIdenticalSkus } from "../../../lib/identicalCases.mjs";
+import { getSimilarSkus } from "../../../lib/similarCases.mjs";
 import { getReleaseDate } from "../../../lib/releaseDates";
 import {
   formatOrderNumber,
@@ -147,8 +147,8 @@ function buildCaseInfo(data, regions) {
   const eduPriceRaw = (data.edu_price || "").trim();
   const eduDiffers = eduPriceRaw && Number(eduPriceRaw) !== Number(msrp || NaN);
   loadCases();
-  const identicalCases = getIdenticalSkus(sku)
-    .map((identicalSku) => cachedCasesBySku.get(identicalSku))
+  const similarCases = getSimilarSkus(sku)
+    .map((similarSku) => cachedCasesBySku.get(similarSku))
     .filter(Boolean)
     .map((record) => ({
       SKU: record.SKU,
@@ -158,7 +158,7 @@ function buildCaseInfo(data, regions) {
   return {
     skuGroups,
     compatibleModels: getCompatibleModels(data.model),
-    identicalCases,
+    similarCases,
     releaseSku: altSku ? sku : "",
     reReleaseSku: altSku,
     releaseDate: getReleaseDate(sku),
