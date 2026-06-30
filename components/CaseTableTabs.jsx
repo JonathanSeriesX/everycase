@@ -1,5 +1,6 @@
 import { Tabs } from "nextra/components";
 import VerticalCarousel from "./VerticalCarousel";
+import CaseTabsObserver from "./CaseTabsObserver.client";
 
 const sanitize = (value) => {
   if (typeof value !== "string") return undefined;
@@ -151,15 +152,27 @@ const CaseTableTabs = ({ tabs = [], tabNames = [] }) => {
 
   const resolvedLabels = resolveLabels(normalizedTabs, tabNames);
   const storageKey = buildStorageKey(normalizedTabs);
+  // The section's kind (e.g. "leather folio") is the material shared by its
+  // tabs; the model varies per tab. We hand both to the observer so it can tell
+  // the matching heading which model is selected.
+  const sectionKind = normalizedTabs.find((tab) => tab.query.material)?.query
+    .material;
+  const tabModels = normalizedTabs.map((tab) => tab.query.model ?? null);
 
   return (
-    <Tabs items={resolvedLabels} storageKey={storageKey}>
-      {normalizedTabs.map((tab, index) => (
-        <Tabs.Tab key={`${tab.key}-${index}`}>
-          <VerticalCarousel {...tab.query} />
-        </Tabs.Tab>
-      ))}
-    </Tabs>
+    <CaseTabsObserver
+      storageKey={storageKey}
+      sectionKind={sectionKind}
+      tabModels={tabModels}
+    >
+      <Tabs items={resolvedLabels} storageKey={storageKey}>
+        {normalizedTabs.map((tab, index) => (
+          <Tabs.Tab key={`${tab.key}-${index}`}>
+            <VerticalCarousel {...tab.query} />
+          </Tabs.Tab>
+        ))}
+      </Tabs>
+    </CaseTabsObserver>
   );
 };
 
