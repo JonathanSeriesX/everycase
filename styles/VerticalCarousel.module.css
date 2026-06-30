@@ -11,7 +11,12 @@
 
 .cardTrack {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  /* Cap the track minimum at half the row so at least two cards always fit,
+     even on the narrowest phones, while still packing more where there's room. */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(165px, (100% - 1.15rem) / 2), 1fr)
+  );
   gap: 0.9rem clamp(0.9rem, 2vw, 1.15rem);
   padding: 0.25rem 0 0.5rem;
   justify-items: left;

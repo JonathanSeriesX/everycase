@@ -20,21 +20,26 @@ const addAmount = (set, raw) => {
 
 /**
  * Wraps page content and provides a price map (keyed by lowercased product
- * kind) for a single model. The markdown headings inside stay real `##`
+ * kind) for one or more models. The markdown headings inside stay real `##`
  * headings — so Nextra's table of contents and anchors are unaffected — and the
- * h2 component override decorates matching ones with price pills.
+ * h2 component override decorates matching ones with price pills. When a kind
+ * spans several prices across the given models, the lowest is shown as "from".
  *
  * @param {Object} props
- * @param {string} props.model - Catalogue model whose prices this page shows.
+ * @param {string|string[]} props.model - Catalogue model(s) this page shows.
  * @param {React.ReactNode} props.children
  */
 const PricedSections = ({ model, children }) => {
-  const target = String(model || "").trim();
+  const targets = new Set(
+    (Array.isArray(model) ? model : [model])
+      .map((entry) => String(entry || "").trim())
+      .filter(Boolean),
+  );
   const buckets = new Map();
 
-  if (target) {
+  if (targets.size > 0) {
     for (const row of getCachedCases()) {
-      if (row.model !== target) continue;
+      if (!targets.has(String(row.model || "").trim())) continue;
       const kind = String(row.kind || "").trim();
       if (!kind) continue;
       const key = kind.toLowerCase();
