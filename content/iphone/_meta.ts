@@ -3,6 +3,7 @@ const config = {
     theme: {
       pagination: false,
       toc: true,
+      breadcrumb: false,
       layout: "default",
     },
   },
