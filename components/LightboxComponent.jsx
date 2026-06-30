@@ -15,7 +15,7 @@ const LIGHTBOX_PREVIEW_BASE_URL =
   "https://cloudfront.everycase.org/everypreview";
 const LIGHTBOX_PREVIEW_FORMAT = "avif";
 const FORMAT_PARAMS = {
-  jpg: "?wid=2560&hei=2560&fmt=jpg&qlt=90",
+  jpg: "?wid=2560&hei=2560&fmt=jpg&qlt=95",
   png: "?wid=4608&hei=4608&fmt=png-alpha",
 };
 const DEFAULT_DIMENSION = 2048;
