@@ -35,7 +35,7 @@ NORMALIZED_OBJECT_HEIGHT = 1320
 NORMALIZED_OBJECT_MAX_WIDTH = 700
 BACKGROUND_COLOUR = (241, 241, 241, 255)
 
-# These are the original og-image.js values at 2x. Sharp's angles are
+# These are the original API layout values at 2x. Sharp's angles were
 # clockwise; Pillow's are counter-clockwise, hence the converted values.
 ROTATIONS = (210, 120, 300, 30)
 POSITIONS = ((720, 260), (2000, 340), (160, 1400), (1440, 1480))
@@ -77,11 +77,6 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[],
         help="page slug to render; repeat for multiple pages (default: all)",
-    )
-    parser.add_argument(
-        "--config",
-        type=Path,
-        help="render exact clean-named selections from an OG selection CSV",
     )
     return parser.parse_args()
 
@@ -249,27 +244,21 @@ class ResizedImageCache:
 
     def __init__(self, limit: int = RESIZED_CACHE_LIMIT) -> None:
         self.limit = limit
-        self.images: OrderedDict[tuple[Path, bool], Image.Image] = OrderedDict()
+        self.images: OrderedDict[Path, Image.Image] = OrderedDict()
 
-    def get(self, path: Path, normalize: bool) -> Image.Image:
-        key = (path, normalize)
-        if key in self.images:
-            image = self.images.pop(key)
-            self.images[key] = image
+    def get(self, path: Path) -> Image.Image:
+        if path in self.images:
+            image = self.images.pop(path)
+            self.images[path] = image
             return image
 
         with Image.open(path) as source:
-            image = normalize_case(source) if normalize else resize_source(source)
-        self.images[key] = image
+            image = normalize_case(source)
+        self.images[path] = image
         if len(self.images) > self.limit:
             _, evicted = self.images.popitem(last=False)
             evicted.close()
         return image
-
-
-def resize_source(source: Image.Image) -> Image.Image:
-    """Reproduce the original square-master scaling used by early selections."""
-    return source.convert("RGBA").resize(CASE_SIZE, Image.Resampling.LANCZOS)
 
 
 def normalize_case(source: Image.Image) -> Image.Image:
@@ -305,12 +294,11 @@ def render(
     background_path: Path,
     transparent_path: Path,
     cache: ResizedImageCache,
-    normalize: bool = True,
 ) -> None:
     canvas = Image.new("RGBA", CANVAS_SIZE, (0, 0, 0, 0))
 
     layers = [
-        cache.get(asset, normalize).rotate(
+        cache.get(asset).rotate(
             angle,
             resample=Image.Resampling.BICUBIC,
             expand=True,
@@ -438,67 +426,6 @@ def selected_pages(requested_slugs: list[str]) -> list[Path]:
     return [page for page in pages if page.stem in requested]
 
 
-def render_config(
-    config_path: Path,
-    output_dir: Path,
-    rows: list[dict[str, str]],
-    cache: ResizedImageCache,
-) -> int:
-    by_sku = {row["SKU"]: row for row in rows}
-    with config_path.open(newline="", encoding="utf-8") as handle:
-        selections = list(csv.DictReader(handle))
-    required = {
-        "page",
-        "normalize",
-        "slot_1_sku",
-        "slot_2_sku",
-        "slot_3_sku",
-        "slot_4_sku",
-    }
-    if not selections or not required.issubset(selections[0]):
-        raise ValueError(f"invalid OG selection config: {config_path}")
-
-    output_dir.mkdir(parents=True, exist_ok=True)
-    manifest_rows: list[dict[str, str | int]] = []
-    for selection in selections:
-        page = selection["page"]
-        normalize = selection["normalize"].casefold() == "true"
-        skus = [selection[f"slot_{slot}_sku"] for slot in range(1, 5)]
-        missing = [sku for sku in skus if sku not in by_sku or not base_asset(sku).is_file()]
-        if missing:
-            raise ValueError(f"{page}: missing configured SKU(s): {', '.join(missing)}")
-        cases = [(by_sku[sku], base_asset(sku)) for sku in skus]
-        filename = f"{page}.png"
-        transparent_filename = f"{page}-transparent.png"
-        render(
-            cases,
-            output_dir / filename,
-            output_dir / transparent_filename,
-            cache,
-            normalize=normalize,
-        )
-        manifest_rows.append(
-            {
-                "page": page,
-                "variant": selection.get("source_attempt", ""),
-                "background_file": filename,
-                "transparent_file": transparent_filename,
-                "skus": ";".join(skus),
-                "models": ";".join(row["model"] for row, _ in cases),
-                "kinds": ";".join(row["kind"] for row, _ in cases),
-                "colours": ";".join(row["colour"] for row, _ in cases),
-            }
-        )
-        print(f"{page}: configured selection", flush=True)
-
-    manifest_path = output_dir / "manifest.csv"
-    with manifest_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(manifest_rows[0]))
-        writer.writeheader()
-        writer.writerows(manifest_rows)
-    return len(selections) * 2
-
-
 def main() -> int:
     args = parse_args()
     if args.variants < 1:
@@ -511,36 +438,12 @@ def main() -> int:
     rows = read_database()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     cache = ResizedImageCache()
-    if args.config:
-        if args.page:
-            print("--config cannot be combined with --page", file=sys.stderr)
-            return 2
-        try:
-            total = render_config(args.config, args.output_dir, rows, cache)
-        except (OSError, ValueError) as error:
-            print(error, file=sys.stderr)
-            return 1
-        print(f"\nGenerated {total} images in {args.output_dir}")
-        return 0
-
     try:
         pages = selected_pages(args.page)
     except ValueError as error:
         print(error, file=sys.stderr)
         return 2
     failures: list[str] = []
-    selected_slugs = {page.stem for page in pages}
-    manifest_path = args.output_dir / "manifest.csv"
-    manifest_rows: list[dict[str, str | int]] = []
-    if manifest_path.is_file():
-        with manifest_path.open(newline="", encoding="utf-8") as handle:
-            manifest_rows.extend(
-                row
-                for row in csv.DictReader(handle)
-                if row.get("page") not in selected_slugs
-                and (args.output_dir / row.get("background_file", "")).is_file()
-                and (args.output_dir / row.get("transparent_file", "")).is_file()
-            )
 
     for page in pages:
         try:
@@ -556,27 +459,9 @@ def main() -> int:
                     args.output_dir / transparent_filename,
                     cache,
                 )
-                manifest_rows.append(
-                    {
-                        "page": page.stem,
-                        "variant": number,
-                        "background_file": filename,
-                        "transparent_file": transparent_filename,
-                        "skus": ";".join(row["SKU"] for row, _ in cases),
-                        "models": ";".join(row["model"] for row, _ in cases),
-                        "kinds": ";".join(row["kind"] for row, _ in cases),
-                        "colours": ";".join(row["colour"] for row, _ in cases),
-                    }
-                )
                 print(f"{page.stem}: {number}/{args.variants}", flush=True)
         except Exception as error:
             failures.append(f"{page.stem}: {error}")
-
-    if manifest_rows:
-        with manifest_path.open("w", newline="", encoding="utf-8") as handle:
-            writer = csv.DictWriter(handle, fieldnames=list(manifest_rows[0]))
-            writer.writeheader()
-            writer.writerows(manifest_rows)
 
     if failures:
         print("\nFailed pages:", file=sys.stderr)
