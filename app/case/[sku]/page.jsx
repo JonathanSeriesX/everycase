@@ -7,6 +7,7 @@ import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
 import CaseInfoCards from "../../../components/CaseInfoCards";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV.mjs";
 import { getCompatibleModels } from "../../../lib/getCompatibleModels.mjs";
+import { getIdenticalSkus } from "../../../lib/identicalCases.mjs";
 import { getReleaseDate } from "../../../lib/releaseDates";
 import {
   formatOrderNumber,
@@ -23,6 +24,7 @@ const IMAGE_BASE_URL =
 const EXTENSION = "?wid=1536&hei=1536&fmt=png-alpha";
 
 let cachedCases;
+let cachedCasesBySku;
 let cachedVariantFilenames;
 
 function loadCases() {
@@ -38,12 +40,16 @@ function loadCases() {
       alt_thumbnail: (record.alt_thumbnail || "").trim(),
       regions: (record.regions || "").trim(),
     }));
+    cachedCasesBySku = new Map(
+      cachedCases.map((record) => [record.SKU, record]),
+    );
   }
   return cachedCases;
 }
 
 function findCaseBySku(sku) {
-  return loadCases().find((record) => record.SKU === sku);
+  loadCases();
+  return cachedCasesBySku.get(sku);
 }
 
 function loadVariantFilenames() {
@@ -140,10 +146,19 @@ function buildCaseInfo(data, regions) {
   const msrp = (data.MSRP || "").trim();
   const eduPriceRaw = (data.edu_price || "").trim();
   const eduDiffers = eduPriceRaw && Number(eduPriceRaw) !== Number(msrp || NaN);
+  loadCases();
+  const identicalCases = getIdenticalSkus(sku)
+    .map((identicalSku) => cachedCasesBySku.get(identicalSku))
+    .filter(Boolean)
+    .map((record) => ({
+      SKU: record.SKU,
+      name: getCaseName(record),
+    }));
 
   return {
     skuGroups,
     compatibleModels: getCompatibleModels(data.model),
+    identicalCases,
     releaseSku: altSku ? sku : "",
     reReleaseSku: altSku,
     releaseDate: getReleaseDate(sku),
