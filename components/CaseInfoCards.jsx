@@ -117,6 +117,8 @@ const OrderNumbersCard = ({ skuGroups }) => {
 const CaseInfoCards = ({
   skuGroups = null,
   compatibleModels = [],
+  releaseSku = "",
+  reReleaseSku = "",
   releaseDate = "",
   reReleaseDate = "",
   msrp = "",
@@ -131,8 +133,20 @@ const CaseInfoCards = ({
         <CompatibilityCard compatibleModels={compatibleModels} />
       </div>
     )}
-    {releaseDate && <StatCard label="Released on" value={releaseDate} />}
-    {reReleaseDate && <StatCard label="Re-released on" value={reReleaseDate} />}
+    {releaseDate && (
+      <StatCard
+        label={releaseSku ? `${releaseSku} released on` : "Released on"}
+        value={releaseDate}
+      />
+    )}
+    {reReleaseDate && (
+      <StatCard
+        label={
+          reReleaseSku ? `${reReleaseSku} released on` : "Re-released on"
+        }
+        value={reReleaseDate}
+      />
+    )}
     {msrp && <StatCard label="MSRP" value={msrp} />}
     {eduPrice && <StatCard label="Education price" value={eduPrice} />}
   </div>

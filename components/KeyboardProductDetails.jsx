@@ -38,6 +38,8 @@ const KeyboardProductDetails = ({
     return (
       <>
         <CaseInfoCards
+          releaseSku={info.releaseSku}
+          reReleaseSku={info.reReleaseSku}
           releaseDate={info.releaseDate}
           reReleaseDate={info.reReleaseDate}
           msrp={info.msrp}
@@ -72,7 +74,7 @@ const KeyboardProductDetails = ({
               >
                 {regionOptions.map((option) => (
                   <option key={option.region} value={option.region}>
-                    {getKeyboardLanguageName(option.region)}
+                    {`${getKeyboardLanguageName(option.region)} `}
                   </option>
                 ))}
               </select>
@@ -81,10 +83,22 @@ const KeyboardProductDetails = ({
           <CompatibilityCard compatibleModels={info.compatibleModels} />
         </div>
         {info.releaseDate && (
-          <StatCard label="Released" value={info.releaseDate} />
+          <StatCard
+            label={
+              info.releaseSku ? `${info.releaseSku} released on` : "Released on"
+            }
+            value={info.releaseDate}
+          />
         )}
         {info.reReleaseDate && (
-          <StatCard label="Re-released" value={info.reReleaseDate} />
+          <StatCard
+            label={
+              info.reReleaseSku
+                ? `${info.reReleaseSku} released on`
+                : "Re-released on"
+            }
+            value={info.reReleaseDate}
+          />
         )}
         {info.msrp && <StatCard label="MSRP" value={info.msrp} />}
         {info.eduPrice && (

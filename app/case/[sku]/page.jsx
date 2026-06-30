@@ -144,6 +144,8 @@ function buildCaseInfo(data, regions) {
   return {
     skuGroups,
     compatibleModels: getCompatibleModels(data.model),
+    releaseSku: altSku ? sku : "",
+    reReleaseSku: altSku,
     releaseDate: getReleaseDate(sku),
     reReleaseDate: altSku ? getReleaseDate(altSku) : "",
     msrp: [
