@@ -27,7 +27,8 @@
     "**/*.js",
     "**/*.jsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "lib/getCasesFromCSV.mjs"
   ],
   "exclude": ["node_modules"]
 }
