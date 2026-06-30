@@ -70,6 +70,41 @@ textarea:focus-visible {
   box-shadow: none !important;
 }
 
+/* The section "#" anchor should reveal on hover/focus only. Nextra otherwise
+   keeps it visible via :target, so it lingers on whatever heading you jumped to
+   through the table of contents — kill that and re-assert hover/focus. */
+:target > .subheading-anchor {
+  opacity: 0%;
+}
+:hover > .subheading-anchor,
+.subheading-anchor:focus,
+.subheading-anchor:focus-visible {
+  opacity: 100%;
+}
+
+/* Nextra plays a 1.5s opacity fade-in on the heading you land on via the TOC
+   (its `target:animate-[fade-in_1.5s]` class). Replace it with a quick, subtle
+   zoom that pops to 103% and settles back — no fade. */
+@keyframes heading-target-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+h2:target,
+h3:target,
+h4:target,
+h5:target,
+h6:target {
+  animation: heading-target-pop 0.45s ease-in-out !important;
+  transform-origin: left center;
+}
+
 .nextra-search input[type="search"]:focus,
 .nextra-search input[type="search"]:focus-visible {
   outline: 2px solid var(--nextra-link-color, #e3504f) !important;

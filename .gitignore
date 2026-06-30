@@ -6,6 +6,7 @@
 .vscode/
 .obsidian/
 .claude/
+.codex-tmp/
 
 # Building & Deploying
 .next/
