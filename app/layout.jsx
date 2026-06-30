@@ -143,7 +143,6 @@ const navbar = (
   <Navbar
     logo={logo}
     //projectLink="https://github.com/JonathanSeriesX/everycase#readme"
-    //search={{ placeholder: 'Search by colour or SKU...' }} — doesn't work...
     /*
     if I create twatter account, it goes here:
     chatLink="https://twitter.com/shuding_"
