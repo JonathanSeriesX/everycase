@@ -70,16 +70,40 @@ textarea:focus-visible {
   box-shadow: none !important;
 }
 
-/* The section "#" anchor should reveal on hover/focus only. Nextra otherwise
-   keeps it visible via :target, so it lingers on whatever heading you jumped to
-   through the table of contents — kill that and re-assert hover/focus. */
+/* The section "#" anchor. Nextra reveals it on :target and on plain :focus,
+   which makes it linger lit on whatever heading you jumped to (and stay focused
+   after a pointer click). We re-assert the behaviour per input type below. */
 :target > .subheading-anchor {
   opacity: 0%;
 }
-:hover > .subheading-anchor,
-.subheading-anchor:focus,
-.subheading-anchor:focus-visible {
-  opacity: 100%;
+
+/* Pointer devices: reveal on real hover and on keyboard focus only. A mouse
+   click does not reveal it (:focus-visible ignores pointer focus, and we
+   override Nextra's :focus rule), and the post-click scroll moves the cursor off
+   the heading — so it hides itself with no lingering focus state. */
+@media (hover: hover) {
+  :hover > .subheading-anchor,
+  .subheading-anchor:focus-visible {
+    opacity: 33%;
+  }
+  .subheading-anchor:focus:not(:focus-visible) {
+    opacity: 0%;
+  }
+}
+
+/* Touch: there is no hover to reveal on demand, so show the "#" faintly at
+   rest. Once tapped it has done its job — hide it (and keep it hidden) instead
+   of relying on a sticky tap-hover/focus that lingers until you tap elsewhere.
+   `.is-tapped` is added in JS and never removed, so the dismiss only ever runs
+   once (a single transition, never a re-played animation). */
+@media (hover: none) {
+  .subheading-anchor {
+    opacity: 33%;
+  }
+  .subheading-anchor.is-tapped,
+  .subheading-anchor.is-tapped:focus {
+    opacity: 0%;
+  }
 }
 
 /* Nextra plays a 1.5s opacity fade-in on the heading you land on via the TOC

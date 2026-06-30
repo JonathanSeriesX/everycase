@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import Link from "next/link";
 import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
 import styles from "../styles/CaseInfoCards.module.css";
@@ -81,7 +81,9 @@ export const CompatibilityCard = ({ compatibleModels = [] }) => {
     <InfoCard label="Compatible with">
       <div className={`${styles.chipRow} ${styles.compatibilityRow}`}>
         {compatibleModels.map((model) => (
-          <CompatibilityChip key={model} value={model} />
+          <Fragment key={model}>
+            <CompatibilityChip value={model} />{" "}
+          </Fragment>
         ))}
       </div>
     </InfoCard>
