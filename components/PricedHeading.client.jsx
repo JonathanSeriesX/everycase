@@ -30,10 +30,27 @@ const textOf = (children) =>
  * Nextra heading unchanged. The underlying heading stays a real h2 with its id
  * and anchor, so the table of contents is unaffected.
  */
+// Resolves a heading's text to a price entry. Prefers an exact kind match,
+// otherwise the longest kind the heading starts with — so "Leather Wallet with
+// MagSafe" matches "Leather Wallet" while "Magic Keyboard Folio" still wins over
+// "Magic Keyboard".
+const matchPrice = (priceMap, key) => {
+  if (priceMap[key]) return priceMap[key];
+  let best = null;
+  let bestLen = 0;
+  for (const kind of Object.keys(priceMap)) {
+    if (key.startsWith(`${kind} `) && kind.length > bestLen) {
+      best = priceMap[kind];
+      bestLen = kind.length;
+    }
+  }
+  return best;
+};
+
 const PricedHeading = ({ id, children, ...props }) => {
   const priceMap = usePriceMap();
   const key = textOf(children).trim().toLowerCase();
-  const price = id ? priceMap[key] : undefined;
+  const price = id ? matchPrice(priceMap, key) : undefined;
 
   const pills = price
     ? CURRENCIES.map((code) => {
