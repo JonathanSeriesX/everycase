@@ -40,7 +40,7 @@ const logo = (
       }}
     >
       <Image
-        src="https://cloudfront.everycase.org/icons/apple-touch-icon.png"
+        src="https://cloudfront.everycase.org/assets/apple-touch-icon.png"
         alt="Finest Woven Logo"
         width={48}
         height={48}
@@ -88,12 +88,12 @@ export const metadata = {
     follow: true,
   },
   icons: {
-    icon: "https://cloudfront.everycase.org/icons/512_w_shadow.png",
-    apple: "https://cloudfront.everycase.org/icons/apple-touch-icon.png",
+    icon: "https://cloudfront.everycase.org/assets/512_w_shadow.png",
+    apple: "https://cloudfront.everycase.org/assets/apple-touch-icon.png",
     other: [
       {
         rel: "mask-icon",
-        url: "https://cloudfront.everycase.org/icons/bw.svg",
+        url: "https://cloudfront.everycase.org/assets/bw.svg",
         color: "#E3504F",
       },
     ],
