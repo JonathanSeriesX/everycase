@@ -9,7 +9,7 @@ const COPY_RESET_TIMEOUT = 1000;
 // A single bordered, liquid-glass card. `wide` makes it span the full grid row.
 export const InfoCard = ({ label, children, wide = false }) => (
   <div className={`${styles.card} ${wide ? styles.cardWide : ""}`}>
-    <span className={styles.label}>{label}{" "}</span>
+    <span className={styles.label}>{label} </span>
     {children}
   </div>
 );
@@ -25,19 +25,22 @@ export const StatCard = ({ label, value }) => (
 export const CopyChip = ({ value }) => {
   const [copied, setCopied] = useState(false);
 
-  const copy = useCallback((e) => {
-    e.currentTarget.blur();
-    if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
-      return;
-    }
-    navigator.clipboard
-      .writeText(value)
-      .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), COPY_RESET_TIMEOUT);
-      })
-      .catch(() => {});
-  }, [value]);
+  const copy = useCallback(
+    (e) => {
+      e.currentTarget.blur();
+      if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
+        return;
+      }
+      navigator.clipboard
+        .writeText(value)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), COPY_RESET_TIMEOUT);
+        })
+        .catch(() => {});
+    },
+    [value],
+  );
 
   return (
     <button
@@ -69,7 +72,7 @@ export const CopyChip = ({ value }) => {
 const OrderNumbersCard = ({ skuGroups }) => {
   const totalOrderNumbers = skuGroups.reduce(
     (total, group) => total + group.orderNumbers.length,
-    0
+    0,
   );
   const label = totalOrderNumbers === 1 ? "Order number" : "Order numbers";
 
@@ -78,7 +81,7 @@ const OrderNumbersCard = ({ skuGroups }) => {
       {skuGroups.map((group, index) => (
         <div key={group.label ?? index} className={styles.skuGroup}>
           {group.label && (
-            <span className={styles.skuGroupLabel}>{group.label}{" "}</span>
+            <span className={styles.skuGroupLabel}>{group.label} </span>
           )}
           <div className={styles.chipRow}>
             {group.orderNumbers.map((orderNumber) => (
@@ -102,8 +105,8 @@ const CaseInfoCards = ({
     {skuGroups && skuGroups.length > 0 && (
       <OrderNumbersCard skuGroups={skuGroups} />
     )}
-    {releaseDate && <StatCard label="Released" value={releaseDate} />}
-    {reReleaseDate && <StatCard label="Re-released" value={reReleaseDate} />}
+    {releaseDate && <StatCard label="Released on" value={releaseDate} />}
+    {reReleaseDate && <StatCard label="Re-released on" value={reReleaseDate} />}
     {msrp && <StatCard label="MSRP" value={msrp} />}
     {eduPrice && <StatCard label="Education price" value={eduPrice} />}
   </div>
