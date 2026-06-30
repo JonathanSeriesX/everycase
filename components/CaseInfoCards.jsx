@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { CopyIcon, CheckIcon } from "nextra/icons";
+import Link from "next/link";
+import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
 import styles from "../styles/CaseInfoCards.module.css";
 
 const COPY_RESET_TIMEOUT = 1000;
@@ -87,6 +88,34 @@ export const CompatibilityCard = ({ compatibleModels = [] }) => {
   );
 };
 
+const IdenticalCasesCard = ({ cases }) => {
+  if (cases.length === 0) return null;
+
+  return (
+    <InfoCard label="Identical to" wide>
+      <div className={`${styles.chipRow} ${styles.identicalRow}`}>
+        {cases.map((item) => (
+          <Link
+            key={item.SKU}
+            href={`/case/${item.SKU}`}
+            className={`${styles.chip} ${styles.linkChip}`}
+            title={item.name}
+            aria-label={`${item.name} (${item.SKU})`}
+          >
+            <span className={styles.chipValue}>{item.SKU.slice(0, 5)}</span>
+            <span className={styles.iconSwap} aria-hidden="true">
+              <LinkArrowIcon
+                className={`${styles.iconLayer} ${styles.linkIcon}`}
+                strokeWidth={2.2}
+              />
+            </span>
+          </Link>
+        ))}
+      </div>
+    </InfoCard>
+  );
+};
+
 // The order-number card. `skuGroups` is [{ label, orderNumbers }]; a single
 // group with a null label renders as a plain row of chips (no sub-heading).
 const OrderNumbersCard = ({ skuGroups }) => {
@@ -117,6 +146,7 @@ const OrderNumbersCard = ({ skuGroups }) => {
 const CaseInfoCards = ({
   skuGroups = null,
   compatibleModels = [],
+  identicalCases = [],
   releaseSku = "",
   reReleaseSku = "",
   releaseDate = "",
@@ -133,6 +163,7 @@ const CaseInfoCards = ({
         <CompatibilityCard compatibleModels={compatibleModels} />
       </div>
     )}
+    <IdenticalCasesCard cases={identicalCases} />
     {releaseDate && (
       <StatCard
         label={releaseSku ? `${releaseSku} released on` : "Released on"}
