@@ -22,6 +22,7 @@ export const dynamicParams = false;
 const IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const EXTENSION = "?wid=1536&hei=1536&fmt=png-alpha";
+const OG_IMAGE_EXTENSION = "?wid=1200&hei=630&fmt=jpg&qlt=99";
 
 let cachedCases;
 let cachedCasesBySku;
@@ -87,6 +88,11 @@ function listVariantsForRegion(sku, region) {
 function resolveImageSource(variant) {
   const code = (variant || "").trim();
   return `${IMAGE_BASE_URL}/${code}${EXTENSION}`;
+}
+
+function resolveOgImageSource(variant) {
+  const code = (variant || "").trim();
+  return `${IMAGE_BASE_URL}/${code}${OG_IMAGE_EXTENSION}`;
 }
 
 // Maps a case to its sidebar folder so we can keep that folder open even though
@@ -193,7 +199,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }, parent) {
   const { sku } = await params;
   const data = findCaseBySku(sku);
 
@@ -201,15 +207,31 @@ export async function generateMetadata({ params }) {
 
   const caseName = getCaseName(data);
   const title = caseName;
-  const images = listVariantsForSku(sku).map((variant) =>
-    resolveImageSource(variant),
-  );
+  const firstVariant = listVariantsForSku(sku)[0];
+  const image = resolveOgImageSource(firstVariant);
+  const parentMetadata = await parent;
 
   return {
     title,
     openGraph: {
       title,
-      images: images.map((src) => ({ url: src, alt: caseName })),
+      siteName: parentMetadata.openGraph?.siteName,
+      locale: parentMetadata.openGraph?.locale,
+      type: parentMetadata.openGraph?.type,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: caseName,
+          type: "image/jpeg",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      creator: parentMetadata.twitter?.creator,
+      images: [image],
     },
   };
 }
