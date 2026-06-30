@@ -40,6 +40,16 @@ export default function HashNavigation() {
       }
 
       event.preventDefault();
+      anchor.blur();
+
+      // On touch the "#" shows faintly at rest (no hover to reveal it on demand).
+      // Once tapped it has served its purpose: mark it so CSS hides it for good.
+      // We never remove the class, so the dismiss runs exactly once — there is no
+      // sticky hover/focus to bring it back and re-play the fade. (On pointer
+      // devices this class has no effect; hover/focus-visible drive the reveal.)
+      if (anchor.classList.contains("subheading-anchor")) {
+        anchor.classList.add("is-tapped");
+      }
 
       const oldURL = window.location.href;
       window.history.replaceState(
@@ -54,7 +64,15 @@ export default function HashNavigation() {
       } catch {
         target = document.getElementById(url.hash.slice(1));
       }
-      target?.scrollIntoView();
+      if (target) {
+        // scrollIntoView() ignores scroll-padding-top on Safari iOS, causing
+        // the heading to land behind the sticky navbar (looks like overshoot).
+        // Read the actual navbar height and scroll manually instead.
+        const navbar = document.querySelector(".nextra-navbar");
+        const offset = navbar ? navbar.getBoundingClientRect().height : 0;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset - 16;
+        window.scrollTo({ top, left: window.scrollX });
+      }
 
       if (oldURL !== window.location.href) {
         window.dispatchEvent(
