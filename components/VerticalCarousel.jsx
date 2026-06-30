@@ -1,9 +1,6 @@
 import { cache } from "react";
 import VerticalCarouselClient from "./VerticalCarousel.client";
-import {
-  filterCases,
-  getAllCasesFromCSV,
-} from "../lib/getCasesFromCSV";
+import { filterCases, getAllCasesFromCSV } from "../lib/getCasesFromCSV.mjs";
 
 const getCachedCases = cache(() => getAllCasesFromCSV());
 

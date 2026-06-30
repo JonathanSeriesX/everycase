@@ -6,7 +6,7 @@ import LightboxComponent from "../../../components/LightboxComponent";
 import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
 import CaseInfoCards from "../../../components/CaseInfoCards";
 import SidebarFolderOpener from "../../../components/SidebarFolderOpener";
-import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
+import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV.mjs";
 import { getReleaseDate } from "../../../lib/releaseDates";
 import {
   formatOrderNumber,
@@ -112,8 +112,9 @@ function buildImages(variants, caseName) {
 }
 
 // Gather everything the info cards need: copyable order numbers, the release
-// date (and a re-release date when the case came back under an alt SKU), MSRP
-// and, for keyboards, the education price when it differs from MSRP.
+// date (and a re-release date when the case came back under an alt SKU),
+// regional MSRP and, for keyboards, the US education price when it differs
+// from the US MSRP.
 function buildCaseInfo(data, regions) {
   const sku = data.SKU;
   const altSku = (data.alt_sku || "").trim();
@@ -125,7 +126,7 @@ function buildCaseInfo(data, regions) {
   );
   if (altSku) {
     allOrderNumbers.push(
-      ...orderRegions.map((region) => formatOrderNumber(altSku, region))
+      ...orderRegions.map((region) => formatOrderNumber(altSku, region)),
     );
   }
 
@@ -138,14 +139,19 @@ function buildCaseInfo(data, regions) {
 
   const msrp = (data.MSRP || "").trim();
   const eduPriceRaw = (data.edu_price || "").trim();
-  const eduDiffers =
-    eduPriceRaw && Number(eduPriceRaw) !== Number(msrp || NaN);
+  const eduDiffers = eduPriceRaw && Number(eduPriceRaw) !== Number(msrp || NaN);
 
   return {
     skuGroups,
     releaseDate: getReleaseDate(sku),
     reReleaseDate: altSku ? getReleaseDate(altSku) : "",
-    msrp: formatPrice(msrp),
+    msrp: [
+      formatPrice(msrp, "USD"),
+      formatPrice(data.MSRP_EUR, "EUR"),
+      formatPrice(data.MSRP_GBP, "GBP"),
+    ]
+      .filter(Boolean)
+      .join(" | "),
     eduPrice: eduDiffers ? formatPrice(eduPriceRaw) : "",
   };
 }
