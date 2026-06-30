@@ -5,7 +5,6 @@ import { useMDXComponents as getMDXComponents } from "../../../mdx-components";
 import LightboxComponent from "../../../components/LightboxComponent";
 import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
 import CaseInfoCards from "../../../components/CaseInfoCards";
-import SidebarFolderOpener from "../../../components/SidebarFolderOpener";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV.mjs";
 import { getReleaseDate } from "../../../lib/releaseDates";
 import {
@@ -231,7 +230,6 @@ export default async function CasePage({ params }) {
       toc={[{ depth: 2, value: "Image gallery", id: "image-gallery" }]}
       metadata={metadata}
     >
-      <SidebarFolderOpener categoryRoute={getCategoryRoute(data.model)} />
       <header>
         <Heading1>{caseName}</Heading1>
         {!isKeyboard && <CaseInfoCards {...info} />}

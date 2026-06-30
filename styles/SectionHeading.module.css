@@ -1,0 +1,67 @@
+/* Section header: title on the left, price pills on the right. The full-width
+   bottom rule lives on this container (not the h2) so it spans edge-to-edge
+   like the default Nextra heading underline. */
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  margin-top: 2.5rem; /* matches Nextra h2 x:mt-10 */
+  padding-bottom: 0.25rem; /* matches x:pb-1 */
+  border-bottom: 1px solid rgba(15, 18, 28, 0.1);
+}
+
+/* The heading keeps Nextra's own h2 styling (size, weight, anchor); we only
+   strip the spacing/border it would otherwise own, since the container above
+   now provides the top margin and the full-width underline. */
+.headingReset {
+  margin: 0 !important;
+  margin-right: auto !important; /* pushes pills to the far right on wide viewports */
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+/* Pill cluster wraps to its own line under the title on narrow viewports. */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  /* Baseline-aligned pills hang lower than the big heading text; lift them so
+     the gap below the pills matches the gap below the title. */
+  transform: translateY(-0.4rem);
+}
+
+/* Non-interactive twin of the copyable .metaBadge pill. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  white-space: nowrap;
+  background-color: #fff;
+  border: 1px solid rgba(15, 18, 28, 0.12);
+  color: rgba(15, 18, 28, 0.85);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* dark mode */
+:global(html[class~="dark"]) .sectionHead {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global(html[class~="dark"]) .anchor::after {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+:global(html[class~="dark"]) .pill {
+  background: rgba(19, 19, 22, 0.92);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.88);
+}
