@@ -26,8 +26,8 @@
 }
 
 /* Nextra hides the TOC below its `xl` breakpoint (1280px) via `max-xl:hidden`.
-   Reveal it one breakpoint earlier so it opens at >=1024px. */
-@media (min-width: 1024px) and (max-width: 1279.98px) {
+   Reveal it one breakpoint earlier so it opens at >=1200px. */
+@media (min-width: 1200px) and (max-width: 1279.98px) {
   .nextra-toc {
     display: block;
   }
