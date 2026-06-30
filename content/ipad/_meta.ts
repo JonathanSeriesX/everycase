@@ -1,7 +1,8 @@
 const config = {
   "*": {
     theme: {
-      //pagination: true,
+      pagination: false,
+      breadcrumb: false,
       toc: true,
       layout: "default",
     },
