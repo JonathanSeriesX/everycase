@@ -106,9 +106,9 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "https://cloudfront.everycase.org/assets/og.webp",
-        width: 2000,
-        height: 1000,
+        url: "https://cloudfront.everycase.org/og/fallback.webp",
+        width: 2400,
+        height: 1260,
         alt: "Multiple iPhone 13 models displayed in Apple's silicone cases",
       },
     ],
