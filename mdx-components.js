@@ -13,15 +13,15 @@ export function useMDXComponents(components) {
       const showArrow = href && !href.startsWith("#");
       return (
         <themeComponents.a href={href} {...props}>
-          {children}
-          {showArrow && (
-            <>
+          <span className="inline-block whitespace-nowrap">
+            {children}
+            {showArrow && (
               <LinkArrowIcon
                 className="inline align-baseline shrink-0"
                 height="1em"
               />
-            </>
-          )}
+            )}
+          </span>
         </themeComponents.a>
       );
     },
