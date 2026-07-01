@@ -1,0 +1,71 @@
+SKU,regions,kind,colour,model,season,release_date,alt_thumbnail,name
+# notes for whoever uses this next:
+# a) compiled from everything.csv (EDU prices, not MSRP) + web research (Apple newsroom/support pages, iLounge, AppleInsider, retailer SKU listings, Wayback Machine snapshots where reachable)
+# b) release_date is the confirmed accessory ship date where a primary source exists; where only "likely" sourced, it's the best-available date (often the companion iPod generation's launch date used as a proxy) — treat day-level precision on pre-2007 items as approximate
+# c) MSRP vs EDU price is NOT included as a column here (matches database.csv schema, no price column) — see msrp.csv/edu.csv pattern if you want to add iPod MSRPs separately
+# d) M9864G/A ("Yellow iPod mini Armband") from initial scrape could NOT be independently confirmed — sources contradict each other (one ties the same yellow stock photo to M9838G/A instead) — omitted as likely a reseller data-entry error
+# e) some 1st-gen iPod nano Armband colors (blue, pink) are confirmed to exist by Apple's own launch press release but no SKU could be sourced for them — omitted rather than guessed
+M9467,G,Dock,White,iPod mini,January 2004,1/6/04,,iPod mini Dock
+M9445,G,Armband,Black,iPod mini,February 2004,2/1/04,,iPod mini Armband — Black
+M9838,G,Armband,Grey,iPod mini,Spring 2005,3/29/05,,iPod mini Armband — Grey
+M9568,G,Lanyard,Gray,iPod mini,Spring 2005,4/1/05,,iPod mini Lanyard
+M9942,G,Lanyard,White,iPod shuffle (1st generation),January 2005,1/11/05,,iPod shuffle Lanyard and Caps
+M9126,G,Cable,—,iPod (3rd generation),Spring 2003,4/28/03,,Dock Connector to FireWire and USB 2.0 Cable
+M9647,G,Belt Clip,White,iPod (3rd generation) 20GB,Spring 2003,4/28/03,,iPod Belt Clip — 20GB
+M9648,G,Belt Clip,White,iPod (3rd generation) 40GB,Spring 2003,4/28/03,,iPod Belt Clip — 40GB
+M9603,G,Carrying Case,Black,iPod (3rd generation) 20/30GB,Spring 2003,4/28/03,,iPod Carrying Case with Belt Clip — 20/30GB
+M9129,G,Carrying Case,Black,iPod (4th generation) 40GB,Summer 2004,7/19/04,,iPod Carrying Case with Belt Clip — 40GB
+M9394,LL,In-Ear Headphones,White,iPod (4th generation),January 2004,1/6/04,,iPod In-Ear Headphones
+M9720,G,Socks,Multicolor (6-pack),iPod photo,Autumn 2004,10/26/04,,iPod Socks — 6-Pack
+M9940,G,Carrying Case,Black,iPod photo 40/60GB,Autumn 2004,10/26/04,,iPod Carrying Case with Belt Clip — iPod photo
+M9688,G,Cable,—,iPod photo / iPod mini,Autumn 2004,11/1/04,,Dock Connector to FireWire and USB 2.0 Cable (reissue)
+M9861,G,Camera Connector,—,iPod photo,Spring 2005,3/21/05,,iPod Camera Connector
+M9765,G,AV Cable,—,iPod with video (5th generation),Autumn 2005,10/12/05,,iPod AV Cable
+MA045,G,Universal Dock,—,iPod with video (5th generation),Autumn 2005,10/12/05,,iPod Universal Dock
+MA125,G,Dock Adapter (3-Pack),—,iPod with video (5th generation),Autumn 2005,10/12/05,,iPod Universal Dock Adapter 3-Pack [9]
+MA126,G,Dock Adapter (3-Pack),—,iPod with video (5th generation),Autumn 2005,10/12/05,,iPod Universal Dock Adapter 3-Pack [10]
+MA663,G,Armband,Grey,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Armband — Grey
+MA185,G,Armband,Green,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Armband — Green
+MA186,G,Armband,Red,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Armband — Red
+MA241,G,Tubes,Multicolor (5-pack),iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Tubes — 5-Pack
+MA594,G,Dock,White,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Dock
+MA597,G,Lanyard Headphones,White,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Lanyard Headphones
+M9837,LL,USB Power Adapter,White,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod USB Power Adapter (original)
+MA070,G,Radio Remote,—,iPod nano (1st generation) / iPod with video,January 2006,1/10/06,,iPod Radio Remote
+MA398,G,Leather Case,Black,iPod with video (5th generation) 30GB,February 2006,2/28/06,,Leather Case for iPod — 30GB
+MA399,G,Leather Case,Black,iPod with video (5th generation) 60GB,February 2006,2/28/06,,Leather Case for iPod — 60GB (Thicker)
+MA135,G,Leather Case,Black,iPod nano (1st generation),February 2006,2/28/06,,Leather Case for iPod nano
+M9867,LL,Speaker Dock,White,iPod with video (5th generation),February 2006,2/28/06,,iPod Hi-Fi
+M9867,J,Speaker Dock,White,iPod with video (5th generation),March 2006,3/1/06,,iPod Hi-Fi (Japan)
+MA694,G,Dock,White,iPod shuffle (2nd generation),Autumn 2006,9/12/06,,iPod shuffle Dock
+MA094,G,Armband,Grey,iPod nano (2nd generation),Autumn 2006,9/12/06,,iPod nano Armband — Grey
+M9569,G,Cable,—,iPod nano (2nd generation),Autumn 2006,9/12/06,,USB 2.0 to Dock Connector Cable
+MA592,G,USB Power Adapter,White,iPod nano (2nd generation),Autumn 2006,9/12/06,,iPod USB Power Adapter (redesign)
+MA242,LL,AV Connection Kit,—,iPod nano (2nd generation),Autumn 2006,9/12/06,,AV Connection Kit
+MA593,G,Dock Adapter (3-Pack),—,iPod nano (2nd generation),Autumn 2006,9/12/06,,iPod Universal Dock Adapter 3-Pack (2GB/4GB/8GB)
+MA365,LL,Sport Kit,—,iPod nano (2nd generation),Summer 2006,7/13/06,,Nike + iPod Sport Kit
+MB130,G,Armband,Grey,iPod nano (3rd generation),Autumn 2007,9/5/07,,iPod nano Armband — Grey
+MB128,LL,AV Cable (Component),—,iPod classic / iPod nano (3rd generation) / iPod touch,Autumn 2007,9/5/07,,iPod Component AV Cable
+MB129,LL,AV Cable (Composite),—,iPod classic / iPod nano (3rd generation) / iPod touch,Autumn 2007,9/5/07,,iPod Composite AV Cable
+MB125,G,Universal Dock,—,iPod classic / iPod nano (3rd generation) / iPod touch / iPhone,Autumn 2007,10/29/07,,Apple Universal Dock
+MB126,G,Dock Adapter (3-Pack),—,iPod classic / iPod nano (3rd generation) / iPod touch / iPhone,Autumn 2007,10/29/07,,iPod Universal Dock Adapter 3-Pack
+MB127,G,Dock Adapter (3-Pack),—,iPod classic / iPod nano (3rd generation) / iPod touch / iPhone,Autumn 2007,10/29/07,,iPod Universal Dock Adapter 3-Pack
+MB568,G,Dock Adapter (3-Pack),—,iPod nano (3rd generation),Autumn 2007,10/29/07,,iPod Universal Dock Adapter 3-Pack for iPod nano 3G
+MA368,LL,Sensor,—,iPod touch (2nd generation),Autumn 2008,9/9/08,,Nike + iPod Sensor
+MA850,G,In-Ear Headphones,White,iPod nano (4th generation) / iPod classic,Autumn 2008,9/9/08,,Apple In-Ear Headphones with Remote and Mic
+MB769,G,Armband,Grey,iPod nano (4th generation),Autumn 2008,9/9/08,,iPod nano Armband — Grey
+MB569,G,Dock Adapter (3-Pack),—,iPod touch (2nd generation),Autumn 2008,9/9/08,,iPod Universal Dock Adapter 3-Pack for iPod touch 2G
+MB051,LL,USB Power Adapter,White,iPod nano (4th generation) / iPod classic,Spring 2009,5/12/09,,Apple iPod USB Power Adapter
+MB352,G,USB Power Adapter,White,iPod nano (4th generation) / iPod classic,Spring 2009,5/12/09,,Apple iPod USB Power Adapter
+MC003,ZM,Cable,—,iPod shuffle (3rd generation),Spring 2009,3/11/09,,iPod shuffle USB Cable
+MB770,G,Earphones,White,iPod nano (4th generation) / iPhone 3GS,Summer 2009,6/19/09,,Apple Earphones with Remote and Mic
+MC393,ZM,Armband,Grey,iPod nano (5th generation),Autumn 2009,9/9/09,,iPod nano Armband — Grey
+MC746,LL,Universal Dock,—,iPhone 4 / iPod touch (4th generation) / iPod nano (5th generation),December 2010,12/5/10,,Apple Universal Dock
+MC395,ZM,Dock Adapter (3-Pack),—,iPod touch (4th generation) / iPhone 4,December 2010,12/5/10,,iPod Universal Dock Adapter 3-Pack
+MC650,ZM,Dock Adapter (3-Pack),—,iPod (4th generation dock family),December 2010,12/5/10,,iPod Universal Dock Adapter 3-Pack (4th Generation)
+MD829,LL,Loop,Red,iPod touch (5th generation),Autumn 2012,9/12/12,,iPod touch Loop — Red
+MD971,LL,Loop,Black,iPod touch (5th generation),Autumn 2012,9/12/12,,iPod touch Loop — Black
+MD972,LL,Loop,Pink,iPod touch (5th generation),Autumn 2012,9/12/12,,iPod touch Loop — Pink
+MD973,LL,Loop,Yellow,iPod touch (5th generation),Autumn 2012,9/12/12,,iPod touch Loop — Yellow
+MD974,LL,Loop,Blue,iPod touch (5th generation),Autumn 2012,9/12/12,,iPod touch Loop — Blue
+MF631,LL,Loop,Space Grey,iPod touch (5th generation),Autumn 2013,9/10/13,,iPod touch Loop — Space Grey
