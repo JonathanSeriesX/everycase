@@ -171,23 +171,7 @@ export default async function RootLayout({ children }) {
           saturation: 73,
           lightness: 60,
         }}
-        backgroundColor={{
-          // Nextra also uses these values for its theme-color meta tags. Keep
-          // them branded so mobile browser chrome does not follow the OS theme
-          // after the user has chosen a different theme inside the app.
-          light: "#E3504F",
-          dark: "#E3504F",
-        }}
       >
-        <style>{`
-          /* Keep Nextra's page canvas separate from the browser chrome colour. */
-          :root {
-            --nextra-bg: 250, 250, 250 !important;
-          }
-          .dark {
-            --nextra-bg: 17, 17, 17 !important;
-          }
-        `}</style>
         <link
           rel="preload"
           href="https://cloudfront.everycase.org/fonts/TofinoVariableOffset.woff2"
