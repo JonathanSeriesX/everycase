@@ -25,7 +25,6 @@ node_modules/
 yarn-error.log
 .pnpm-debug.log
 yarn.lock
-pnpm-lock.yaml
 package-lock.json
 .pnpm-store
 .env*

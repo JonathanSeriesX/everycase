@@ -324,50 +324,153 @@
   font-weight: 550;
 }
 
+/* ---------- theme menu (footer) ---------- */
+
+.themeMenu {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Twin of the footer links: same size, same muted colour, same hover. */
+.footerAction {
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+  opacity: 0.7;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.footerAction:hover {
+  opacity: 1;
+  color: var(--site-accent);
+}
+
+/* Sits where a text glyph would: same optical size as the ★ / ♥ characters
+   in the neighbouring footer links. */
+.themeIcon {
+  display: inline-flex;
+  font-size: 0.95em;
+  vertical-align: -0.1em;
+}
+
+.themeMenuList {
+  position: absolute;
+  bottom: calc(100% + 0.6rem);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 11rem;
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 18, 28, 0.1);
+  background: rgba(252, 248, 250, 0.97);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 18px 50px rgba(50, 42, 48, 0.25);
+  animation: theme-menu-in 140ms ease;
+}
+
+@keyframes theme-menu-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.themeOption {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.45rem 0.75rem 0.45rem 0.5rem;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.themeOption:hover {
+  background: rgba(227, 80, 79, 0.08);
+}
+
+.themeOption[data-active="true"] {
+  color: var(--site-accent);
+  font-weight: 550;
+}
+
+.themeOptionCheck {
+  display: inline-block;
+  width: 1em;
+  flex-shrink: 0;
+}
+
 /* ---------- dark mode ---------- */
 
-:global(html[class~="dark"]) .navbar {
+:global(html:is(.dark, .black)) .navbar {
   background: rgba(17, 17, 20, 0.85);
   border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
-:global(html[class~="dark"]) .iconButton:hover {
+:global(html:is(.dark, .black)) .iconButton:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
-:global(html[class~="dark"]) .searchInput {
+:global(html:is(.dark, .black)) .searchInput {
   background: rgba(19, 19, 22, 0.9);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-:global(html[class~="dark"]) .search[data-expanded] .searchField,
-:global(html[class~="dark"]) .search[data-closing] .searchField {
+:global(html:is(.dark, .black)) .search[data-expanded] .searchField,
+:global(html:is(.dark, .black)) .search[data-closing] .searchField {
   background: rgba(17, 17, 20, 0.97);
 }
 
-:global(html[class~="dark"]) .searchResults {
+:global(html:is(.dark, .black)) .themeMenuList {
+  background: rgba(19, 19, 22, 0.97);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+}
+
+:global(html:is(.dark, .black)) .themeOption:hover {
+  background: rgba(255, 77, 77, 0.12);
+}
+
+:global(html:is(.dark, .black)) .searchResults {
   background: rgba(19, 19, 22, 0.97);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
 }
 
-:global(html[class~="dark"]) .searchResult:hover,
-:global(html[class~="dark"]) .searchResult[data-active="true"] {
+:global(html:is(.dark, .black)) .searchResult:hover,
+:global(html:is(.dark, .black)) .searchResult[data-active="true"] {
   background: rgba(255, 77, 77, 0.12);
 }
 
-:global(html[class~="dark"]) .callout {
+:global(html:is(.dark, .black)) .callout {
   border-color: rgba(255, 77, 77, 0.3);
   background: rgba(255, 77, 77, 0.08);
 }
 
-:global(html[class~="dark"]) .tab {
+:global(html:is(.dark, .black)) .tab {
   background: rgba(19, 19, 22, 0.92);
   border-color: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.88);
 }
 
-:global(html[class~="dark"]) .tab[data-active="true"] {
+:global(html:is(.dark, .black)) .tab[data-active="true"] {
   background: #e3504f;
   border-color: #e3504f;
   color: #fff;

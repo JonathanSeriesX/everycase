@@ -176,7 +176,7 @@
 }
 
 /* dark mode */
-:global(html[class~="dark"]) .card {
+:global(html:is(.dark, .black)) .card {
   background: linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.28),
@@ -187,27 +187,27 @@
   box-shadow: 0 18px 40px rgba(4, 9, 18, 0.5);
 }
 
-:global(html[class~="dark"]) .label,
-:global(html[class~="dark"]) .skuGroupLabel {
+:global(html:is(.dark, .black)) .label,
+:global(html:is(.dark, .black)) .skuGroupLabel {
   color: rgba(255, 255, 255, 0.6);
 }
 
-:global(html[class~="dark"]) .value {
+:global(html:is(.dark, .black)) .value {
   color: rgba(255, 255, 255, 0.92);
 }
 
-:global(html[class~="dark"]) .chip {
+:global(html:is(.dark, .black)) .chip {
   background: rgba(19, 19, 22, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.88);
 }
 
-:global(html[class~="dark"]) .chip:active {
+:global(html:is(.dark, .black)) .chip:active {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
 }
 
-:global(html[class~="dark"]) .chip:focus,
-:global(html[class~="dark"]) .chip:focus-visible {
+:global(html:is(.dark, .black)) .chip:focus,
+:global(html:is(.dark, .black)) .chip:focus-visible {
   background-color: rgb(19, 19, 22) !important;
   color: rgba(255, 255, 255, 0.88) !important;
 }
