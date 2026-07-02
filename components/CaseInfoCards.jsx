@@ -22,6 +22,28 @@ export const StatCard = ({ label, value }) => (
   </InfoCard>
 );
 
+export const PriceCard = ({ prices = [] }) => {
+  if (prices.length === 0) return null;
+
+  return (
+    <InfoCard label="MSRP">
+      <div className={`${styles.chipRow} ${styles.priceRow}`}>
+        {prices.map((price, index) => (
+          <Fragment key={price}>
+            <span className={`${styles.chip} ${styles.priceChip}`}>
+              {price}
+            </span>
+            {/* Keep Pagefind excerpts and screen-reader output punctuated. */}
+            <span className="sr-punctuation">
+              {index < prices.length - 1 ? ", " : "."}
+            </span>{" "}
+          </Fragment>
+        ))}
+      </div>
+    </InfoCard>
+  );
+};
+
 // A copyable order-number pill. Clicking copies the order number and flashes a tick.
 export const CopyChip = ({ value }) => {
   const [copied, setCopied] = useState(false);
@@ -158,7 +180,7 @@ const CaseInfoCards = ({
   reReleaseSku = "",
   releaseDate = "",
   reReleaseDate = "",
-  msrp = "",
+  msrp = [],
   eduPrice = "",
 }) => (
   <div className={styles.grid}>
@@ -183,7 +205,7 @@ const CaseInfoCards = ({
         value={reReleaseDate}
       />
     )}
-    {msrp && <StatCard label="MSRP" value={msrp} />}
+    <PriceCard prices={msrp} />
     {eduPrice && <StatCard label="Education price" value={eduPrice} />}
   </div>
 );
