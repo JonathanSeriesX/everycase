@@ -25,17 +25,33 @@ export function SectionHeading({ title }) {
 
 /**
  * One kind of accessory on a model page. The interactive part (tabs + price
- * pills reacting to them) lives in the client component; the blurb is
+ * pills tracking the active tab) lives in the client component; the blurb is
  * compiled MDX rendered on the server and passed through as children.
+ *
+ * Tab rules, mirroring the old MDX configuration:
+ * - merged kinds: one combined grid, no tab bar (Clear Cases);
+ * - several models: tab per model, labelled via the page's tabLabels;
+ * - a single model: no tab bar — unless tabLabels names that model, which
+ *   forces a lone tab (Smart Battery Case on the 6s/7 pages).
  */
-export default function KindSection({ section, pageModelCount, Note }) {
+export default function KindSection({ section, page, Note }) {
+  const labels = page.tabLabels ?? {};
+  const entries = section.models.map(({ model, cases }) => ({
+    model,
+    label: labels[model] ?? model,
+    cases,
+  }));
+  const showTabs =
+    !section.merged &&
+    (entries.length > 1 || (entries.length === 1 && labels[entries[0].model] != null));
+
   return (
     <KindSectionClient
       kind={section.kind}
       slug={slugify(section.kind)}
       price={section.price}
-      models={section.models.map(({ model, cases }) => ({ model, cases }))}
-      pageModelCount={pageModelCount}
+      entries={entries}
+      showTabs={showTabs}
     >
       {Note && <MdxContent Content={Note} />}
     </KindSectionClient>
