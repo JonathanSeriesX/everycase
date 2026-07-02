@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     appNewScrollHandler: true,
-    turbopackFileSystemCacheForDev: false,
+    turbopackFileSystemCacheForDev: true,
   },
   allowedDevOrigins: ["*.orb.local", "127.0.0.1"],
   async redirects() {
