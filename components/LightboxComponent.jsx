@@ -126,7 +126,6 @@ const LightboxComponent = ({ images = [] }) => {
   // yarl emits a trailing view event during the closing animation; this ref
   // keeps it from re-adding the ?image param after close cleared it.
   const lightboxOpenRef = useRef(false);
-  lightboxOpenRef.current = lightboxIndex >= 0;
   // What each gallery tile currently shows: the small AVIF preview at first,
   // silently upgraded to the full-res source once it is preloaded.
   const [tileSrcs, setTileSrcs] = useState({});
@@ -231,7 +230,10 @@ const LightboxComponent = ({ images = [] }) => {
             key={slide.originalSrc ?? slide.src ?? index}
             type="button"
             className="lightbox-tile relative w-full overflow-hidden"
-            onClick={() => setLightboxIndex(index)}
+            onClick={() => {
+              lightboxOpenRef.current = true;
+              setLightboxIndex(index);
+            }}
             aria-label={`Open ${slide.alt || "case image"}`}
           >
             <Image

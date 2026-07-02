@@ -165,9 +165,7 @@ function buildCaseInfo(data, regions) {
       formatPrice(msrp, "USD"),
       formatPrice(data.MSRP_EUR, "EUR"),
       formatPrice(data.MSRP_GBP, "GBP"),
-    ]
-      .filter(Boolean)
-      .join(" | "),
+    ].filter(Boolean),
     eduPrice: eduDiffers ? formatPrice(eduPriceRaw) : "",
   };
 }

@@ -221,7 +221,7 @@ h4 {
 }
 
 /* Present in the markup for Pagefind and screen readers, invisible in the
-   layout: punctuation between compatibility chips. */
+   layout: punctuation between pill values. */
 .sr-punctuation {
   position: absolute;
   width: 1px;

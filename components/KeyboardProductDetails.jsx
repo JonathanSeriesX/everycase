@@ -6,6 +6,7 @@ import CaseInfoCards, {
   CompatibilityCard,
   CopyChip,
   InfoCard,
+  PriceCard,
   StatCard,
 } from "./CaseInfoCards";
 import {
@@ -100,7 +101,7 @@ const KeyboardProductDetails = ({
             value={info.reReleaseDate}
           />
         )}
-        {info.msrp && <StatCard label="MSRP" value={info.msrp} />}
+        <PriceCard prices={info.msrp} />
         {info.eduPrice && (
           <StatCard label="Education price" value={info.eduPrice} />
         )}

@@ -75,6 +75,10 @@
   margin-top: 0.55rem;
 }
 
+.priceRow {
+  margin-top: 0.3rem;
+}
+
 /* copyable order-number pill */
 .chip {
   display: inline-flex;
@@ -104,12 +108,19 @@
   white-space: nowrap;
 }
 
-.chip.compatibilityChip:active {
+.priceChip {
+  cursor: default;
+  white-space: nowrap;
+}
+
+.chip.compatibilityChip:active,
+.chip.priceChip:active {
   transform: none;
   box-shadow: none;
 }
 
-.chip.compatibilityChip:hover {
+.chip.compatibilityChip:hover,
+.chip.priceChip:hover {
   transform: none;
 }
 
