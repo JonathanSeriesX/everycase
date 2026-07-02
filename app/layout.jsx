@@ -7,11 +7,13 @@ import Navbar from "../components/Navbar";
 import HashNavigation from "../components/HashNavigation.client";
 import "../styles/globals.css";
 
-// Static theme-color exactly as the old Nextra <Head> delivered it: the page
-// background per OS colour scheme. Never mutated by JavaScript — Safari
-// treats a background-matching value as an invitation to extend the page
-// into its chrome, and a value that never changes gives iOS 26 nothing to
-// repaint abruptly on a theme toggle.
+// Theme-color = the page background per OS colour scheme, as the old Nextra
+// <Head> delivered it. Safari treats a background-matching value as an
+// invitation to extend the page into its chrome (macOS tab-bar overflow).
+// Chrome additionally honours runtime CONTENT MUTATIONS of these metas —
+// that's how the Android toolbar follows a manual site toggle (see
+// ThemeToggle and the pre-paint script below); WebKit ignores mutations, so
+// Safari only ever sees these static values.
 export const viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "rgb(250,250,250)" },
@@ -91,6 +93,15 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning // theme class is set pre-hydration by next-themes
     >
       <body>
+        {/* Chrome only (WebKit ignores meta mutations): when a stored manual
+            theme disagrees with the OS scheme, retint the theme-color metas
+            during parse so the Android toolbar is right from first paint.
+            Mutation only — these nodes are React-owned, never remove them. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.theme,d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches),c=d?"rgb(17,17,17)":"rgb(250,250,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}catch(e){}`,
+          }}
+        />
         <ThemeProvider attribute="class">
           <HashNavigation />
           <Navbar />
