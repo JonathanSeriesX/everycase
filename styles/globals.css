@@ -28,9 +28,12 @@ html[class~="dark"] {
 }
 
 /* The background sits on <html> (not body) so Safari samples it for the
-   tab-bar bleed, exactly like the old Nextra head style. */
+   tab-bar bleed, exactly like the old Nextra head style. It fades on the
+   view-transition's 0.2s clock so browser-painted safe-area strips can't
+   flash ahead of the snapshot cross-fade. */
 html {
   background: var(--site-bg);
+  transition: background-color 0.2s ease;
 }
 
 body {
