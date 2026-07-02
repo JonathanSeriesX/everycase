@@ -7,15 +7,15 @@ import Navbar from "../components/Navbar";
 import HashNavigation from "../components/HashNavigation.client";
 import "../styles/globals.css";
 
-// Safari paints its tab bar / the iOS status bar with theme-color. The
-// element visually touching the browser chrome is the sticky navbar, so
-// deliver the navbar's composited colour per scheme — the status bar then
-// reads as an extension of it. A manual theme toggle updates these metas
-// client-side (see ThemeToggle).
+// Static theme-color exactly as the old Nextra <Head> delivered it: the page
+// background per OS colour scheme. Never mutated by JavaScript — Safari
+// treats a background-matching value as an invitation to extend the page
+// into its chrome, and a value that never changes gives iOS 26 nothing to
+// repaint abruptly on a theme toggle.
 export const viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "rgb(252,248,250)" },
-    { media: "(prefers-color-scheme: dark)", color: "rgb(17,17,20)" },
+    { media: "(prefers-color-scheme: light)", color: "rgb(250,250,250)" },
+    { media: "(prefers-color-scheme: dark)", color: "rgb(17,17,17)" },
   ],
 };
 
@@ -91,15 +91,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning // theme class is set pre-hydration by next-themes
     >
       <body>
-        {/* The SSR theme-color metas are keyed to the OS colour scheme; when a
-            stored manual theme disagrees, fix them during parse — before
-            paint — so the browser bar never flashes the wrong colour. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.theme,d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches),c=d?"rgb(17,17,20)":"rgb(252,248,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}catch(e){}`,
-          }}
-        />
-        <ThemeProvider attribute="class" disableTransitionOnChange>
+        <ThemeProvider attribute="class">
           <HashNavigation />
           <Navbar />
           <main className="site-main">{children}</main>
