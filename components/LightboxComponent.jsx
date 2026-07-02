@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LinkArrowIcon } from "./icons";
 import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -104,21 +104,40 @@ const FormatLinkButton = ({ format, label, shortLabel }) => {
   );
 };
 
+// Resolves true once the browser has the image fetched AND decoded, so a
+// later src swap paints instantly with no visible reload.
+const preloadImage = (src) =>
+  new Promise((resolve) => {
+    const probe = new window.Image();
+    probe.onload = async () => {
+      try {
+        await probe.decode?.();
+      } catch {
+        /* decode failures still paint fine */
+      }
+      resolve(true);
+    };
+    probe.onerror = () => resolve(false);
+    probe.src = src;
+  });
+
 const LightboxComponent = ({ images = [] }) => {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
-  // Tiles that finished loading their full-size source; their blurred AVIF
-  // preview layer fades out. (next/image's placeholder="blur" cannot do
-  // this: it wraps blurDataURL in an SVG data URL, and SVG-as-image blocks
-  // external fetches — a remote preview URL silently never renders.)
-  const [loadedTiles, setLoadedTiles] = useState(() => new Set());
+  // yarl emits a trailing view event during the closing animation; this ref
+  // keeps it from re-adding the ?image param after close cleared it.
+  const lightboxOpenRef = useRef(false);
+  lightboxOpenRef.current = lightboxIndex >= 0;
+  // What each gallery tile currently shows: the small AVIF preview at first,
+  // silently upgraded to the full-res source once it is preloaded.
+  const [tileSrcs, setTileSrcs] = useState({});
 
-  const markTileLoaded = (index) => {
-    setLoadedTiles((previous) => {
-      if (previous.has(index)) return previous;
-      const next = new Set(previous);
-      next.add(index);
-      return next;
-    });
+  // While the lightbox is open the URL carries the current image's filename.
+  // replaceState only — browsing slides must never grow the history stack.
+  const syncUrl = (code) => {
+    const url = new URL(window.location.href);
+    if (code) url.searchParams.set("image", code);
+    else url.searchParams.delete("image");
+    window.history.replaceState(window.history.state, "", url);
   };
 
   // Precompute lightbox slides with download helpers to keep render lean.
@@ -163,6 +182,36 @@ const LightboxComponent = ({ images = [] }) => {
     });
   };
 
+  // Upgrade tiles one at a time, first to last: preload + decode the
+  // full-res source in the background, then swap the tile's src — the
+  // replacement is invisible. A source that fails advances the slide's
+  // fallback chain (webp -> Apple CDN) and the next candidate is tried.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      for (let index = 0; index < baseSlides.length; index++) {
+        const sources = baseSlides[index].sources || [];
+        for (let si = 0; si < sources.length; si++) {
+          const ok = await preloadImage(sources[si]);
+          if (cancelled) return;
+          if (ok) {
+            setTileSrcs((previous) =>
+              previous[index] === sources[si]
+                ? previous
+                : { ...previous, [index]: sources[si] },
+            );
+            break;
+          }
+          advanceSlideSource(index);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by the source list itself
+  }, [sourceKey]);
+
   const gridStyle = useMemo(() => {
     const { minColumnWidth, maxColumns, gap } = GRID_CONFIG;
     return {
@@ -182,33 +231,18 @@ const LightboxComponent = ({ images = [] }) => {
             key={slide.originalSrc ?? slide.src ?? index}
             type="button"
             className="lightbox-tile relative w-full overflow-hidden"
-            data-loaded={loadedTiles.has(index) || undefined}
             onClick={() => setLightboxIndex(index)}
             aria-label={`Open ${slide.alt || "case image"}`}
           >
-            <span className="lightbox-tile__frame">
-              {slide.previewSrc && (
-                // eslint-disable-next-line @next/next/no-img-element -- deliberate: tiny AVIF blur layer under the real <Image>
-                <img
-                  src={slide.previewSrc}
-                  alt=""
-                  aria-hidden="true"
-                  draggable={false}
-                  className="lightbox-tile__blur"
-                />
-              )}
-              <Image
-                src={slide.src}
-                alt={slide.alt || "Case image"}
-                loading="lazy"
-                width={slide.width}
-                height={slide.height}
-                className="block h-auto w-full object-contain"
-                unoptimized
-                onLoad={() => markTileLoaded(index)}
-                onError={() => advanceSlideSource(index)}
-              />
-            </span>
+            <Image
+              src={tileSrcs[index] ?? slide.previewSrc ?? slide.src}
+              alt={slide.alt || "Case image"}
+              loading="lazy"
+              width={slide.width}
+              height={slide.height}
+              className="block h-auto w-full object-contain"
+              unoptimized
+            />
           </button>
         ))}
       </div>
@@ -216,7 +250,18 @@ const LightboxComponent = ({ images = [] }) => {
         slides={slides}
         open={lightboxIndex >= 0}
         index={lightboxIndex}
-        close={() => setLightboxIndex(-1)}
+        close={() => {
+          // Imperative: the trailing view event fires before React re-renders.
+          lightboxOpenRef.current = false;
+          setLightboxIndex(-1);
+          syncUrl(null);
+        }}
+        on={{
+          view: ({ index }) => {
+            if (!lightboxOpenRef.current) return;
+            syncUrl(getAppleImageCode(baseSlides[index]?.originalSrc));
+          },
+        }}
         plugins={[Zoom]}
         animation={{ fade: 220, swipe: 280, zoom: 320 }}
         controller={{ closeOnBackdropClick: true }}

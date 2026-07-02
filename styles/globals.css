@@ -331,27 +331,3 @@ h6:target {
   outline: none !important;
   box-shadow: none !important;
 }
-
-/* Blur-up: the tiny AVIF preview sits blurred under the full-size image and
-   fades away once it loads. */
-.lightbox-tile__frame {
-  position: relative;
-  display: block;
-  width: 100%;
-}
-
-.lightbox-tile__blur {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: blur(16px) saturate(1.15);
-  transform: scale(1.04);
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.lightbox-tile[data-loaded] .lightbox-tile__blur {
-  opacity: 0;
-}
