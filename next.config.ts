@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import nextra from "nextra";
 import { getAltSkuRedirects } from "./lib/altSkus.js";
 
 const surpriseTargets = [
@@ -18,10 +17,6 @@ const iconTargets = [
   "/apple-touch-icon.png",
   "/apple-touch-icon-precomposed.png",
 ];
-
-const withNextra = nextra({
-  //whiteListTagsStyling: ["h1"],
-});
 
 const nextConfig: NextConfig = {
   images: {
@@ -66,6 +61,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/years/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/years",
+        destination: "/",
+        permanent: false,
+      },
+      {
         source: "/ancient/:path*",
         destination: "/",
         permanent: true,
@@ -89,4 +94,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextra(nextConfig);
+export default nextConfig;

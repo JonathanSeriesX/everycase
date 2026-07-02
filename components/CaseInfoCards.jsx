@@ -2,7 +2,7 @@
 
 import { Fragment, useCallback, useState } from "react";
 import Link from "next/link";
-import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
+import { CopyIcon, CheckIcon, LinkArrowIcon } from "./icons";
 import styles from "../styles/CaseInfoCards.module.css";
 
 const COPY_RESET_TIMEOUT = 1000;

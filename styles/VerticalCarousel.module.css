@@ -98,12 +98,21 @@
   letter-spacing: 0.01em;
   text-align: center;
   font-size: 1rem;
-  color: var(--nextra-link-color, #e3504f);
+  color: var(--site-accent);
 }
 
 .linkTitle {
   display: block;
   margin-top: 0.4rem;
+}
+
+/* Secondary line on navigation cards (group/model drill-down). */
+.navCardSubtitle {
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.65;
+  margin-top: -0.5rem;
 }
 
 .metaRow {
@@ -148,7 +157,7 @@
 .metaBadgeSecondary {
   background-color: #fff;
   border: 1px solid rgba(15, 18, 28, 0.12);
-  color: var(--nextra-link-color, #e3504f);
+  color: var(--site-accent);
   text-decoration: none;
   cursor: pointer;
   gap: 0.35rem;
@@ -165,7 +174,7 @@
 .metaBadgeSecondary:focus,
 .metaBadgeSecondary:focus-visible {
   background-color: #fff !important;
-  color: var(--nextra-link-color, #e3504f) !important;
+  color: var(--site-accent) !important;
 }
 
 .linkBadge {
@@ -250,7 +259,7 @@
 :global(html[class~="dark"]) .metaBadgeSecondary {
   background: rgba(19, 19, 22, 0.92);
   border-color: rgba(255, 255, 255, 0.08);
-  color: var(--nextra-link-color, #ff4d4d);
+  color: var(--site-accent);
 }
 
 :global(html[class~="dark"]) .metaBadgeSecondary:active,
@@ -267,7 +276,7 @@
 :global(html[class~="dark"]) .metaBadgeSecondary:focus,
 :global(html[class~="dark"]) .metaBadgeSecondary:focus-visible {
   background-color: rgb(19, 19, 22) !important;
-  color: var(--nextra-link-color, #ff4d4d) !important;
+  color: var(--site-accent) !important;
 }
 
 :global(html[class~="dark"]) .emptyState {

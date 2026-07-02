@@ -1,5 +1,9 @@
-@import "nextra-theme-docs/style.css";
+@import "tailwindcss";
 @import "../styles/lightbox.css";
+
+/* Tailwind v4 uses media-query dark mode by default; the site toggles a
+   `dark` class on <html> via next-themes, so wire the variant to that. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
   font-family: "Tofino Variable";
@@ -10,155 +14,25 @@
   font-weight: 100 800;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Centre the callout icon against its text block. */
-.nextra-callout {
-  align-items: center;
+:root {
+  --site-accent: #e3504f;
+  --site-fg: rgb(15, 18, 28);
+  --site-bg: #fff;
 }
 
-/* Nextra ships the icon with a top margin for its default top-aligned layout;
-   drop it so the icon sits on the vertical centre line. */
-.nextra-callout > div:first-child svg {
-  margin-top: 0;
-}
-
-/* Nextra hides the TOC below its `xl` breakpoint (1280px) via `max-xl:hidden`.
-   Reveal it one breakpoint earlier so it opens at >=1200px. */
-@media (min-width: 1200px) and (max-width: 1279.98px) {
-  .nextra-toc {
-    display: block;
-  }
-}
-
-/* Prevent long-press selection highlights on interactive controls */
-button,
-[role="button"],
-[role="tab"],
-summary,
-details summary {
-  user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.subheading-anchor:focus,
-.subheading-anchor:focus-visible,
-button:focus,
-button:focus-visible,
-[role="button"]:focus,
-[role="button"]:focus-visible,
-[role="tab"]:focus,
-[role="tab"]:focus-visible,
-[role="menuitem"]:focus,
-[role="menuitem"]:focus-visible,
-[role="menuitemradio"]:focus,
-[role="menuitemradio"]:focus-visible,
-[role="option"]:focus,
-[role="option"]:focus-visible,
-a:focus,
-a:focus-visible,
-select:focus,
-select:focus-visible,
-textarea:focus,
-textarea:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* The section "#" anchor. Nextra reveals it on :target and on plain :focus,
-   which makes it linger lit on whatever heading you jumped to (and stay focused
-   after a pointer click). We re-assert the behaviour per input type below. */
-:target > .subheading-anchor {
-  opacity: 0%;
-}
-
-/* Pointer devices: reveal on real hover and on keyboard focus only. A mouse
-   click does not reveal it (:focus-visible ignores pointer focus, and we
-   override Nextra's :focus rule), and the post-click scroll moves the cursor off
-   the heading — so it hides itself with no lingering focus state. */
-@media (hover: hover) {
-  :hover > .subheading-anchor,
-  .subheading-anchor:focus-visible {
-    opacity: 33%;
-  }
-  .subheading-anchor:focus:not(:focus-visible) {
-    opacity: 0%;
-  }
-}
-
-/* Touch: there is no hover to reveal on demand, so show the "#" faintly at
-   rest. Once tapped it has done its job — hide it (and keep it hidden) instead
-   of relying on a sticky tap-hover/focus that lingers until you tap elsewhere.
-   `.is-tapped` is added in JS and never removed, so the dismiss only ever runs
-   once (a single transition, never a re-played animation). */
-@media (hover: none) {
-  .subheading-anchor {
-    opacity: 33%;
-  }
-  .subheading-anchor.is-tapped,
-  .subheading-anchor.is-tapped:focus {
-    opacity: 0%;
-  }
-}
-
-/* Nextra plays a 1.5s opacity fade-in on the heading you land on via the TOC
-   (its `target:animate-[fade-in_1.5s]` class). Replace it with a quick, subtle
-   zoom that pops to 103% and settles back — no fade. */
-@keyframes heading-target-pop {
-  0% {
-    transform: scale(1);
-  }
-  45% {
-    transform: scale(1.03);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-h2:target,
-h3:target,
-h4:target,
-h5:target,
-h6:target {
-  animation: heading-target-pop 0.45s ease-in-out !important;
-  transform-origin: left center;
-}
-
-.nextra-search input[type="search"]:focus,
-.nextra-search input[type="search"]:focus-visible {
-  outline: 2px solid var(--nextra-link-color, #e3504f) !important;
-  outline-offset: 2px;
-  box-shadow: none !important;
-}
-
-.lightbox-grid {
-  padding: 0;
-}
-
-.lightbox-tile {
-  padding: 10px;
-  margin: 10px;
-  border: none;
-  background: transparent;
-  outline: none !important;
-  cursor: pointer;
-}
-
-.lightbox-tile:focus,
-.lightbox-tile:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
+html[class~="dark"] {
+  --site-accent: #ff4d4d;
+  --site-fg: rgba(255, 255, 255, 0.9);
+  --site-bg: rgb(17, 17, 20);
+  color-scheme: dark;
 }
 
 body {
   font-family: "Tofino Variable", system-ui;
   font-stretch: 101%;
   font-weight: 330;
+  color: var(--site-fg);
+  background: var(--site-bg);
 }
 
 /* hack to avoid broken fonts in Firefox */
@@ -180,7 +54,36 @@ i {
   margin-right: 1px;
 }
 
-/* title colors */
+/* ---------- layout ---------- */
+
+.site-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 max(env(safe-area-inset-left), 1.5rem) 3rem;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  font-size: 0.9rem;
+}
+
+.site-footer a {
+  color: inherit;
+  opacity: 0.7;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  opacity: 1;
+  color: var(--site-accent);
+}
+
+/* ---------- prose ---------- */
+
 h1,
 h2,
 h3,
@@ -188,5 +91,172 @@ h4,
 h5,
 h6 {
   font-stretch: 102%;
-  color: #e3504f !important;
+  color: var(--site-accent) !important;
+  font-weight: 550;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 2.1rem;
+  margin: 1.25rem 0 1rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin-top: 2.5rem;
+  padding-bottom: 0.25rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.site-main p {
+  margin: 1rem 0;
+  line-height: 1.65;
+}
+
+.site-main ul,
+.site-main ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  line-height: 1.65;
+}
+
+.site-main ul {
+  list-style: disc;
+}
+
+.site-main ol {
+  list-style: decimal;
+}
+
+.site-main li {
+  margin: 0.3rem 0;
+}
+
+.site-main hr {
+  margin: 2rem 0;
+  border-color: rgba(128, 128, 128, 0.2);
+}
+
+.site-main blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--site-accent);
+  opacity: 0.85;
+}
+
+.site-main table {
+  margin: 1rem 0;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+}
+
+.site-main th,
+.site-main td {
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  padding: 0.4rem 0.75rem;
+}
+
+.site-main a:not([class]) {
+  color: var(--site-accent);
+  text-decoration: none;
+}
+
+.site-main a:not([class]):hover {
+  text-decoration: underline;
+}
+
+/* Arrow-decorated MDX links: keep the label and its arrow on one line. */
+.mdx-link-inner {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.mdx-link-arrow {
+  display: inline;
+  vertical-align: baseline;
+  flex-shrink: 0;
+}
+
+/* ---------- interaction polish ---------- */
+
+/* Prevent long-press selection highlights on interactive controls */
+button,
+[role="button"],
+[role="tab"],
+summary,
+details summary {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+button:focus-visible,
+[role="button"]:focus,
+[role="button"]:focus-visible,
+[role="tab"]:focus,
+[role="tab"]:focus-visible,
+a:focus,
+a:focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Keep anchored headings clear of the sticky navbar. */
+html {
+  scroll-padding-top: 80px;
+}
+
+/* A quick, subtle zoom on the heading you land on via a hash link. */
+@keyframes heading-target-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+h2:target,
+h3:target,
+h4:target,
+h5:target,
+h6:target {
+  animation: heading-target-pop 0.45s ease-in-out !important;
+  transform-origin: left center;
+}
+
+/* ---------- lightbox ---------- */
+
+.lightbox-grid {
+  padding: 0;
+}
+
+.lightbox-tile {
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  background: transparent;
+  outline: none !important;
+  cursor: pointer;
+}
+
+.lightbox-tile:focus,
+.lightbox-tile:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
