@@ -7,11 +7,12 @@ import chrome from "../styles/Chrome.module.css";
 
 const emptySubscribe = () => () => {};
 
-// Must match --site-bg in globals.css — the browser chrome (Safari tab bar,
-// mobile top bar) follows the page background.
+// The navbar's composited colour per scheme — the browser chrome (Safari tab
+// bar, iOS status bar) is painted to match it. Keep in sync with .navbar in
+// Chrome.module.css and the pre-paint script in app/layout.jsx.
 const THEME_COLOR = {
-  light: "rgb(250,250,250)",
-  dark: "rgb(17,17,17)",
+  light: "rgb(252,248,250)",
+  dark: "rgb(17,17,20)",
 };
 
 export default function ThemeToggle() {
