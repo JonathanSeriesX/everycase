@@ -11,29 +11,66 @@ const quicksand = Quicksand({
   variable: "--font-quicksand",
 });
 
-const wordStyle = {
-  fontSize: "26px",
-  fontWeight: 300,
-};
+// The logo markup and metrics are deliberate — keep them exactly as they were.
+const logo = (
+  <span
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      flexShrink: 0,
+      whiteSpace: "nowrap",
+    }}
+  >
+    <span
+      className={quicksand.className} // Apply the Quicksand font
+      style={{
+        fontSize: "26px",
+        letterSpacing: "0px",
+        fontWeight: 300,
+        marginRight: -5,
+      }}
+    >
+      Finest
+    </span>
+    <picture
+      style={{
+        display: "inline-flex",
+        flexShrink: 0,
+      }}
+    >
+      <Image
+        src="https://cloudfront.everycase.org/assets/apple-touch-icon.png"
+        alt="Finest Woven Logo"
+        width={48}
+        height={48}
+        style={{
+          marginTop: "0px",
+          marginRight: "4px",
+          height: "48px",
+          width: "48px",
+        }}
+      />
+    </picture>
+    <span
+      className={quicksand.className}
+      style={{
+        fontSize: "26px",
+        letterSpacing: "0px",
+        fontWeight: 300,
+        marginLeft: -10,
+        marginRight: 15,
+      }}
+    >
+      Woven
+    </span>
+  </span>
+);
 
 export default function Navbar() {
   return (
     <header className={`${chrome.navbar} site-navbar`}>
       <Link href="/" className={chrome.navHome} aria-label="Finest Woven — home">
-        <span className={quicksand.className} style={{ ...wordStyle, marginRight: -5 }}>
-          Finest
-        </span>
-        <Image
-          src="https://cloudfront.everycase.org/assets/apple-touch-icon.png"
-          alt=""
-          width={48}
-          height={48}
-          priority
-          unoptimized
-        />
-        <span className={quicksand.className} style={{ ...wordStyle, marginLeft: -10 }}>
-          Woven
-        </span>
+        {logo}
       </Link>
       <div className={chrome.navActions}>
         <SearchBox />
