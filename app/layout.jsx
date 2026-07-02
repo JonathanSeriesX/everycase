@@ -99,7 +99,7 @@ export default function RootLayout({ children }) {
             __html: `try{var t=localStorage.theme,d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches),c=d?"rgb(17,17,20)":"rgb(252,248,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}catch(e){}`,
           }}
         />
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" disableTransitionOnChange>
           <HashNavigation />
           <Navbar />
           <main className="site-main">{children}</main>
