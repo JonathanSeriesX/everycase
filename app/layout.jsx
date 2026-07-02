@@ -107,8 +107,12 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main className="site-main">{children}</main>
           <footer className="site-footer">
-            <Link href="/about">About ★</Link>
-            <Link href="/support">Support this ♥</Link>
+            <Link href="/about" prefetch={false}>
+              About ★
+            </Link>
+            <Link href="/support" prefetch={false}>
+              Support this ♥
+            </Link>
           </footer>
           <Analytics />
           <SpeedInsights />
