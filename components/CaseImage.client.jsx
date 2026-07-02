@@ -12,6 +12,10 @@ const APPLE_FALLBACK_PARAMS = "?wid=512&hei=512&fmt=png-alpha";
 /**
  * Case artwork with graceful degradation: CloudFront AVIF preview first,
  * Apple's CDN render if that 404s. Shared by CaseCard and NavCard.
+ *
+ * Everything loads immediately — no lazy loading, no viewport gating.
+ * `priority` marks the initially-visible tab's cards as high-priority so the
+ * browser fetches them first; hidden tabs follow at low priority.
  */
 export default function CaseImage({ code, alt = "", priority = false }) {
   const sources = code
@@ -32,7 +36,7 @@ export default function CaseImage({ code, alt = "", priority = false }) {
       title={alt || undefined}
       className={styles.image}
       fetchPriority={priority ? "high" : "low"}
-      loading={priority ? "eager" : "lazy"}
+      loading="eager"
       unoptimized
       onError={() =>
         setIndex((current) => Math.min(current + 1, sources.length - 1))

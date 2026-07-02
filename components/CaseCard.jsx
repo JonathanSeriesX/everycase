@@ -6,11 +6,9 @@ import CaseImage from "./CaseImage.client";
 import { formatOrderNumber, getPreferredRegion } from "../lib/productRegions";
 import styles from "../styles/VerticalCarousel.module.css";
 
-const PRIORITY_IMAGE_COUNT = 5;
-
 const CaseCard = ({
   item,
-  index,
+  priority,
   copiedSku,
   displayLabel,
   formatSkuLabel,
@@ -32,11 +30,7 @@ const CaseCard = ({
         prefetch={false}
       >
         <div className={styles.imageShell}>
-          <CaseImage
-            code={imageCode}
-            alt={imageAlt}
-            priority={index < PRIORITY_IMAGE_COUNT}
-          />
+          <CaseImage code={imageCode} alt={imageAlt} priority={priority} />
         </div>
         <strong className={`${styles.caseTitle} ${styles.linkTitle}`}>
           {displayLabel(item.colour, item.model)}

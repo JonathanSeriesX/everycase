@@ -70,6 +70,7 @@ const VerticalCarouselClient = ({
   material,
   season,
   standalone = false,
+  primary = true,
 }) => {
   const [copiedSku, setCopiedSku] = useState(null);
 
@@ -106,11 +107,11 @@ const VerticalCarouselClient = ({
         }`}
       >
         <div className={styles.cardTrack}>
-          {sortedCases.map((item, index) => (
+          {sortedCases.map((item) => (
             <CaseCard
               key={item.SKU}
               item={item}
-              index={index}
+              priority={primary}
               copiedSku={copiedSku}
               displayLabel={displayLabel}
               formatSkuLabel={formatSkuLabel}

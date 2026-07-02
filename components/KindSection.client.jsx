@@ -104,6 +104,7 @@ export default function KindSectionClient({
             model={entry.model ?? undefined}
             material={kind}
             standalone={!showTabs}
+            primary={index === 0}
           />
         </div>
       ))}
