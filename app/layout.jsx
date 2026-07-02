@@ -7,8 +7,15 @@ import Navbar from "../components/Navbar";
 import HashNavigation from "../components/HashNavigation.client";
 import "../styles/globals.css";
 
+// Safari tints its tab bar / iOS top bar with theme-color; matching the page
+// background (per colour scheme) lets the page visually flow through the
+// browser chrome — same trick the old Nextra <Head> used. A manual theme
+// toggle updates these metas client-side (see ThemeToggle).
 export const viewport = {
-  themeColor: "#E3504F",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "rgb(250,250,250)" },
+    { media: "(prefers-color-scheme: dark)", color: "rgb(17,17,17)" },
+  ],
 };
 
 const baseTitle = {
