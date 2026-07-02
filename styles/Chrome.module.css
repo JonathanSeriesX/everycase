@@ -69,7 +69,7 @@
 }
 
 .searchInput {
-  width: clamp(9rem, 22vw, 16rem);
+  width: 16rem;
   padding: 0.45rem 0.9rem 0.45rem 2.2rem;
   border-radius: 9999px;
   border: 1px solid rgba(15, 18, 28, 0.12);
@@ -139,6 +139,11 @@
   .search[data-closing] .searchInput {
     width: 100%;
     flex: 1;
+  }
+
+  .search[data-expanded] .searchIcon,
+  .search[data-closing] .searchIcon {
+    left: calc(max(env(safe-area-inset-left), 0.9rem) + 0.75rem);
   }
 
   .search[data-expanded] .searchResults {
