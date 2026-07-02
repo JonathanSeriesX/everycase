@@ -3,7 +3,7 @@
 
 /* Tailwind v4 uses media-query dark mode by default; the site toggles a
    `dark` class on <html> via next-themes, so wire the variant to that. */
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .black, .dark *, .black *));
 
 @font-face {
   font-family: "Tofino Variable";
@@ -25,10 +25,15 @@
   color-scheme: light dark;
 }
 
-html[class~="dark"] {
+html:is(.dark, .black) {
   --site-accent: #ff4d4d;
   --site-fg: rgba(255, 255, 255, 0.9);
   --site-bg: rgb(17, 17, 17);
+}
+
+/* Pitch Black: everything from dark, on a true-black canvas. */
+html[class~="black"] {
+  --site-bg: rgb(0, 0, 0);
 }
 
 /* The background sits on <html> (not body) so Safari samples it for the
@@ -131,7 +136,7 @@ h2 {
   border-bottom: 1px solid rgba(15, 18, 28, 0.1);
 }
 
-html[class~="dark"] h2 {
+html:is(.dark, .black) h2 {
   border-bottom-color: rgba(255, 255, 255, 0.12);
 }
 

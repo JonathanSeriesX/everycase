@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
+import ThemeMenu from "../components/ThemeMenu.client";
 import HashNavigation from "../components/HashNavigation.client";
 import "../styles/globals.css";
 
@@ -12,7 +13,7 @@ import "../styles/globals.css";
 // invitation to extend the page into its chrome (macOS tab-bar overflow).
 // Chrome additionally honours runtime CONTENT MUTATIONS of these metas —
 // that's how the Android toolbar follows a manual site toggle (see
-// ThemeToggle and the pre-paint script below); WebKit ignores mutations, so
+// ThemeMenu and the pre-paint script below); WebKit ignores mutations, so
 // Safari only ever sees these static values.
 export const viewport = {
   themeColor: [
@@ -99,10 +100,18 @@ export default function RootLayout({ children }) {
             Mutation only — these nodes are React-owned, never remove them. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.theme,d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches),c=d?"rgb(17,17,17)":"rgb(250,250,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}catch(e){}`,
+            __html: `try{var t=localStorage.theme,c=t==="black"?"rgb(0,0,0)":(t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches))?"rgb(17,17,17)":"rgb(250,250,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}catch(e){}`,
           }}
         />
-        <ThemeProvider attribute="class">
+        {/* enableColorScheme off: next-themes would inline-write color-scheme
+            per theme, defeating the static `color-scheme: light dark` that
+            keeps iOS 26 from re-adapting its chrome (and it has no notion of
+            the black theme anyway). */}
+        <ThemeProvider
+          attribute="class"
+          themes={["light", "dark", "black"]}
+          enableColorScheme={false}
+        >
           <HashNavigation />
           <Navbar />
           <main className="site-main">{children}</main>
@@ -113,6 +122,7 @@ export default function RootLayout({ children }) {
             <Link href="/support" prefetch={false}>
               Support this ♥
             </Link>
+            <ThemeMenu />
           </footer>
           <Analytics />
           <SpeedInsights />
