@@ -51,13 +51,6 @@ const sortCases = (caseList = []) =>
     return (a?.SKU || "").localeCompare(b?.SKU || "");
   });
 
-// Builds a stable link so users can jump to the season table when curious.
-const buildSeasonLink = (seasonLabel) => {
-  if (!seasonLabel) return "/years";
-  const normalized = seasonLabel.trim().replace(/\s+/g, "-").toLowerCase();
-  return `/years#${encodeURIComponent(normalized)}`;
-};
-
 const formatSkuLabel = (sku) => (sku || "").replace(/zm\/?a?$/i, "");
 
 const getDisplayLabel = (itemColour, itemModel, model, material) => {
@@ -120,7 +113,6 @@ const VerticalCarouselClient = ({
               index={index}
               copiedSku={copiedSku}
               displayLabel={displayLabel}
-              buildSeasonLink={buildSeasonLink}
               formatSkuLabel={formatSkuLabel}
               copySku={copySku}
             />

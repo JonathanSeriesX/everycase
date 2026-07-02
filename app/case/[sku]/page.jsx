@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
-import { useMDXComponents as getMDXComponents } from "../../../mdx-components";
 import LightboxComponent from "../../../components/LightboxComponent";
+import Breadcrumb from "../../../components/Breadcrumb";
+import { findPageForModel } from "../../../lib/catalogue";
 import KeyboardProductDetails from "../../../components/KeyboardProductDetails";
 import CaseInfoCards from "../../../components/CaseInfoCards";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV.mjs";
@@ -95,15 +96,6 @@ function resolveOgImageSource(variant) {
   return `${IMAGE_BASE_URL}/${code}${OG_IMAGE_EXTENSION}`;
 }
 
-// Maps a case to its sidebar folder so we can keep that folder open even though
-// case pages live outside the content tree. The three folders are iphone / ipad
-// / others; AirTag, Mac, iPod, Pencil and MagSafe wallets all live under others.
-function getCategoryRoute(model) {
-  if (/^iPhone\b/i.test(model)) return "/iphone";
-  if (/^iPad\b/i.test(model)) return "/ipad";
-  return "/others";
-}
-
 function getCaseName(data) {
   const explicitName = (data.name || "").trim();
   if (explicitName) return explicitName;
@@ -180,11 +172,6 @@ function buildCaseInfo(data, regions) {
   };
 }
 
-const mdxComponents = getMDXComponents();
-const Wrapper = mdxComponents.wrapper;
-const Heading1 = mdxComponents.h1 ?? ((props) => <h1 {...props} />);
-const Heading2 = mdxComponents.h2 ?? ((props) => <h2 {...props} />);
-
 export async function generateStaticParams() {
   const seen = new Set();
   const params = [];
@@ -260,17 +247,26 @@ export default async function CasePage({ params }) {
         };
       })
     : [];
-  const metadata = {
-    title: caseName,
-  };
+  const home = findPageForModel(data.model);
 
   return (
-    <Wrapper
-      toc={[{ depth: 2, value: "Image gallery", id: "image-gallery" }]}
-      metadata={metadata}
-    >
+    <article data-pagefind-body>
+      <Breadcrumb
+        trail={[
+          ...(home
+            ? [
+                { href: `/${home.group.slug}`, title: home.group.title },
+                {
+                  href: `/${home.group.slug}/${home.page.slug}`,
+                  title: home.page.title,
+                },
+              ]
+            : []),
+          { href: `/case/${sku}`, title: sku },
+        ]}
+      />
       <header>
-        <Heading1>{caseName}</Heading1>
+        <h1>{caseName}</h1>
         {!isKeyboard && <CaseInfoCards {...info} />}
       </header>
       {isKeyboard ? (
@@ -282,10 +278,10 @@ export default async function CasePage({ params }) {
         />
       ) : (
         <section>
-          <Heading2 id="image-gallery">Image gallery</Heading2>
+          <h2 id="image-gallery">Image gallery</h2>
           <LightboxComponent images={defaultImages} />
         </section>
       )}
-    </Wrapper>
+    </article>
   );
 }

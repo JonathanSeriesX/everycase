@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useMDXComponents as getMDXComponents } from "../mdx-components";
 import LightboxComponent from "./LightboxComponent";
 import CaseInfoCards, {
   CompatibilityCard,
@@ -17,8 +16,6 @@ import {
 import cardStyles from "../styles/CaseInfoCards.module.css";
 import styles from "../styles/KeyboardProductDetails.module.css";
 
-const mdxComponents = getMDXComponents();
-const Heading2 = mdxComponents.h2 ?? "h2";
 
 const KeyboardProductDetails = ({
   sku,
@@ -50,7 +47,7 @@ const KeyboardProductDetails = ({
           compatibleModels={info.compatibleModels}
         />
         <section>
-          <Heading2 id="image-gallery">Image gallery</Heading2>
+          <h2 id="image-gallery">Image gallery</h2>
           <LightboxComponent images={fallbackImages} />
         </section>
       </>
@@ -109,7 +106,7 @@ const KeyboardProductDetails = ({
         )}
       </div>
       <section>
-        <Heading2 id="image-gallery">Image gallery</Heading2>
+        <h2 id="image-gallery">Image gallery</h2>
         <LightboxComponent
           key={selectedOption.region}
           images={selectedOption.images}
