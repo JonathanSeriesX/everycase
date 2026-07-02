@@ -11,6 +11,9 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     ".pnpm-store/**",
+    // Claude Code worktrees carry their own build artifacts.
+    ".claude/**",
+    "public/_pagefind/**",
   ]),
 ]);
 

@@ -4,44 +4,98 @@
   --lightbox-glass-shadow: 0 25px 80px rgba(15, 23, 42, 0.25);
   --yarl__container_background_color: var(--lightbox-glass);
   --yarl__color_backdrop: rgba(250, 249, 245, 0.65);
-  --yarl__button_background_color: rgba(255, 255, 255, 0.2);
-  --yarl__button_border: 1px solid rgba(15, 23, 42, 0.12);
+  /* Buttons carry no chrome of their own: the toolbar restyles them as
+     pills, the navigation chevrons stay bare. */
+  --yarl__button_background_color: transparent;
+  --yarl__button_border: none;
+  --yarl__button_filter: none;
   --yarl__color_button: rgba(17, 24, 39, 0.72);
   --yarl__color_button_active: rgba(17, 24, 39, 0.94);
-  --yarl__button_filter: drop-shadow(0 8px 28px rgba(15, 23, 42, 0.2));
   --yarl__color_button_disabled: rgba(71, 85, 105, 0.4);
+  --lightbox-pill-bg: rgba(255, 255, 255, 0.85);
+  --lightbox-pill-border: rgba(15, 18, 28, 0.12);
 }
 
-html:not([data-theme="dark"]) .yarl__container,
-html:not(.dark) .yarl__container {
+html:not(:is(.dark, .black)) .yarl__container {
   backdrop-filter: blur(32px) saturate(135%);
   box-shadow: var(--lightbox-glass-shadow);
 }
 
-html[data-theme="dark"],
-html.dark {
+html:is(.dark, .black) {
   --yarl__container_background_color: rgba(4, 6, 12, 0.92);
   --yarl__color_backdrop: rgba(0, 0, 0, 0.92);
-  --yarl__button_background_color: rgba(10, 15, 25, 0.55);
-  --yarl__button_border: 1px solid rgba(255, 255, 255, 0.08);
   --yarl__color_button: rgba(255, 255, 255, 0.85);
   --yarl__color_button_active: rgba(255, 255, 255, 1);
-  --yarl__button_filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.65));
   --yarl__color_button_disabled: rgba(226, 232, 240, 0.45);
+  --lightbox-pill-bg: rgba(19, 19, 22, 0.92);
+  --lightbox-pill-border: rgba(255, 255, 255, 0.1);
 }
 
-html[data-theme="dark"] .yarl__container,
-html.dark .yarl__container {
+html:is(.dark, .black) .yarl__container {
   backdrop-filter: blur(18px);
 }
 
-.yarl__button.lightbox-format-link {
-  text-decoration: none;
+/* ---------- toolbar: pill buttons, same family as the site's badges ---- */
+
+.yarl__toolbar {
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  align-items: center;
+}
+
+.yarl__toolbar .yarl__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
-  padding: var(--yarl__button_padding, 8px);
+  height: 2.1rem;
+  min-width: 2.1rem;
+  padding: 0 0.5rem;
+  border-radius: 9999px;
+  background: var(--lightbox-pill-bg);
+  border: 1px solid var(--lightbox-pill-border);
+  filter: none;
+}
+
+.yarl__toolbar .yarl__button .yarl__icon {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+/* ---------- navigation: bare, quiet chevrons -------------------------- */
+
+.yarl__navigation_prev,
+.yarl__navigation_next {
+  background: none;
+  border: none;
+  filter: none;
+  padding: 1.5rem 1rem;
+  color: rgba(17, 24, 39, 0.35);
+}
+
+html:is(.dark, .black) .yarl__navigation_prev,
+html:is(.dark, .black) .yarl__navigation_next {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.yarl__navigation_prev:hover,
+.yarl__navigation_next:hover {
+  color: var(--yarl__color_button_active);
+  background: none;
+}
+
+/* ---------- zoom is pointless on touch: pinch does it ------------------ */
+
+@media (hover: none), (pointer: coarse) {
+  .yarl__toolbar .yarl__button[aria-label="Zoom in"],
+  .yarl__toolbar .yarl__button[aria-label="Zoom out"] {
+    display: none;
+  }
+}
+
+/* ---------- download links (.jpg / .png) ------------------------------- */
+
+.yarl__button.lightbox-format-link {
+  text-decoration: none;
   gap: 0;
 }
 
@@ -58,9 +112,7 @@ html.dark .yarl__container {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.125rem 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;

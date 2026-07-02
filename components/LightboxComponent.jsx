@@ -106,6 +106,20 @@ const FormatLinkButton = ({ format, label, shortLabel }) => {
 
 const LightboxComponent = ({ images = [] }) => {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
+  // Tiles that finished loading their full-size source; their blurred AVIF
+  // preview layer fades out. (next/image's placeholder="blur" cannot do
+  // this: it wraps blurDataURL in an SVG data URL, and SVG-as-image blocks
+  // external fetches — a remote preview URL silently never renders.)
+  const [loadedTiles, setLoadedTiles] = useState(() => new Set());
+
+  const markTileLoaded = (index) => {
+    setLoadedTiles((previous) => {
+      if (previous.has(index)) return previous;
+      const next = new Set(previous);
+      next.add(index);
+      return next;
+    });
+  };
 
   // Precompute lightbox slides with download helpers to keep render lean.
   const baseSlides = useMemo(() => images.map(createSlide), [images]);
@@ -168,21 +182,33 @@ const LightboxComponent = ({ images = [] }) => {
             key={slide.originalSrc ?? slide.src ?? index}
             type="button"
             className="lightbox-tile relative w-full overflow-hidden"
+            data-loaded={loadedTiles.has(index) || undefined}
             onClick={() => setLightboxIndex(index)}
             aria-label={`Open ${slide.alt || "case image"}`}
           >
-            <Image
-              src={slide.src}
-              alt={slide.alt || "Case image"}
-              loading="lazy"
-              width={slide.width}
-              height={slide.height}
-              className="block h-auto w-full object-contain"
-              placeholder={slide.previewSrc ? "blur" : undefined}
-              blurDataURL={slide.previewSrc || undefined}
-              unoptimized
-              onError={() => advanceSlideSource(index)}
-            />
+            <span className="lightbox-tile__frame">
+              {slide.previewSrc && (
+                // eslint-disable-next-line @next/next/no-img-element -- deliberate: tiny AVIF blur layer under the real <Image>
+                <img
+                  src={slide.previewSrc}
+                  alt=""
+                  aria-hidden="true"
+                  draggable={false}
+                  className="lightbox-tile__blur"
+                />
+              )}
+              <Image
+                src={slide.src}
+                alt={slide.alt || "Case image"}
+                loading="lazy"
+                width={slide.width}
+                height={slide.height}
+                className="block h-auto w-full object-contain"
+                unoptimized
+                onLoad={() => markTileLoaded(index)}
+                onError={() => advanceSlideSource(index)}
+              />
+            </span>
           </button>
         ))}
       </div>
