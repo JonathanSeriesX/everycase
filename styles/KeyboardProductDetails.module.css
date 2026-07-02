@@ -40,18 +40,18 @@
 }
 
 
-:global(html[class~="dark"]) .keyboardHint {
+:global(html:is(.dark, .black)) .keyboardHint {
   color: rgba(203, 213, 225, 0.82);
 }
 
-:global(html[class~="dark"]) .languageSelect {
+:global(html:is(.dark, .black)) .languageSelect {
   border-color: rgba(255, 255, 255, 0.16);
   background-color: rgb(24, 24, 27);
   /* lighter chevron for the dark background */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23a1a1aa' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
 }
 
-:global(html[class~="dark"]) .languageSelect:focus,
-:global(html[class~="dark"]) .languageSelect:focus-visible {
+:global(html:is(.dark, .black)) .languageSelect:focus,
+:global(html:is(.dark, .black)) .languageSelect:focus-visible {
   background-color: rgb(24, 24, 27) !important;
 }

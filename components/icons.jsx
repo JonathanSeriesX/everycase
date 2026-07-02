@@ -60,6 +60,29 @@ export function MoonIcon(props) {
   );
 }
 
+export function MoonFilledIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="1em" height="1em" {...props}>
+      <path
+        d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"
+        fill="currentColor"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function CircleHalfIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" width="1em" height="1em" {...base} {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 3.5a8.5 8.5 0 0 1 0 17Z" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 export function ChevronRightIcon(props) {
   return (
     <svg viewBox="0 0 24 24" width="1em" height="1em" {...base} {...props}>

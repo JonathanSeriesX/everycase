@@ -52,15 +52,15 @@
 }
 
 /* dark mode */
-:global(html[class~="dark"]) .sectionHead {
+:global(html:is(.dark, .black)) .sectionHead {
   border-bottom-color: rgba(255, 255, 255, 0.12);
 }
 
-:global(html[class~="dark"]) .anchor::after {
+:global(html:is(.dark, .black)) .anchor::after {
   color: rgba(255, 255, 255, 0.45);
 }
 
-:global(html[class~="dark"]) .pill {
+:global(html:is(.dark, .black)) .pill {
   background: rgba(19, 19, 22, 0.92);
   border-color: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.88);

@@ -226,7 +226,7 @@
 }
 
 /* dark mode */
-:global(html[class~="dark"]) .caseCard {
+:global(html:is(.dark, .black)) .caseCard {
   background: linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.28),
@@ -237,11 +237,11 @@
   box-shadow: 0 25px 50px rgba(4, 9, 18, 0.55);
 }
 
-:global(html[class~="dark"]) .caseCard:hover {
+:global(html:is(.dark, .black)) .caseCard:hover {
   box-shadow: 0 20px 45px rgba(8, 8, 10, 0.65);
 }
 
-:global(html[class~="dark"]) .imageShell {
+:global(html:is(.dark, .black)) .imageShell {
   background: radial-gradient(
     circle at 30% 20%,
     rgba(255, 255, 255, 0.42),
@@ -250,36 +250,36 @@
   box-shadow: inset 0 1px 12px rgba(0, 0, 0, 0.12);
 }
 
-:global(html[class~="dark"]) .metaBadge {
+:global(html:is(.dark, .black)) .metaBadge {
   background: rgba(19, 19, 22, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.88);
 }
 
-:global(html[class~="dark"]) .metaBadgeSecondary {
+:global(html:is(.dark, .black)) .metaBadgeSecondary {
   background: rgba(19, 19, 22, 0.92);
   border-color: rgba(255, 255, 255, 0.08);
   color: var(--site-accent);
 }
 
-:global(html[class~="dark"]) .metaBadgeSecondary:active,
-:global(html[class~="dark"]) .actionBadge:active {
+:global(html:is(.dark, .black)) .metaBadgeSecondary:active,
+:global(html:is(.dark, .black)) .actionBadge:active {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
 }
 
-:global(html[class~="dark"]) .actionBadge:focus,
-:global(html[class~="dark"]) .actionBadge:focus-visible {
+:global(html:is(.dark, .black)) .actionBadge:focus,
+:global(html:is(.dark, .black)) .actionBadge:focus-visible {
   background-color: rgb(19, 19, 22) !important;
   color: rgba(255, 255, 255, 0.88) !important;
 }
 
-:global(html[class~="dark"]) .metaBadgeSecondary:focus,
-:global(html[class~="dark"]) .metaBadgeSecondary:focus-visible {
+:global(html:is(.dark, .black)) .metaBadgeSecondary:focus,
+:global(html:is(.dark, .black)) .metaBadgeSecondary:focus-visible {
   background-color: rgb(19, 19, 22) !important;
   color: var(--site-accent) !important;
 }
 
-:global(html[class~="dark"]) .emptyState {
+:global(html:is(.dark, .black)) .emptyState {
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.7);
 }
