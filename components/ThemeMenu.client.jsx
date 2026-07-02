@@ -3,15 +3,21 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
 import { useTheme } from "next-themes";
+import {
+  SunIcon,
+  MoonIcon,
+  MoonFilledIcon,
+  CircleHalfIcon,
+} from "./icons";
 import chrome from "../styles/Chrome.module.css";
 
 const emptySubscribe = () => () => {};
 
 const OPTIONS = [
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
-  { value: "black", label: "Pitch Black" },
-  { value: "system", label: "System" },
+  { value: "light", label: "Light", Icon: SunIcon },
+  { value: "dark", label: "Dark", Icon: MoonIcon },
+  { value: "black", label: "Pitch Black", Icon: MoonFilledIcon },
+  { value: "system", label: "System", Icon: CircleHalfIcon },
 ];
 
 // Page background per theme — matches --site-bg in globals.css. Android
@@ -89,8 +95,11 @@ export default function ThemeMenu() {
     }
   };
 
-  const current = OPTIONS.find((option) => option.value === theme);
-  const label = mounted && current ? current.label : "…";
+  const current = mounted
+    ? OPTIONS.find((option) => option.value === theme)
+    : null;
+  const label = current ? current.label : "…";
+  const CurrentIcon = current?.Icon;
 
   return (
     <span className={chrome.themeMenu} ref={containerRef}>
@@ -101,7 +110,10 @@ export default function ThemeMenu() {
         aria-expanded={open}
         onClick={() => setOpen((wasOpen) => !wasOpen)}
       >
-        Theme: {label} <span aria-hidden="true">▴</span>
+        Theme: {label}{" "}
+        <span className={chrome.themeIcon} aria-hidden="true">
+          {CurrentIcon && <CurrentIcon />}
+        </span>
       </button>
       {open && (
         <ul role="listbox" aria-label="Theme" className={chrome.themeMenuList}>
