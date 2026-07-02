@@ -68,7 +68,7 @@ export default function HashNavigation() {
         // scrollIntoView() ignores scroll-padding-top on Safari iOS, causing
         // the heading to land behind the sticky navbar (looks like overshoot).
         // Read the actual navbar height and scroll manually instead.
-        const navbar = document.querySelector(".nextra-navbar");
+        const navbar = document.querySelector(".site-navbar");
         const offset = navbar ? navbar.getBoundingClientRect().height : 0;
         const top = target.getBoundingClientRect().top + window.scrollY - offset - 16;
         window.scrollTo({ top, left: window.scrollX });

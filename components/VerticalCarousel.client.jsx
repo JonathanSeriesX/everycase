@@ -51,13 +51,6 @@ const sortCases = (caseList = []) =>
     return (a?.SKU || "").localeCompare(b?.SKU || "");
   });
 
-// Builds a stable link so users can jump to the season table when curious.
-const buildSeasonLink = (seasonLabel) => {
-  if (!seasonLabel) return "/years";
-  const normalized = seasonLabel.trim().replace(/\s+/g, "-").toLowerCase();
-  return `/years#${encodeURIComponent(normalized)}`;
-};
-
 const formatSkuLabel = (sku) => (sku || "").replace(/zm\/?a?$/i, "");
 
 const getDisplayLabel = (itemColour, itemModel, model, material) => {
@@ -77,6 +70,7 @@ const VerticalCarouselClient = ({
   material,
   season,
   standalone = false,
+  primary = true,
 }) => {
   const [copiedSku, setCopiedSku] = useState(null);
 
@@ -113,14 +107,13 @@ const VerticalCarouselClient = ({
         }`}
       >
         <div className={styles.cardTrack}>
-          {sortedCases.map((item, index) => (
+          {sortedCases.map((item) => (
             <CaseCard
               key={item.SKU}
               item={item}
-              index={index}
+              priority={primary}
               copiedSku={copiedSku}
               displayLabel={displayLabel}
-              buildSeasonLink={buildSeasonLink}
               formatSkuLabel={formatSkuLabel}
               copySku={copySku}
             />
