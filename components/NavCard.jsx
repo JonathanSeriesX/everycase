@@ -25,7 +25,7 @@ export default function NavCard({ href, title, subtitle, heroCase, image }) {
               alt=""
               className={styles.image}
               unoptimized
-              loading="lazy"
+              loading="eager"
             />
           )}
         </div>
