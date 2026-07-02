@@ -1,0 +1,374 @@
+/* Site chrome: navbar, breadcrumb, callout, section tabs, search. */
+
+/* ---------- navbar ---------- */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 64px;
+  padding: 0 max(env(safe-area-inset-left), 1.5rem) 0
+    max(env(safe-area-inset-left), 1.5rem);
+  background: rgba(252, 248, 250, 0.85);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  border-bottom: 1px solid rgba(15, 18, 28, 0.08);
+}
+
+.navHome {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 1.15rem;
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  background: rgba(15, 18, 28, 0.06);
+}
+
+/* ---------- search ---------- */
+
+.search {
+  position: relative;
+}
+
+.searchField {
+  position: relative;
+}
+
+/* Collapsed-to-icon toggle: only exists on narrow viewports. */
+.searchToggle {
+  display: none;
+}
+
+.searchInput {
+  width: 16rem;
+  padding: 0.45rem 0.9rem 0.45rem 2.2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(15, 18, 28, 0.12);
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  color: inherit;
+}
+
+.searchInput:focus {
+  outline: 2px solid #e3504f;
+  outline-offset: 2px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* On narrow viewports the search collapses to an icon button; opening it
+   expands the field over the whole navbar (logo included), anchored to the
+   sticky header so the results dropdown spans the full width.
+
+   The overlay is the FIELD, not the container: the icon button stays in the
+   navbar flow underneath it, so when the overlay fades out the icon is
+   revealed in the same instant as the logo and theme toggle — no late pop. */
+@media (max-width: 700px) {
+  .searchToggle {
+    display: inline-flex;
+  }
+
+  .search:not([data-expanded]):not([data-closing]) .searchField {
+    display: none;
+  }
+
+  /* Let the field anchor to the navbar (the nearest positioned ancestor). */
+  .search[data-expanded],
+  .search[data-closing] {
+    position: static;
+  }
+
+  .search[data-expanded] .searchField,
+  .search[data-closing] .searchField {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    padding: 0 max(env(safe-area-inset-left), 0.9rem);
+    background: rgba(252, 248, 250, 0.97);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    animation: search-expand 180ms ease;
+  }
+
+  /* Mirror of the expand animation: the overlay stays mounted for a beat
+     (data-closing) and eases out instead of vanishing. */
+  .search[data-closing] .searchField {
+    animation: search-collapse 180ms ease forwards;
+    pointer-events: none;
+  }
+
+  .search[data-expanded] .searchInput,
+  .search[data-closing] .searchInput {
+    width: 100%;
+    flex: 1;
+  }
+
+  .search[data-expanded] .searchIcon,
+  .search[data-closing] .searchIcon {
+    left: calc(max(env(safe-area-inset-left), 0.9rem) + 0.75rem);
+  }
+
+  .search[data-expanded] .searchResults {
+    top: calc(100% + 0.5rem);
+    left: 0.9rem;
+    right: 0.9rem;
+    width: auto;
+    z-index: 41;
+  }
+}
+
+@keyframes search-expand {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes search-collapse {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+.searchResults {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: min(26rem, calc(100vw - 2rem));
+  max-height: min(24rem, 70vh);
+  overflow-y: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 18, 28, 0.1);
+  background: rgba(252, 248, 250, 0.97);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 25px 60px rgba(50, 42, 48, 0.25);
+  padding: 0.4rem;
+}
+
+.searchResult {
+  display: block;
+  padding: 0.55rem 0.75rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.searchResult:hover,
+.searchResult[data-active="true"] {
+  background: rgba(227, 80, 79, 0.08);
+}
+
+.searchResultTitle {
+  font-weight: 550;
+  color: #e3504f;
+  font-size: 0.9rem;
+}
+
+.searchResultExcerpt {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.searchResultExcerpt mark {
+  background: rgba(227, 80, 79, 0.2);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+.searchEmpty {
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  text-align: center;
+}
+
+/* ---------- breadcrumb ---------- */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 1.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+.breadcrumbItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.breadcrumbLink {
+  color: inherit;
+  opacity: 0.7;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.breadcrumbLink:hover {
+  opacity: 1;
+  color: #e3504f;
+}
+
+.breadcrumbCurrent {
+  font-weight: 550;
+  white-space: nowrap;
+}
+
+.breadcrumbSep {
+  opacity: 0.4;
+  font-size: 0.8rem;
+  display: inline-flex;
+}
+
+/* ---------- callout ---------- */
+
+.callout {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(227, 80, 79, 0.25);
+  background: rgba(227, 80, 79, 0.06);
+}
+
+.calloutIcon {
+  flex-shrink: 0;
+  color: #e3504f;
+  font-size: 1.2rem;
+  display: inline-flex;
+}
+
+/* ---------- model tabs ---------- */
+
+.tabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.25rem 0;
+}
+
+.tab {
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  background: #fff;
+  border: 1px solid rgba(15, 18, 28, 0.12);
+  color: rgba(15, 18, 28, 0.85);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.tab[data-active="true"] {
+  background: #e3504f;
+  border-color: #e3504f;
+  color: #fff;
+  font-weight: 550;
+}
+
+/* ---------- dark mode ---------- */
+
+:global(html[class~="dark"]) .navbar {
+  background: rgba(17, 17, 20, 0.85);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:global(html[class~="dark"]) .iconButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+:global(html[class~="dark"]) .searchInput {
+  background: rgba(19, 19, 22, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(html[class~="dark"]) .search[data-expanded] .searchField,
+:global(html[class~="dark"]) .search[data-closing] .searchField {
+  background: rgba(17, 17, 20, 0.97);
+}
+
+:global(html[class~="dark"]) .searchResults {
+  background: rgba(19, 19, 22, 0.97);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+:global(html[class~="dark"]) .searchResult:hover,
+:global(html[class~="dark"]) .searchResult[data-active="true"] {
+  background: rgba(255, 77, 77, 0.12);
+}
+
+:global(html[class~="dark"]) .callout {
+  border-color: rgba(255, 77, 77, 0.3);
+  background: rgba(255, 77, 77, 0.08);
+}
+
+:global(html[class~="dark"]) .tab {
+  background: rgba(19, 19, 22, 0.92);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+:global(html[class~="dark"]) .tab[data-active="true"] {
+  background: #e3504f;
+  border-color: #e3504f;
+  color: #fff;
+}

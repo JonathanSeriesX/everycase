@@ -1,68 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
+import { CopyIcon, CheckIcon } from "./icons";
+import CaseImage from "./CaseImage.client";
 import { formatOrderNumber, getPreferredRegion } from "../lib/productRegions";
 import styles from "../styles/VerticalCarousel.module.css";
 
-const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
-// /MF039. will be put in between these two
-const CAROUSEL_IMAGE_FORMATS = ["avif"];
-const APPLE_IMAGE_BASE_URL =
-  "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
-const APPLE_FALLBACK_PARAMS = "?wid=512&hei=512&fmt=png-alpha";
-const CASE_IMAGE_SIZE = 512;
-const PRIORITY_IMAGE_COUNT = 5;
-
-// Helpers keep the render block lean and make fallback handling testable.
-const sanitizeImageCode = (item) =>
-  (item?.alt_thumbnail || item?.SKU || "").trim();
-
-const buildCarouselImageSrc = (code, format) =>
-  code && format ? `${CAROUSEL_IMAGE_BASE_URL}/${code}.${format}` : "";
-
-const buildAppleFallbackImageSrc = (code) =>
-  code ? `${APPLE_IMAGE_BASE_URL}/${code}${APPLE_FALLBACK_PARAMS}` : "";
-
 const CaseCard = ({
   item,
-  index,
+  priority,
   copiedSku,
   displayLabel,
-  buildSeasonLink,
   formatSkuLabel,
   copySku,
 }) => {
-  const isPriorityImage = index < PRIORITY_IMAGE_COUNT;
   const imageAlt = (item.name || "").trim();
-  const imageCode = sanitizeImageCode(item);
-  const fallbackImageSrc = buildAppleFallbackImageSrc(imageCode);
-  const candidateSources = useMemo(() => {
-    const carouselSources = CAROUSEL_IMAGE_FORMATS.map((format) =>
-      buildCarouselImageSrc(imageCode, format),
-    );
-    return [...carouselSources, fallbackImageSrc].filter(Boolean);
-  }, [fallbackImageSrc, imageCode]);
-  const sourceKey = candidateSources.join("|");
-  const [sourceState, setSourceState] = useState({ key: sourceKey, index: 0 });
-  const sourceIndex = sourceState.key === sourceKey ? sourceState.index : 0;
-
-  // Step through CloudFront formats before falling back to Apple's CDN.
-  const handleImageError = () => {
-    setSourceState((currentState) => {
-      const currentIndex =
-        currentState.key === sourceKey ? currentState.index : 0;
-      const nextIndex = currentIndex + 1;
-      return {
-        key: sourceKey,
-        index: nextIndex < candidateSources.length ? nextIndex : currentIndex,
-      };
-    });
-  };
-
-  const imgSrc = candidateSources[sourceIndex] || "";
+  const imageCode = (item.alt_thumbnail || item.SKU || "").trim();
   const orderNumber = formatOrderNumber(
     item.SKU,
     getPreferredRegion(item.regions),
@@ -77,18 +30,7 @@ const CaseCard = ({
         prefetch={false}
       >
         <div className={styles.imageShell}>
-          <Image
-            src={imgSrc}
-            width={CASE_IMAGE_SIZE}
-            height={CASE_IMAGE_SIZE}
-            alt={imageAlt}
-            className={styles.image}
-            fetchPriority={isPriorityImage ? "high" : "low"}
-            loading={isPriorityImage ? "eager" : "lazy"}
-            unoptimized
-            title={imageAlt || undefined}
-            onError={handleImageError}
-          />
+          <CaseImage code={imageCode} alt={imageAlt} priority={priority} />
         </div>
         <strong className={`${styles.caseTitle} ${styles.linkTitle}`}>
           {displayLabel(item.colour, item.model)}
@@ -119,15 +61,6 @@ const CaseCard = ({
             />
           </span>
         </button>{" "}
-        {/*<Link
-          className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
-          href={buildSeasonLink(item.season)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <span>{item.season || "—"}</span>
-          <LinkArrowIcon className={styles.icon} aria-hidden />
-        </Link> */}
         {item.colour !== "Clear" && item.season ? (
           <span
             className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
