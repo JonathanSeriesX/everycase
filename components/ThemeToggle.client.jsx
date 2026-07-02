@@ -20,17 +20,24 @@ export default function ThemeToggle() {
 
   const isDark = mounted && resolvedTheme === "dark";
 
-  // Cross-fade between themes with the View Transitions API: the browser
-  // snapshots old and new and fades them as one image, so every colour moves
-  // in sync. Browsers without support just switch instantly.
+  // Cross-fade between themes with the View Transitions API — except on
+  // iOS, where the snapshot animation makes Safari 26 paint an opaque plate
+  // behind its glass bottom pill. iOS switches instantly (all transitions
+  // suppressed for the swap); everyone else gets the snapshot fade.
   const switchTheme = () => {
     const next = isDark ? "light" : "dark";
-    if (typeof document.startViewTransition === "function") {
+    const isIOS =
+      /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (!isIOS && typeof document.startViewTransition === "function") {
       document.startViewTransition(() => {
         flushSync(() => setTheme(next));
       });
     } else {
+      const root = document.documentElement;
+      root.classList.add("no-theme-fade");
       setTheme(next);
+      window.setTimeout(() => root.classList.remove("no-theme-fade"), 60);
     }
   };
 
