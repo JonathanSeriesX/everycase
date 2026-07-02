@@ -17,14 +17,20 @@
 :root {
   --site-accent: #e3504f;
   --site-fg: rgb(15, 18, 28);
-  --site-bg: #fff;
+  --site-bg: rgb(250, 250, 250);
 }
 
 html[class~="dark"] {
   --site-accent: #ff4d4d;
   --site-fg: rgba(255, 255, 255, 0.9);
-  --site-bg: rgb(17, 17, 20);
+  --site-bg: rgb(17, 17, 17);
   color-scheme: dark;
+}
+
+/* The background sits on <html> (not body) so Safari samples it for the
+   tab-bar bleed, exactly like the old Nextra head style. */
+html {
+  background: var(--site-bg);
 }
 
 body {
@@ -32,7 +38,6 @@ body {
   font-stretch: 101%;
   font-weight: 330;
   color: var(--site-fg);
-  background: var(--site-bg);
 }
 
 /* hack to avoid broken fonts in Firefox */

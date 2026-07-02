@@ -1,4 +1,10 @@
-import { GROUPS, getGroupHeroCase } from "../lib/catalogue";
+import {
+  HOME_CARDS,
+  getGroup,
+  getPage,
+  getHeroCase,
+  getGroupHeroCase,
+} from "../lib/catalogue";
 import { getProsePage } from "../lib/notes";
 import MdxContent from "../components/MdxContent";
 import NavCard, { CardGrid } from "../components/NavCard";
@@ -15,15 +21,30 @@ export default async function HomePage() {
     <div data-pagefind-body>
       <MdxContent Content={Intro} />
       <CardGrid>
-        {GROUPS.map((group) => (
-          <NavCard
-            key={group.slug}
-            href={`/${group.slug}`}
-            title={group.title}
-            subtitle={group.blurb}
-            heroCase={getGroupHeroCase(group)}
-          />
-        ))}
+        {HOME_CARDS.map((card) => {
+          const group = getGroup(card.group);
+          if (card.page) {
+            const page = getPage(card.group, card.page);
+            return (
+              <NavCard
+                key={`${card.group}/${card.page}`}
+                href={`/${card.group}/${page.slug}`}
+                title={page.title}
+                subtitle={page.blurb}
+                heroCase={getHeroCase(page)}
+              />
+            );
+          }
+          return (
+            <NavCard
+              key={card.group}
+              href={`/${group.slug}`}
+              title={group.title}
+              subtitle={group.blurb}
+              heroCase={getGroupHeroCase(group)}
+            />
+          );
+        })}
       </CardGrid>
     </div>
   );
