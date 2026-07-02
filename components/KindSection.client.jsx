@@ -14,38 +14,31 @@ const reduce = (amounts) =>
     ? null
     : { value: Math.min(...amounts), multiple: new Set(amounts).size > 1 };
 
-// Price for the picked tab's model, falling back to the kind's aggregate when
-// that model has no data for a currency.
+// Price for a model, falling back to the kind's aggregate when that model has
+// no data for a currency.
 const priceForModel = (price, model, code) =>
   reduce(price.byModel?.[model]?.[code]) ?? price[code];
 
 /**
  * One kind of accessory on a model page: heading with price pills, the
- * editorial blurb (server-rendered, passed as children), and the case cards —
- * tabbed per model when the page covers several.
+ * editorial blurb (server-rendered, passed as children), and the case cards.
  *
- * The pills start on the kind's aggregate ("from $99") and switch to the
- * exact price of a model once the reader picks its tab — same behaviour the
- * old PricedSections/PricedHeading pair provided.
+ * With a tab bar the pills always show the active tab's exact price — from
+ * first paint, exactly like the old CaseTabsObserver applied the default tab
+ * on mount. Without tabs (merged Clear Cases, lone-model kinds) they show the
+ * kind's aggregate, rendered as "from $X" when models differ.
  */
 export default function KindSectionClient({
   kind,
   slug,
   price,
-  models,
-  pageModelCount,
+  entries,
+  showTabs,
   children,
 }) {
   const [active, setActive] = useState(0);
-  // Aggregate until the reader explicitly interacts with the tabs.
-  const [picked, setPicked] = useState(false);
 
-  // Show the tab bar even for a single model when the page covers more —
-  // a lone "iPhone 6-6s" tab tells the reader the Smart Battery Case never
-  // came for the Plus.
-  const showTabs = models.length > 1 || models.length < pageModelCount;
-
-  const activeModel = picked ? models[active]?.model : null;
+  const activeModel = showTabs ? entries[active]?.model : null;
   const pills = CURRENCIES.map((code) => {
     const entry = activeModel
       ? priceForModel(price, activeModel, code)
@@ -82,7 +75,7 @@ export default function KindSectionClient({
           aria-label={`${kind} by model`}
           className={chrome.tabList}
         >
-          {models.map((entry, index) => (
+          {entries.map((entry, index) => (
             <button
               key={entry.model}
               role="tab"
@@ -92,20 +85,23 @@ export default function KindSectionClient({
               className={chrome.tab}
               onClick={(e) => {
                 setActive(index);
-                setPicked(true);
                 e.currentTarget.blur();
               }}
             >
-              {entry.model}
+              {entry.label}
             </button>
           ))}
         </div>
       )}
-      {models.map((entry, index) => (
-        <div key={entry.model} role="tabpanel" hidden={index !== active}>
+      {entries.map((entry, index) => (
+        <div
+          key={entry.model ?? index}
+          role="tabpanel"
+          hidden={index !== active}
+        >
           <VerticalCarouselClient
             cases={entry.cases}
-            model={entry.model}
+            model={entry.model ?? undefined}
             material={kind}
             standalone={!showTabs}
           />
