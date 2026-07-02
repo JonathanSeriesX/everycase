@@ -28,10 +28,22 @@ const priceForModel = (price, model, code) =>
  * exact price of a model once the reader picks its tab — same behaviour the
  * old PricedSections/PricedHeading pair provided.
  */
-export default function KindSectionClient({ kind, slug, price, models, children }) {
+export default function KindSectionClient({
+  kind,
+  slug,
+  price,
+  models,
+  pageModelCount,
+  children,
+}) {
   const [active, setActive] = useState(0);
   // Aggregate until the reader explicitly interacts with the tabs.
   const [picked, setPicked] = useState(false);
+
+  // Show the tab bar even for a single model when the page covers more —
+  // a lone "iPhone 6-6s" tab tells the reader the Smart Battery Case never
+  // came for the Plus.
+  const showTabs = models.length > 1 || models.length < pageModelCount;
 
   const activeModel = picked ? models[active]?.model : null;
   const pills = CURRENCIES.map((code) => {
@@ -64,7 +76,7 @@ export default function KindSectionClient({ kind, slug, price, models, children 
         )}
       </div>
       {children}
-      {models.length > 1 && (
+      {showTabs && (
         <div
           role="tablist"
           aria-label={`${kind} by model`}
@@ -95,7 +107,7 @@ export default function KindSectionClient({ kind, slug, price, models, children 
             cases={entry.cases}
             model={entry.model}
             material={kind}
-            standalone={models.length === 1}
+            standalone={!showTabs}
           />
         </div>
       ))}

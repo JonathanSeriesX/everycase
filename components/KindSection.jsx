@@ -28,13 +28,14 @@ export function SectionHeading({ title }) {
  * pills reacting to them) lives in the client component; the blurb is
  * compiled MDX rendered on the server and passed through as children.
  */
-export default function KindSection({ section, Note }) {
+export default function KindSection({ section, pageModelCount, Note }) {
   return (
     <KindSectionClient
       kind={section.kind}
       slug={slugify(section.kind)}
       price={section.price}
       models={section.models.map(({ model, cases }) => ({ model, cases }))}
+      pageModelCount={pageModelCount}
     >
       {Note && <MdxContent Content={Note} />}
     </KindSectionClient>

@@ -3,10 +3,10 @@
   width: 100%;
 }
 
-/* When rendered directly under a heading/text (no tab bar above it), add the
-   breathing room the Tabs component would otherwise contribute. */
+/* When rendered directly under the heading/blurb (no tab bar above it), add
+   the same breathing room the tab bar would otherwise contribute. */
 .standalone {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 }
 
 .cardTrack {
@@ -18,7 +18,7 @@
     minmax(min(165px, (100% - 1.15rem) / 2), 1fr)
   );
   gap: 0.9rem clamp(0.9rem, 2vw, 1.15rem);
-  padding: 0.25rem 0 0.5rem;
+  padding-bottom: 0.5rem;
   justify-items: left;
 }
 
