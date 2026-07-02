@@ -14,7 +14,7 @@ export default function Breadcrumb({ trail }) {
   return (
     <nav aria-label="Breadcrumb" className={chrome.breadcrumb}>
       {crumbs.map((crumb) => (
-        <span key={crumb.href} className={chrome.breadcrumb}>
+        <span key={crumb.href} className={chrome.breadcrumbItem}>
           <Link href={crumb.href} className={chrome.breadcrumbLink}>
             {crumb.title}
           </Link>

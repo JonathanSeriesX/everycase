@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { GROUPS, getGroup, getPage, getPageSections } from "../../../lib/catalogue";
-import { getNotes } from "../../../lib/notes";
+import { getNotes, getPageHeading } from "../../../lib/notes";
 import { resolveOgImage, ogMetadata } from "../../../lib/og";
 import Breadcrumb from "../../../components/Breadcrumb";
 import MdxContent from "../../../components/MdxContent";
@@ -20,7 +20,9 @@ export async function generateMetadata(props) {
   const page = getPage(groupSlug, pageSlug);
   if (!page) return {};
   return ogMetadata({
-    title: page.title,
+    // The browser/OG title is the editorial H1 from the notes file; the
+    // short catalogue title stays internal (breadcrumbs, cards).
+    title: getPageHeading(groupSlug, pageSlug) ?? page.title,
     imageUrl: await resolveOgImage(page.slug),
   });
 }

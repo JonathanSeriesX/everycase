@@ -246,6 +246,12 @@
   font-size: 0.9rem;
 }
 
+.breadcrumbItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 .breadcrumbLink {
   color: inherit;
   opacity: 0.7;
