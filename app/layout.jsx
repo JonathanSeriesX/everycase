@@ -90,6 +90,14 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning // theme class is set pre-hydration by next-themes
     >
       <body>
+        {/* The SSR theme-color metas are keyed to the OS colour scheme; when a
+            stored manual theme disagrees, fix them during parse — before
+            paint — so the browser bar never flashes the wrong colour. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.theme,d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches),c=d?"rgb(17,17,17)":"rgb(250,250,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}catch(e){}`,
+          }}
+        />
         <ThemeProvider attribute="class" disableTransitionOnChange>
           <HashNavigation />
           <Navbar />

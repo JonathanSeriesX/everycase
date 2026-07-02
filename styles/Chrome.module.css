@@ -94,18 +94,28 @@
 
 /* On narrow viewports the search collapses to an icon button; opening it
    expands the field over the whole navbar (logo included), anchored to the
-   sticky header so the results dropdown spans the full width. */
+   sticky header so the results dropdown spans the full width.
+
+   The overlay is the FIELD, not the container: the icon button stays in the
+   navbar flow underneath it, so when the overlay fades out the icon is
+   revealed in the same instant as the logo and theme toggle — no late pop. */
 @media (max-width: 700px) {
   .searchToggle {
     display: inline-flex;
   }
 
-  .search:not([data-expanded]) .searchField {
+  .search:not([data-expanded]):not([data-closing]) .searchField {
     display: none;
   }
 
+  /* Let the field anchor to the navbar (the nearest positioned ancestor). */
   .search[data-expanded],
   .search[data-closing] {
+    position: static;
+  }
+
+  .search[data-expanded] .searchField,
+  .search[data-closing] .searchField {
     position: absolute;
     inset: 0;
     z-index: 40;
@@ -120,30 +130,23 @@
 
   /* Mirror of the expand animation: the overlay stays mounted for a beat
      (data-closing) and eases out instead of vanishing. */
-  .search[data-closing] {
+  .search[data-closing] .searchField {
     animation: search-collapse 180ms ease forwards;
     pointer-events: none;
-  }
-
-  .search[data-expanded] .searchToggle,
-  .search[data-closing] .searchToggle {
-    display: none;
-  }
-
-  .search[data-expanded] .searchField,
-  .search[data-closing] .searchField {
-    flex: 1;
   }
 
   .search[data-expanded] .searchInput,
   .search[data-closing] .searchInput {
     width: 100%;
+    flex: 1;
   }
 
   .search[data-expanded] .searchResults {
+    top: calc(100% + 0.5rem);
     left: 0.9rem;
     right: 0.9rem;
     width: auto;
+    z-index: 41;
   }
 }
 
@@ -326,8 +329,8 @@
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-:global(html[class~="dark"]) .search[data-expanded],
-:global(html[class~="dark"]) .search[data-closing] {
+:global(html[class~="dark"]) .search[data-expanded] .searchField,
+:global(html[class~="dark"]) .search[data-closing] .searchField {
   background: rgba(17, 17, 20, 0.97);
 }
 
