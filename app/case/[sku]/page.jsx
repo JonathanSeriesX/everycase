@@ -282,7 +282,7 @@ export default async function CasePage({ params }) {
         />
       ) : (
         <section>
-          <h2 id="image-gallery">Image gallery</h2>
+          <h2 id="image-gallery" data-pagefind-ignore>Image gallery</h2>
           <LightboxComponent images={defaultImages} />
         </section>
       )}

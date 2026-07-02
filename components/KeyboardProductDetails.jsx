@@ -47,7 +47,7 @@ const KeyboardProductDetails = ({
           compatibleModels={info.compatibleModels}
         />
         <section>
-          <h2 id="image-gallery">Image gallery</h2>
+          <h2 id="image-gallery" data-pagefind-ignore>Image gallery</h2>
           <LightboxComponent images={fallbackImages} />
         </section>
       </>
@@ -106,7 +106,7 @@ const KeyboardProductDetails = ({
         )}
       </div>
       <section>
-        <h2 id="image-gallery">Image gallery</h2>
+        <h2 id="image-gallery" data-pagefind-ignore>Image gallery</h2>
         <LightboxComponent
           key={selectedOption.region}
           images={selectedOption.images}
