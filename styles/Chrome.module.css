@@ -59,6 +59,15 @@
   position: relative;
 }
 
+.searchField {
+  position: relative;
+}
+
+/* Collapsed-to-icon toggle: only exists on narrow viewports. */
+.searchToggle {
+  display: none;
+}
+
 .searchInput {
   width: clamp(9rem, 22vw, 16rem);
   padding: 0.45rem 0.9rem 0.45rem 2.2rem;
@@ -81,6 +90,61 @@
   transform: translateY(-50%);
   opacity: 0.5;
   pointer-events: none;
+}
+
+/* On narrow viewports the search collapses to an icon button; opening it
+   expands the field over the whole navbar (logo included), anchored to the
+   sticky header so the results dropdown spans the full width. */
+@media (max-width: 700px) {
+  .searchToggle {
+    display: inline-flex;
+  }
+
+  .search:not([data-expanded]) .searchField {
+    display: none;
+  }
+
+  .search[data-expanded] {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    padding: 0 max(env(safe-area-inset-left), 0.9rem);
+    background: rgba(252, 248, 250, 0.97);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    animation: search-expand 180ms ease;
+  }
+
+  .search[data-expanded] .searchToggle {
+    display: none;
+  }
+
+  .search[data-expanded] .searchField {
+    flex: 1;
+  }
+
+  .search[data-expanded] .searchInput {
+    width: 100%;
+  }
+
+  .search[data-expanded] .searchResults {
+    left: 0.9rem;
+    right: 0.9rem;
+    width: auto;
+  }
+}
+
+@keyframes search-expand {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .searchResults {
@@ -238,6 +302,10 @@
 :global(html[class~="dark"]) .searchInput {
   background: rgba(19, 19, 22, 0.9);
   border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(html[class~="dark"]) .search[data-expanded] {
+  background: rgba(17, 17, 20, 0.97);
 }
 
 :global(html[class~="dark"]) .searchResults {

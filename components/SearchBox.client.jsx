@@ -27,9 +27,16 @@ export default function SearchBox() {
   const [results, setResults] = useState(null); // null = closed
   const [active, setActive] = useState(0);
   const [unavailable, setUnavailable] = useState(false);
+  // On narrow viewports the box collapses to an icon and expands over the
+  // navbar (covering the logo) when opened.
+  const [expanded, setExpanded] = useState(false);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
   const searchId = useRef(0);
+
+  useEffect(() => {
+    if (expanded) inputRef.current?.focus();
+  }, [expanded]);
 
   const runSearch = useCallback(async (value) => {
     const id = ++searchId.current;
@@ -62,11 +69,15 @@ export default function SearchBox() {
   // Close on outside click / Escape; focus with "/" or ⌘K.
   useEffect(() => {
     const onClick = (event) => {
-      if (!containerRef.current?.contains(event.target)) setResults(null);
+      if (!containerRef.current?.contains(event.target)) {
+        setResults(null);
+        setExpanded(false);
+      }
     };
     const onKey = (event) => {
       if (event.key === "Escape") {
         setResults(null);
+        setExpanded(false);
         inputRef.current?.blur();
       }
       const typingElsewhere =
@@ -91,6 +102,7 @@ export default function SearchBox() {
   const navigate = (url) => {
     setResults(null);
     setQuery("");
+    setExpanded(false);
     router.push(url);
   };
 
@@ -112,22 +124,36 @@ export default function SearchBox() {
   };
 
   return (
-    <div className={chrome.search} ref={containerRef}>
-      <SearchIcon className={chrome.searchIcon} aria-hidden="true" />
-      <input
-        ref={inputRef}
-        type="search"
-        className={chrome.searchInput}
-        placeholder="Search by colour or SKU..."
+    <div
+      className={chrome.search}
+      data-expanded={expanded || undefined}
+      ref={containerRef}
+    >
+      <button
+        type="button"
+        className={`${chrome.iconButton} ${chrome.searchToggle}`}
         aria-label="Search"
-        value={query}
-        onFocus={() => loadPagefind()}
-        onChange={(event) => {
-          setQuery(event.target.value);
-          runSearch(event.target.value);
-        }}
-        onKeyDown={onKeyDown}
-      />
+        onClick={() => setExpanded(true)}
+      >
+        <SearchIcon />
+      </button>
+      <div className={chrome.searchField}>
+        <SearchIcon className={chrome.searchIcon} aria-hidden="true" />
+        <input
+          ref={inputRef}
+          type="search"
+          className={chrome.searchInput}
+          placeholder="Search by colour or SKU..."
+          aria-label="Search"
+          value={query}
+          onFocus={() => loadPagefind()}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            runSearch(event.target.value);
+          }}
+          onKeyDown={onKeyDown}
+        />
+      </div>
       {results !== null && (
         <div className={chrome.searchResults}>
           {results.length === 0 ? (
