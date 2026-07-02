@@ -255,7 +255,9 @@ export default async function CasePage({ params }) {
         trail={[
           ...(home
             ? [
-                { href: `/${home.group.slug}`, title: home.group.title },
+                ...(home.page.topLevel
+                  ? []
+                  : [{ href: `/${home.group.slug}`, title: home.group.title }]),
                 {
                   href: `/${home.group.slug}/${home.page.slug}`,
                   title: home.page.title,
@@ -266,7 +268,9 @@ export default async function CasePage({ params }) {
         ]}
       />
       <header>
-        <h1>{caseName}</h1>
+        <h1 data-pagefind-ignore data-pagefind-meta="title">
+          {caseName}
+        </h1>
         {!isKeyboard && <CaseInfoCards {...info} />}
       </header>
       {isKeyboard ? (

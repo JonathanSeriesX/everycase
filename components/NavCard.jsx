@@ -9,9 +9,10 @@ const APPLE_IMAGE_BASE_URL =
 // Navigation cards (home → group → model page) reuse the case-card shell so
 // the drill-down feels like one continuous surface. No SKU/season badges —
 // just an image and a title.
-export default function NavCard({ href, title, subtitle, heroCase }) {
+export default function NavCard({ href, title, subtitle, heroCase, image }) {
   const code = (heroCase?.alt_thumbnail || heroCase?.SKU || "").trim();
-  const src = code ? `${CAROUSEL_IMAGE_BASE_URL}/${code}.avif` : null;
+  const src =
+    image ?? (code ? `${CAROUSEL_IMAGE_BASE_URL}/${code}.avif` : null);
   return (
     <article className={styles.caseCard}>
       <Link href={href} className={styles.cardLink}>

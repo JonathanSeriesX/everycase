@@ -43,8 +43,15 @@ function ArrowLink({ href = "", children, ...props }) {
   );
 }
 
+// Pagefind: the H1 is the page's meta title but must not be indexed as body
+// content, otherwise every excerpt starts by repeating the title.
+function PagefindH1(props) {
+  return <h1 data-pagefind-ignore data-pagefind-meta="title" {...props} />;
+}
+
 export const mdxComponents = {
   a: ArrowLink,
+  h1: PagefindH1,
   Callout,
 };
 
