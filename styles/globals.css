@@ -40,6 +40,12 @@ html {
   transition: background-color 0.2s ease;
 }
 
+/* iOS switches themes without the snapshot fade; suppress the background
+   transition too so the swap is fully atomic there. */
+html.no-theme-fade {
+  transition: none;
+}
+
 body {
   font-family: "Tofino Variable", system-ui;
   font-stretch: 101%;
