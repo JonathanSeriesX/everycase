@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { GROUPS, getGroup, getHeroCase } from "../../lib/catalogue";
-import { getProsePage } from "../../lib/notes";
+import { getProsePage, getPageHeading } from "../../lib/notes";
 import { resolveOgImage, ogMetadata } from "../../lib/og";
 import Breadcrumb from "../../components/Breadcrumb";
 import MdxContent from "../../components/MdxContent";
@@ -18,7 +18,7 @@ export async function generateMetadata(props) {
   const group = getGroup(groupSlug);
   if (!group) return {};
   return ogMetadata({
-    title: group.title,
+    title: getPageHeading(group.slug) ?? group.title,
     imageUrl: await resolveOgImage(group.slug),
   });
 }

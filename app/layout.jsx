@@ -7,14 +7,15 @@ import Navbar from "../components/Navbar";
 import HashNavigation from "../components/HashNavigation.client";
 import "../styles/globals.css";
 
-// Safari tints its tab bar / iOS top bar with theme-color; matching the page
-// background (per colour scheme) lets the page visually flow through the
-// browser chrome — same trick the old Nextra <Head> used. A manual theme
-// toggle updates these metas client-side (see ThemeToggle).
+// Safari paints its tab bar / the iOS status bar with theme-color. The
+// element visually touching the browser chrome is the sticky navbar, so
+// deliver the navbar's composited colour per scheme — the status bar then
+// reads as an extension of it. A manual theme toggle updates these metas
+// client-side (see ThemeToggle).
 export const viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "rgb(250,250,250)" },
-    { media: "(prefers-color-scheme: dark)", color: "rgb(17,17,17)" },
+    { media: "(prefers-color-scheme: light)", color: "rgb(252,248,250)" },
+    { media: "(prefers-color-scheme: dark)", color: "rgb(17,17,20)" },
   ],
 };
 
@@ -56,7 +57,7 @@ export const metadata = {
         url: "https://cloudfront.everycase.org/og/fallback.webp",
         width: 2400,
         height: 1260,
-        alt: "Multiple iPhone 13 models displayed in Apple's silicone cases",
+        alt: "Finest woven logo",
       },
     ],
   },
@@ -95,7 +96,7 @@ export default function RootLayout({ children }) {
             paint — so the browser bar never flashes the wrong colour. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.theme,d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches),c=d?"rgb(17,17,17)":"rgb(250,250,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}catch(e){}`,
+            __html: `try{var t=localStorage.theme,d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches),c=d?"rgb(17,17,20)":"rgb(252,248,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}catch(e){}`,
           }}
         />
         <ThemeProvider attribute="class" disableTransitionOnChange>
