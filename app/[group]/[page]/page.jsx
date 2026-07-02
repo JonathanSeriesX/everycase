@@ -66,6 +66,7 @@ export default async function ModelPage(props) {
         <KindSection
           key={section.kind}
           section={section}
+          pageModelCount={page.models.length}
           Note={noteByKind.get(section.kind)}
         />
       ))}
