@@ -37,12 +37,22 @@ export default function ThemeToggle() {
   }, [mounted, resolvedTheme]);
 
   const isDark = mounted && resolvedTheme === "dark";
+
+  // Cross-fade the whole page between themes: a temporary class on <html>
+  // turns on colour transitions everywhere for the duration of the swap.
+  const switchTheme = () => {
+    const root = document.documentElement;
+    root.classList.add("theme-transition");
+    setTheme(isDark ? "light" : "dark");
+    window.setTimeout(() => root.classList.remove("theme-transition"), 400);
+  };
+
   return (
     <button
       type="button"
       className={chrome.iconButton}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={switchTheme}
     >
       {isDark ? <MoonIcon /> : <SunIcon />}
     </button>
