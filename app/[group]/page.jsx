@@ -31,7 +31,7 @@ export default async function GroupPage(props) {
       <Breadcrumb trail={[{ href: `/${group.slug}`, title: group.title }]} />
       <h1>{group.title}</h1>
       <CardGrid>
-        {group.pages.map((page) => (
+        {group.pages.filter((page) => !page.hidden).map((page) => (
           <NavCard
             key={page.slug}
             href={`/${group.slug}/${page.slug}`}

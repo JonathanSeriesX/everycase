@@ -104,7 +104,8 @@
     display: none;
   }
 
-  .search[data-expanded] {
+  .search[data-expanded],
+  .search[data-closing] {
     position: absolute;
     inset: 0;
     z-index: 40;
@@ -117,15 +118,25 @@
     animation: search-expand 180ms ease;
   }
 
-  .search[data-expanded] .searchToggle {
+  /* Mirror of the expand animation: the overlay stays mounted for a beat
+     (data-closing) and eases out instead of vanishing. */
+  .search[data-closing] {
+    animation: search-collapse 180ms ease forwards;
+    pointer-events: none;
+  }
+
+  .search[data-expanded] .searchToggle,
+  .search[data-closing] .searchToggle {
     display: none;
   }
 
-  .search[data-expanded] .searchField {
+  .search[data-expanded] .searchField,
+  .search[data-closing] .searchField {
     flex: 1;
   }
 
-  .search[data-expanded] .searchInput {
+  .search[data-expanded] .searchInput,
+  .search[data-closing] .searchInput {
     width: 100%;
   }
 
@@ -144,6 +155,17 @@
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes search-collapse {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.97);
   }
 }
 
@@ -304,7 +326,8 @@
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-:global(html[class~="dark"]) .search[data-expanded] {
+:global(html[class~="dark"]) .search[data-expanded],
+:global(html[class~="dark"]) .search[data-closing] {
   background: rgba(17, 17, 20, 0.97);
 }
 

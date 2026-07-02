@@ -28,11 +28,33 @@ export default function SearchBox() {
   const [active, setActive] = useState(0);
   const [unavailable, setUnavailable] = useState(false);
   // On narrow viewports the box collapses to an icon and expands over the
-  // navbar (covering the logo) when opened.
+  // navbar (covering the logo) when opened. Closing goes through a short
+  // "closing" phase so the overlay animates out instead of vanishing.
   const [expanded, setExpanded] = useState(false);
+  const [closing, setClosing] = useState(false);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
   const searchId = useRef(0);
+  const closeTimer = useRef(null);
+
+  const expand = useCallback(() => {
+    clearTimeout(closeTimer.current);
+    setClosing(false);
+    setExpanded(true);
+  }, []);
+
+  const collapse = useCallback(() => {
+    setExpanded((wasExpanded) => {
+      if (wasExpanded) {
+        setClosing(true);
+        clearTimeout(closeTimer.current);
+        closeTimer.current = setTimeout(() => setClosing(false), 180);
+      }
+      return false;
+    });
+  }, []);
+
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
 
   useEffect(() => {
     if (expanded) inputRef.current?.focus();
@@ -71,13 +93,13 @@ export default function SearchBox() {
     const onClick = (event) => {
       if (!containerRef.current?.contains(event.target)) {
         setResults(null);
-        setExpanded(false);
+        collapse();
       }
     };
     const onKey = (event) => {
       if (event.key === "Escape") {
         setResults(null);
-        setExpanded(false);
+        collapse();
         inputRef.current?.blur();
       }
       const typingElsewhere =
@@ -97,12 +119,12 @@ export default function SearchBox() {
       document.removeEventListener("mousedown", onClick);
       document.removeEventListener("keydown", onKey);
     };
-  }, []);
+  }, [collapse]);
 
   const navigate = (url) => {
     setResults(null);
     setQuery("");
-    setExpanded(false);
+    collapse();
     router.push(url);
   };
 
@@ -127,13 +149,14 @@ export default function SearchBox() {
     <div
       className={chrome.search}
       data-expanded={expanded || undefined}
+      data-closing={(closing && !expanded) || undefined}
       ref={containerRef}
     >
       <button
         type="button"
         className={`${chrome.iconButton} ${chrome.searchToggle}`}
         aria-label="Search"
-        onClick={() => setExpanded(true)}
+        onClick={expand}
       >
         <SearchIcon />
       </button>
