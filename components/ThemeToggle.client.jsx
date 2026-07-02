@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
+import { flushSync } from "react-dom";
 import { useTheme } from "next-themes";
 import { SunIcon, MoonIcon } from "./icons";
 import chrome from "../styles/Chrome.module.css";
@@ -38,13 +39,18 @@ export default function ThemeToggle() {
 
   const isDark = mounted && resolvedTheme === "dark";
 
-  // Cross-fade the whole page between themes: a temporary class on <html>
-  // turns on colour transitions everywhere for the duration of the swap.
+  // Cross-fade between themes with the View Transitions API: the browser
+  // snapshots old and new and fades them as one image, so every colour moves
+  // in sync. Browsers without support just switch instantly.
   const switchTheme = () => {
-    const root = document.documentElement;
-    root.classList.add("theme-transition");
-    setTheme(isDark ? "light" : "dark");
-    window.setTimeout(() => root.classList.remove("theme-transition"), 400);
+    const next = isDark ? "light" : "dark";
+    if (typeof document.startViewTransition === "function") {
+      document.startViewTransition(() => {
+        flushSync(() => setTheme(next));
+      });
+    } else {
+      setTheme(next);
+    }
   };
 
   return (
