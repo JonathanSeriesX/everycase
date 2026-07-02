@@ -26,15 +26,21 @@ export default function ThemeToggle() {
     () => false,
   );
 
-  // The SSR theme-color metas are keyed to prefers-color-scheme; a manual
-  // toggle must override them at once so the browser bar follows the theme
-  // immediately, not the OS setting.
+  // The SSR theme-color metas are keyed to prefers-color-scheme; when the
+  // theme changes they must follow the SITE theme instead. WebKit does not
+  // reliably re-evaluate media-scoped metas on attribute mutation, so the
+  // pair is replaced with one fresh meta node — parse-time insertion always
+  // triggers a chrome repaint, in Safari included.
   useEffect(() => {
     if (!mounted) return;
     const color = THEME_COLOR[resolvedTheme] ?? THEME_COLOR.light;
     for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
-      meta.setAttribute("content", color);
+      meta.remove();
     }
+    const meta = document.createElement("meta");
+    meta.name = "theme-color";
+    meta.content = color;
+    document.head.appendChild(meta);
   }, [mounted, resolvedTheme]);
 
   const isDark = mounted && resolvedTheme === "dark";
