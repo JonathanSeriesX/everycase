@@ -2,7 +2,7 @@
 
 import { Fragment, useCallback, useState } from "react";
 import Link from "next/link";
-import { CopyIcon, CheckIcon, LinkArrowIcon } from "nextra/icons";
+import { CopyIcon, CheckIcon, LinkArrowIcon } from "./icons";
 import styles from "../styles/CaseInfoCards.module.css";
 
 const COPY_RESET_TIMEOUT = 1000;
@@ -80,9 +80,14 @@ export const CompatibilityCard = ({ compatibleModels = [] }) => {
   return (
     <InfoCard label="Compatible with">
       <div className={`${styles.chipRow} ${styles.compatibilityRow}`}>
-        {compatibleModels.map((model) => (
+        {compatibleModels.map((model, index) => (
           <Fragment key={model}>
-            <CompatibilityChip value={model} />{" "}
+            <CompatibilityChip value={model} />
+            {/* Invisible in the layout, but keeps the search index (and
+                screen readers) reading a punctuated list, not a word soup. */}
+            <span className="sr-punctuation">
+              {index < compatibleModels.length - 1 ? ", " : "."}
+            </span>{" "}
           </Fragment>
         ))}
       </div>

@@ -1,74 +1,22 @@
-import { Footer, Layout, Navbar } from "nextra-theme-docs";
-import { Banner, Head, Search } from "nextra/components";
-import { getPageMap } from "nextra/page-map";
-import { Quicksand } from "next/font/google";
+import { preload } from "react-dom";
+import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import "../styles/globals.css";
-import Image from "next/image";
+import Link from "next/link";
+import Navbar from "../components/Navbar";
 import HashNavigation from "../components/HashNavigation.client";
+import "../styles/globals.css";
 
-const quicksand = Quicksand({
-  subsets: ["latin"],
-  weight: ["300", "400"],
-  variable: "--font-quicksand",
-});
-const logo = (
-  <span
-    style={{
-      display: "inline-flex",
-      alignItems: "center",
-      flexShrink: 0,
-      whiteSpace: "nowrap",
-    }}
-  >
-    <span
-      className={quicksand.className} // Apply the Quicksand font
-      style={{
-        fontSize: "26px",
-        letterSpacing: "0px",
-        fontWeight: 300,
-        marginRight: -5,
-      }}
-    >
-      Finest
-    </span>
-    <picture
-      style={{
-        display: "inline-flex",
-        flexShrink: 0,
-      }}
-    >
-      <Image
-        src="https://cloudfront.everycase.org/assets/apple-touch-icon.png"
-        alt="Finest Woven Logo"
-        width={48}
-        height={48}
-        style={{
-          marginTop: "0px",
-          marginRight: "4px",
-          height: "48px",
-          width: "48px",
-        }}
-      />
-    </picture>
-    <span
-      className={quicksand.className}
-      style={{
-        fontSize: "26px",
-        letterSpacing: "0px",
-        fontWeight: 300,
-        marginLeft: -10,
-        marginRight: 15,
-      }}
-    >
-      Woven
-    </span>
-  </span>
-);
-
+// Safari paints its tab bar / the iOS status bar with theme-color. The
+// element visually touching the browser chrome is the sticky navbar, so
+// deliver the navbar's composited colour per scheme — the status bar then
+// reads as an extension of it. A manual theme toggle updates these metas
+// client-side (see ThemeToggle).
 export const viewport = {
-  themeColor: "#E3504F",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "rgb(252,248,250)" },
+    { media: "(prefers-color-scheme: dark)", color: "rgb(17,17,20)" },
+  ],
 };
 
 const baseTitle = {
@@ -109,14 +57,13 @@ export const metadata = {
         url: "https://cloudfront.everycase.org/og/fallback.webp",
         width: 2400,
         height: 1260,
-        alt: "Multiple iPhone 13 models displayed in Apple's silicone cases",
+        alt: "Finest woven logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     creator: "@JonathanSeriesX",
-    //<meta name="twitter:site" content="@everycase" />
   },
   manifest: "/manifest.json",
   appleWebApp: {
@@ -130,80 +77,36 @@ export const metadata = {
   },
 };
 
-/*
-const banner = (
-    <Banner storageKey="nextra-finest-woven">
-        Finest Woven is your library of Apple cases 🎉
-    </Banner>
-);
-const footer = <Footer>MITS {new Date().getFullYear()} © Nextra.</Footer>;
-*/
+export default function RootLayout({ children }) {
+  preload("https://cloudfront.everycase.org/fonts/TofinoVariableOffset.woff2", {
+    as: "font",
+    type: "font/woff2",
+    crossOrigin: "anonymous",
+  });
 
-// Navbar component
-const navbar = (
-  <Navbar
-    logo={logo}
-    //projectLink="https://github.com/JonathanSeriesX/everycase#readme"
-    /*
-    if I create twatter account, it goes here:
-    chatLink="https://twitter.com/shuding_"
-    chatIcon={
-      <svg width="24" height="24" viewBox="0 0 248 204">
-        <path
-          fill="currentColor"
-          d="M221.95 51.29c.15 2.17.15 4.34.15 6.53 0 66.73-50.8 143.69-143.69 143.69v-.04c-27.44.04-54.31-7.82-77.41-22.64 3.99.48 8 .72 12.02.73 22.74.02 44.83-7.61 62.72-21.66-21.61-.41-40.56-14.5-47.18-35.07a50.338 50.338 0 0 0 22.8-.87C27.8 117.2 10.85 96.5 10.85 72.46v-.64a50.18 50.18 0 0 0 22.92 6.32C11.58 63.31 4.74 33.79 18.14 10.71a143.333 143.333 0 0 0 104.08 52.76 50.532 50.532 0 0 1 14.61-48.25c20.34-19.12 52.33-18.14 71.45 2.19 11.31-2.23 22.15-6.38 32.07-12.26a50.69 50.69 0 0 1-22.2 27.93c10.01-1.18 19.79-3.86 29-7.95a102.594 102.594 0 0 1-25.2 26.16z"
-        />
-      </svg>
-    }*/
-  />
-);
-
-export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
       dir="ltr"
-      suppressHydrationWarning // because I use too many addons in my browser
+      suppressHydrationWarning // theme class is set pre-hydration by next-themes
     >
-      <Head
-        color={{
-          hue: 0,
-          saturation: 73,
-          lightness: 60,
-        }}
-      >
-        <link
-          rel="preload"
-          href="https://cloudfront.everycase.org/fonts/TofinoVariableOffset.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-      </Head>
-
       <body>
-        <HashNavigation />
-        <Layout
-          //banner={banner}
-          navbar={navbar}
-          search={<Search placeholder="Search by colour or SKU..." />}
-          pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/JonathanSeriesX/everycase/tree/main"
-          footer={<></>}
-          editLink={<></>}
-          feedback={{ content: "Something is wrong on this page?" }}
-          toc={{
-            float: true,
-            backToTop: true,
-            //extraContent: <p className="x:text-xs x:text-gray-100">( ͡° ͜ʖ ͡°)</p>,
+        {/* The SSR theme-color metas are keyed to the OS colour scheme; when a
+            stored manual theme disagrees, fix them during parse — before
+            paint — so the browser bar never flashes the wrong colour. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.theme,d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches),c=d?"rgb(17,17,20)":"rgb(252,248,250)";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.remove()});var m=document.createElement("meta");m.name="theme-color";m.content=c;document.head.appendChild(m)}catch(e){}`,
           }}
-          sidebar={{
-            defaultMenuCollapseLevel: 1,
-            toggleButton: true,
-            autoCollapse: false,
-          }}
-        >
-          {children}
+        />
+        <ThemeProvider attribute="class" disableTransitionOnChange>
+          <HashNavigation />
+          <Navbar />
+          <main className="site-main">{children}</main>
+          <footer className="site-footer">
+            <Link href="/about">About ★</Link>
+            <Link href="/support">Support this ♥</Link>
+          </footer>
           <Analytics />
           <SpeedInsights />
           <script
@@ -211,7 +114,7 @@ export default async function RootLayout({ children }) {
             src="https://static.cloudflareinsights.com/beacon.min.js"
             data-cf-beacon='{"token": "95e2bceaf09643619d934557acc8f72d"}'
           ></script>
-        </Layout>
+        </ThemeProvider>
       </body>
     </html>
   );
