@@ -18,19 +18,32 @@
   --site-accent: #e3504f;
   --site-fg: rgb(15, 18, 28);
   --site-bg: rgb(250, 250, 250);
+  /* Static on purpose: iOS 26 re-adapts its glass chrome whenever a page's
+     color-scheme CHANGES at runtime — an abrupt black/white plate behind the
+     bottom pill. Declared once, following the OS, there is nothing to
+     re-adapt when the site theme toggles. */
+  color-scheme: light dark;
 }
 
 html[class~="dark"] {
   --site-accent: #ff4d4d;
   --site-fg: rgba(255, 255, 255, 0.9);
   --site-bg: rgb(17, 17, 17);
-  color-scheme: dark;
 }
 
 /* The background sits on <html> (not body) so Safari samples it for the
-   tab-bar bleed, exactly like the old Nextra head style. */
+   tab-bar bleed, exactly like the old Nextra head style. It fades on the
+   view-transition's 0.2s clock so browser-painted safe-area strips can't
+   flash ahead of the snapshot cross-fade. */
 html {
   background: var(--site-bg);
+  transition: background-color 0.2s ease;
+}
+
+/* iOS switches themes without the snapshot fade; suppress the background
+   transition too so the swap is fully atomic there. */
+html.no-theme-fade {
+  transition: none;
 }
 
 body {

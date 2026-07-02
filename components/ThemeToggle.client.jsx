@@ -8,12 +8,14 @@ import chrome from "../styles/Chrome.module.css";
 
 const emptySubscribe = () => () => {};
 
-// The navbar's composited colour per scheme — the browser chrome (Safari tab
-// bar, iOS status bar) is painted to match it. Keep in sync with .navbar in
-// Chrome.module.css and the pre-paint script in app/layout.jsx.
+// Page background per theme — matches --site-bg in globals.css. Android
+// Chrome repaints its toolbar from theme-color mutations; WebKit ignores
+// attribute mutations entirely, so this is inert on iOS/macOS Safari (which
+// keep following the static media-scoped metas — and the macOS tab-bar
+// overflow depends on the value matching the page background anyway).
 const THEME_COLOR = {
-  light: "rgb(252,248,250)",
-  dark: "rgb(17,17,20)",
+  light: "rgb(250,250,250)",
+  dark: "rgb(17,17,17)",
 };
 
 export default function ThemeToggle() {
@@ -26,9 +28,9 @@ export default function ThemeToggle() {
     () => false,
   );
 
-  // The SSR theme-color metas are keyed to prefers-color-scheme; a manual
-  // toggle must override them at once so the browser bar follows the theme
-  // immediately, not the OS setting.
+  // Keep Chrome's toolbar following the site theme. Mutation only — never
+  // remove or insert meta nodes (React owns them; removal crashes the next
+  // route reconciliation).
   useEffect(() => {
     if (!mounted) return;
     const color = THEME_COLOR[resolvedTheme] ?? THEME_COLOR.light;
@@ -39,17 +41,24 @@ export default function ThemeToggle() {
 
   const isDark = mounted && resolvedTheme === "dark";
 
-  // Cross-fade between themes with the View Transitions API: the browser
-  // snapshots old and new and fades them as one image, so every colour moves
-  // in sync. Browsers without support just switch instantly.
+  // Cross-fade between themes with the View Transitions API — except on
+  // iOS, where the snapshot animation makes Safari 26 paint an opaque plate
+  // behind its glass bottom pill. iOS switches instantly (all transitions
+  // suppressed for the swap); everyone else gets the snapshot fade.
   const switchTheme = () => {
     const next = isDark ? "light" : "dark";
-    if (typeof document.startViewTransition === "function") {
+    const isIOS =
+      /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (!isIOS && typeof document.startViewTransition === "function") {
       document.startViewTransition(() => {
         flushSync(() => setTheme(next));
       });
     } else {
+      const root = document.documentElement;
+      root.classList.add("no-theme-fade");
       setTheme(next);
+      window.setTimeout(() => root.classList.remove("no-theme-fade"), 60);
     }
   };
 
