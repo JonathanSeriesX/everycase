@@ -438,15 +438,7 @@
   background: rgba(17, 17, 20, 0.97);
 }
 
-:global(html:is(.dark, .black)) /* Sits where a text glyph would: same optical size as the ★ / ♥ characters
-   in the neighbouring footer links. */
-.themeIcon {
-  display: inline-flex;
-  font-size: 0.95em;
-  vertical-align: -0.1em;
-}
-
-.themeMenuList {
+:global(html:is(.dark, .black)) .themeMenuList {
   background: rgba(19, 19, 22, 0.97);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
