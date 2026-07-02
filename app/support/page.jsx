@@ -10,12 +10,12 @@ export const metadata = {
 };
 
 export default async function SupportPage() {
-  const Content = await getProsePage("support");
-  if (!Content) notFound();
+  const prose = await getProsePage("support");
+  if (!prose) notFound();
   return (
     <article data-pagefind-body>
       <Breadcrumb trail={[{ href: "/support", title: "Support" }]} />
-      <MdxContent Content={Content} />
+      <MdxContent Content={prose.Content} />
     </article>
   );
 }

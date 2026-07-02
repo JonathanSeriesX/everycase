@@ -28,15 +28,17 @@ export default async function GroupPage(props) {
   const group = getGroup(groupSlug);
   if (!group) notFound();
 
-  // Optional editorial blurb from content/<group>.mdx, rendered between the
-  // title and the cards.
-  const Blurb = await getProsePage(group.slug);
+  // Optional editorial blurb from content/<group>.mdx; when it opens with its
+  // own `# Title`, that heading IS the page title.
+  const blurb = await getProsePage(group.slug);
 
   return (
     <div data-pagefind-body>
       <Breadcrumb trail={[{ href: `/${group.slug}`, title: group.title }]} />
-      <h1>{group.title}</h1>
-      {Blurb && <MdxContent Content={Blurb} />}
+      {!blurb?.hasH1 && (
+        <h1 data-pagefind-ignore data-pagefind-meta="title">{group.title}</h1>
+      )}
+      {blurb && <MdxContent Content={blurb.Content} />}
       <CardGrid>
         {group.pages.filter((page) => !page.hidden).map((page) => (
           <NavCard
@@ -44,6 +46,7 @@ export default async function GroupPage(props) {
             href={`/${group.slug}/${page.slug}`}
             title={page.title}
             heroCase={getHeroCase(page)}
+            image={page.image}
           />
         ))}
       </CardGrid>

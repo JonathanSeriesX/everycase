@@ -50,11 +50,14 @@ export default async function ModelPage(props) {
     <article data-pagefind-body>
       <Breadcrumb
         trail={[
-          { href: `/${group.slug}`, title: group.title },
+          // Promoted pages (AirTag) sit directly under Home.
+          ...(page.topLevel ? [] : [{ href: `/${group.slug}`, title: group.title }]),
           { href: `/${group.slug}/${page.slug}`, title: page.title },
         ]}
       />
-      <h1>{page.title}</h1>
+      {!notes?.hasH1 && (
+        <h1 data-pagefind-ignore data-pagefind-meta="title">{page.title}</h1>
+      )}
       {notes?.intro && <MdxContent Content={notes.intro} />}
       {proseSections.map((note) => (
         <section key={note.heading}>

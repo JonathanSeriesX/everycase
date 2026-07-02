@@ -16,10 +16,10 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const Intro = await getProsePage("index");
+  const intro = await getProsePage("index");
   return (
     <div data-pagefind-body>
-      <MdxContent Content={Intro} />
+      <MdxContent Content={intro?.Content} />
       <CardGrid>
         {HOME_CARDS.map((card) => {
           const group = getGroup(card.group);
@@ -32,6 +32,7 @@ export default async function HomePage() {
                 title={page.title}
                 subtitle={page.blurb}
                 heroCase={getHeroCase(page)}
+                image={page.image}
               />
             );
           }
@@ -42,6 +43,7 @@ export default async function HomePage() {
               title={group.title}
               subtitle={group.blurb}
               heroCase={getGroupHeroCase(group)}
+              image={group.image}
             />
           );
         })}

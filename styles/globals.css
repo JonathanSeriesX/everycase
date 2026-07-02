@@ -193,6 +193,17 @@ h4 {
   text-underline-offset: 2px;
 }
 
+/* Present in the markup for Pagefind and screen readers, invisible in the
+   layout: punctuation between compatibility chips. */
+.sr-punctuation {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Arrow-decorated MDX links: keep the label and its arrow on one line. */
 .mdx-link-inner {
   display: inline-block;
