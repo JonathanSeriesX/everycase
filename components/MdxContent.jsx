@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LinkArrowIcon, InfoIcon } from "./icons";
 import chrome from "../styles/Chrome.module.css";
 
@@ -13,20 +14,31 @@ function Callout({ children }) {
 }
 
 // Links get the trailing arrow except pure hash anchors, matching the old
-// site-wide MDX link styling.
+// site-wide MDX link styling. Internal absolute paths navigate client-side
+// via next/link; relative and external ones stay plain anchors.
 function ArrowLink({ href = "", children, ...props }) {
   const external = /^https?:\/\//.test(href);
   const showArrow = href && !href.startsWith("#");
+  const inner = (
+    <span className="mdx-link-inner">
+      {children}
+      {showArrow && <LinkArrowIcon className="mdx-link-arrow" height="1em" />}
+    </span>
+  );
+  if (href.startsWith("/")) {
+    return (
+      <Link href={href} {...props}>
+        {inner}
+      </Link>
+    );
+  }
   return (
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
       {...props}
     >
-      <span className="mdx-link-inner">
-        {children}
-        {showArrow && <LinkArrowIcon className="mdx-link-arrow" height="1em" />}
-      </span>
+      {inner}
     </a>
   );
 }
