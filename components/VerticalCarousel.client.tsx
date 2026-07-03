@@ -34,6 +34,8 @@ interface VerticalCarouselProps {
   material?: string;
   standalone?: boolean;
   primary?: boolean;
+  /** False while this grid sits in a tab panel that was never opened. */
+  activated?: boolean;
 }
 
 const VerticalCarouselClient = ({
@@ -42,6 +44,7 @@ const VerticalCarouselClient = ({
   material,
   standalone = false,
   primary = true,
+  activated = true,
 }: VerticalCarouselProps) => {
   const [copiedSku, setCopiedSku] = useState<string | null>(null);
 
@@ -81,6 +84,7 @@ const VerticalCarouselClient = ({
               key={item.SKU}
               item={item}
               priority={primary}
+              activated={activated}
               copiedSku={copiedSku}
               displayLabel={displayLabel}
               formatSkuLabel={formatSkuLabel}

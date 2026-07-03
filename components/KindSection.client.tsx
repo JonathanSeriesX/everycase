@@ -52,6 +52,10 @@ export default function KindSectionClient({
   children,
 }: KindSectionClientProps) {
   const [active, setActive] = useState(0);
+  // Tabs the reader has opened at least once. Images in never-visited panels
+  // stay unfetched (loading="lazy" inside hidden subtrees loads nothing);
+  // visiting a tab flips its panel to eager so it loads in one go.
+  const [visited, setVisited] = useState<number[]>([0]);
 
   const activeModel = showTabs ? entries[active]?.model : null;
   const pills = CURRENCIES.flatMap((code) => {
@@ -100,6 +104,9 @@ export default function KindSectionClient({
               className={chrome.tab}
               onClick={(e) => {
                 setActive(index);
+                setVisited((seen) =>
+                  seen.includes(index) ? seen : [...seen, index],
+                );
                 e.currentTarget.blur();
               }}
             >
@@ -120,6 +127,7 @@ export default function KindSectionClient({
             material={kind}
             standalone={!showTabs}
             primary={index === 0}
+            activated={visited.includes(index)}
           />
         </div>
       ))}

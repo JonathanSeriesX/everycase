@@ -10,6 +10,8 @@ import styles from "../styles/VerticalCarousel.module.css";
 interface CaseCardProps {
   item: CaseRecord;
   priority: boolean;
+  /** False while the card sits in a tab panel that was never opened. */
+  activated: boolean;
   /** SKU whose copy button currently shows the success tick. */
   copiedSku: string | null;
   displayLabel: (colour: string, model: string) => string | undefined;
@@ -20,6 +22,7 @@ interface CaseCardProps {
 const CaseCard = ({
   item,
   priority,
+  activated,
   copiedSku,
   displayLabel,
   formatSkuLabel,
@@ -41,7 +44,12 @@ const CaseCard = ({
         prefetch={false}
       >
         <div className={styles.imageShell}>
-          <CaseImage code={imageCode} alt={imageAlt} priority={priority} />
+          <CaseImage
+            code={imageCode}
+            alt={imageAlt}
+            priority={priority}
+            activated={activated}
+          />
         </div>
         <strong className={`${styles.caseTitle} ${styles.linkTitle}`}>
           {displayLabel(item.colour, item.model)}

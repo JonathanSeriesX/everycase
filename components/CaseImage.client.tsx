@@ -14,6 +14,7 @@ interface CaseImageProps {
   code: string;
   alt?: string;
   priority?: boolean;
+  activated?: boolean;
 }
 
 /**
@@ -21,14 +22,18 @@ interface CaseImageProps {
  * Apple's CDN render if that 404s. Shared by CaseCard and NavCard.
  *
  * `priority` marks the initially-visible tab's cards: those load eagerly at
- * high priority. Cards in hidden tab panels are lazy — the browser fetches
- * them only when their tab is revealed, so they never compete with the
- * visible grid (or the LCP image) for bandwidth.
+ * high priority. Cards in hidden tab panels start with `activated: false` —
+ * `loading="lazy"` inside a `hidden` subtree means the browser fetches
+ * nothing, so they never compete with the visible grid (or the LCP image)
+ * for bandwidth. Activating the tab flips them to eager, which starts the
+ * whole panel loading at once (native lazy never fires for images revealed
+ * from a hidden ancestor — Chrome only rechecks on scroll).
  */
 export default function CaseImage({
   code,
   alt = "",
   priority = false,
+  activated = true,
 }: CaseImageProps) {
   const sources = code
     ? [
@@ -48,7 +53,7 @@ export default function CaseImage({
       title={alt || undefined}
       className={styles.image}
       fetchPriority={priority ? "high" : "low"}
-      loading={priority ? "eager" : "lazy"}
+      loading={priority || activated ? "eager" : "lazy"}
       unoptimized
       onError={() =>
         setIndex((current) => Math.min(current + 1, sources.length - 1))
