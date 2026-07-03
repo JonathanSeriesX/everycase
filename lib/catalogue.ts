@@ -300,7 +300,10 @@ export const GROUPS: CatalogueGroup[] = [
         title: "Docking Stations",
         blurb: "iPhone Lightning Docks",
         hero: "ML8H2",
-        models: ["Dock"],
+        models: ["iPhone 5s Dock", "iPhone 5c Dock", "Dock"],
+        // The 5s and 5c docks are one white cradle each, so combine them into
+        // a single grid labelled by model, exactly like Clear Cases.
+        merged: ["iPhone Dock"],
       },
       {
         slug: "macbook",
@@ -387,8 +390,7 @@ const KIND_ORDER = [
   "MagSafe Duo Charger",
   "MagSafe Battery Pack",
   "iPhone Air MagSafe Battery",
-  "iPhone 5s Dock",
-  "iPhone 5c Dock",
+  "iPhone Dock",
   "iPhone Lightning Dock",
 ];
 
