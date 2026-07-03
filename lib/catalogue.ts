@@ -641,6 +641,43 @@ export function getGroupHeroCase(group: CatalogueGroup): HeroCase | null {
   return null;
 }
 
+// The everypreview code a card image resolves to (NavCard/CaseCard do the same).
+const heroImageCode = (hero: HeroCase | null): string =>
+  (hero?.alt_thumbnail || hero?.SKU || "").trim();
+
+/**
+ * The image codes each home-card destination shows first — hero artwork for
+ * a group's page grid, the first visible case cards for a top-level page.
+ * The home page prefetches these (up to `limit` per destination) so the
+ * first click lands on an already-warm grid.
+ */
+export function getHomePrefetchImageCodes(limit = 10): string[] {
+  const codes: string[] = [];
+  for (const card of HOME_CARDS) {
+    const cardCodes: string[] = [];
+    if (card.page !== undefined) {
+      const page = card.group
+        ? getPage(card.group, card.page)
+        : getTopPage(card.page);
+      if (!page) continue;
+      // The page's grids in DOM order; only the visible (first) tab counts.
+      for (const section of getPageSections(page)) {
+        for (const row of section.models[0]?.cases ?? []) {
+          cardCodes.push(heroImageCode(row));
+        }
+      }
+    } else {
+      const group = getGroup(card.group);
+      if (!group) continue;
+      for (const page of group.pages) {
+        cardCodes.push(heroImageCode(getHeroCase(page)));
+      }
+    }
+    codes.push(...cardCodes.filter(Boolean).slice(0, limit));
+  }
+  return [...new Set(codes)];
+}
+
 // Where a case lives in the drill-down: the first page whose model list
 // contains the case's model. Used for case-page breadcrumbs. Returns
 // { group, page }; group is null for top-level pages (their URL is /<page.slug>).

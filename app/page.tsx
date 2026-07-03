@@ -6,10 +6,14 @@ import {
   getTopPage,
   getHeroCase,
   getGroupHeroCase,
+  getHomePrefetchImageCodes,
 } from "../lib/catalogue";
 import { getProsePage } from "../lib/notes";
 import MdxContent from "../components/MdxContent";
 import NavCard, { CardGrid } from "../components/NavCard";
+import PrefetchImages from "../components/PrefetchImages.client";
+
+const PREVIEW_BASE_URL = "https://cloudfront.everycase.org/everypreview";
 
 export const dynamic = "force-static";
 
@@ -60,6 +64,13 @@ export default async function HomePage() {
           );
         })}
       </CardGrid>
+      {/* After this page has loaded, warm the cache with the first images of
+          each destination card so the next click renders instantly. */}
+      <PrefetchImages
+        urls={getHomePrefetchImageCodes().map(
+          (code) => `${PREVIEW_BASE_URL}/${code}.avif`,
+        )}
+      />
     </div>
   );
 }
