@@ -1,4 +1,4 @@
-import { preload } from "react-dom";
+import { preconnect, preload } from "react-dom";
 import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -83,6 +83,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // Every page pulls its imagery from these two hosts; warming the
+  // connections up front shaves DNS + TLS setup off the first image fetch.
+  preconnect("https://cloudfront.everycase.org");
+  preconnect("https://store.storeimages.cdn-apple.com");
   preload("https://cloudfront.everycase.org/fonts/TofinoVariableOffset.woff2", {
     as: "font",
     type: "font/woff2",
