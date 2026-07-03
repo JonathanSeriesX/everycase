@@ -34,7 +34,8 @@ interface VerticalCarouselProps {
   material?: string;
   standalone?: boolean;
   primary?: boolean;
-  /** False while this grid sits in a tab panel that was never opened. */
+  /** False while this grid's hidden tab panel is still queued behind the
+      visible content (see KindSectionClient). */
   activated?: boolean;
 }
 

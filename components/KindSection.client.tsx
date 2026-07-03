@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { formatPrice } from "../lib/productRegions";
 import VerticalCarouselClient from "./VerticalCarousel.client";
 import type { CaseRecord } from "../lib/getCasesFromCSV";
@@ -52,10 +52,25 @@ export default function KindSectionClient({
   children,
 }: KindSectionClientProps) {
   const [active, setActive] = useState(0);
-  // Tabs the reader has opened at least once. Images in never-visited panels
-  // stay unfetched (loading="lazy" inside hidden subtrees loads nothing);
-  // visiting a tab flips its panel to eager so it loads in one go.
-  const [visited, setVisited] = useState<number[]>([0]);
+  // Panels whose images may load. Hidden panels start out deferred
+  // (loading="lazy" inside hidden subtrees fetches nothing) so the visible
+  // grid — and the LCP image — never share bandwidth with them; they queue
+  // up behind everything else instead of being skipped: once the page has
+  // finished loading (or the reader opens a tab early) they flip to eager
+  // and download at low priority.
+  const [activated, setActivated] = useState<number[]>([0]);
+
+  const panelCount = entries.length;
+  useEffect(() => {
+    const activateAll = () =>
+      setActivated(Array.from({ length: panelCount }, (_, index) => index));
+    if (document.readyState === "complete") {
+      activateAll();
+      return;
+    }
+    window.addEventListener("load", activateAll, { once: true });
+    return () => window.removeEventListener("load", activateAll);
+  }, [panelCount]);
 
   const activeModel = showTabs ? entries[active]?.model : null;
   const pills = CURRENCIES.flatMap((code) => {
@@ -104,7 +119,7 @@ export default function KindSectionClient({
               className={chrome.tab}
               onClick={(e) => {
                 setActive(index);
-                setVisited((seen) =>
+                setActivated((seen) =>
                   seen.includes(index) ? seen : [...seen, index],
                 );
                 e.currentTarget.blur();
@@ -127,7 +142,7 @@ export default function KindSectionClient({
             material={kind}
             standalone={!showTabs}
             primary={index === 0}
-            activated={visited.includes(index)}
+            activated={activated.includes(index)}
           />
         </div>
       ))}

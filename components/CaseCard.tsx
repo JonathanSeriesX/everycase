@@ -10,7 +10,8 @@ import styles from "../styles/VerticalCarousel.module.css";
 interface CaseCardProps {
   item: CaseRecord;
   priority: boolean;
-  /** False while the card sits in a tab panel that was never opened. */
+  /** False while the card's hidden tab panel is still queued behind the
+      visible content (see KindSectionClient). */
   activated: boolean;
   /** SKU whose copy button currently shows the success tick. */
   copiedSku: string | null;

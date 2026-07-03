@@ -21,13 +21,14 @@ interface CaseImageProps {
  * Case artwork with graceful degradation: CloudFront AVIF preview first,
  * Apple's CDN render if that 404s. Shared by CaseCard and NavCard.
  *
+ * Everything downloads — visible grids first, hidden tab panels last.
  * `priority` marks the initially-visible tab's cards: those load eagerly at
- * high priority. Cards in hidden tab panels start with `activated: false` —
- * `loading="lazy"` inside a `hidden` subtree means the browser fetches
- * nothing, so they never compete with the visible grid (or the LCP image)
- * for bandwidth. Activating the tab flips them to eager, which starts the
- * whole panel loading at once (native lazy never fires for images revealed
- * from a hidden ancestor — Chrome only rechecks on scroll).
+ * high priority. Cards in hidden panels start with `activated: false`
+ * (`loading="lazy"` inside a `hidden` subtree fetches nothing) and are
+ * flipped to eager by KindSectionClient once the page has loaded, so they
+ * queue behind the visible content instead of competing with it. The flip
+ * is explicit because native lazy never fires for images revealed from a
+ * hidden ancestor — Chrome only rechecks on scroll.
  */
 export default function CaseImage({
   code,
