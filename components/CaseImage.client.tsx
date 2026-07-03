@@ -20,9 +20,10 @@ interface CaseImageProps {
  * Case artwork with graceful degradation: CloudFront AVIF preview first,
  * Apple's CDN render if that 404s. Shared by CaseCard and NavCard.
  *
- * Everything loads immediately — no lazy loading, no viewport gating.
- * `priority` marks the initially-visible tab's cards as high-priority so the
- * browser fetches them first; hidden tabs follow at low priority.
+ * `priority` marks the initially-visible tab's cards: those load eagerly at
+ * high priority. Cards in hidden tab panels are lazy — the browser fetches
+ * them only when their tab is revealed, so they never compete with the
+ * visible grid (or the LCP image) for bandwidth.
  */
 export default function CaseImage({
   code,
@@ -47,7 +48,7 @@ export default function CaseImage({
       title={alt || undefined}
       className={styles.image}
       fetchPriority={priority ? "high" : "low"}
-      loading="eager"
+      loading={priority ? "eager" : "lazy"}
       unoptimized
       onError={() =>
         setIndex((current) => Math.min(current + 1, sources.length - 1))
