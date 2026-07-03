@@ -162,6 +162,14 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
   // What each gallery tile currently shows: the small AVIF preview at first,
   // silently upgraded to the full-res source once it is preloaded.
   const [tileSrcs, setTileSrcs] = useState<Record<number, string>>({});
+  // Full-res sources are heavy (~800 KB each); fetching them is deferred
+  // until the visitor first opens the lightbox and actually wants hi-res.
+  const [upgradeStarted, setUpgradeStarted] = useState(false);
+  // Per-tile position in the [preview, ...full-res] fallback chain, advanced
+  // by onError when a tile's current source 404s.
+  const [tileFallbacks, setTileFallbacks] = useState<Record<number, number>>(
+    {},
+  );
 
   // While the lightbox is open the URL carries the current image's filename.
   // replaceState only — browsing slides must never grow the history stack.
@@ -217,11 +225,13 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
     });
   };
 
-  // Upgrade tiles one at a time, first to last: preload + decode the
-  // full-res source in the background, then swap the tile's src — the
-  // replacement is invisible. A source that fails advances the slide's
-  // fallback chain (webp -> Apple CDN) and the next candidate is tried.
+  // Once the lightbox has been opened, upgrade tiles one at a time, first to
+  // last: preload + decode the full-res source in the background, then swap
+  // the tile's src — the replacement is invisible. A source that fails
+  // advances the slide's fallback chain (webp -> Apple CDN) and the next
+  // candidate is tried.
   useEffect(() => {
+    if (!upgradeStarted) return;
     let cancelled = false;
     (async () => {
       for (let index = 0; index < baseSlides.length; index++) {
@@ -245,7 +255,7 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by the source list itself
-  }, [sourceKey]);
+  }, [sourceKey, upgradeStarted]);
 
   const gridStyle = useMemo(() => {
     const { minColumnWidth, maxColumns, gap } = GRID_CONFIG;
@@ -261,28 +271,50 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
         className="lightbox-grid not-prose grid w-full gap-3 mx-auto"
         style={gridStyle}
       >
-        {slides.map((slide, index) => (
-          <button
-            key={slide.originalSrc ?? slide.src ?? index}
-            type="button"
-            className="lightbox-tile relative w-full overflow-hidden"
-            onClick={() => {
-              lightboxOpenRef.current = true;
-              setLightboxIndex(index);
-            }}
-            aria-label={`Open ${slide.alt || "case image"}`}
-          >
-            <Image
-              src={tileSrcs[index] ?? slide.previewSrc ?? slide.src}
-              alt={slide.alt || "Case image"}
-              loading="lazy"
-              width={slide.width}
-              height={slide.height}
-              className="block h-auto w-full object-contain"
-              unoptimized
-            />
-          </button>
-        ))}
+        {slides.map((slide, index) => {
+          // Preview first; on a 404 the tile walks the full-res chain itself
+          // (the background upgrade loop only runs after the lightbox opens).
+          const candidates = [
+            slide.previewSrc,
+            ...(slide.sources ?? []),
+          ].filter((source): source is string => Boolean(source));
+          const fallbackIndex = Math.min(
+            tileFallbacks[index] ?? 0,
+            candidates.length - 1,
+          );
+          return (
+            <button
+              key={slide.originalSrc ?? slide.src ?? index}
+              type="button"
+              className="lightbox-tile relative w-full overflow-hidden"
+              onClick={() => {
+                lightboxOpenRef.current = true;
+                setUpgradeStarted(true);
+                setLightboxIndex(index);
+              }}
+              aria-label={`Open ${slide.alt || "case image"}`}
+            >
+              <Image
+                src={tileSrcs[index] ?? candidates[fallbackIndex] ?? slide.src}
+                alt={slide.alt || "Case image"}
+                loading="lazy"
+                width={slide.width}
+                height={slide.height}
+                className="block h-auto w-full object-contain"
+                unoptimized
+                onError={() =>
+                  setTileFallbacks((previous) => ({
+                    ...previous,
+                    [index]: Math.min(
+                      (previous[index] ?? 0) + 1,
+                      candidates.length - 1,
+                    ),
+                  }))
+                }
+              />
+            </button>
+          );
+        })}
       </div>
       <Lightbox
         slides={slides}
