@@ -42,7 +42,6 @@ const CaseCard = ({
         href={`/case/${item.SKU}`}
         className={styles.cardLink}
         aria-label={imageAlt || undefined}
-        prefetch={false}
       >
         <div className={styles.imageShell}>
           <CaseImage
