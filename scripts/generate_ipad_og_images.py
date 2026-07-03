@@ -18,23 +18,58 @@ from PIL import Image, ImageChops
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 DATABASE_PATH = SCRIPT_DIR / "database.csv"
-CONTENT_DIR = REPO_ROOT / "content" / "ipad"
+CATALOGUE_PATH = REPO_ROOT / "lib" / "catalogue.ts"
+CATALOGUE_GROUP = "ipad"
 SOURCE_DIR = Path("/Volumes/Storage/Images/1_final-sources")
 DEFAULT_OUTPUT_DIR = Path("/Volumes/Storage/Images/og")
-
-MODEL_PATTERN = re.compile(r'\bmodel:\s*["\']([^"\']+)["\']')
 ALLOWED_KIND_PARTS = ("smart cover", "smart case", "smart folio")
 OUTPUT_SIZE = (2400, 1260)
-PRODUCT_CANVAS_SIZE = (3000, 3000)
-PRODUCT_MAX_SIZE = (2500, 2600)
+PRODUCT_CANVAS_SIZE = (2200, 2200)
+PRODUCT_MAX_SIZE = (1600, 2000)
 BACKGROUND_COLOUR = (241, 241, 241, 255)
 ROTATIONS = (210, 30)
-CENTRES = ((350, 630), (2050, 630))
+CENTRES = ((380, 520), (2020, 740))
 DEFAULT_VARIANTS = 10
 PRODUCTS_PER_IMAGE = 2
 COLLISION_NUDGE = 12
 MAX_COLLISION_PASSES = 100
+# Once the two products no longer overlap, keep pushing them apart so the
+# reference composition's wide white diagonal band survives the collision
+# pass (which otherwise stops at the first pixel of separation).
+EXTRA_SEPARATION = 110
 RESIZED_CACHE_LIMIT = 20
+
+# The composition needs the flat, fully closed front view. On the older pages
+# the main SKU image shows the cover slightly ajar, so per-page rules restrict
+# the SKU pool to lines that have a flat shot and name the _AV view that
+# carries it ("" = the main image). Pages without an entry use every eligible
+# SKU's main image. pro-97 has no flat view at all, so its variants alternate
+# between the folded-triangle and stand views for the user to judge.
+PAGE_ASSET_RULES: dict[str, dict] = {
+    "air-2013": {
+        "skus": {"MQ4L2", "MQ4M2", "MQ4N2", "MQ4P2", "MQ4Q2"},
+        "views": [""],
+    },
+    "2": {
+        "skus": {"MD454", "MD455", "MD456", "MD457", "MD458", "MD579"},
+        "views": ["_AV4_BLACK"],
+    },
+    "mini-2012": {
+        "skus": {"MD828", "MD963", "MD967", "MD968", "MD969", "MD970"},
+        "views": ["_AV2"],
+    },
+    # No flat closed cover view exists for this line, so the page uses a
+    # hand-picked pair of silicone shells instead: first SKU lands on the
+    # left (the upside-down slot), second on the right.
+    "pro-97": {
+        "fixed": ("MMG42", "MM262"),
+        "views": [""],
+    },
+    "pro-129": {
+        "fixed": ("MK0E2", "MPV12"),
+        "views": [""],
+    },
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -50,12 +85,50 @@ def read_database() -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def page_models(page_path: Path) -> list[str]:
-    return list(dict.fromkeys(MODEL_PATTERN.findall(page_path.read_text())))
+def catalogue_pages() -> "OrderedDict[str, list[str]]":
+    """Read page slugs and their model lists from the site tree.
+
+    The MDX files under content/ are prose-only since the App Router rewrite;
+    lib/catalogue.ts is the single source of truth for which models belong to
+    which landing page.
+    """
+    text = CATALOGUE_PATH.read_text(encoding="utf-8")
+    group_match = re.search(rf'slug:\s*"{CATALOGUE_GROUP}"', text)
+    if group_match is None:
+        raise ValueError(f'no "{CATALOGUE_GROUP}" group in {CATALOGUE_PATH}')
+    pages_start = text.index("pages: [", group_match.end())
+    depth = 0
+    for index in range(text.index("[", pages_start), len(text)):
+        if text[index] == "[":
+            depth += 1
+        elif text[index] == "]":
+            depth -= 1
+            if depth == 0:
+                break
+    else:
+        raise ValueError(f"unterminated pages array in {CATALOGUE_PATH}")
+    section = text[pages_start:index]
+
+    pages: "OrderedDict[str, list[str]]" = OrderedDict()
+    slug = None
+    token_pattern = re.compile(r'slug:\s*"([^"]+)"|models:\s*\[([^\]]*)\]')
+    for match in token_pattern.finditer(section):
+        if match.group(1) is not None:
+            slug = match.group(1)
+        elif slug is not None:
+            pages[slug] = re.findall(r'"([^"]+)"', match.group(2))
+            slug = None
+    if not pages:
+        raise ValueError(f'no pages parsed for "{CATALOGUE_GROUP}" group')
+    return pages
 
 
-def base_asset(sku: str) -> Path:
-    return SOURCE_DIR / f"{sku}.png"
+def view_asset(sku: str, view: str = "") -> Path:
+    return SOURCE_DIR / f"{sku}{view}.png"
+
+
+def page_views(page_slug: str) -> list[str]:
+    return PAGE_ASSET_RULES.get(page_slug, {}).get("views", [""])
 
 
 def kind_is_supported(kind: str) -> bool:
@@ -69,12 +142,16 @@ def eligible_products(
     rows: list[dict[str, str]], models: list[str], page_slug: str
 ) -> list[tuple[dict[str, str], Path]]:
     eligible_models = set(models)
+    rule = PAGE_ASSET_RULES.get(page_slug, {})
+    allowed_skus = rule.get("skus")
+    views = page_views(page_slug)
     candidates = [
-        (row, base_asset(row["SKU"]))
+        (row, view_asset(row["SKU"], views[0]))
         for row in rows
         if row["model"] in eligible_models
         and kind_is_supported(row["kind"])
-        and base_asset(row["SKU"]).is_file()
+        and (allowed_skus is None or row["SKU"] in allowed_skus)
+        and all(view_asset(row["SKU"], view).is_file() for view in views)
     ]
     if len({row["SKU"] for row, _ in candidates}) < PRODUCTS_PER_IMAGE:
         raise ValueError(f"{page_slug}: fewer than two eligible local masters")
@@ -225,6 +302,8 @@ def place_layers(layers: list[Image.Image]) -> list[list[int]]:
     ]
     for _ in range(MAX_COLLISION_PASSES):
         if not alpha_overlap(layers[0], positions[0], layers[1], positions[1]):
+            positions[0][0] -= EXTRA_SEPARATION
+            positions[1][0] += EXTRA_SEPARATION
             return positions
         positions[0][0] -= COLLISION_NUDGE
         positions[1][0] += COLLISION_NUDGE
@@ -259,16 +338,15 @@ def render(
     transparent.close()
 
 
-def selected_pages(requested_slugs: list[str]) -> list[Path]:
-    pages = sorted(CONTENT_DIR.glob("*.mdx"))
+def selected_pages(requested_slugs: list[str]) -> "OrderedDict[str, list[str]]":
+    pages = catalogue_pages()
     if not requested_slugs:
         return pages
-    requested = {slug.removesuffix(".mdx") for slug in requested_slugs}
-    available = {page.stem for page in pages}
-    missing = requested - available
+    requested = [slug.removesuffix(".mdx") for slug in requested_slugs]
+    missing = set(requested) - set(pages)
     if missing:
         raise ValueError(f"unknown page slug(s): {', '.join(sorted(missing))}")
-    return [page for page in pages if page.stem in requested]
+    return OrderedDict((slug, pages[slug]) for slug in pages if slug in requested)
 
 
 def main() -> int:
@@ -289,14 +367,23 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     cache = ProductCache()
     failures: list[str] = []
-    for page in pages:
+    for slug, models in pages.items():
         try:
-            models = page_models(page)
-            candidates = eligible_products(rows, models, page.stem)
-            variants = plan_variants(candidates, page.stem, args.variants)
+            fixed = PAGE_ASSET_RULES.get(slug, {}).get("fixed")
+            if fixed:
+                by_sku = {row["SKU"]: row for row in rows}
+                variants = [[(by_sku[sku], view_asset(sku)) for sku in fixed]]
+            else:
+                candidates = eligible_products(rows, models, slug)
+                variants = plan_variants(candidates, slug, args.variants)
+            views = page_views(slug)
             for number, products in enumerate(variants, start=1):
-                filename = f"{page.stem}-{number}.png"
-                transparent_filename = f"{page.stem}-{number}-transparent.png"
+                # Cycle through the page's candidate views so pages with
+                # several usable shots produce examples of each.
+                view = views[(number - 1) % len(views)]
+                products = [(row, view_asset(row["SKU"], view)) for row, _ in products]
+                filename = f"ipad-{slug}-{number}.png"
+                transparent_filename = f"ipad-{slug}-{number}-transparent.png"
                 render(
                     products,
                     args.output_dir / filename,
@@ -307,9 +394,9 @@ def main() -> int:
                     f'{row["SKU"]} ({row["model"]}, {row["kind"]})'
                     for row, _ in products
                 )
-                print(f"{page.stem}: {number}/{args.variants}: {selection}", flush=True)
+                print(f"{slug}: {number}/{args.variants}: {selection}", flush=True)
         except Exception as error:
-            failures.append(f"{page.stem}: {error}")
+            failures.append(f"{slug}: {error}")
 
     if failures:
         print("\nFailed pages:", file=sys.stderr)
