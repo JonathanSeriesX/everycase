@@ -30,18 +30,16 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "remark-gfm": "^4.0.1",
-    "yet-another-react-lightbox": "^3.32.0",
-    "zod": "4.3.6"
+    "yet-another-react-lightbox": "^3.32.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.1",
     "@types/node": "^26.0.1",
     "@types/react": "^19.2.17",
-    "autoprefixer": "^10.5.2",
+    "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.9",
     "pagefind": "^1.5.2",
-    "postcss": "^8.5.15",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3"
   },

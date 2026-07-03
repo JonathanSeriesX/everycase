@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { getAltSkuRedirects } from "./lib/altSkus.js";
+import { getAltSkuRedirects } from "./lib/altSkus";
 
 const surpriseTargets = [
   "/wp-admin",
