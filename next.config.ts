@@ -50,31 +50,6 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["*.orb.local", "127.0.0.1"],
   async redirects() {
     return [
-      {
-        source: "/pre-notch-iphone/:path*",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/pre-liquid-ipad/:path*",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/years/:path*",
-        destination: "/",
-        permanent: false,
-      },
-      {
-        source: "/years",
-        destination: "/",
-        permanent: false,
-      },
-      {
-        source: "/ancient/:path*",
-        destination: "/",
-        permanent: true,
-      },
       // Re-released cases (alt_sku) redirect to their original case page.
       ...getAltSkuRedirects(),
     ];

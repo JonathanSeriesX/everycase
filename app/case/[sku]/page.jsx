@@ -253,11 +253,13 @@ export default async function CasePage({ params }) {
         trail={[
           ...(home
             ? [
-                ...(home.page.topLevel
-                  ? []
-                  : [{ href: `/${home.group.slug}`, title: home.group.title }]),
+                ...(home.group
+                  ? [{ href: `/${home.group.slug}`, title: home.group.title }]
+                  : []),
                 {
-                  href: `/${home.group.slug}/${home.page.slug}`,
+                  href: home.group
+                    ? `/${home.group.slug}/${home.page.slug}`
+                    : `/${home.page.slug}`,
                   title: home.page.title,
                 },
               ]
