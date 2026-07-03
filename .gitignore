@@ -28,3 +28,6 @@ yarn.lock
 package-lock.json
 .pnpm-store
 .env*
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
