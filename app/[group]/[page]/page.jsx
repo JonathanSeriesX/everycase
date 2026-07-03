@@ -21,7 +21,8 @@ export async function generateMetadata(props) {
     // The browser/OG title is the editorial H1 from the notes file; the
     // short catalogue title stays internal (breadcrumbs, cards).
     title: getPageHeading(groupSlug, pageSlug) ?? page.title,
-    imageUrl: await resolveOgImage(page.slug),
+    // CDN og files predate the short slugs: try "iphone-17" then "17".
+    imageUrl: await resolveOgImage(`${groupSlug}-${page.slug}`, page.slug),
   });
 }
 
