@@ -31,6 +31,8 @@ interface KindSectionClientProps {
   /** `model` and `label` are null for merged sections (single grid, no tabs). */
   entries: { model: string | null; label: string | null; cases: CaseRecord[] }[];
   showTabs: boolean;
+  /** One combined grid across models (Clear Cases, iPhone Dock). */
+  merged: boolean;
   children?: ReactNode;
 }
 
@@ -49,6 +51,7 @@ export default function KindSectionClient({
   price,
   entries,
   showTabs,
+  merged,
   children,
 }: KindSectionClientProps) {
   const [active, setActive] = useState(0);
@@ -140,6 +143,7 @@ export default function KindSectionClient({
             cases={entry.cases}
             model={entry.model ?? undefined}
             material={kind}
+            merged={merged}
             standalone={!showTabs}
             primary={index === 0}
             activated={activated.includes(index)}

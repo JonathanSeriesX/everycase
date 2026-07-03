@@ -63,6 +63,7 @@ export default function KindSection({ section, page, Note }: KindSectionProps) {
       price={section.price}
       entries={entries}
       showTabs={showTabs}
+      merged={section.merged}
     >
       {Note && <MdxContent Content={Note} />}
     </KindSectionClient>

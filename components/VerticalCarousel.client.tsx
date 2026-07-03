@@ -9,16 +9,18 @@ const COPY_BADGE_RESET_TIMEOUT = 1600;
 
 const formatSkuLabel = (sku: string) => (sku || "").replace(/zm\/?a?$/i, "");
 
-// What the card's title line shows. Normally the colour — except for Clear
-// Cases, where every colour would read "Clear", so the model name is used.
+// What the card's title line shows. Normally the colour — except for merged
+// grids, which combine several models into one section (Clear Cases, the
+// iPhone Dock), where the colour would repeat, so the model name is shown.
 const getDisplayLabel = (
   itemColour: string,
   itemModel: string,
   model?: string,
   material?: string,
+  merged?: boolean,
 ) => {
   const normalizedMaterial = material?.trim().toLowerCase();
-  if (normalizedMaterial === "clear case") {
+  if (merged || normalizedMaterial === "clear case") {
     return itemModel || model;
   }
   if (itemColour === "Clear Case") {
@@ -32,6 +34,8 @@ interface VerticalCarouselProps {
   cases?: CaseRecord[];
   model?: string;
   material?: string;
+  /** Merged grid (no tabs): label cards by model rather than colour. */
+  merged?: boolean;
   standalone?: boolean;
   primary?: boolean;
   /** False while this grid's hidden tab panel is still queued behind the
@@ -43,6 +47,7 @@ const VerticalCarouselClient = ({
   cases = [],
   model,
   material,
+  merged = false,
   standalone = false,
   primary = true,
   activated = true,
@@ -52,8 +57,8 @@ const VerticalCarouselClient = ({
   // Map colour/model labels consistently across sections of the UI.
   const displayLabel = useCallback(
     (itemColour: string, itemModel: string) =>
-      getDisplayLabel(itemColour, itemModel, model, material),
-    [material, model],
+      getDisplayLabel(itemColour, itemModel, model, material, merged),
+    [material, model, merged],
   );
 
   const copySku = useCallback((skuWithSuffix: string, key: string) => {
