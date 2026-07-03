@@ -2,6 +2,7 @@ import {
   HOME_CARDS,
   getGroup,
   getPage,
+  getTopPage,
   getHeroCase,
   getGroupHeroCase,
 } from "../lib/catalogue";
@@ -22,13 +23,18 @@ export default async function HomePage() {
       <MdxContent Content={intro?.Content} />
       <CardGrid>
         {HOME_CARDS.map((card) => {
-          const group = getGroup(card.group);
           if (card.page) {
-            const page = getPage(card.group, card.page);
+            const page = card.group
+              ? getPage(card.group, card.page)
+              : getTopPage(card.page);
             return (
               <NavCard
-                key={`${card.group}/${card.page}`}
-                href={`/${card.group}/${page.slug}`}
+                key={card.page}
+                href={
+                  card.group
+                    ? `/${card.group}/${page.slug}`
+                    : `/${page.slug}`
+                }
                 title={page.title}
                 subtitle={page.blurb}
                 heroCase={getHeroCase(page)}
@@ -36,6 +42,7 @@ export default async function HomePage() {
               />
             );
           }
+          const group = getGroup(card.group);
           return (
             <NavCard
               key={card.group}
