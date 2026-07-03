@@ -39,7 +39,7 @@ const logo = (
     >
       <Image
         src="https://cloudfront.everycase.org/assets/apple-touch-icon.png"
-        alt="Finest Woven Logo"
+        alt="" // decorative: it sits between the words "Finest" and "Woven"
         width={48}
         height={48}
         style={{
@@ -68,7 +68,9 @@ const logo = (
 export default function Navbar() {
   return (
     <header className={`${chrome.navbar} site-navbar`}>
-      <Link href="/" className={chrome.navHome} aria-label="Finest Woven — home">
+      {/* No aria-label: the visible "Finest Woven" text names the link, so
+          voice-control users can say what they see. */}
+      <Link href="/" className={chrome.navHome}>
         {logo}
       </Link>
       <div className={chrome.navActions}>
