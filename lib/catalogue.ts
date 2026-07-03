@@ -289,6 +289,20 @@ export const GROUPS: CatalogueGroup[] = [
         models: ["iPhone Gloryhole Case"],
       },
       {
+        slug: "magsafe",
+        title: "MagSafe Charging",
+        blurb: "Chargers & Battery Packs",
+        hero: "MGD74",
+        models: ["MagSafe Charging"],
+      },
+      {
+        slug: "docks",
+        title: "Docking Stations",
+        blurb: "iPhone Lightning Docks",
+        hero: "ML8H2",
+        models: ["Dock"],
+      },
+      {
         slug: "macbook",
         title: "MacBook Leather Sleeve",
         models: [
@@ -369,6 +383,13 @@ const KIND_ORDER = [
   "Leather Loop",
   "Silicone Loop",
   "Loop",
+  "MagSafe Charger",
+  "MagSafe Duo Charger",
+  "MagSafe Battery Pack",
+  "iPhone Air MagSafe Battery",
+  "iPhone 5s Dock",
+  "iPhone 5c Dock",
+  "iPhone Lightning Dock",
 ];
 
 const kindRank = new Map(KIND_ORDER.map((kind, index) => [kind, index]));
