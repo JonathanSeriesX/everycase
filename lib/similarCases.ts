@@ -1,0 +1,54 @@
+import fs from "fs";
+import path from "path";
+import { parse } from "csv-parse/sync";
+
+const CSV_PATH = path.join(process.cwd(), "scripts", "similarities.csv");
+
+let cachedGroupsBySku: Map<string, string[]> | undefined;
+
+// The CSV stores group membership rather than every possible SKU pair. This
+// keeps a group of n similar products to n rows instead of n * (n - 1).
+function loadGroupsBySku(): Map<string, string[]> {
+  if (cachedGroupsBySku) return cachedGroupsBySku;
+
+  const rows: string[][] = parse(fs.readFileSync(CSV_PATH, "utf-8"), {
+    relax_column_count: true,
+    skip_empty_lines: true,
+    trim: true,
+  });
+  const membersByGroup = new Map<string, Set<string>>();
+  const groupBySku = new Map<string, string>();
+
+  for (const [groupId, ...skus] of rows.slice(1)) {
+    if (!groupId) continue;
+
+    const members = membersByGroup.get(groupId) ?? new Set();
+    for (const sku of skus.filter(Boolean)) {
+      const existingGroup = groupBySku.get(sku);
+      if (existingGroup && existingGroup !== groupId) {
+        throw new Error(
+          `SKU ${sku} belongs to multiple similarity groups: ${existingGroup}, ${groupId}`,
+        );
+      }
+
+      members.add(sku);
+      groupBySku.set(sku, groupId);
+    }
+    membersByGroup.set(groupId, members);
+  }
+
+  cachedGroupsBySku = new Map();
+  for (const memberSet of membersByGroup.values()) {
+    const members = [...memberSet];
+    if (members.length < 2) continue;
+    for (const sku of members) cachedGroupsBySku.set(sku, members);
+  }
+
+  return cachedGroupsBySku;
+}
+
+export function getSimilarSkus(sku: string): string[] {
+  const normalizedSku = String(sku || "").trim();
+  const group = loadGroupsBySku().get(normalizedSku) ?? [];
+  return group.filter((memberSku) => memberSku !== normalizedSku);
+}
