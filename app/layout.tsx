@@ -7,6 +7,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Navbar from "../components/Navbar";
 import ThemeMenu from "../components/ThemeMenu.client";
+import CurrencyMenu from "../components/CurrencyMenu.client";
 import HashNavigation from "../components/HashNavigation.client";
 import "../styles/globals.css";
 
@@ -129,6 +130,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               Support this ♥
             </Link>
             <ThemeMenu />
+            <CurrencyMenu />
           </footer>
           <Analytics />
           <SpeedInsights />

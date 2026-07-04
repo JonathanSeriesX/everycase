@@ -3,6 +3,8 @@
 import { Fragment, useCallback, useState, type MouseEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { CopyIcon, CheckIcon, LinkArrowIcon } from "./icons";
+import { formatPrice, type Currency } from "../lib/currencies";
+import { useCurrency } from "../lib/useCurrency";
 import styles from "../styles/CaseInfoCards.module.css";
 
 const COPY_RESET_TIMEOUT = 1000;
@@ -26,7 +28,8 @@ export interface CaseInfo {
   reReleaseSku?: string;
   releaseDate?: string;
   reReleaseDate?: string;
-  msrp?: string[];
+  /** Raw launch amounts per currency; the card shows USD + the chosen one. */
+  msrp?: Partial<Record<Currency, string>>;
   eduPrice?: string;
 }
 
@@ -53,20 +56,32 @@ export const StatCard = ({ label, value }: { label: string; value: string }) => 
   </InfoCard>
 );
 
-export const PriceCard = ({ prices = [] }: { prices?: string[] }) => {
-  if (prices.length === 0) return null;
+// USD pill first, then the reader's footer-chosen currency (when we have a
+// launch price for it). All amounts are baked into the static HTML — the
+// hook only decides which one is displayed.
+export const PriceCard = ({
+  prices = {},
+}: {
+  prices?: Partial<Record<Currency, string>>;
+}) => {
+  const secondary = useCurrency();
+  const shown = (["USD", secondary] as Currency[]).flatMap((code) => {
+    const formatted = formatPrice(prices[code], code);
+    return formatted ? [formatted] : [];
+  });
+  if (shown.length === 0) return null;
 
   return (
     <InfoCard label="MSRP">
       <div className={`${styles.chipRow} ${styles.priceRow}`}>
-        {prices.map((price, index) => (
+        {shown.map((price, index) => (
           <Fragment key={price}>
             <span className={`${styles.chip} ${styles.priceChip}`}>
               {price}
             </span>
             {/* Keep Pagefind excerpts and screen-reader output punctuated. */}
             <span className="sr-punctuation">
-              {index < prices.length - 1 ? ", " : "."}
+              {index < shown.length - 1 ? ", " : "."}
             </span>{" "}
           </Fragment>
         ))}
@@ -215,7 +230,7 @@ const CaseInfoCards = ({
   reReleaseSku = "",
   releaseDate = "",
   reReleaseDate = "",
-  msrp = [],
+  msrp = {},
   eduPrice = "",
 }: CaseInfo) => (
   <div className={styles.grid}>

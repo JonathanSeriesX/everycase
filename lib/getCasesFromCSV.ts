@@ -1,15 +1,16 @@
 import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
+import { CURRENCIES, type Currency } from "./currencies";
 
 // The catalogue is split across four CSVs that all key off the primary SKU:
 //   database.csv — core attributes (regions, kind, colour, model, …)
-//   msrp.csv     — SKU, USD, EUR, GBP, JPY
+//   msrp.csv     — SKU + one launch-price column per currency (see CURRENCIES)
 //   edu.csv      — SKU, USD (only SKUs that carry an education price)
 //   alt.csv      — SKU, regions, alt_sku, alt_release_date (only re-releases)
 //   similarities.csv — group_id, SKUs... (read separately as a compact relationship map)
 // We left-join them here and hand back records in the original flat shape
-// (MSRP / MSRP_EUR / MSRP_GBP / edu_price / alt_sku / alt_release_date) so the
+// (MSRP / prices / edu_price / alt_sku / alt_release_date) so the
 // rest of the app doesn't need to know the data was normalised.
 
 /**
@@ -27,9 +28,10 @@ export interface CaseRecord {
   release_date: string;
   alt_thumbnail: string;
   name: string;
+  /** US launch price — kept flat because several call sites compare on it. */
   MSRP: string;
-  MSRP_EUR: string;
-  MSRP_GBP: string;
+  /** Launch price per currency (includes USD); "" where unknown. */
+  prices: Record<Currency, string>;
   edu_price: string;
   alt_sku: string;
   alt_release_date: string;
@@ -63,6 +65,11 @@ function indexBySku<T>(
   return map;
 }
 
+// Shared fallback for SKUs absent from msrp.csv.
+const EMPTY_PRICES = Object.freeze(
+  Object.fromEntries(CURRENCIES.map((code) => [code, ""])),
+) as Record<Currency, string>;
+
 let cachedCases: CaseRecord[] | undefined;
 
 export function getAllCasesFromCSV(): CaseRecord[] {
@@ -70,8 +77,9 @@ export function getAllCasesFromCSV(): CaseRecord[] {
 
   const msrp = indexBySku("msrp.csv", (r) => ({
     MSRP: r.USD,
-    MSRP_EUR: r.EUR,
-    MSRP_GBP: r.GBP,
+    prices: Object.fromEntries(
+      CURRENCIES.map((code) => [code, r[code] ?? ""]),
+    ) as Record<Currency, string>,
   }));
   const edu = indexBySku("edu.csv", (r) => r.USD);
   const alt = indexBySku("alt.csv", (r) => ({
@@ -84,8 +92,7 @@ export function getAllCasesFromCSV(): CaseRecord[] {
     return {
       ...record,
       MSRP: "",
-      MSRP_EUR: "",
-      MSRP_GBP: "",
+      prices: EMPTY_PRICES,
       edu_price: edu.get(sku) ?? "",
       alt_sku: "",
       alt_release_date: "",

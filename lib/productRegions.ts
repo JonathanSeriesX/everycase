@@ -65,25 +65,5 @@ export function isKeyboardProduct(kind: string): boolean {
   return /keyboard/i.test(String(kind || ""));
 }
 
-const CURRENCY_SYMBOLS: Record<string, string> = {
-  USD: "$",
-  EUR: "€",
-  GBP: "£",
-};
-
-// Prices in the catalogue are bare amounts like "49" or "329". Keep parsing
-// numeric so legacy decimal values still work, and retain cents only when they
-// are non-zero.
-export function formatPrice(
-  value: string | number | null | undefined,
-  currency = "USD",
-): string {
-  const raw = String(value || "").trim();
-  if (!raw) return "";
-  const amount = Number(raw);
-  if (!Number.isFinite(amount)) return "";
-  const symbol = CURRENCY_SYMBOLS[currency];
-  if (!symbol) return "";
-  const hasCents = Math.round(amount * 100) % 100 !== 0;
-  return `${symbol}${amount.toFixed(hasCents ? 2 : 0)}`;
-}
+// Price formatting grew a full currency table and lives with it now.
+export { formatPrice } from "./currencies";

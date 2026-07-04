@@ -374,6 +374,15 @@
   animation: theme-menu-in 140ms ease;
 }
 
+/* The currency list is long (15 entries) — keep it on-screen and scrollable,
+   and stop boundary scrolls from chaining to the page behind. */
+.menuListScroll {
+  max-height: min(21rem, 60vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  white-space: nowrap;
+}
+
 @keyframes theme-menu-in {
   from {
     opacity: 0;

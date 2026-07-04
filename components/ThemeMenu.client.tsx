@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
 import { useTheme } from "next-themes";
+import DropdownMenu from "./DropdownMenu.client";
 import {
   SunIcon,
   MoonIcon,
@@ -33,8 +34,6 @@ const THEME_COLOR: Record<string, string> = {
 
 export default function ThemeMenu() {
   const { theme, resolvedTheme, setTheme } = useTheme();
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLSpanElement>(null);
   // Theme is unknown until hydration; render a stable placeholder to avoid a
   // mismatch flash.
   const mounted = useSyncExternalStore(
@@ -56,31 +55,11 @@ export default function ThemeMenu() {
     }
   }, [mounted, theme, resolvedTheme]);
 
-  // Close on outside interaction / Escape.
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (event: MouseEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
   // Cross-fade between themes with the View Transitions API — except on
   // iOS, where the snapshot animation makes Safari 26 paint an opaque plate
   // behind its glass bottom pill. iOS switches instantly (all transitions
   // suppressed for the swap); everyone else gets the snapshot fade.
   const pickTheme = (next: string) => {
-    setOpen(false);
     if (next === theme) return;
     const isIOS =
       /iPhone|iPad|iPod/.test(navigator.userAgent) ||
@@ -104,40 +83,23 @@ export default function ThemeMenu() {
   const CurrentIcon = current?.Icon;
 
   return (
-    <span className={chrome.themeMenu} ref={containerRef}>
-      <button
-        type="button"
-        className={chrome.footerAction}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        onClick={() => setOpen((wasOpen) => !wasOpen)}
-      >
-        Theme: {label}{" "}
-        <span className={chrome.themeIcon} aria-hidden="true">
-          {CurrentIcon && <CurrentIcon />}
-        </span>
-      </button>
-      {open && (
-        <ul role="listbox" aria-label="Theme" className={chrome.themeMenuList}>
-          {OPTIONS.map((option) => (
-            <li key={option.value} role="presentation">
-              <button
-                type="button"
-                role="option"
-                aria-selected={option.value === theme}
-                data-active={option.value === theme}
-                className={chrome.themeOption}
-                onClick={() => pickTheme(option.value)}
-              >
-                <span className={chrome.themeOptionCheck} aria-hidden="true">
-                  {option.value === theme ? "✓" : ""}
-                </span>
-                {option.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </span>
+    <DropdownMenu
+      ariaLabel="Theme"
+      value={theme ?? ""}
+      options={OPTIONS.map((option) => ({
+        value: option.value,
+        label: option.label,
+      }))}
+      onSelect={pickTheme}
+      buttonClassName={chrome.footerAction}
+      buttonContent={
+        <>
+          Theme: {label}{" "}
+          <span className={chrome.themeIcon} aria-hidden="true">
+            {CurrentIcon && <CurrentIcon />}
+          </span>
+        </>
+      }
+    />
   );
 }

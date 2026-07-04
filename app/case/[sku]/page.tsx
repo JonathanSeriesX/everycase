@@ -164,11 +164,7 @@ function buildCaseInfo(data: CaseRecord, regions: string[]): CaseInfo {
     reReleaseSku: altSku,
     releaseDate: getReleaseDate(sku),
     reReleaseDate: altSku ? getReleaseDate(altSku) : "",
-    msrp: [
-      formatPrice(msrp, "USD"),
-      formatPrice(data.MSRP_EUR, "EUR"),
-      formatPrice(data.MSRP_GBP, "GBP"),
-    ].filter(Boolean),
+    msrp: data.prices,
     eduPrice: eduDiffers ? formatPrice(eduPriceRaw) : "",
   };
 }

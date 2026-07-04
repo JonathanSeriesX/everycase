@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { formatPrice } from "../lib/productRegions";
+import { formatPrice, type Currency } from "../lib/currencies";
+import { useCurrency } from "../lib/useCurrency";
 import VerticalCarouselClient from "./VerticalCarousel.client";
 import type { CaseRecord } from "../lib/getCasesFromCSV";
-import type { Currency, PriceSummary, SectionPrice } from "../lib/catalogue";
+import type { PriceSummary, SectionPrice } from "../lib/catalogue";
 import headingStyles from "../styles/SectionHeading.module.css";
 import chrome from "../styles/Chrome.module.css";
-
-const CURRENCIES: Currency[] = ["USD", "EUR", "GBP"];
 
 // Reduces a list of amounts to {value, multiple}, or null when empty.
 const reduce = (amounts?: number[]): PriceSummary | null =>
@@ -22,7 +21,8 @@ const priceForModel = (
   price: SectionPrice,
   model: string,
   code: Currency,
-): PriceSummary | null => reduce(price.byModel?.[model]?.[code]) ?? price[code];
+): PriceSummary | null =>
+  reduce(price.byModel?.[model]?.[code]) ?? price.byCurrency[code];
 
 interface KindSectionClientProps {
   kind: string;
@@ -75,11 +75,13 @@ export default function KindSectionClient({
     return () => window.removeEventListener("load", activateAll);
   }, [panelCount]);
 
+  // USD always leads; the second pill follows the footer's currency choice.
+  const secondary = useCurrency();
   const activeModel = showTabs ? entries[active]?.model : null;
-  const pills = CURRENCIES.flatMap((code) => {
+  const pills = (["USD", secondary] as Currency[]).flatMap((code) => {
     const entry = activeModel
       ? priceForModel(price, activeModel, code)
-      : price[code];
+      : price.byCurrency[code];
     if (!entry) return [];
     const formatted = formatPrice(entry.value, code);
     if (!formatted) return [];

@@ -1,4 +1,5 @@
 import { getAllCasesFromCSV, type CaseRecord } from "./getCasesFromCSV";
+import { CURRENCIES, type Currency } from "./currencies";
 
 // The whole site tree in one place: groups → pages → CSV model names.
 // This replaces Nextra's _meta files and the model/material props that were
@@ -485,7 +486,7 @@ export function getPage(
   return getGroup(groupSlug)?.pages.find((page) => page.slug === pageSlug);
 }
 
-export type Currency = "USD" | "EUR" | "GBP";
+export type { Currency };
 
 /** The lowest price of a set, flagged `multiple` when rendered as "from $X". */
 export interface PriceSummary {
@@ -494,9 +495,8 @@ export interface PriceSummary {
 }
 
 export interface SectionPrice {
-  USD: PriceSummary | null;
-  EUR: PriceSummary | null;
-  GBP: PriceSummary | null;
+  /** Aggregate per currency across the page's models. */
+  byCurrency: Record<Currency, PriceSummary | null>;
   /** Raw per-model amounts so the heading can react to the active tab. */
   byModel: Record<string, Record<Currency, number[]>>;
 }
@@ -524,11 +524,10 @@ const reduceAmounts = (amounts: Set<number>): PriceSummary | null => {
 
 type AmountsByCurrency = Record<Currency, Set<number>>;
 
-const newAmounts = (): AmountsByCurrency => ({
-  USD: new Set(),
-  EUR: new Set(),
-  GBP: new Set(),
-});
+const newAmounts = (): AmountsByCurrency =>
+  Object.fromEntries(
+    CURRENCIES.map((code) => [code, new Set<number>()]),
+  ) as AmountsByCurrency;
 
 interface KindBucket {
   kind: string;
@@ -564,13 +563,8 @@ export function getPageSections(page: CataloguePage): PageSection[] {
       perModel = newAmounts();
       bucket.pricesByModel.set(row.model, perModel);
     }
-    const rawAmounts: [Currency, string][] = [
-      ["USD", row.MSRP],
-      ["EUR", row.MSRP_EUR],
-      ["GBP", row.MSRP_GBP],
-    ];
-    for (const [code, raw] of rawAmounts) {
-      const amount = asAmount(raw);
+    for (const code of CURRENCIES) {
+      const amount = asAmount(row.prices[code]);
       if (amount) {
         bucket.prices[code].add(amount);
         perModel[code].add(amount);
@@ -592,11 +586,9 @@ export function getPageSections(page: CataloguePage): PageSection[] {
       for (const row of bucket.cases) byModel.get(row.model)?.push(row);
       const byModelPrices: SectionPrice["byModel"] = {};
       for (const [model, perModel] of bucket.pricesByModel) {
-        byModelPrices[model] = {
-          USD: [...perModel.USD],
-          EUR: [...perModel.EUR],
-          GBP: [...perModel.GBP],
-        };
+        byModelPrices[model] = Object.fromEntries(
+          CURRENCIES.map((code) => [code, [...perModel[code]]]),
+        ) as Record<Currency, number[]>;
       }
       // Merged kinds (e.g. Clear Case) render as one combined grid with no
       // tabs — the cards' labels show the model names instead of colours.
@@ -613,9 +605,9 @@ export function getPageSections(page: CataloguePage): PageSection[] {
         // plus the raw per-model amounts, so the heading can switch to an
         // exact price when the reader picks a tab.
         price: {
-          USD: reduceAmounts(bucket.prices.USD),
-          EUR: reduceAmounts(bucket.prices.EUR),
-          GBP: reduceAmounts(bucket.prices.GBP),
+          byCurrency: Object.fromEntries(
+            CURRENCIES.map((code) => [code, reduceAmounts(bucket.prices[code])]),
+          ) as Record<Currency, PriceSummary | null>,
           byModel: byModelPrices,
         },
       };
