@@ -39,6 +39,17 @@
   background-color: #fff !important;
 }
 
+/* Static counterpart of .languageSelect for keyboards sold in a single
+   layout: same pill, but no chevron and not interactive. */
+.languageOnly {
+  padding: 0.32rem 0.85rem;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  border-radius: 9999px;
+  background-color: white;
+  color: inherit;
+  font-size: 0.9rem;
+}
+
 
 :global(html:is(.dark, .black)) .keyboardHint {
   color: rgba(203, 213, 225, 0.82);
@@ -54,4 +65,9 @@
 :global(html:is(.dark, .black)) .languageSelect:focus,
 :global(html:is(.dark, .black)) .languageSelect:focus-visible {
   background-color: rgb(24, 24, 27) !important;
+}
+
+:global(html:is(.dark, .black)) .languageOnly {
+  border-color: rgba(255, 255, 255, 0.16);
+  background-color: rgb(24, 24, 27);
 }

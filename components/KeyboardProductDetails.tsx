@@ -77,19 +77,25 @@ const KeyboardProductDetails = ({
             <div className={styles.keyboardOrderRow}>
               {/* keyed so the copy state resets when the language changes */}
               <CopyChip key={selectedOption.region} value={orderNumber} />
-              <select
-                id="keyboard-language"
-                aria-label="Keyboard language"
-                className={styles.languageSelect}
-                value={selectedOption.region}
-                onChange={(event) => setSelectedRegion(event.target.value)}
-              >
-                {regionOptions.map((option) => (
-                  <option key={option.region} value={option.region}>
-                    {`${getKeyboardLanguageName(option.region)} `}
-                  </option>
-                ))}
-              </select>
+              {regionOptions.length > 1 ? (
+                <select
+                  id="keyboard-language"
+                  aria-label="Keyboard language"
+                  className={styles.languageSelect}
+                  value={selectedOption.region}
+                  onChange={(event) => setSelectedRegion(event.target.value)}
+                >
+                  {regionOptions.map((option) => (
+                    <option key={option.region} value={option.region}>
+                      {`${getKeyboardLanguageName(option.region)} `}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <span className={styles.languageOnly}>
+                  {`${getKeyboardLanguageName(selectedOption.region)} only`}
+                </span>
+              )}
             </div>
           </InfoCard>
           <CompatibilityCard compatibleModels={info.compatibleModels} />

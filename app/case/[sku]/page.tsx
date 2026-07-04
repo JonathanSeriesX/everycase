@@ -78,6 +78,29 @@ function listVariantsForRegion(sku: string, region: string): string[] {
   );
 }
 
+// Regional keyboard galleries are the base gallery with regional shots
+// swapped in per view: MJQJ3LA_AV1 replaces MJQJ3_AV1, while views that were
+// never reshot regionally (MJQJ3, MJQJ3_AV2, …) keep the base image. Regional
+// views with no base counterpart are kept, appended after the base order.
+function listMergedVariantsForRegion(sku: string, region: string): string[] {
+  const base = listVariantsForSku(sku);
+  const regional = listVariantsForRegion(sku, region);
+  if (regional.length === 0) return base;
+
+  const prefix = `${sku}${region}`;
+  const regionalByView = new Map(
+    regional.map((variant) => [variant.slice(prefix.length), variant]),
+  );
+  const merged = base.map((variant) => {
+    const view = variant.slice(sku.length);
+    const replacement = regionalByView.get(view);
+    if (replacement) regionalByView.delete(view);
+    return replacement ?? variant;
+  });
+  merged.push(...regionalByView.values());
+  return merged;
+}
+
 function getCaseName(data: CaseRecord): string {
   if (data.name) return data.name;
 
@@ -221,17 +244,10 @@ export default async function CasePage({ params }: CaseRouteProps) {
   const info = buildCaseInfo(data, regions);
   const defaultImages = buildImages(listVariantsForSku(sku), caseName);
   const keyboardRegionOptions: KeyboardRegionOption[] = isKeyboard
-    ? regions.map((region) => {
-        const regionalVariants = listVariantsForRegion(sku, region);
-        const useRegionalImages =
-          region !== "LL" && regionalVariants.length > 0;
-        return {
-          region,
-          images: useRegionalImages
-            ? buildImages(regionalVariants, caseName)
-            : defaultImages,
-        };
-      })
+    ? regions.map((region) => ({
+        region,
+        images: buildImages(listMergedVariantsForRegion(sku, region), caseName),
+      }))
     : [];
   const home = findPageForModel(data.model);
 
