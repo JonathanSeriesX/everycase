@@ -35,7 +35,7 @@ interface FormatLinks {
 const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const LIGHTBOX_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everyimage";
-const LIGHTBOX_IMAGE_FORMAT = "webp";
+const LIGHTBOX_IMAGE_FORMAT = "avif";
 const LIGHTBOX_PREVIEW_BASE_URL =
   "https://cloudfront.everycase.org/everypreview";
 const LIGHTBOX_PREVIEW_FORMAT = "avif";
@@ -162,7 +162,7 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
   // What each gallery tile currently shows: the small AVIF preview at first,
   // silently upgraded to the full-res source once it is preloaded.
   const [tileSrcs, setTileSrcs] = useState<Record<number, string>>({});
-  // Full-res sources are heavy (~800 KB each); fetching them is deferred
+  // Full-res sources are heavy (~300 KB each); fetching them is deferred
   // until the visitor first opens the lightbox and actually wants hi-res.
   const [upgradeStarted, setUpgradeStarted] = useState(false);
   // Per-tile position in the [preview, ...full-res] fallback chain, advanced
@@ -228,7 +228,7 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
   // Once the lightbox has been opened, upgrade tiles one at a time, first to
   // last: preload + decode the full-res source in the background, then swap
   // the tile's src — the replacement is invisible. A source that fails
-  // advances the slide's fallback chain (webp -> Apple CDN) and the next
+  // advances the slide's fallback chain (avif -> Apple CDN) and the next
   // candidate is tried.
   useEffect(() => {
     if (!upgradeStarted) return;
