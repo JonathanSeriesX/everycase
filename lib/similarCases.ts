@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
 
-const CSV_PATH = path.join(process.cwd(), "scripts", "similarities.csv");
+const CSV_PATH = path.join(process.cwd(), "database", "similarities.csv");
 
 let cachedGroupsBySku: Map<string, string[]> | undefined;
 

@@ -35,10 +35,10 @@ export interface CaseRecord {
   alt_release_date: string;
 }
 
-const SCRIPTS_DIR = path.join(process.cwd(), "scripts");
+const DATABASE_DIR = path.join(process.cwd(), "database");
 
 function readTable(file: string): Record<string, string>[] {
-  const csvData = fs.readFileSync(path.join(SCRIPTS_DIR, file), "utf-8");
+  const csvData = fs.readFileSync(path.join(DATABASE_DIR, file), "utf-8");
   const rows: Record<string, string>[] = parse(csvData, {
     columns: true,
     skip_empty_lines: true,

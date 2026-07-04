@@ -20,7 +20,7 @@ const MONTHS = [
 let cachedReleaseDates: Map<string, string> | undefined;
 
 function readCsv(file: string): Record<string, string>[] {
-  const csvPath = path.join(process.cwd(), "scripts", file);
+  const csvPath = path.join(process.cwd(), "database", file);
   return parse(fs.readFileSync(csvPath, "utf-8"), {
     columns: true,
     skip_empty_lines: true,

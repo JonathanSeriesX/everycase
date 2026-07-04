@@ -50,7 +50,7 @@ function findCaseBySku(sku: string): CaseRecord | undefined {
 function loadVariantFilenames(): string[] {
   if (cachedVariantFilenames) return cachedVariantFilenames;
 
-  const filePath = path.join(process.cwd(), "scripts", "source_images.txt");
+  const filePath = path.join(process.cwd(), "database", "source_images.txt");
   try {
     const fileContents = fs.readFileSync(filePath, "utf-8");
     cachedVariantFilenames = fileContents

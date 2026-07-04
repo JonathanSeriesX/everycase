@@ -17,7 +17,7 @@ from PIL import Image, ImageChops
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-DATABASE_PATH = SCRIPT_DIR / "database.csv"
+DATABASE_PATH = REPO_ROOT / "database" / "database.csv"
 CATALOGUE_PATH = REPO_ROOT / "lib" / "catalogue.ts"
 CATALOGUE_GROUP = "ipad"
 SOURCE_DIR = Path("/Volumes/Storage/Images/1_final-sources")

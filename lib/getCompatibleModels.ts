@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
 
-const MODELS_PATH = path.join(process.cwd(), "scripts", "models.csv");
+const MODELS_PATH = path.join(process.cwd(), "database", "models.csv");
 
 let cachedCompatibility: Map<string, string[]> | undefined;
 
