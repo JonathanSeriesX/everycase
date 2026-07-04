@@ -17,6 +17,7 @@ const KEYBOARD_LANGUAGE_NAMES: Record<string, string> = {
   PO: "Portuguese",
   RS: "Russian",
   SM: "Swiss",
+  SF: "Swiss",
   T: "Italian",
   UA: "Ukrainian",
 };

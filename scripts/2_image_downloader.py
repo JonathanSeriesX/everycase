@@ -19,7 +19,7 @@ BASE_URL_TEMPLATE = "https://store.storeimages.cdn-apple.com/8755/as-images.appl
 SCRIPT_DIR = Path(__file__).resolve().parent
 IMAGES_TO_DOWNLOAD_PATH = SCRIPT_DIR / "1_download_list.txt"
 SOURCE_IMAGES_PATH = SCRIPT_DIR.parent / "database" / "source_images.txt"
-DEFAULT_TARGET_FOLDER = Path("/Volumes/Storage/Images/lower-res-redownload")
+DEFAULT_TARGET_FOLDER = Path("/Volumes/Storage/Images/download")
 
 
 @dataclass(frozen=True)
