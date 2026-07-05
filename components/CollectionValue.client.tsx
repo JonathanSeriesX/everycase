@@ -12,11 +12,13 @@ export default function CollectionValue({
   sums,
   pricedCount,
   ownedCount,
+  label = "Launch value of what you own",
 }: {
   sums: Partial<Record<Currency, number>>;
   /** Owned cases with a known USD launch price. */
   pricedCount: number;
   ownedCount: number;
+  label?: string;
 }) {
   const secondary = useCurrency();
   const shown = (["USD", secondary] as Currency[]).flatMap((code) => {
@@ -28,7 +30,7 @@ export default function CollectionValue({
   const partial = pricedCount < ownedCount;
   return (
     <p>
-      Launch value of what you own: <strong>{shown.join(" · ")}</strong>
+      {label}: <strong>{shown.join(" · ")}</strong>
       {partial && ` — based on the ${pricedCount} of ${ownedCount} cases with a known price`}
       .
     </p>

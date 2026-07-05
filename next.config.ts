@@ -47,6 +47,7 @@ const nextConfig: NextConfig = {
   // make sure they're bundled into those routes' serverless functions.
   outputFileTracingIncludes: {
     "/collection": ["./database/*"],
+    "/collections/[username]": ["./database/*"],
     "/api/collection": ["./database/*"],
   },
   experimental: {
