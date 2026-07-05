@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CopyIcon, CheckIcon, LinkArrowIcon } from "./icons";
 import { formatPrice, type Currency } from "../lib/currencies";
 import { useCurrency } from "../lib/useCurrency";
+import CollectionCard from "./CollectionCard.client";
 import styles from "../styles/CaseInfoCards.module.css";
 
 const COPY_RESET_TIMEOUT = 1000;
@@ -21,6 +22,8 @@ export interface SimilarCase {
 
 /** Everything the info cards can show; assembled in app/case/[sku]/page. */
 export interface CaseInfo {
+  /** Primary SKU; presence enables the "Your collection" card. */
+  collectionSku?: string;
   skuGroups?: SkuGroup[] | null;
   compatibleModels?: string[];
   similarCases?: SimilarCase[];
@@ -223,6 +226,7 @@ const OrderNumbersCard = ({ skuGroups }: { skuGroups: SkuGroup[] }) => {
 };
 
 const CaseInfoCards = ({
+  collectionSku = "",
   skuGroups = null,
   compatibleModels = [],
   similarCases = [],
@@ -257,6 +261,7 @@ const CaseInfoCards = ({
     )}
     <PriceCard prices={msrp} />
     {eduPrice && <StatCard label="Education price" value={eduPrice} />}
+    {collectionSku && <CollectionCard sku={collectionSku} />}
   </div>
 );
 

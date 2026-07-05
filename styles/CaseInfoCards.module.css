@@ -79,6 +79,30 @@
   margin-top: 0.3rem;
 }
 
+.collectionRow {
+  margin-top: 0.55rem;
+}
+
+/* Selected state must out-rank the generic .chip:focus !important rules. */
+.chip.collectionChip[data-active="true"],
+.chip.collectionChip[data-active="true"]:focus,
+.chip.collectionChip[data-active="true"]:focus-visible {
+  background-color: #e3504f !important;
+  border-color: #e3504f;
+  color: #fff !important;
+}
+
+.collectionChip:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.collectionNote {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: rgba(15, 18, 28, 0.55);
+}
+
 /* copyable order-number pill */
 .chip {
   display: inline-flex;
@@ -205,6 +229,19 @@
 
 :global(html:is(.dark, .black)) .value {
   color: rgba(255, 255, 255, 0.92);
+}
+
+:global(html:is(.dark, .black)) .collectionNote {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+:global(html:is(.dark, .black)) .chip.collectionChip[data-active="true"],
+:global(html:is(.dark, .black)) .chip.collectionChip[data-active="true"]:focus,
+:global(html:is(.dark, .black))
+  .chip.collectionChip[data-active="true"]:focus-visible {
+  background-color: #e3504f !important;
+  border-color: #e3504f;
+  color: #fff !important;
 }
 
 :global(html:is(.dark, .black)) .chip {

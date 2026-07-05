@@ -95,6 +95,15 @@ export function ChevronRightIcon(props: IconProps) {
   );
 }
 
+export function PersonIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" width="1em" height="1em" {...base} {...props}>
+      <circle cx="12" cy="8" r="3.75" />
+      <path d="M5 20c.8-3.5 3.6-5.25 7-5.25s6.2 1.75 7 5.25" />
+    </svg>
+  );
+}
+
 export function InfoIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" width="1em" height="1em" {...base} {...props}>

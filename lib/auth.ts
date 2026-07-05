@@ -1,0 +1,46 @@
+import { betterAuth } from "better-auth";
+import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { nextCookies } from "better-auth/next-js";
+import { emailOTP } from "better-auth/plugins/email-otp";
+import { passkey } from "@better-auth/passkey";
+import { dash } from "@better-auth/infra";
+import { db } from "./mongo";
+
+async function sendOTPEmail(to: string, otp: string) {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "EveryCase <login@users.everycase.org>",
+      to,
+      subject: `${otp} is your EveryCase code`,
+      text: `Your EveryCase sign-in code is ${otp}\n\nIt expires in 5 minutes. If you didn't request this, you can ignore this email.`,
+    }),
+  });
+  if (!res.ok) {
+    throw new Error(`Resend ${res.status}: ${await res.text()}`);
+  }
+}
+
+export const auth = betterAuth({
+  appName: "EveryCase",
+  baseURL: process.env.BETTER_AUTH_URL,
+  database: mongodbAdapter(db),
+  plugins: [
+    emailOTP({
+      async sendVerificationOTP({ email, otp }) {
+        await sendOTPEmail(email, otp);
+      },
+    }),
+    passkey({
+      rpName: "EveryCase",
+    }),
+    // Better Auth Dash (hosted dashboard); needs BETTER_AUTH_API_KEY.
+    dash(),
+    // Must stay last: rewrites Set-Cookie for Next.js server actions.
+    nextCookies(),
+  ],
+});

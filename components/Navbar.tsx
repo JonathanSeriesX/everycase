@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Quicksand } from "next/font/google";
 import SearchBox from "./SearchBox.client";
+import ProfileMenu from "./ProfileMenu.client";
 import chrome from "../styles/Chrome.module.css";
 
 const quicksand = Quicksand({
@@ -74,6 +75,7 @@ export default function Navbar() {
         {logo}
       </Link>
       <div className={chrome.navActions}>
+        <ProfileMenu />
         <SearchBox />
       </div>
     </header>

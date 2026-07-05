@@ -43,6 +43,12 @@ const nextConfig: NextConfig = {
     imageSizes: [512, 2048],
     minimumCacheTTL: 2678400, // 31 days
   },
+  // The collection page and API read the catalogue CSVs at request time;
+  // make sure they're bundled into those routes' serverless functions.
+  outputFileTracingIncludes: {
+    "/collection": ["./database/*"],
+    "/api/collection": ["./database/*"],
+  },
   experimental: {
     appNewScrollHandler: true,
     turbopackFileSystemCacheForDev: true,

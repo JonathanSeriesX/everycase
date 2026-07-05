@@ -177,6 +177,160 @@
   }
 }
 
+/* ---------- profile ---------- */
+
+.profile {
+  position: relative;
+}
+
+.profileToggle {
+  position: relative;
+}
+
+/* Signed-in marker on the trigger. */
+.profileDot {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: #e3504f;
+}
+
+.profileMenu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: min(19rem, calc(100vw - 2rem));
+  padding: 0.9rem;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 18, 28, 0.1);
+  background: rgba(252, 248, 250, 0.97);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 25px 60px rgba(50, 42, 48, 0.25);
+  animation: profile-menu-in 140ms ease;
+}
+
+@keyframes profile-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.profileTitle {
+  margin: 0;
+  font-weight: 550;
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.profileInput {
+  width: 100%;
+  padding: 0.45rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 18, 28, 0.12);
+  background: rgba(255, 255, 255, 0.75);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: inherit;
+}
+
+.profileInput:focus {
+  outline: 2px solid #e3504f;
+  outline-offset: 2px;
+}
+
+.profileButtonPrimary {
+  padding: 0.5rem 0.9rem;
+  border: none;
+  border-radius: 9999px;
+  background: #e3504f;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.profileButtonSecondary {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(15, 18, 28, 0.12);
+  border-radius: 9999px;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.profileButtonSecondary:hover {
+  background: rgba(227, 80, 79, 0.08);
+}
+
+.profileButtonPrimary:disabled,
+.profileButtonSecondary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.profileHint {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.65;
+}
+
+.profileError {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #e3504f;
+}
+
+.profileEmail {
+  margin: 0 0 0.3rem;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.65;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profileMenuItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  text-decoration: none;
+  padding: 0.45rem 0.5rem;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.profileMenuItem:hover {
+  background: rgba(227, 80, 79, 0.08);
+}
+
 .searchResults {
   position: absolute;
   top: calc(100% + 0.5rem);
@@ -465,6 +619,26 @@
 
 :global(html:is(.dark, .black)) .searchResult:hover,
 :global(html:is(.dark, .black)) .searchResult[data-active="true"] {
+  background: rgba(255, 77, 77, 0.12);
+}
+
+:global(html:is(.dark, .black)) .profileMenu {
+  background: rgba(19, 19, 22, 0.97);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+:global(html:is(.dark, .black)) .profileInput {
+  background: rgba(19, 19, 22, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(html:is(.dark, .black)) .profileButtonSecondary {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:global(html:is(.dark, .black)) .profileButtonSecondary:hover,
+:global(html:is(.dark, .black)) .profileMenuItem:hover {
   background: rgba(255, 77, 77, 0.12);
 }
 

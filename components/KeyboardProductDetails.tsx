@@ -10,6 +10,7 @@ import CaseInfoCards, {
   StatCard,
   type CaseInfo,
 } from "./CaseInfoCards";
+import CollectionCard from "./CollectionCard.client";
 import {
   formatOrderNumber,
   getKeyboardLanguageName,
@@ -51,6 +52,7 @@ const KeyboardProductDetails = ({
     return (
       <>
         <CaseInfoCards
+          collectionSku={info.collectionSku}
           releaseSku={info.releaseSku}
           reReleaseSku={info.reReleaseSku}
           releaseDate={info.releaseDate}
@@ -122,6 +124,7 @@ const KeyboardProductDetails = ({
         {info.eduPrice && (
           <StatCard label="Education price" value={info.eduPrice} />
         )}
+        {info.collectionSku && <CollectionCard sku={info.collectionSku} />}
       </div>
       <section>
         <h2 id="image-gallery" data-pagefind-ignore>Image gallery</h2>
