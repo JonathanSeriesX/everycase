@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { formatPrice, type Currency } from "../lib/currencies";
 import { useCurrency } from "../lib/useCurrency";
 import VerticalCarouselClient from "./VerticalCarousel.client";
+import HeadingAnchor from "./HeadingAnchor";
 import type { CaseRecord } from "../lib/getCasesFromCSV";
 import type { PriceSummary, SectionPrice } from "../lib/catalogue";
 import headingStyles from "../styles/SectionHeading.module.css";
@@ -96,6 +97,7 @@ export default function KindSectionClient({
       <div className={headingStyles.sectionHead}>
         <h2 id={slug} className={headingStyles.headingReset}>
           {kind}
+          <HeadingAnchor id={slug} title={kind} />
         </h2>
         {pills.length > 0 && (
           <div className={headingStyles.pills} aria-hidden="true">

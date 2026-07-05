@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { isValidElement } from "react";
 import type { AnchorHTMLAttributes, ComponentProps, ReactNode } from "react";
 import type { MdxComponent, MdxComponentMap } from "../lib/notes";
 import { LinkArrowIcon, InfoIcon } from "./icons";
+import HeadingAnchor from "./HeadingAnchor";
+import { slugify } from "../lib/slugify";
 import chrome from "../styles/Chrome.module.css";
 
 function Callout({ children }: { children?: ReactNode }) {
@@ -55,9 +58,43 @@ function PagefindH1(props: ComponentProps<"h1">) {
   return <h1 data-pagefind-ignore data-pagefind-meta="title" {...props} />;
 }
 
+// Plain text of a heading's children, for slugging (links etc. contribute
+// their text).
+function textOf(node: ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textOf).join("");
+  if (isValidElement<{ children?: ReactNode }>(node)) {
+    return textOf(node.props.children);
+  }
+  return "";
+}
+
+// Prose headings get the same GitHub-style ids as catalogue kinds, plus the
+// hover permalink — so sections on whole-prose pages (about, support) are
+// linkable too.
+function anchoredHeading(Tag: "h2" | "h3") {
+  return function AnchoredHeading({
+    children,
+    ...props
+  }: ComponentProps<typeof Tag>) {
+    const title = textOf(children);
+    const id = slugify(title);
+    if (!id) return <Tag {...props}>{children}</Tag>;
+    return (
+      <Tag id={id} {...props}>
+        {children}
+        <HeadingAnchor id={id} title={title} />
+      </Tag>
+    );
+  };
+}
+
 export const mdxComponents: MdxComponentMap = {
   a: ArrowLink,
   h1: PagefindH1,
+  h2: anchoredHeading("h2"),
+  h3: anchoredHeading("h3"),
   Callout,
 };
 

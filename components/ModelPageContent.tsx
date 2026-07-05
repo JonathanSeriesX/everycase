@@ -2,7 +2,8 @@ import { getPageSections, type CataloguePage } from "../lib/catalogue";
 import { getNotes, type MdxComponent } from "../lib/notes";
 import Breadcrumb, { type Crumb } from "./Breadcrumb";
 import MdxContent from "./MdxContent";
-import KindSection, { SectionHeading, slugify } from "./KindSection";
+import KindSection, { SectionHeading } from "./KindSection";
+import { slugify } from "../lib/slugify";
 
 interface ModelPageContentProps {
   page: CataloguePage;

@@ -1,25 +1,19 @@
 import MdxContent from "./MdxContent";
 import KindSectionClient from "./KindSection.client";
+import HeadingAnchor from "./HeadingAnchor";
+import { slugify } from "../lib/slugify";
 import type { CataloguePage, PageSection } from "../lib/catalogue";
 import type { MdxComponent } from "../lib/notes";
 import styles from "../styles/SectionHeading.module.css";
 
-// GitHub-style heading slugs, matching the anchors Nextra generated so old
-// deep links (e.g. /iphone/iphone-12#leather-sleeve) keep working.
-export function slugify(text: string): string {
-  return String(text)
-    .trim()
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s-]/gu, "")
-    .replace(/\s/g, "-");
-}
-
 /** Heading for prose-only sections (no price pills, no cards). */
 export function SectionHeading({ title }: { title: string }) {
+  const slug = slugify(title);
   return (
     <div className={styles.sectionHead}>
-      <h2 id={slugify(title)} className={styles.headingReset}>
+      <h2 id={slug} className={styles.headingReset}>
         {title}
+        <HeadingAnchor id={slug} title={title} />
       </h2>
     </div>
   );

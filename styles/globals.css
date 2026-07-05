@@ -284,6 +284,54 @@ textarea:focus-visible {
   box-shadow: none !important;
 }
 
+/* The heading permalink: an ↗ arrow sitting invisibly after each linkable
+   h2/h3. Hovering the heading fades it in faintly; hovering the arrow itself
+   sharpens it a little. A mouse click never leaves it lit — :focus-visible
+   ignores pointer focus, the outline reset above kills the ring, and the
+   post-click scroll moves the cursor off the heading — so it simply fades
+   back out after the jump. */
+.subheading-anchor {
+  display: inline-block;
+  margin-inline-start: 0.45em;
+  font-size: 0.65em;
+  color: var(--site-fg); /* muted grey, NOT the accent the heading uses */
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.subheading-anchor svg {
+  display: inline-block;
+  vertical-align: -0.08em;
+}
+
+@media (hover: hover) {
+  :hover > .subheading-anchor,
+  .subheading-anchor:focus-visible {
+    opacity: 0.25;
+  }
+  .subheading-anchor:hover {
+    opacity: 0.55;
+  }
+  /* No plain-:focus rules here on purpose: nothing reveals on pointer focus,
+     and hiding on it would make the arrow vanish under the cursor the moment
+     Chrome focuses the link on right-mousedown (context menu). */
+}
+
+/* Touch: there is no hover to reveal on demand, so show the arrow faintly at
+   rest. Once tapped it has done its job — HashNavigation adds `.is-tapped`
+   (and never removes it), so the dismiss runs exactly once, with no sticky
+   tap-hover/focus to re-light it. */
+@media (hover: none) {
+  .subheading-anchor {
+    opacity: 0.25;
+  }
+  .subheading-anchor.is-tapped,
+  .subheading-anchor.is-tapped:focus {
+    opacity: 0;
+  }
+}
+
 /* Keep anchored headings clear of the sticky navbar. */
 html {
   scroll-padding-top: 80px;
@@ -302,12 +350,43 @@ html {
   }
 }
 
-h2:target,
-h3:target,
-h4:target,
-h5:target,
-h6:target {
+/* `.heading-popped` marks headings whose pop JS has taken over (see below);
+   without it, removing the replay class from a still-:target heading would
+   re-apply this rule's animation-name — a fresh application — and play the
+   pop a second time. */
+h2:target:not(.heading-popped),
+h3:target:not(.heading-popped),
+h4:target:not(.heading-popped),
+h5:target:not(.heading-popped),
+h6:target:not(.heading-popped) {
   animation: heading-target-pop 0.45s ease-in-out !important;
+  transform-origin: left center;
+}
+
+/* Same-page anchor clicks go through replaceState() (HashNavigation), which
+   never updates :target — so the pop above only plays on a fresh page load.
+   For clicks, JS toggles this class instead. It uses an aliased copy of the
+   keyframes and is declared after the :target rules so the animation-name
+   actually changes (and therefore restarts) even on a heading that is still
+   the stale :target from the initial load. */
+@keyframes heading-target-pop-repeat {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+h2.heading-target-pop,
+h3.heading-target-pop,
+h4.heading-target-pop,
+h5.heading-target-pop,
+h6.heading-target-pop {
+  animation: heading-target-pop-repeat 0.45s ease-in-out !important;
   transform-origin: left center;
 }
 

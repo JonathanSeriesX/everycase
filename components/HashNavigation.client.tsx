@@ -73,6 +73,24 @@ export default function HashNavigation() {
         const top =
           target.getBoundingClientRect().top + window.scrollY - offset - 16;
         window.scrollTo({ top, left: window.scrollX });
+
+        // replaceState() doesn't update :target, so the CSS-only pop never
+        // plays for same-page clicks — replay it via a class (removed on
+        // animationend so repeat clicks restart it cleanly). `heading-popped`
+        // stays on for good: it suppresses the :target animation, which would
+        // otherwise re-apply (and re-play) when the replay class comes off a
+        // heading that is still the stale :target from the initial load.
+        if (target instanceof HTMLHeadingElement) {
+          target.classList.add("heading-popped");
+          target.classList.remove("heading-target-pop");
+          void target.offsetWidth; // flush so the re-add restarts the animation
+          target.classList.add("heading-target-pop");
+          target.addEventListener(
+            "animationend",
+            () => target.classList.remove("heading-target-pop"),
+            { once: true },
+          );
+        }
       }
 
       if (oldURL !== window.location.href) {

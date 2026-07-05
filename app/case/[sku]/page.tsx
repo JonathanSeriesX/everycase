@@ -6,6 +6,7 @@ import LightboxComponent, {
   type GalleryImage,
 } from "../../../components/LightboxComponent";
 import Breadcrumb, { type Crumb } from "../../../components/Breadcrumb";
+import HeadingAnchor from "../../../components/HeadingAnchor";
 import { findPageForModel } from "../../../lib/catalogue";
 import KeyboardProductDetails, {
   type KeyboardRegionOption,
@@ -270,7 +271,10 @@ export default async function CasePage({ params }: CaseRouteProps) {
         />
       ) : (
         <section>
-          <h2 id="image-gallery" data-pagefind-ignore>Image gallery</h2>
+          <h2 id="image-gallery" data-pagefind-ignore>
+            Image gallery
+            <HeadingAnchor id="image-gallery" title="Image gallery" />
+          </h2>
           <LightboxComponent images={defaultImages} />
         </section>
       )}
