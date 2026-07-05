@@ -52,6 +52,7 @@ export const GROUPS: CatalogueGroup[] = [
       {
         slug: "17",
         title: "iPhone 17, Pro, Max",
+        hero: "MGFJ4",
         blurb: "Silicone & TechWoven",
         models: ["iPhone 17", "iPhone 17 Pro", "iPhone 17 Pro Max"],
         merged: ["Clear Case"],
@@ -59,12 +60,14 @@ export const GROUPS: CatalogueGroup[] = [
       {
         slug: "e",
         title: "iPhone 16e, 17e",
+        hero: "MHWF4_AV1",
         blurb: "Silicone & Clear",
         models: ["iPhone 16e", "iPhone 17e"],
       },
       {
         slug: "16",
         title: "iPhone 16, Plus, Pro, Max",
+        hero: "MDGQ4",
         blurb: "Silicone & Clear",
         models: [
           "iPhone 16",
@@ -77,6 +80,7 @@ export const GROUPS: CatalogueGroup[] = [
       {
         slug: "15",
         title: "iPhone 15, Plus, Pro, Max",
+        hero: "MT0V3_AV1",
         blurb: "Silicone & FineWoven",
         models: [
           "iPhone 15",
@@ -90,6 +94,7 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "14",
         title: "iPhone 14, Plus, Pro, Max",
         blurb: "Silicone & Leather",
+        hero: "MPP83_AV1",
         models: [
           "iPhone 14",
           "iPhone 14 Plus",
@@ -101,6 +106,7 @@ export const GROUPS: CatalogueGroup[] = [
       {
         slug: "13",
         title: "iPhone 13, mini, Pro, Max",
+        hero: "MM163_AV4",
         blurb: "Silicone & Leather",
         models: [
           "iPhone 13",
@@ -114,6 +120,7 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "12",
         title: "iPhone 12, mini, Pro, Max",
         blurb: "Silicone, Leather & Sleeves",
+        hero: "MHKQ3",
         models: ["iPhone 12 mini", "iPhone 12 & 12 Pro", "iPhone 12 Pro Max"],
         merged: ["Clear Case"],
       },
@@ -121,6 +128,7 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "11",
         title: "iPhone 11 Pro, Max",
         blurb: "Silicone, Leather & Folios",
+        hero: "MWYA2_AV2",
         models: ["iPhone 11 Pro", "iPhone 11 Pro Max"],
         merged: ["Clear Case"],
       },
@@ -128,6 +136,7 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "xr",
         title: "iPhone XR & 11",
         blurb: "Silicone & Battery Cases",
+        hero: "MY182_AV4",
         models: ["iPhone XR", "iPhone 11"],
         merged: ["Clear Case"],
       },
@@ -135,12 +144,14 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "x",
         title: "iPhone X & Xs",
         blurb: "Silicone, Leather & Folios",
+        hero: "MQTJ2",
         models: ["iPhone X", "iPhone XS", "iPhone XS Max"],
       },
       {
         slug: "7",
         title: "iPhone 7, 8, Plus & SE",
         blurb: "Silicone, Leather & Battery",
+        hero: "MQ5F2",
         models: ["iPhone 7-8", "iPhone 7-8 Plus"],
         tabLabels: {
           "iPhone 7-8": "iPhone 7 / 8",
@@ -151,6 +162,7 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "6",
         title: "iPhone 6, 6s, Plus",
         blurb: "Silicone, Leather & Battery",
+        hero: "MM682",
         models: ["iPhone 6-6s", "iPhone 6-6s Plus"],
         tabLabels: {
           "iPhone 6-6s": "iPhone 6 | 6s",
@@ -161,17 +173,20 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "5s",
         title: "iPhone 5, 5s, SE",
         blurb: "Leather Case",
+        hero: "MF044",
         models: ["iPhone 5s-SE"],
       },
       {
         slug: "5c",
         title: "iPhone 5c",
+        hero: "MF036",
         blurb: "Silicone Case",
         models: ["iPhone 5c"],
       },
       {
         slug: "4",
         title: "iPhone 4, 4s",
+        hero: "MC671",
         blurb: "Bumpers",
         models: ["iPhone 4"],
       },
