@@ -36,8 +36,7 @@ export default async function SettingsPage() {
       );
     profile = {
       name: typeof userDoc?.name === "string" ? userDoc.name : "",
-      username:
-        typeof userDoc?.username === "string" ? userDoc.username : null,
+      username: typeof userDoc?.username === "string" ? userDoc.username : null,
       collectionPublic: userDoc?.collectionPublic === true,
     };
 
@@ -63,7 +62,7 @@ export default async function SettingsPage() {
           <SettingsProfile initial={profile} />
 
           <section className={styles.section}>
-            <h2>Sign-in</h2>
+            <h2>Passkeys</h2>
             <PasskeyCard initial={passkeys} />
           </section>
 
@@ -76,8 +75,8 @@ export default async function SettingsPage() {
         <section className={styles.section}>
           <h2>Profile</h2>
           <p>
-            Sign in with the account button in the top-right corner to set
-            your display name, username, and collection visibility.
+            Sign in with the account button in the top-right corner to set your
+            display name, username, and collection visibility.
           </p>
         </section>
       )}

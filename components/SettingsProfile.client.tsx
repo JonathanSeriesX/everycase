@@ -72,9 +72,7 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
     }
   };
 
-  const publicPath = saved.username
-    ? `/collections/${saved.username}`
-    : null;
+  const publicPath = saved.username ? `/collections/${saved.username}` : null;
 
   return (
     <>
@@ -132,8 +130,6 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
       </section>
 
       <section className={styles.section}>
-        <h2>Public collection</h2>
-
         <div className={styles.card}>
           <div className={styles.row}>
             <div className={styles.rowText}>
@@ -143,9 +139,7 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
                 {saved.collectionPublic && publicPath ? (
                   <>
                     Live at{" "}
-                    <Link href={publicPath}>
-                      everycase.org{publicPath}
-                    </Link>
+                    <Link href={publicPath}>everycase.org{publicPath}</Link>
                   </>
                 ) : publicPath ? (
                   `Anyone with the link will see it at everycase.org${publicPath}`
@@ -170,9 +164,7 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
             </label>
           </div>
 
-          {visibilityError && (
-            <p className={styles.error}>{visibilityError}</p>
-          )}
+          {visibilityError && <p className={styles.error}>{visibilityError}</p>}
         </div>
       </section>
     </>

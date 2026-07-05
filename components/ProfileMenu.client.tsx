@@ -163,7 +163,7 @@ export default function ProfileMenu() {
                   className={chrome.profileMenuItem}
                   onClick={close}
                 >
-                  Your e-mail
+                  My collection
                 </Link>
                 <Link
                   href="/settings"

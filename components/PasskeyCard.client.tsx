@@ -28,9 +28,7 @@ const AAGUID_NAMES: Record<string, string> = {
 };
 
 const displayName = (passkey: PasskeyInfo): string =>
-  passkey.name ||
-  (passkey.aaguid && AAGUID_NAMES[passkey.aaguid]) ||
-  "Passkey";
+  passkey.name || (passkey.aaguid && AAGUID_NAMES[passkey.aaguid]) || "Passkey";
 
 // Fixed locale + UTC keeps the server-rendered string identical on the client.
 const addedOn = (iso: string | null): string =>
@@ -101,7 +99,9 @@ export default function PasskeyCard({ initial }: { initial: PasskeyInfo[] }) {
             <div className={styles.rowText}>
               <span className={styles.rowLabel}>{displayName(passkey)}</span>
 
-              <span className={styles.rowHint}>{addedOn(passkey.createdAt)}</span>
+              <span className={styles.rowHint}>
+                {addedOn(passkey.createdAt)}
+              </span>
             </div>
 
             <button
@@ -122,8 +122,8 @@ export default function PasskeyCard({ initial }: { initial: PasskeyInfo[] }) {
         <div className={styles.rowText}>
           <span className={styles.rowHint}>
             {passkeys.length === 0
-              ? "Sign in with Face ID or Touch ID instead of email codes."
-              : "Add one per device — e.g. your phone or another browser."}
+              ? "Sign in with a passkey instead of email codes."
+              : "Use multiple passkeys for different keychains — e.g. Google Passwords, 1Password, ..."}
           </span>
         </div>
 
