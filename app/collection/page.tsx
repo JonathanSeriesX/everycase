@@ -1,6 +1,9 @@
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import { ObjectId } from "mongodb";
 import { auth } from "../../lib/auth";
+import { db } from "../../lib/mongo";
 import { loadCollection } from "../../lib/collectionItems";
 import {
   CaseGrid,
@@ -32,7 +35,18 @@ export default async function CollectionPage() {
     );
   }
 
-  const { owned, wanted } = await loadCollection(session.user.id);
+  // A public collection has a nicer address — send its owner there.
+  const userId = session.user.id;
+  const userDoc = await db
+    .collection("user")
+    .findOne(
+      ObjectId.isValid(userId) ? { _id: new ObjectId(userId) } : { id: userId },
+    );
+  if (userDoc?.collectionPublic === true && typeof userDoc.username === "string") {
+    redirect(`/collections/${userDoc.username}`);
+  }
+
+  const { owned, wanted } = await loadCollection(userId);
   const { sums, pricedCount } = computeLaunchValue(owned);
 
   return (

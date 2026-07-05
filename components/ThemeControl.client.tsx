@@ -61,7 +61,13 @@ export default function ThemeControl() {
           aria-checked={mounted && theme === value}
           data-active={mounted && theme === value}
           className={styles.segment}
-          onClick={() => pickTheme(value)}
+          onClick={(event) => {
+            // Chrome focuses buttons on click, and the global button:focus
+            // reset kills the active segment's shadow; Safari never focuses
+            // on click, so this blur is a no-op there.
+            event.currentTarget.blur();
+            pickTheme(value);
+          }}
         >
           <Icon aria-hidden="true" />
           {label}

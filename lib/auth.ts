@@ -58,7 +58,8 @@ export const auth = betterAuth({
       storeOTP: "hashed",
     }),
     passkey({
-      rpID: "everycase.org",
+      //temporarily disabled so I could keep on testing on localhost!
+      //rpID: "everycase.org",
       rpName: "Finest Woven",
     }),
     // Better Auth Dash (hosted dashboard); needs BETTER_AUTH_API_KEY.

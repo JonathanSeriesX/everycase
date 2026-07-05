@@ -200,7 +200,7 @@ export default function ProfileMenu() {
             )
           ) : view === "email" ? (
             <form className={chrome.profileForm} onSubmit={continueSignIn}>
-              <p className={chrome.profileTitle}>My collection</p>
+              <p className={chrome.profileTitle}>Your email</p>
               <input
                 type="email"
                 name="email"
