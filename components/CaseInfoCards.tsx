@@ -215,8 +215,15 @@ const OrderNumbersCard = ({ skuGroups }: { skuGroups: SkuGroup[] }) => {
             <span className={styles.skuGroupLabel}>{group.label} </span>
           )}
           <div className={styles.chipRow}>
-            {group.orderNumbers.map((orderNumber) => (
-              <CopyChip key={orderNumber} value={orderNumber} />
+            {group.orderNumbers.map((orderNumber, chipIndex) => (
+              <Fragment key={orderNumber}>
+                <CopyChip value={orderNumber} />
+                {/* Invisible separators keep Pagefind excerpts (and screen
+                    readers) from running the order numbers together. */}
+                <span className="sr-punctuation">
+                  {chipIndex < group.orderNumbers.length - 1 ? ", " : "."}
+                </span>{" "}
+              </Fragment>
             ))}
           </div>
         </div>

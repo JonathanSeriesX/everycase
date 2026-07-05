@@ -60,15 +60,11 @@ export default async function SettingsPage() {
       {profile ? (
         <>
           <SettingsProfile initial={profile} />
+          <DeleteAccount />
 
           <section className={styles.section}>
             <h2>Passkeys</h2>
             <PasskeyCard initial={passkeys} />
-          </section>
-
-          <section className={styles.section}>
-            <h2>Account</h2>
-            <DeleteAccount />
           </section>
         </>
       ) : (

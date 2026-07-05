@@ -40,7 +40,7 @@ export default function DeleteAccount() {
           <span className={styles.rowHint}>
             {confirming
               ? "This permanently removes everything. Last chance."
-              : "Removes your profile, passkeys, and collection. There is no undo."}
+              : "Removes your profile and collection, frees up your username. There is no undo."}
           </span>
         </div>
 
