@@ -187,6 +187,7 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "pro-2024",
         title: "iPad Pro M4 / M5",
         blurb: "Folios & keyboards",
+        hero: "MW993_AV1",
         models: ["iPad Pro 11 M4", "iPad Pro 13 M4"],
         tabLabels: {
           "iPad Pro 11 M4": "iPad Pro 11″",
@@ -197,6 +198,7 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "air-2020",
         title: "iPad Air / Pro (2018)",
         blurb: "Folios & keyboards",
+        hero: "MRX92_AV4",
         models: ["iPad Air 11-inch", "iPad Air 13-inch"],
         tabLabels: {
           "iPad Air 11-inch": "10.9″ | 11″",
@@ -207,18 +209,21 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "10",
         title: "Liquid iPad",
         blurb: "Folios & keyboards",
+        hero: "MDEN4_AV1",
         models: ["iPad 10"],
       },
       {
         slug: "mini-6",
         title: "Liquid iPad mini",
         blurb: "Smart Folio",
+        hero: "MC2V4_AV1",
         models: ["iPad mini 6"],
       },
       {
         slug: "pro-2020",
         title: "iPad Pro A12Z / M1 / M2",
         blurb: "Folios & keyboards",
+        hero: "MXT62_AV4",
         models: ["iPad Pro 11 M1", "iPad Pro 12.9 M1"],
         tabLabels: {
           "iPad Pro 11 M1": "iPad Pro 11″",
@@ -229,30 +234,35 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "pro-105",
         title: "iPad 10.2″ & Pro 10.5″",
         blurb: "Covers, sleeves & keyboards",
+        hero: "MR5K2_AV1_GOLD",
         models: ["iPad 10.5"],
       },
       {
         slug: "pro-129",
         title: "iPad Pro 12.9″",
         blurb: "Cases, covers, sleeves, and keyboards",
+        hero: "MPV12_AV1_SILVER",
         models: ["iPad Pro 12.9 A9X", "iPad Pro 12.9 1-2"],
       },
       {
         slug: "pro-97",
         title: "iPad Pro 9.7″",
         blurb: "Cases, covers & keyboards",
+        hero: "MMG72",
         models: ["iPad Pro 9.7"],
       },
       {
         slug: "mini-4",
         title: "iPad mini 4–5",
         blurb: "Cases & covers",
+        hero: "MM3N2",
         models: ["iPad mini 4", "iPad mini 4-5"],
       },
       {
         slug: "air-2013",
         title: "iPad Air 1–2 & iPad 5–6",
         blurb: "Smart Covers & Cases",
+        hero: "MGTT2",
         models: ["iPad 9.7", "iPad 9.7 thicc", "iPad Air 2"],
         tabLabels: {
           "iPad 9.7 thicc": "iPad Air 1",
