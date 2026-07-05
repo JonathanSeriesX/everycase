@@ -187,7 +187,7 @@ export default function ProfileMenu() {
                   className={chrome.profileMenuItem}
                   onClick={() => setView("email")}
                 >
-                  Sign in
+                  Sign in to start collecting
                 </button>
                 <Link
                   href="/settings"

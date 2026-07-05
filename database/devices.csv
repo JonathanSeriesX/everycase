@@ -1,0 +1,328 @@
+device_id,image_key,kind,model,colour,season,release_date
+iphone-aluminum,MA501,iPhone,iPhone,Aluminum,Summer 2007,6/29/07
+iphone-3g-black,MB046,iPhone,iPhone 3G,Black,Summer 2008,7/11/08
+iphone-3g-white,,iPhone,iPhone 3G,White,Summer 2008,7/11/08
+iphone-3gs-black,MB715,iPhone,iPhone 3GS,Black,Summer 2009,6/19/09
+iphone-3gs-white,MB716,iPhone,iPhone 3GS,White,Summer 2009,6/19/09
+iphone-4-black,MC318,iPhone,iPhone 4,Black,Summer 2010,6/24/10
+iphone-4-white,MC604,iPhone,iPhone 4,White,Spring 2011,4/28/11
+iphone-4s-black,MD234,iPhone,iPhone 4s,Black,Autumn 2011,10/14/11
+iphone-4s-white,MD237,iPhone,iPhone 4s,White,Autumn 2011,10/14/11
+iphone-5-black-and-slate,2012-iphone5-black,iPhone,iPhone 5,Black & Slate,Autumn 2012,9/21/12
+iphone-5-white-and-silver,,iPhone,iPhone 5,White & Silver,Autumn 2012,9/21/12
+iphone-5c-green,ME502,iPhone,iPhone 5c,Green,Autumn 2013,9/20/13
+iphone-5c-pink,ME503,iPhone,iPhone 5c,Pink,Autumn 2013,9/20/13
+iphone-5c-white,ME505,iPhone,iPhone 5c,White,Autumn 2013,9/20/13
+iphone-5c-yellow,ME506,iPhone,iPhone 5c,Yellow,Autumn 2013,9/20/13
+iphone-5c-blue,ME507,iPhone,iPhone 5c,Blue,Autumn 2013,9/20/13
+iphone-5s-space-grey,iphone5s-selection-hero-2015,iPhone,iPhone 5s,Space Gray,Autumn 2013,9/20/13
+iphone-5s-silver,iphone5s-selection-hero-2015,iPhone,iPhone 5s,Silver,Autumn 2013,9/20/13
+iphone-5s-gold,iphone5s-selection-hero-2015,iPhone,iPhone 5s,Gold,Autumn 2013,9/20/13
+iphone-6-space-grey,iphone6-gray-select-2014,iPhone,iPhone 6,Space Gray,Autumn 2014,9/19/14
+iphone-6-silver,iphone6-silver-select-2014,iPhone,iPhone 6,Silver,Autumn 2014,9/19/14
+iphone-6-gold,iphone6-select-2014,iPhone,iPhone 6,Gold,Autumn 2014,9/19/14
+iphone-6-plus-space-grey,iphone6p-gray-select-2014,iPhone,iPhone 6 Plus,Space Gray,Autumn 2014,9/19/14
+iphone-6-plus-silver,iphone6p-silver-select-2014,iPhone,iPhone 6 Plus,Silver,Autumn 2014,9/19/14
+iphone-6-plus-gold,iphone6p-select-2014,iPhone,iPhone 6 Plus,Gold,Autumn 2014,9/19/14
+iphone-6s-space-grey,iphone6s-gray-select-2015,iPhone,iPhone 6s,Space Gray,Autumn 2015,9/25/15
+iphone-6s-silver,iphone6s-silver-select-2015,iPhone,iPhone 6s,Silver,Autumn 2015,9/25/15
+iphone-6s-gold,iphone6s-gold-select-2015,iPhone,iPhone 6s,Gold,Autumn 2015,9/25/15
+iphone-6s-rose-gold,iphone6s-rosegold-select-2015,iPhone,iPhone 6s,Rose Gold,Autumn 2015,9/25/15
+iphone-6s-plus-space-grey,iphone6s-plus-gray-select-2015,iPhone,iPhone 6s Plus,Space Gray,Autumn 2015,9/25/15
+iphone-6s-plus-silver,iphone6s-plus-silver-select-2015,iPhone,iPhone 6s Plus,Silver,Autumn 2015,9/25/15
+iphone-6s-plus-gold,iphone6s-plus-gold-select-2015,iPhone,iPhone 6s Plus,Gold,Autumn 2015,9/25/15
+iphone-6s-plus-rose-gold,iphone6s-plus-rosegold-select-2015,iPhone,iPhone 6s Plus,Rose Gold,Autumn 2015,9/25/15
+iphone-se-1st-gen-space-grey,iphonese-gray-select-2016,iPhone,iPhone SE 1st gen,Space Gray,Spring 2016,3/31/16
+iphone-se-1st-gen-silver,iphonese-silver-select-2016,iPhone,iPhone SE 1st gen,Silver,Spring 2016,3/31/16
+iphone-se-1st-gen-gold,iphonese-gold-select-2016,iPhone,iPhone SE 1st gen,Gold,Spring 2016,3/31/16
+iphone-se-1st-gen-rose-gold,iphonese-rosegold-select-2016,iPhone,iPhone SE 1st gen,Rose Gold,Spring 2016,3/31/16
+iphone-7-black,iphone7-black-select-2016,iPhone,iPhone 7,Black,Autumn 2016,9/16/16
+iphone-7-jet-black,iphone7-jetblack-select-2016,iPhone,iPhone 7,Jet Black,Autumn 2016,9/16/16
+iphone-7-silver,iphone7-silver-select-2016,iPhone,iPhone 7,Silver,Autumn 2016,9/16/16
+iphone-7-gold,iphone7-gold-select-2016,iPhone,iPhone 7,Gold,Autumn 2016,9/16/16
+iphone-7-rose-gold,iphone7-rosegold-select-2016,iPhone,iPhone 7,Rose Gold,Autumn 2016,9/16/16
+iphone-7-product-red,iphone7-model-select-201703,iPhone,iPhone 7,(PRODUCT)RED,Spring 2017,3/24/17
+iphone-7-plus-black,iphone7-plus-black-select-2016,iPhone,iPhone 7 Plus,Black,Autumn 2016,9/16/16
+iphone-7-plus-jet-black,iphone7-plus-jetblack-select-2016,iPhone,iPhone 7 Plus,Jet Black,Autumn 2016,9/16/16
+iphone-7-plus-silver,iphone7-plus-silver-select-2016,iPhone,iPhone 7 Plus,Silver,Autumn 2016,9/16/16
+iphone-7-plus-gold,iphone7-plus-gold-select-2016,iPhone,iPhone 7 Plus,Gold,Autumn 2016,9/16/16
+iphone-7-plus-rose-gold,iphone7-plus-rosegold-select-2016,iPhone,iPhone 7 Plus,Rose Gold,Autumn 2016,9/16/16
+iphone-7-plus-product-red,iphone7plus-model-select-201703,iPhone,iPhone 7 Plus,(PRODUCT)RED,Spring 2017,3/24/17
+iphone-8-space-grey,iphone8-spgray-select-2017,iPhone,iPhone 8,Space Gray,Autumn 2017,9/22/17
+iphone-8-silver,iphone8-silver-select-2017,iPhone,iPhone 8,Silver,Autumn 2017,9/22/17
+iphone-8-gold,iphone8-gold-select-2017,iPhone,iPhone 8,Gold,Autumn 2017,9/22/17
+iphone-8-product-red,iphone8-red-select-2018,iPhone,iPhone 8,(PRODUCT)RED,Spring 2018,4/13/18
+iphone-8-plus-space-grey,iphone8-plus-spgray-select-2017,iPhone,iPhone 8 Plus,Space Gray,Autumn 2017,9/22/17
+iphone-8-plus-silver,iphone8-plus-silver-select-2017,iPhone,iPhone 8 Plus,Silver,Autumn 2017,9/22/17
+iphone-8-plus-gold,iphone8-plus-gold-select-2017,iPhone,iPhone 8 Plus,Gold,Autumn 2017,9/22/17
+iphone-8-plus-product-red,iphone8-plus-red-select-2018,iPhone,iPhone 8 Plus,(PRODUCT)RED,Spring 2018,4/13/18
+iphone-x-silver,iphone-x-silver-select-2017,iPhone,iPhone X,Silver,Autumn 2017,11/3/17
+iphone-x-space-grey,iphone-x-gray-select-2017,iPhone,iPhone X,Space Gray,Autumn 2017,11/3/17
+iphone-xs-gold,iphone-xs-gold-select-2018,iPhone,iPhone XS,Gold,Autumn 2018,9/21/18
+iphone-xs-silver,iphone-xs-silver-select-2018,iPhone,iPhone XS,Silver,Autumn 2018,9/21/18
+iphone-xs-space-grey,iphone-xs-space-select-2018,iPhone,iPhone XS,Space Gray,Autumn 2018,9/21/18
+iphone-xs-max-gold,iphone-xs-max-gold-select-2018,iPhone,iPhone XS Max,Gold,Autumn 2018,9/21/18
+iphone-xs-max-silver,iphone-xs-max-silver-select-2018,iPhone,iPhone XS Max,Silver,Autumn 2018,9/21/18
+iphone-xs-max-space-grey,iphone-xs-max-space-select-2018,iPhone,iPhone XS Max,Space Gray,Autumn 2018,9/21/18
+iphone-xr-white,iphone-xr-white-select-201809,iPhone,iPhone XR,White,Autumn 2018,10/26/18
+iphone-xr-black,iphone-xr-black-select-201809,iPhone,iPhone XR,Black,Autumn 2018,10/26/18
+iphone-xr-blue,iphone-xr-blue-select-201809,iPhone,iPhone XR,Blue,Autumn 2018,10/26/18
+iphone-xr-yellow,iphone-xr-yellow-select-201809,iPhone,iPhone XR,Yellow,Autumn 2018,10/26/18
+iphone-xr-coral,iphone-xr-coral-select-201809,iPhone,iPhone XR,Coral,Autumn 2018,10/26/18
+iphone-xr-product-red,iphone-xr-red-select-201809,iPhone,iPhone XR,(PRODUCT)RED,Autumn 2018,10/26/18
+iphone-11-black,iphone11-black-select-2019,iPhone,iPhone 11,Black,Autumn 2019,9/20/19
+iphone-11-white,iphone11-white-select-2019,iPhone,iPhone 11,White,Autumn 2019,9/20/19
+iphone-11-green,iphone11-green-select-2019,iPhone,iPhone 11,Green,Autumn 2019,9/20/19
+iphone-11-yellow,iphone11-yellow-select-2019,iPhone,iPhone 11,Yellow,Autumn 2019,9/20/19
+iphone-11-purple,iphone11-purple-select-2019,iPhone,iPhone 11,Purple,Autumn 2019,9/20/19
+iphone-11-product-red,iphone11-red-select-2019,iPhone,iPhone 11,(PRODUCT)RED,Autumn 2019,9/20/19
+iphone-11-pro-silver,iphone-11-pro-silver-select-2019,iPhone,iPhone 11 Pro,Silver,Autumn 2019,9/20/19
+iphone-11-pro-space-grey,iphone-11-pro-space-select-2019,iPhone,iPhone 11 Pro,Space Gray,Autumn 2019,9/20/19
+iphone-11-pro-gold,iphone-11-pro-gold-select-2019,iPhone,iPhone 11 Pro,Gold,Autumn 2019,9/20/19
+iphone-11-pro-midnight-green,iphone-11-pro-midnight-green-select-2019,iPhone,iPhone 11 Pro,Midnight Green,Autumn 2019,9/20/19
+iphone-11-pro-max-silver,iphone-11-pro-max-silver-select-2019,iPhone,iPhone 11 Pro Max,Silver,Autumn 2019,9/20/19
+iphone-11-pro-max-space-grey,iphone-11-pro-max-space-select-2019,iPhone,iPhone 11 Pro Max,Space Gray,Autumn 2019,9/20/19
+iphone-11-pro-max-gold,iphone-11-pro-max-gold-select-2019,iPhone,iPhone 11 Pro Max,Gold,Autumn 2019,9/20/19
+iphone-11-pro-max-midnight-green,iphone-11-pro-max-midnight-green-select-2019,iPhone,iPhone 11 Pro Max,Midnight Green,Autumn 2019,9/20/19
+iphone-se-2nd-gen-black,iphone-se-black-select-2020,iPhone,iPhone SE 2nd gen,Black,Spring 2020,4/24/20
+iphone-se-2nd-gen-white,iphone-se-white-select-2020,iPhone,iPhone SE 2nd gen,White,Spring 2020,4/24/20
+iphone-se-2nd-gen-product-red,iphone-se-red-select-2020,iPhone,iPhone SE 2nd gen,(PRODUCT)RED,Spring 2020,4/24/20
+iphone-12-mini-black,iphone-12-mini-black-select-2020,iPhone,iPhone 12 mini,Black,Autumn 2020,11/13/20
+iphone-12-mini-white,iphone-12-mini-white-select-2020,iPhone,iPhone 12 mini,White,Autumn 2020,11/13/20
+iphone-12-mini-product-red,iphone-12-mini-red-select-2020,iPhone,iPhone 12 mini,(PRODUCT)RED,Autumn 2020,11/13/20
+iphone-12-mini-green,iphone-12-mini-green-select-2020,iPhone,iPhone 12 mini,Green,Autumn 2020,11/13/20
+iphone-12-mini-blue,iphone-12-mini-blue-select-2020,iPhone,iPhone 12 mini,Blue,Autumn 2020,11/13/20
+iphone-12-mini-purple,iphone-12-mini-purple-select-2021,iPhone,iPhone 12 mini,Purple,Spring 2021,4/30/21
+iphone-12-black,iphone-12-black-select-2020,iPhone,iPhone 12,Black,Autumn 2020,10/23/20
+iphone-12-white,iphone-12-white-select-2020,iPhone,iPhone 12,White,Autumn 2020,10/23/20
+iphone-12-product-red,iphone-12-red-select-2020,iPhone,iPhone 12,(PRODUCT)RED,Autumn 2020,10/23/20
+iphone-12-green,iphone-12-green-select-2020,iPhone,iPhone 12,Green,Autumn 2020,10/23/20
+iphone-12-blue,iphone-12-blue-select-2020,iPhone,iPhone 12,Blue,Autumn 2020,10/23/20
+iphone-12-purple,iphone-12-purple-select-2021,iPhone,iPhone 12,Purple,Spring 2021,4/30/21
+iphone-12-pro-silver,iphone-12-pro-silver-hero,iPhone,iPhone 12 Pro,Silver,Autumn 2020,10/23/20
+iphone-12-pro-graphite,iphone-12-pro-graphite-hero,iPhone,iPhone 12 Pro,Graphite,Autumn 2020,10/23/20
+iphone-12-pro-gold,iphone-12-pro-gold-hero,iPhone,iPhone 12 Pro,Gold,Autumn 2020,10/23/20
+iphone-12-pro-pacific-blue,iphone-12-pro-blue-hero,iPhone,iPhone 12 Pro,Pacific Blue,Autumn 2020,10/23/20
+iphone-12-pro-max-silver,iphone-12-pro-max-silver-hero,iPhone,iPhone 12 Pro Max,Silver,Autumn 2020,11/13/20
+iphone-12-pro-max-graphite,iphone-12-pro-max-graphite-hero,iPhone,iPhone 12 Pro Max,Graphite,Autumn 2020,11/13/20
+iphone-12-pro-max-gold,iphone-12-pro-max-gold-hero,iPhone,iPhone 12 Pro Max,Gold,Autumn 2020,11/13/20
+iphone-12-pro-max-pacific-blue,iphone-12-pro-max-blue-hero,iPhone,iPhone 12 Pro Max,Pacific Blue,Autumn 2020,11/13/20
+iphone-13-mini-pink,iphone-13-mini-pink-select-2021,iPhone,iPhone 13 mini,Pink,Autumn 2021,9/24/21
+iphone-13-mini-blue,iphone-13-mini-blue-select-2021,iPhone,iPhone 13 mini,Blue,Autumn 2021,9/24/21
+iphone-13-mini-midnight,iphone-13-mini-midnight-select-2021,iPhone,iPhone 13 mini,Midnight,Autumn 2021,9/24/21
+iphone-13-mini-starlight,iphone-13-mini-starlight-select-2021,iPhone,iPhone 13 mini,Starlight,Autumn 2021,9/24/21
+iphone-13-mini-product-red,iphone-13-mini-product-red-select-2021,iPhone,iPhone 13 mini,(PRODUCT)RED,Autumn 2021,9/24/21
+iphone-13-mini-green,iphone-13-mini-green-select,iPhone,iPhone 13 mini,Green,Spring 2022,3/18/22
+iphone-13-pink,iphone-13-pink-select-2021,iPhone,iPhone 13,Pink,Autumn 2021,9/24/21
+iphone-13-blue,iphone-13-blue-select-2021,iPhone,iPhone 13,Blue,Autumn 2021,9/24/21
+iphone-13-midnight,iphone-13-midnight-select-2021,iPhone,iPhone 13,Midnight,Autumn 2021,9/24/21
+iphone-13-starlight,iphone-13-starlight-select-2021,iPhone,iPhone 13,Starlight,Autumn 2021,9/24/21
+iphone-13-product-red,iphone-13-product-red-select-2021,iPhone,iPhone 13,(PRODUCT)RED,Autumn 2021,9/24/21
+iphone-13-green,iphone-13-green-select,iPhone,iPhone 13,Green,Spring 2022,3/18/22
+iphone-13-pro-graphite,iphone-13-pro-graphite-select,iPhone,iPhone 13 Pro,Graphite,Autumn 2021,9/24/21
+iphone-13-pro-gold,iphone-13-pro-gold-select,iPhone,iPhone 13 Pro,Gold,Autumn 2021,9/24/21
+iphone-13-pro-silver,iphone-13-pro-silver-select,iPhone,iPhone 13 Pro,Silver,Autumn 2021,9/24/21
+iphone-13-pro-sierra-blue,iphone-13-pro-blue-select,iPhone,iPhone 13 Pro,Sierra Blue,Autumn 2021,9/24/21
+iphone-13-pro-alpine-green,iphone-13-pro-green-select,iPhone,iPhone 13 Pro,Alpine Green,Spring 2022,3/18/22
+iphone-13-pro-max-graphite,iphone-13-pro-max-graphite-select,iPhone,iPhone 13 Pro Max,Graphite,Autumn 2021,9/24/21
+iphone-13-pro-max-gold,iphone-13-pro-max-gold-select,iPhone,iPhone 13 Pro Max,Gold,Autumn 2021,9/24/21
+iphone-13-pro-max-silver,iphone-13-pro-max-silver-select,iPhone,iPhone 13 Pro Max,Silver,Autumn 2021,9/24/21
+iphone-13-pro-max-sierra-blue,iphone-13-pro-max-blue-select,iPhone,iPhone 13 Pro Max,Sierra Blue,Autumn 2021,9/24/21
+iphone-13-pro-max-alpine-green,iphone-13-pro-max-green-select,iPhone,iPhone 13 Pro Max,Alpine Green,Spring 2022,3/18/22
+iphone-se-3rd-gen-midnight,iphone-se-midnight-select-202203,iPhone,iPhone SE 3rd gen,Midnight,Spring 2022,3/18/22
+iphone-se-3rd-gen-starlight,iphone-se-starlight-select-202203,iPhone,iPhone SE 3rd gen,Starlight,Spring 2022,3/18/22
+iphone-se-3rd-gen-product-red,iphone-se-red-select-202203,iPhone,iPhone SE 3rd gen,(PRODUCT)RED,Spring 2022,3/18/22
+iphone-14-blue,iphone-14-blue-select-202209,iPhone,iPhone 14,Blue,Autumn 2022,9/16/22
+iphone-14-purple,iphone-14-purple-select-202209,iPhone,iPhone 14,Purple,Autumn 2022,9/16/22
+iphone-14-midnight,iphone-14-midnight-select-202209,iPhone,iPhone 14,Midnight,Autumn 2022,9/16/22
+iphone-14-starlight,iphone-14-starlight-select-202209,iPhone,iPhone 14,Starlight,Autumn 2022,9/16/22
+iphone-14-product-red,iphone-14-red-select-202209,iPhone,iPhone 14,(PRODUCT)RED,Autumn 2022,9/16/22
+iphone-14-yellow,iphone-14-yellow-select-202303,iPhone,iPhone 14,Yellow,Spring 2023,3/14/23
+iphone-14-plus-blue,iphone-14-plus-blue-select-202209,iPhone,iPhone 14 Plus,Blue,Autumn 2022,10/7/22
+iphone-14-plus-purple,iphone-14-plus-purple-select-202209,iPhone,iPhone 14 Plus,Purple,Autumn 2022,10/7/22
+iphone-14-plus-midnight,iphone-14-plus-midnight-select-202209,iPhone,iPhone 14 Plus,Midnight,Autumn 2022,10/7/22
+iphone-14-plus-starlight,iphone-14-plus-starlight-select-202209,iPhone,iPhone 14 Plus,Starlight,Autumn 2022,10/7/22
+iphone-14-plus-product-red,iphone-14-plus-red-select-202209,iPhone,iPhone 14 Plus,(PRODUCT)RED,Autumn 2022,10/7/22
+iphone-14-plus-yellow,iphone-14-plus-yellow-select-202303,iPhone,iPhone 14 Plus,Yellow,Spring 2023,3/14/23
+iphone-14-pro-space-black,iphone-14-pro-spaceblack-select,iPhone,iPhone 14 Pro,Space Black,Autumn 2022,9/16/22
+iphone-14-pro-silver,iphone-14-pro-silver-select,iPhone,iPhone 14 Pro,Silver,Autumn 2022,9/16/22
+iphone-14-pro-gold,iphone-14-pro-gold-select,iPhone,iPhone 14 Pro,Gold,Autumn 2022,9/16/22
+iphone-14-pro-deep-purple,iphone-14-pro-deeppurple-select,iPhone,iPhone 14 Pro,Deep Purple,Autumn 2022,9/16/22
+iphone-14-pro-max-space-black,iphone-14-pro-max-spaceblack-select,iPhone,iPhone 14 Pro Max,Space Black,Autumn 2022,9/16/22
+iphone-14-pro-max-silver,iphone-14-pro-max-silver-select,iPhone,iPhone 14 Pro Max,Silver,Autumn 2022,9/16/22
+iphone-14-pro-max-gold,iphone-14-pro-max-gold-select,iPhone,iPhone 14 Pro Max,Gold,Autumn 2022,9/16/22
+iphone-14-pro-max-deep-purple,iphone-14-pro-max-deeppurple-select,iPhone,iPhone 14 Pro Max,Deep Purple,Autumn 2022,9/16/22
+iphone-15-black,iphone-15-black-select-202309,iPhone,iPhone 15,Black,Autumn 2023,9/22/23
+iphone-15-blue,iphone-15-blue-select-202309,iPhone,iPhone 15,Blue,Autumn 2023,9/22/23
+iphone-15-green,iphone-15-green-select-202309,iPhone,iPhone 15,Green,Autumn 2023,9/22/23
+iphone-15-yellow,iphone-15-yellow-select-202309,iPhone,iPhone 15,Yellow,Autumn 2023,9/22/23
+iphone-15-pink,iphone-15-pink-select-202309,iPhone,iPhone 15,Pink,Autumn 2023,9/22/23
+iphone-15-plus-black,iphone-15-plus-black-select-202309,iPhone,iPhone 15 Plus,Black,Autumn 2023,9/22/23
+iphone-15-plus-blue,iphone-15-plus-blue-select-202309,iPhone,iPhone 15 Plus,Blue,Autumn 2023,9/22/23
+iphone-15-plus-green,iphone-15-plus-green-select-202309,iPhone,iPhone 15 Plus,Green,Autumn 2023,9/22/23
+iphone-15-plus-yellow,iphone-15-plus-yellow-select-202309,iPhone,iPhone 15 Plus,Yellow,Autumn 2023,9/22/23
+iphone-15-plus-pink,iphone-15-plus-pink-select-202309,iPhone,iPhone 15 Plus,Pink,Autumn 2023,9/22/23
+iphone-15-pro-black-titanium,iphone-15-pro-blacktitanium-select,iPhone,iPhone 15 Pro,Black Titanium,Autumn 2023,9/22/23
+iphone-15-pro-white-titanium,iphone-15-pro-whitetitanium-select,iPhone,iPhone 15 Pro,White Titanium,Autumn 2023,9/22/23
+iphone-15-pro-blue-titanium,iphone-15-pro-bluetitanium-select,iPhone,iPhone 15 Pro,Blue Titanium,Autumn 2023,9/22/23
+iphone-15-pro-natural-titanium,iphone-15-pro-naturaltitanium-select,iPhone,iPhone 15 Pro,Natural Titanium,Autumn 2023,9/22/23
+iphone-15-pro-max-black-titanium,iphone-15-pro-max-blacktitanium-select,iPhone,iPhone 15 Pro Max,Black Titanium,Autumn 2023,9/22/23
+iphone-15-pro-max-white-titanium,iphone-15-pro-max-whitetitanium-select,iPhone,iPhone 15 Pro Max,White Titanium,Autumn 2023,9/22/23
+iphone-15-pro-max-blue-titanium,iphone-15-pro-max-bluetitanium-select,iPhone,iPhone 15 Pro Max,Blue Titanium,Autumn 2023,9/22/23
+iphone-15-pro-max-natural-titanium,iphone-15-pro-max-naturaltitanium-select,iPhone,iPhone 15 Pro Max,Natural Titanium,Autumn 2023,9/22/23
+iphone-16-black,iphone-16-black-select-202409,iPhone,iPhone 16,Black,Autumn 2024,9/20/24
+iphone-16-white,iphone-16-white-select-202409,iPhone,iPhone 16,White,Autumn 2024,9/20/24
+iphone-16-pink,iphone-16-pink-select-202409,iPhone,iPhone 16,Pink,Autumn 2024,9/20/24
+iphone-16-teal,iphone-16-teal-select-202409,iPhone,iPhone 16,Teal,Autumn 2024,9/20/24
+iphone-16-ultramarine,iphone-16-ultramarine-select-202409,iPhone,iPhone 16,Ultramarine,Autumn 2024,9/20/24
+iphone-16-plus-black,iphone-16-plus-black-select-202409,iPhone,iPhone 16 Plus,Black,Autumn 2024,9/20/24
+iphone-16-plus-white,iphone-16-plus-white-select-202409,iPhone,iPhone 16 Plus,White,Autumn 2024,9/20/24
+iphone-16-plus-pink,iphone-16-plus-pink-select-202409,iPhone,iPhone 16 Plus,Pink,Autumn 2024,9/20/24
+iphone-16-plus-teal,iphone-16-plus-teal-select-202409,iPhone,iPhone 16 Plus,Teal,Autumn 2024,9/20/24
+iphone-16-plus-ultramarine,iphone-16-plus-ultramarine-select-202409,iPhone,iPhone 16 Plus,Ultramarine,Autumn 2024,9/20/24
+iphone-16-pro-black-titanium,iphone-16-pro-blacktitanium-select,iPhone,iPhone 16 Pro,Black Titanium,Autumn 2024,9/20/24
+iphone-16-pro-natural-titanium,iphone-16-pro-naturaltitanium-select,iPhone,iPhone 16 Pro,Natural Titanium,Autumn 2024,9/20/24
+iphone-16-pro-white-titanium,iphone-16-pro-whitetitanium-select,iPhone,iPhone 16 Pro,White Titanium,Autumn 2024,9/20/24
+iphone-16-pro-desert-titanium,iphone-16-pro-deserttitanium-select,iPhone,iPhone 16 Pro,Desert Titanium,Autumn 2024,9/20/24
+iphone-16-pro-max-black-titanium,iphone-16-pro-max-blacktitanium-select,iPhone,iPhone 16 Pro Max,Black Titanium,Autumn 2024,9/20/24
+iphone-16-pro-max-natural-titanium,iphone-16-pro-max-naturaltitanium-select,iPhone,iPhone 16 Pro Max,Natural Titanium,Autumn 2024,9/20/24
+iphone-16-pro-max-white-titanium,iphone-16-pro-max-whitetitanium-select,iPhone,iPhone 16 Pro Max,White Titanium,Autumn 2024,9/20/24
+iphone-16-pro-max-desert-titanium,iphone-16-pro-max-deserttitanium-select,iPhone,iPhone 16 Pro Max,Desert Titanium,Autumn 2024,9/20/24
+iphone-16e-black,iphone-16e-black-select-202502,iPhone,iPhone 16e,Black,Winter 2025,2/28/25
+iphone-16e-white,iphone-16e-white-select-202502,iPhone,iPhone 16e,White,Winter 2025,2/28/25
+iphone-17-black,iphone-17-finish-select-black-202509,iPhone,iPhone 17,Black,Autumn 2025,9/19/25
+iphone-17-lavender,iphone-17-finish-select-lavender-202509,iPhone,iPhone 17,Lavender,Autumn 2025,9/19/25
+iphone-17-mist-blue,iphone-17-finish-select-mistblue-202509,iPhone,iPhone 17,Mist Blue,Autumn 2025,9/19/25
+iphone-17-sage,iphone-17-finish-select-sage-202509,iPhone,iPhone 17,Sage,Autumn 2025,9/19/25
+iphone-17-white,iphone-17-finish-select-white-202509,iPhone,iPhone 17,White,Autumn 2025,9/19/25
+iphone-17-pro-deep-blue,iphone-17-pro-finish-select-deepblue-202509,iPhone,iPhone 17 Pro,Deep Blue,Autumn 2025,9/19/25
+iphone-17-pro-cosmic-orange,iphone-17-pro-finish-select-cosmicorange-202509,iPhone,iPhone 17 Pro,Cosmic Orange,Autumn 2025,9/19/25
+iphone-17-pro-silver,iphone-17-pro-finish-select-silver-202509,iPhone,iPhone 17 Pro,Silver,Autumn 2025,9/19/25
+iphone-17-pro-max-deep-blue,iphone-17-pro-max-finish-select-deepblue-202509,iPhone,iPhone 17 Pro Max,Deep Blue,Autumn 2025,9/19/25
+iphone-17-pro-max-cosmic-orange,iphone-17-pro-max-finish-select-cosmicorange-202509,iPhone,iPhone 17 Pro Max,Cosmic Orange,Autumn 2025,9/19/25
+iphone-17-pro-max-silver,iphone-17-pro-max-finish-select-silver-202509,iPhone,iPhone 17 Pro Max,Silver,Autumn 2025,9/19/25
+iphone-air-space-black,iphone-air-finish-select-spaceblack-202509,iPhone,iPhone Air,Space Black,Autumn 2025,9/19/25
+iphone-air-cloud-white,iphone-air-finish-select-cloudwhite-202509,iPhone,iPhone Air,Cloud White,Autumn 2025,9/19/25
+iphone-air-light-gold,iphone-air-finish-select-lightgold-202509,iPhone,iPhone Air,Light Gold,Autumn 2025,9/19/25
+iphone-air-sky-blue,iphone-air-finish-select-skyblue-202509,iPhone,iPhone Air,Sky Blue,Autumn 2025,9/19/25
+iphone-17e-black,iphone-17e-finish-select-black-202603,iPhone,iPhone 17e,Black,Spring 2026,3/11/26
+iphone-17e-white,iphone-17e-finish-select-white-202603,iPhone,iPhone 17e,White,Spring 2026,3/11/26
+iphone-17e-soft-pink,iphone-17e-finish-select-softpink-202603,iPhone,iPhone 17e,Soft Pink,Spring 2026,3/11/26
+ipad-black,MB292,iPad,iPad,Black,Spring 2010,4/3/10
+ipad-2-black,MC769,iPad,iPad 2,Black,Spring 2011,3/11/11
+ipad-2-white,MC979,iPad,iPad 2,White,Spring 2011,3/11/11
+ipad-3rd-gen-black,,iPad,iPad (3rd gen),Black,Spring 2012,3/16/12
+ipad-3rd-gen-white,,iPad,iPad (3rd gen),White,Spring 2012,3/16/12
+ipad-4th-gen-black,mobile-2012-ipad4gen-black,iPad,iPad (4th gen),Black,Autumn 2012,11/2/12
+ipad-4th-gen-white,mobile-2012-ipad4gen-white,iPad,iPad (4th gen),White,Autumn 2012,11/2/12
+ipad-5th-gen-silver,ipad-wifi-select-silver-201703,iPad,iPad (5th gen),Silver,Spring 2017,3/24/17
+ipad-5th-gen-space-grey,ipad-wifi-select-spacegray-201703,iPad,iPad (5th gen),Space Gray,Spring 2017,3/24/17
+ipad-5th-gen-gold,ipad-wifi-select-gold-201703,iPad,iPad (5th gen),Gold,Spring 2017,3/24/17
+ipad-6th-gen-silver,ipad-wifi-select-silver-201803,iPad,iPad (6th gen),Silver,Spring 2018,3/27/18
+ipad-6th-gen-space-grey,ipad-wifi-select-spacegray-201803,iPad,iPad (6th gen),Space Gray,Spring 2018,3/27/18
+ipad-6th-gen-gold,ipad-wifi-select-gold-201803,iPad,iPad (6th gen),Gold,Spring 2018,3/27/18
+ipad-7th-gen-silver,ipad-wifi-select-silver-201909,iPad,iPad (7th gen),Silver,Autumn 2019,9/25/19
+ipad-7th-gen-space-grey,ipad-wifi-select-space-201909,iPad,iPad (7th gen),Space Gray,Autumn 2019,9/25/19
+ipad-7th-gen-gold,ipad-wifi-select-gold-201909,iPad,iPad (7th gen),Gold,Autumn 2019,9/25/19
+ipad-8th-gen-silver,ipad-2020-hero-silver-wifi-select,iPad,iPad (8th gen),Silver,Autumn 2020,9/18/20
+ipad-8th-gen-space-grey,ipad-2020-hero-space-wifi-select,iPad,iPad (8th gen),Space Gray,Autumn 2020,9/18/20
+ipad-8th-gen-gold,ipad-2020-hero-gold-wifi-select,iPad,iPad (8th gen),Gold,Autumn 2020,9/18/20
+ipad-9th-gen-silver,ipad-2021-hero-silver-wifi-select,iPad,iPad (9th gen),Silver,Autumn 2021,9/24/21
+ipad-9th-gen-space-grey,ipad-2021-hero-space-wifi-select,iPad,iPad (9th gen),Space Gray,Autumn 2021,9/24/21
+ipad-10th-gen-blue,ipad-2022-hero-blue-wifi-select,iPad,iPad (10th gen),Blue,Autumn 2022,10/26/22
+ipad-10th-gen-pink,ipad-2022-hero-pink-wifi-select,iPad,iPad (10th gen),Pink,Autumn 2022,10/26/22
+ipad-10th-gen-yellow,ipad-2022-hero-yellow-wifi-select,iPad,iPad (10th gen),Yellow,Autumn 2022,10/26/22
+ipad-10th-gen-silver,ipad-2022-hero-silver-wifi-select,iPad,iPad (10th gen),Silver,Autumn 2022,10/26/22
+ipad-a16-blue,ipad-2022-hero-blue-wifi-select,iPad,iPad (A16),Blue,Spring 2025,3/12/25
+ipad-a16-pink,ipad-2022-hero-pink-wifi-select,iPad,iPad (A16),Pink,Spring 2025,3/12/25
+ipad-a16-yellow,ipad-2022-hero-yellow-wifi-select,iPad,iPad (A16),Yellow,Spring 2025,3/12/25
+ipad-a16-silver,ipad-2022-hero-silver-wifi-select,iPad,iPad (A16),Silver,Spring 2025,3/12/25
+ipad-air-space-grey,mobile-ipadair-spacegray-2013,iPad,iPad Air,Space Gray,Autumn 2013,11/1/13
+ipad-air-silver,mobile-ipadair-silver-2013,iPad,iPad Air,Silver,Autumn 2013,11/1/13
+ipad-air-2-space-grey,ipad-air-select-gray-201410,iPad,iPad Air 2,Space Gray,Autumn 2014,10/22/14
+ipad-air-2-silver,ipad-air-select-silver-201410,iPad,iPad Air 2,Silver,Autumn 2014,10/22/14
+ipad-air-2-gold,ipad-air-select-gold-201410,iPad,iPad Air 2,Gold,Autumn 2014,10/22/14
+ipad-air-3rd-gen-space-grey,ipad-air-select-wifi-spacegray-201903,iPad,iPad Air (3rd gen),Space Gray,Spring 2019,3/18/19
+ipad-air-3rd-gen-silver,ipad-air-select-wifi-silver-201903,iPad,iPad Air (3rd gen),Silver,Spring 2019,3/18/19
+ipad-air-3rd-gen-gold,ipad-air-select-wifi-gold-201903,iPad,iPad Air (3rd gen),Gold,Spring 2019,3/18/19
+ipad-air-4th-gen-silver,ipad-air-select-wifi-silver-202009,iPad,iPad Air (4th gen),Silver,Autumn 2020,10/23/20
+ipad-air-4th-gen-space-grey,ipad-air-select-wifi-spacegray-202009,iPad,iPad Air (4th gen),Space Gray,Autumn 2020,10/23/20
+ipad-air-4th-gen-rose-gold,ipad-air-select-wifi-gold-202009,iPad,iPad Air (4th gen),Rose Gold,Autumn 2020,10/23/20
+ipad-air-4th-gen-green,ipad-air-select-wifi-green-202009,iPad,iPad Air (4th gen),Green,Autumn 2020,10/23/20
+ipad-air-4th-gen-sky-blue,ipad-air-select-wifi-blue-202009,iPad,iPad Air (4th gen),Sky Blue,Autumn 2020,10/23/20
+ipad-air-5th-gen-space-grey,ipad-air-select-wifi-spacegray-202203,iPad,iPad Air (5th gen),Space Gray,Spring 2022,3/18/22
+ipad-air-5th-gen-starlight,ipad-air-select-wifi-starlight-202203,iPad,iPad Air (5th gen),Starlight,Spring 2022,3/18/22
+ipad-air-5th-gen-pink,ipad-air-select-wifi-pink-202203,iPad,iPad Air (5th gen),Pink,Spring 2022,3/18/22
+ipad-air-5th-gen-purple,ipad-air-select-wifi-purple-202203,iPad,iPad Air (5th gen),Purple,Spring 2022,3/18/22
+ipad-air-5th-gen-blue,ipad-air-select-wifi-blue-202203,iPad,iPad Air (5th gen),Blue,Spring 2022,3/18/22
+ipad-air-11-inch-m2-space-grey,ipad-air-select-11in-wifi-spacegray-202405,iPad,iPad Air 11-inch (M2),Space Gray,Spring 2024,5/15/24
+ipad-air-11-inch-m2-blue,ipad-air-select-11in-wifi-blue-202405,iPad,iPad Air 11-inch (M2),Blue,Spring 2024,5/15/24
+ipad-air-11-inch-m2-purple,ipad-air-select-11in-wifi-purple-202405,iPad,iPad Air 11-inch (M2),Purple,Spring 2024,5/15/24
+ipad-air-11-inch-m2-starlight,ipad-air-select-11in-wifi-starlight-202405,iPad,iPad Air 11-inch (M2),Starlight,Spring 2024,5/15/24
+ipad-air-13-inch-m2-space-grey,ipad-air-select-13in-wifi-spacegray-202405,iPad,iPad Air 13-inch (M2),Space Gray,Spring 2024,5/15/24
+ipad-air-13-inch-m2-blue,ipad-air-select-13in-wifi-blue-202405,iPad,iPad Air 13-inch (M2),Blue,Spring 2024,5/15/24
+ipad-air-13-inch-m2-purple,ipad-air-select-13in-wifi-purple-202405,iPad,iPad Air 13-inch (M2),Purple,Spring 2024,5/15/24
+ipad-air-13-inch-m2-starlight,ipad-air-select-13in-wifi-starlight-202405,iPad,iPad Air 13-inch (M2),Starlight,Spring 2024,5/15/24
+ipad-air-11-inch-m3-space-grey,ipad-air-select-11in-wifi-spacegray-202405,iPad,iPad Air 11-inch (M3),Space Gray,Spring 2025,3/12/25
+ipad-air-11-inch-m3-blue,ipad-air-select-11in-wifi-blue-202405,iPad,iPad Air 11-inch (M3),Blue,Spring 2025,3/12/25
+ipad-air-11-inch-m3-purple,ipad-air-select-11in-wifi-purple-202405,iPad,iPad Air 11-inch (M3),Purple,Spring 2025,3/12/25
+ipad-air-11-inch-m3-starlight,ipad-air-select-11in-wifi-starlight-202405,iPad,iPad Air 11-inch (M3),Starlight,Spring 2025,3/12/25
+ipad-air-13-inch-m3-space-grey,ipad-air-select-13in-wifi-spacegray-202405,iPad,iPad Air 13-inch (M3),Space Gray,Spring 2025,3/12/25
+ipad-air-13-inch-m3-blue,ipad-air-select-13in-wifi-blue-202405,iPad,iPad Air 13-inch (M3),Blue,Spring 2025,3/12/25
+ipad-air-13-inch-m3-purple,ipad-air-select-13in-wifi-purple-202405,iPad,iPad Air 13-inch (M3),Purple,Spring 2025,3/12/25
+ipad-air-13-inch-m3-starlight,ipad-air-select-13in-wifi-starlight-202405,iPad,iPad Air 13-inch (M3),Starlight,Spring 2025,3/12/25
+ipad-mini-slate,mobile-2012-ipadmini-black,iPad,iPad mini,Slate,Autumn 2012,11/2/12
+ipad-mini-silver,mobile-2012-ipadmini-white,iPad,iPad mini,Silver,Autumn 2012,11/2/12
+ipad-mini-2-space-grey,mobile-ipadmini-retina-space-gray-2013,iPad,iPad mini 2,Space Gray,Autumn 2013,11/12/13
+ipad-mini-2-silver,mobile-ipadmini-retina-silver-2013,iPad,iPad mini 2,Silver,Autumn 2013,11/12/13
+ipad-mini-3-space-grey,ipad-mini3-step1-wifi-gray,iPad,iPad mini 3,Space Gray,Autumn 2014,10/22/14
+ipad-mini-3-silver,ipad-mini3-step1-wifi-silver,iPad,iPad mini 3,Silver,Autumn 2014,10/22/14
+ipad-mini-3-gold,ipad-mini3-step1-wifi-gold,iPad,iPad mini 3,Gold,Autumn 2014,10/22/14
+ipad-mini-4-space-grey,ipad-mini4-step1-wifi-gray,iPad,iPad mini 4,Space Gray,Autumn 2015,9/9/15
+ipad-mini-4-silver,ipad-mini4-step1-wifi-silver,iPad,iPad mini 4,Silver,Autumn 2015,9/9/15
+ipad-mini-4-gold,ipad-mini4-step1-wifi-gold,iPad,iPad mini 4,Gold,Autumn 2015,9/9/15
+ipad-mini-5th-gen-space-grey,ipad-mini-select-wifi-spacegray-201903,iPad,iPad mini (5th gen),Space Gray,Spring 2019,3/18/19
+ipad-mini-5th-gen-silver,ipad-mini-select-wifi-silver-201903,iPad,iPad mini (5th gen),Silver,Spring 2019,3/18/19
+ipad-mini-5th-gen-gold,ipad-mini-select-wifi-gold-201903,iPad,iPad mini (5th gen),Gold,Spring 2019,3/18/19
+ipad-mini-6th-gen-space-grey,ipad-mini-select-wifi-space-gray-202109,iPad,iPad mini (6th gen),Space Gray,Autumn 2021,9/24/21
+ipad-mini-6th-gen-pink,ipad-mini-select-wifi-pink-202109,iPad,iPad mini (6th gen),Pink,Autumn 2021,9/24/21
+ipad-mini-6th-gen-purple,ipad-mini-select-wifi-purple-202109,iPad,iPad mini (6th gen),Purple,Autumn 2021,9/24/21
+ipad-mini-6th-gen-starlight,ipad-mini-select-wifi-starlight-202109,iPad,iPad mini (6th gen),Starlight,Autumn 2021,9/24/21
+ipad-mini-a17-pro-space-grey,ipad-mini-select-wifi-spacegray-202410,iPad,iPad mini (A17 Pro),Space Gray,Autumn 2024,10/23/24
+ipad-mini-a17-pro-blue,ipad-mini-select-wifi-blue-202410,iPad,iPad mini (A17 Pro),Blue,Autumn 2024,10/23/24
+ipad-mini-a17-pro-purple,ipad-mini-select-wifi-purple-202410,iPad,iPad mini (A17 Pro),Purple,Autumn 2024,10/23/24
+ipad-mini-a17-pro-starlight,ipad-mini-select-wifi-starlight-202410,iPad,iPad mini (A17 Pro),Starlight,Autumn 2024,10/23/24
+ipad-pro-12-9-inch-1st-gen-silver,ipad-pro-select-silver-201603,iPad,iPad Pro 12.9-inch (1st gen),Silver,Autumn 2015,11/11/15
+ipad-pro-12-9-inch-1st-gen-space-grey,ipad-pro-select-spacegray-201603,iPad,iPad Pro 12.9-inch (1st gen),Space Gray,Autumn 2015,11/11/15
+ipad-pro-12-9-inch-1st-gen-gold,ipad-pro-select-gold-201603,iPad,iPad Pro 12.9-inch (1st gen),Gold,Autumn 2015,11/11/15
+ipad-pro-9-7-inch-silver,ipad-pro-9in-select-silver-201603,iPad,iPad Pro 9.7-inch,Silver,Spring 2016,3/31/16
+ipad-pro-9-7-inch-space-grey,ipad-pro-9in-select-spacegray-201603,iPad,iPad Pro 9.7-inch,Space Gray,Spring 2016,3/31/16
+ipad-pro-9-7-inch-gold,ipad-pro-9in-select-gold-201603,iPad,iPad Pro 9.7-inch,Gold,Spring 2016,3/31/16
+ipad-pro-9-7-inch-rose-gold,ipad-pro-9in-select-rosegold-201603,iPad,iPad Pro 9.7-inch,Rose Gold,Spring 2016,3/31/16
+ipad-pro-10-5-inch-silver,ipad-pro-10in-wifi-select-silver-201706,iPad,iPad Pro 10.5-inch,Silver,Summer 2017,6/13/17
+ipad-pro-10-5-inch-space-grey,ipad-pro-10in-wifi-select-spacegray-201706,iPad,iPad Pro 10.5-inch,Space Gray,Summer 2017,6/13/17
+ipad-pro-10-5-inch-gold,ipad-pro-10in-wifi-select-gold-201706,iPad,iPad Pro 10.5-inch,Gold,Summer 2017,6/13/17
+ipad-pro-10-5-inch-rose-gold,ipad-pro-10in-wifi-select-rosegold-201706,iPad,iPad Pro 10.5-inch,Rose Gold,Summer 2017,6/13/17
+ipad-pro-12-9-inch-2nd-gen-silver,ipad-pro-12in-wifi-select-silver-201706,iPad,iPad Pro 12.9-inch (2nd gen),Silver,Summer 2017,6/13/17
+ipad-pro-12-9-inch-2nd-gen-space-grey,ipad-pro-12in-wifi-select-spacegray-201706,iPad,iPad Pro 12.9-inch (2nd gen),Space Gray,Summer 2017,6/13/17
+ipad-pro-12-9-inch-2nd-gen-gold,ipad-pro-12in-wifi-select-gold-201706,iPad,iPad Pro 12.9-inch (2nd gen),Gold,Summer 2017,6/13/17
+ipad-pro-11-inch-1st-gen-silver,ipad-pro-11-select-wifi-silver-201810,iPad,iPad Pro 11-inch (1st gen),Silver,Autumn 2018,11/7/18
+ipad-pro-11-inch-1st-gen-space-grey,ipad-pro-11-select-wifi-spacegray-201810,iPad,iPad Pro 11-inch (1st gen),Space Gray,Autumn 2018,11/7/18
+ipad-pro-12-9-inch-3rd-gen-silver,ipad-pro-12-select-wifi-silver-201810,iPad,iPad Pro 12.9-inch (3rd gen),Silver,Autumn 2018,11/7/18
+ipad-pro-12-9-inch-3rd-gen-space-grey,ipad-pro-12-select-wifi-spacegray-201810,iPad,iPad Pro 12.9-inch (3rd gen),Space Gray,Autumn 2018,11/7/18
+ipad-pro-11-inch-2nd-gen-silver,ipad-pro-11-select-wifi-silver-202003,iPad,iPad Pro 11-inch (2nd gen),Silver,Spring 2020,3/25/20
+ipad-pro-11-inch-2nd-gen-space-grey,ipad-pro-11-select-wifi-spacegray-202003,iPad,iPad Pro 11-inch (2nd gen),Space Gray,Spring 2020,3/25/20
+ipad-pro-12-9-inch-4th-gen-silver,ipad-pro-12-select-wifi-silver-202003,iPad,iPad Pro 12.9-inch (4th gen),Silver,Spring 2020,3/25/20
+ipad-pro-12-9-inch-4th-gen-space-grey,ipad-pro-12-select-wifi-spacegray-202003,iPad,iPad Pro 12.9-inch (4th gen),Space Gray,Spring 2020,3/25/20
+ipad-pro-11-inch-3rd-gen-silver,ipad-pro-11-select-wifi-silver-202104,iPad,iPad Pro 11-inch (3rd gen),Silver,Spring 2021,5/21/21
+ipad-pro-11-inch-3rd-gen-space-grey,ipad-pro-11-select-wifi-spacegray-202104,iPad,iPad Pro 11-inch (3rd gen),Space Gray,Spring 2021,5/21/21
+ipad-pro-12-9-inch-5th-gen-silver,ipad-pro-12-select-wifi-silver-202104,iPad,iPad Pro 12.9-inch (5th gen),Silver,Spring 2021,5/21/21
+ipad-pro-12-9-inch-5th-gen-space-grey,ipad-pro-12-select-wifi-spacegray-202104,iPad,iPad Pro 12.9-inch (5th gen),Space Gray,Spring 2021,5/21/21
+ipad-pro-11-inch-4th-gen-silver,ipad-pro-11-select-wifi-silver-202210,iPad,iPad Pro 11-inch (4th gen),Silver,Autumn 2022,10/26/22
+ipad-pro-11-inch-4th-gen-space-grey,ipad-pro-11-select-wifi-spacegray-202210,iPad,iPad Pro 11-inch (4th gen),Space Gray,Autumn 2022,10/26/22
+ipad-pro-12-9-inch-6th-gen-silver,ipad-pro-13-select-wifi-silver-202210,iPad,iPad Pro 12.9-inch (6th gen),Silver,Autumn 2022,10/26/22
+ipad-pro-12-9-inch-6th-gen-space-grey,ipad-pro-13-select-wifi-spacegray-202210,iPad,iPad Pro 12.9-inch (6th gen),Space Gray,Autumn 2022,10/26/22
+ipad-pro-11-inch-m4-silver,ipad-pro-11-select-wifi-silver-202405,iPad,iPad Pro 11-inch (M4),Silver,Spring 2024,5/15/24
+ipad-pro-11-inch-m4-space-black,ipad-pro-11-select-wifi-spaceblack-202405,iPad,iPad Pro 11-inch (M4),Space Black,Spring 2024,5/15/24
+ipad-pro-13-inch-m4-silver,ipad-pro-13-select-wifi-silver-202405,iPad,iPad Pro 13-inch (M4),Silver,Spring 2024,5/15/24
+ipad-pro-13-inch-m4-space-black,ipad-pro-13-select-wifi-spaceblack-202405,iPad,iPad Pro 13-inch (M4),Space Black,Spring 2024,5/15/24
