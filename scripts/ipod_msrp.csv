@@ -4,7 +4,10 @@ SKU,USD
 # SKUs with no defensible sourced MSRP (M9838, M9942, M9126, M9647, M9648, M9603, M9129, M9940, MA094, M9569, MA242) are left out of this file rather than guessed — see ipod.csv comments for why
 M9467,39
 M9445,29
+M9864,29
 M9568,19
+M9758,29
+M9760,29
 M9394,39
 M9720,29
 M9688,19
@@ -16,6 +19,8 @@ MA126,9
 MA663,29
 MA185,29
 MA186,29
+MA183,29
+MA184,29
 MA241,29
 MA594,29
 MA597,39

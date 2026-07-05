@@ -3,13 +3,16 @@ SKU,regions,kind,colour,model,season,release_date,alt_thumbnail,name
 # a) compiled from everything.csv (EDU prices, not MSRP) + web research (Apple newsroom/support pages, iLounge, AppleInsider, retailer SKU listings, Wayback Machine snapshots where reachable)
 # b) release_date is the confirmed accessory ship date where a primary source exists; where only "likely" sourced, it's the best-available date (often the companion iPod generation's launch date used as a proxy) — treat day-level precision on pre-2007 items as approximate
 # c) MSRP vs EDU price is NOT included as a column here (matches database.csv schema, no price column) — see msrp.csv/edu.csv pattern if you want to add iPod MSRPs separately
-# d) M9864G/A ("Yellow iPod mini Armband") from initial scrape could NOT be independently confirmed — sources contradict each other (one ties the same yellow stock photo to M9838G/A instead) — omitted as likely a reseller data-entry error
-# e) some 1st-gen iPod nano Armband colors (blue, pink) are confirmed to exist by Apple's own launch press release but no SKU could be sourced for them — omitted rather than guessed
+# d) M9864G/A ("Yellow iPod mini Armband") is now included — multiple period retailer listings + Apple Wiki confirm it, and the 2/23/05 launch press coverage names a bold-colour armband set ($29 each). The orange/blue/pink mini armbands from that same launch still have no sourced SKUs and remain omitted rather than guessed.
+# e) 1st-gen iPod nano Armband: blue is now included as MA183 (confirmed by period retailer listings). Pink is included as MA184 but INFERRED — it's the only unassigned number in the MA183(blue)/MA185(green)/MA186(red) run with pink the only unassigned colour; not directly sourced, so treat as provisional.
 M9467,G,Dock,White,iPod mini,January 2004,1/6/04,,iPod mini Dock
 M9445,G,Armband,Black,iPod mini,February 2004,2/1/04,,iPod mini Armband — Black
 M9838,G,Armband,Grey,iPod mini,Spring 2005,3/29/05,,iPod mini Armband — Grey
+M9864,G,Armband,Yellow,iPod mini,Spring 2005,2/23/05,,iPod mini Armband — Yellow
 M9568,G,Lanyard,Gray,iPod mini,Spring 2005,4/1/05,,iPod mini Lanyard
 M9942,G,Lanyard,White,iPod shuffle (1st generation),January 2005,1/11/05,,iPod shuffle Lanyard and Caps
+M9758,G,Sport Case,Clear,iPod shuffle (1st generation),January 2005,1/11/05,,iPod shuffle Sport Case
+M9760,G,Armband,Grey,iPod shuffle (1st generation),January 2005,1/11/05,,iPod shuffle Armband
 M9126,G,Cable,—,iPod (3rd generation),Spring 2003,4/28/03,,Dock Connector to FireWire and USB 2.0 Cable
 M9647,G,Belt Clip,White,iPod (3rd generation) 20GB,Spring 2003,4/28/03,,iPod Belt Clip — 20GB
 M9648,G,Belt Clip,White,iPod (3rd generation) 40GB,Spring 2003,4/28/03,,iPod Belt Clip — 40GB
@@ -27,6 +30,8 @@ MA126,G,Dock Adapter (3-Pack),—,iPod with video (5th generation),Autumn 2005,1
 MA663,G,Armband,Grey,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Armband — Grey
 MA185,G,Armband,Green,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Armband — Green
 MA186,G,Armband,Red,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Armband — Red
+MA183,G,Armband,Blue,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Armband — Blue
+MA184,G,Armband,Pink,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Armband — Pink
 MA241,G,Tubes,Multicolor (5-pack),iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Tubes — 5-Pack
 MA594,G,Dock,White,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Dock
 MA597,G,Lanyard Headphones,White,iPod nano (1st generation),Autumn 2005,9/7/05,,iPod nano Lanyard Headphones

@@ -350,7 +350,7 @@ export const GROUPS: CatalogueGroup[] = [
       },
       { slug: "pencil", title: "Apple Pencil", models: ["Apple Pencil"] },
       { slug: "ipod-touch", title: "iPod Touch Loop", models: ["iPod touch"] },
-      { slug: "ipod-socks", title: "iPod Socks", models: [] },
+      { slug: "ipod-accessories", title: "iPod Accessories", models: [] },
     ],
   },
 ];
