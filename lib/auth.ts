@@ -34,7 +34,7 @@ const baseURL =
     : process.env.BETTER_AUTH_URL;
 
 export const auth = betterAuth({
-  appName: "EveryCase",
+  appName: "Finest Woven",
   baseURL,
   database: mongodbAdapter(db),
   user: {
@@ -55,13 +55,24 @@ export const auth = betterAuth({
       async sendVerificationOTP({ email, otp }) {
         await sendOTPEmail(email, otp);
       },
+      storeOTP: "hashed",
     }),
     passkey({
-      rpName: "EveryCase",
+      rpID: "everycase.org",
+      rpName: "Finest Woven",
     }),
     // Better Auth Dash (hosted dashboard); needs BETTER_AUTH_API_KEY.
     dash(),
     // Must stay last: rewrites Set-Cookie for Next.js server actions.
     nextCookies(),
   ],
+  experimental: {
+    joins: true, // Enable database joins for better performance
+  },
+  advanced: {
+    ipAddress: {
+      // For Vercel
+      ipAddressHeaders: ["x-vercel-forwarded-for", "x-forwarded-for"],
+    },
+  },
 });

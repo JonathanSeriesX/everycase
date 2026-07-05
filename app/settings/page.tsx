@@ -7,6 +7,7 @@ import SettingsProfile from "../../components/SettingsProfile.client";
 import PasskeyCard, {
   type PasskeyInfo,
 } from "../../components/PasskeyCard.client";
+import DeleteAccount from "../../components/DeleteAccount.client";
 import ThemeControl from "../../components/ThemeControl.client";
 import CurrencyControl from "../../components/CurrencyControl.client";
 import styles from "../../styles/Settings.module.css";
@@ -40,17 +41,16 @@ export default async function SettingsPage() {
       collectionPublic: userDoc?.collectionPublic === true,
     };
 
-    const passkeyDocs = await db
-      .collection("passkey")
-      .find({ userId })
-      .sort({ createdAt: 1 })
-      .toArray();
-    passkeys = passkeyDocs.map((doc) => ({
-      id: doc._id.toString(),
-      name: typeof doc.name === "string" ? doc.name : null,
-      aaguid: typeof doc.aaguid === "string" ? doc.aaguid : null,
-      createdAt:
-        doc.createdAt instanceof Date ? doc.createdAt.toISOString() : null,
+    // Through Better Auth's own API (not a raw query): its adapter stores
+    // userId as an ObjectId, which a naive string query silently misses.
+    const passkeyList = await auth.api.listPasskeys({
+      headers: await headers(),
+    });
+    passkeys = passkeyList.map((p) => ({
+      id: p.id,
+      name: p.name ?? null,
+      aaguid: (p as { aaguid?: string }).aaguid ?? null,
+      createdAt: p.createdAt ? new Date(p.createdAt).toISOString() : null,
     }));
   }
 
@@ -65,6 +65,11 @@ export default async function SettingsPage() {
           <section className={styles.section}>
             <h2>Sign-in</h2>
             <PasskeyCard initial={passkeys} />
+          </section>
+
+          <section className={styles.section}>
+            <h2>Account</h2>
+            <DeleteAccount />
           </section>
         </>
       ) : (

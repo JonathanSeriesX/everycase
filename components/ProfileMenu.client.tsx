@@ -60,9 +60,10 @@ export default function ProfileMenu() {
     if (view !== "email" || session) return;
     let cancelled = false;
     (async () => {
-      const available = await window.PublicKeyCredential
-        ?.isConditionalMediationAvailable?.()
-        .catch(() => false);
+      const available =
+        await window.PublicKeyCredential?.isConditionalMediationAvailable?.().catch(
+          () => false,
+        );
       if (!available) return;
       const result = await authClient.signIn.passkey({ autoFill: true });
       if (!cancelled && result && !result.error) finishAuthChange();
@@ -162,7 +163,7 @@ export default function ProfileMenu() {
                   className={chrome.profileMenuItem}
                   onClick={close}
                 >
-                  My collection
+                  Your e-mail
                 </Link>
                 <Link
                   href="/settings"

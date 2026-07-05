@@ -1,12 +1,10 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "../../../lib/auth";
-import { db } from "../../../lib/mongo";
+import { collectionItems } from "../../../lib/collectionItems";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 
-// Collection items: { userId, sku, status: "owned" | "wanted", createdAt,
-// updatedAt }. One document per (user, case); the unique index below is the
-// source of truth for that invariant.
+// Collection items: one document per (user, case) — see lib/collectionItems.
 
 const STATUSES = ["owned", "wanted"] as const;
 type Status = (typeof STATUSES)[number];
@@ -15,11 +13,12 @@ type Status = (typeof STATUSES)[number];
 const SKU_PATTERN = /^[A-Z0-9]{3,12}$/;
 const MAX_ITEMS = 5000;
 
-const items = db.collection("collectionItems");
-
 let indexReady: Promise<unknown> | undefined;
 const ensureIndex = () =>
-  (indexReady ??= items.createIndex({ userId: 1, sku: 1 }, { unique: true }));
+  (indexReady ??= collectionItems().createIndex(
+    { userId: 1, sku: 1 },
+    { unique: true },
+  ));
 
 let knownSkus: Set<string> | undefined;
 const isCatalogueSku = (sku: string) => {
@@ -50,7 +49,9 @@ export async function GET(request: Request) {
     filter.sku = { $in: skus };
   }
 
-  const docs = await items.find(filter).toArray();
+  const docs = await collectionItems()
+    .find(filter as { userId: string })
+    .toArray();
   return NextResponse.json({
     items: docs.map((doc) => ({ sku: doc.sku, status: doc.status })),
   });
@@ -74,16 +75,13 @@ export async function PUT(request: Request) {
   }
 
   await ensureIndex();
-  if ((await items.countDocuments({ userId })) >= MAX_ITEMS) {
+  if ((await collectionItems().countDocuments({ userId })) >= MAX_ITEMS) {
     return NextResponse.json({ error: "Collection is full" }, { status: 400 });
   }
 
-  await items.updateOne(
+  await collectionItems().updateOne(
     { userId, sku },
-    {
-      $set: { status, updatedAt: new Date() },
-      $setOnInsert: { createdAt: new Date() },
-    },
+    { $set: { status }, $setOnInsert: { createdAt: new Date() } },
     { upsert: true },
   );
   return NextResponse.json({ sku, status });
@@ -100,6 +98,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Invalid item" }, { status: 400 });
   }
 
-  await items.deleteOne({ userId, sku });
+  await collectionItems().deleteOne({ userId, sku });
   return NextResponse.json({ sku, status: null });
 }
