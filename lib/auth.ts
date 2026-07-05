@@ -14,10 +14,10 @@ async function sendOTPEmail(to: string, otp: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "EveryCase <login@users.everycase.org>",
+      from: "Finest Woven <login@users.everycase.org>",
       to,
-      subject: `${otp} is your EveryCase code`,
-      text: `Your EveryCase sign-in code is ${otp}\n\nIt expires in 5 minutes. If you didn't request this, you can ignore this email.`,
+      subject: `${otp} is your code`,
+      text: `Your Finest Woven sign-in code is ${otp}\n\nIt expires in 5 minutes. If you didn't request this, you can safely ignore this email.`,
     }),
   });
   if (!res.ok) {

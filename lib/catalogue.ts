@@ -263,6 +263,7 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "mini-2012",
         title: "iPad Mini 1–3",
         blurb: "Smart Covers & Cases",
+        hero: "ME709",
         models: ["iPad mini 1-3"],
       },
       {
@@ -606,7 +607,10 @@ export function getPageSections(page: CataloguePage): PageSection[] {
         // exact price when the reader picks a tab.
         price: {
           byCurrency: Object.fromEntries(
-            CURRENCIES.map((code) => [code, reduceAmounts(bucket.prices[code])]),
+            CURRENCIES.map((code) => [
+              code,
+              reduceAmounts(bucket.prices[code]),
+            ]),
           ) as Record<Currency, PriceSummary | null>,
           byModel: byModelPrices,
         },

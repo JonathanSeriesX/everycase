@@ -183,21 +183,6 @@
   position: relative;
 }
 
-.profileToggle {
-  position: relative;
-}
-
-/* Signed-in marker on the trigger. */
-.profileDot {
-  position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 9999px;
-  background: #e3504f;
-}
-
 .profileMenu {
   position: absolute;
   top: calc(100% + 0.5rem);
@@ -297,16 +282,6 @@
   margin: 0;
   font-size: 0.8rem;
   color: #e3504f;
-}
-
-.profileEmail {
-  margin: 0 0 0.3rem;
-  padding: 0 0.5rem;
-  font-size: 0.8rem;
-  opacity: 0.65;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .profileMenuItem {
@@ -478,108 +453,6 @@
   font-weight: 550;
 }
 
-/* ---------- theme menu (footer) ---------- */
-
-.themeMenu {
-  position: relative;
-  display: inline-flex;
-}
-
-/* Twin of the footer links: same size, same muted colour, same hover. */
-.footerAction {
-  font-size: inherit;
-  font-family: inherit;
-  color: inherit;
-  opacity: 0.7;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.footerAction:hover {
-  opacity: 1;
-  color: var(--site-accent);
-}
-
-/* Sits where a text glyph would: same optical size as the ★ / ♥ characters
-   in the neighbouring footer links. */
-.themeIcon {
-  display: inline-flex;
-  font-size: 0.95em;
-  vertical-align: -0.1em;
-}
-
-.themeMenuList {
-  position: absolute;
-  bottom: calc(100% + 0.6rem);
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 11rem;
-  margin: 0;
-  padding: 0.4rem;
-  list-style: none;
-  border-radius: 16px;
-  border: 1px solid rgba(15, 18, 28, 0.1);
-  background: rgba(252, 248, 250, 0.97);
-  -webkit-backdrop-filter: blur(24px);
-  backdrop-filter: blur(24px);
-  box-shadow: 0 18px 50px rgba(50, 42, 48, 0.25);
-  animation: theme-menu-in 140ms ease;
-}
-
-/* The currency list is long (15 entries) — keep it on-screen and scrollable,
-   and stop boundary scrolls from chaining to the page behind. */
-.menuListScroll {
-  max-height: min(21rem, 60vh);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  white-space: nowrap;
-}
-
-@keyframes theme-menu-in {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-.themeOption {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  width: 100%;
-  padding: 0.45rem 0.75rem 0.45rem 0.5rem;
-  border: none;
-  border-radius: 10px;
-  background: none;
-  color: inherit;
-  font-family: inherit;
-  font-size: 0.9rem;
-  text-align: left;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.themeOption:hover {
-  background: rgba(227, 80, 79, 0.08);
-}
-
-.themeOption[data-active="true"] {
-  color: var(--site-accent);
-  font-weight: 550;
-}
-
-.themeOptionCheck {
-  display: inline-block;
-  width: 1em;
-  flex-shrink: 0;
-}
-
 /* ---------- dark mode ---------- */
 
 :global(html:is(.dark, .black)) .navbar {
@@ -599,16 +472,6 @@
 :global(html:is(.dark, .black)) .search[data-expanded] .searchField,
 :global(html:is(.dark, .black)) .search[data-closing] .searchField {
   background: rgba(17, 17, 20, 0.97);
-}
-
-:global(html:is(.dark, .black)) .themeMenuList {
-  background: rgba(19, 19, 22, 0.97);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
-}
-
-:global(html:is(.dark, .black)) .themeOption:hover {
-  background: rgba(255, 77, 77, 0.12);
 }
 
 :global(html:is(.dark, .black)) .searchResults {

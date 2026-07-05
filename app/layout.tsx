@@ -6,8 +6,7 @@ import Link from "next/link";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Navbar from "../components/Navbar";
-import ThemeMenu from "../components/ThemeMenu.client";
-import CurrencyMenu from "../components/CurrencyMenu.client";
+import ThemeColorSync from "../components/ThemeColorSync.client";
 import HashNavigation from "../components/HashNavigation.client";
 import "../styles/globals.css";
 
@@ -16,8 +15,8 @@ import "../styles/globals.css";
 // invitation to extend the page into its chrome (macOS tab-bar overflow).
 // Chrome additionally honours runtime CONTENT MUTATIONS of these metas —
 // that's how the Android toolbar follows a manual site toggle (see
-// ThemeMenu and the pre-paint script below); WebKit ignores mutations, so
-// Safari only ever sees these static values.
+// ThemeColorSync and the pre-paint script below); WebKit ignores mutations,
+// so Safari only ever sees these static values.
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "rgb(250,250,250)" },
@@ -129,9 +128,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Link href="/support" prefetch={false}>
               Support this ♥
             </Link>
-            <ThemeMenu />
-            <CurrencyMenu />
           </footer>
+          <ThemeColorSync />
           <Analytics />
           <SpeedInsights />
           <script

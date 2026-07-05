@@ -1,15 +1,12 @@
 import { headers } from "next/headers";
 import type { Metadata } from "next";
-import { ObjectId } from "mongodb";
 import { auth } from "../../lib/auth";
-import { db } from "../../lib/mongo";
 import { loadCollection } from "../../lib/collectionItems";
 import {
   CaseGrid,
   computeLaunchValue,
 } from "../../components/CollectionGrid";
 import CollectionValue from "../../components/CollectionValue.client";
-import ProfileSettings from "../../components/ProfileSettings.client";
 
 // Personal, per-user page — always rendered on demand, never cached.
 export const dynamic = "force-dynamic";
@@ -35,25 +32,12 @@ export default async function CollectionPage() {
     );
   }
 
-  const userId = session.user.id;
-  const userDoc = await db
-    .collection("user")
-    .findOne(
-      ObjectId.isValid(userId) ? { _id: new ObjectId(userId) } : { id: userId },
-    );
-  const profile = {
-    name: typeof userDoc?.name === "string" ? userDoc.name : "",
-    username: typeof userDoc?.username === "string" ? userDoc.username : null,
-    collectionPublic: userDoc?.collectionPublic === true,
-  };
-
-  const { owned, wanted } = await loadCollection(userId);
+  const { owned, wanted } = await loadCollection(session.user.id);
   const { sums, pricedCount } = computeLaunchValue(owned);
 
   return (
     <article>
       <h1>Your collection</h1>
-      <ProfileSettings initial={profile} />
       {owned.length === 0 && wanted.length === 0 ? (
         <p>
           Nothing here yet. Open any case page and tap{" "}
