@@ -7,8 +7,10 @@ import carousel from "../styles/VerticalCarousel.module.css";
 
 /** The owned/wishlist card grid, shared by /collection and /collections/[username]. */
 export function CaseGrid({ cases }: { cases: CaseRecord[] }) {
+  // `standalone` supplies the breathing room a tab bar would otherwise add
+  // between the section heading and the grid.
   return (
-    <div className={carousel.cardTrack}>
+    <div className={`${carousel.cardTrack} ${carousel.standalone}`}>
       {cases.map((item) => {
         const name = getCaseName(item);
         return (

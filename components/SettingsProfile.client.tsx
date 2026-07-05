@@ -155,7 +155,9 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
               </span>
             </div>
 
-            <span className={styles.switch}>
+            {/* A label, not a span: Safari won't hit-test the invisible
+                checkbox, but label activation works everywhere. */}
+            <label className={styles.switch}>
               <input
                 type="checkbox"
                 role="switch"
@@ -165,7 +167,7 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
                 onChange={(event) => togglePublic(event.target.checked)}
               />
               <span className={styles.switchTrack} aria-hidden="true" />
-            </span>
+            </label>
           </div>
 
           {visibilityError && (

@@ -4,7 +4,9 @@ import { ObjectId } from "mongodb";
 import { auth } from "../../lib/auth";
 import { db } from "../../lib/mongo";
 import SettingsProfile from "../../components/SettingsProfile.client";
-import PasskeyCard from "../../components/PasskeyCard.client";
+import PasskeyCard, {
+  type PasskeyInfo,
+} from "../../components/PasskeyCard.client";
 import ThemeControl from "../../components/ThemeControl.client";
 import CurrencyControl from "../../components/CurrencyControl.client";
 import styles from "../../styles/Settings.module.css";
@@ -21,6 +23,7 @@ export default async function SettingsPage() {
   const session = await auth.api.getSession({ headers: await headers() });
 
   let profile = null;
+  let passkeys: PasskeyInfo[] = [];
   if (session) {
     const userId = session.user.id;
     const userDoc = await db
@@ -36,6 +39,19 @@ export default async function SettingsPage() {
         typeof userDoc?.username === "string" ? userDoc.username : null,
       collectionPublic: userDoc?.collectionPublic === true,
     };
+
+    const passkeyDocs = await db
+      .collection("passkey")
+      .find({ userId })
+      .sort({ createdAt: 1 })
+      .toArray();
+    passkeys = passkeyDocs.map((doc) => ({
+      id: doc._id.toString(),
+      name: typeof doc.name === "string" ? doc.name : null,
+      aaguid: typeof doc.aaguid === "string" ? doc.aaguid : null,
+      createdAt:
+        doc.createdAt instanceof Date ? doc.createdAt.toISOString() : null,
+    }));
   }
 
   return (
@@ -48,7 +64,7 @@ export default async function SettingsPage() {
 
           <section className={styles.section}>
             <h2>Sign-in</h2>
-            <PasskeyCard />
+            <PasskeyCard initial={passkeys} />
           </section>
         </>
       ) : (

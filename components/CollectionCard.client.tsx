@@ -64,7 +64,11 @@ export default function CollectionCard({ sku }: { sku: string }) {
     }
   };
 
-  const chip = (value: Exclude<Status, null>, label: string) => (
+  const chip = (
+    value: Exclude<Status, null>,
+    label: string,
+    activeLabel: string,
+  ) => (
     <button
       type="button"
       className={`${styles.chip} ${styles.actionChip} ${styles.collectionChip}`}
@@ -73,7 +77,7 @@ export default function CollectionCard({ sku }: { sku: string }) {
       disabled={Boolean(userId) && !loaded}
       onClick={() => toggle(value)}
     >
-      {label}
+      {status === value ? activeLabel : label}
     </button>
   );
 
@@ -81,8 +85,8 @@ export default function CollectionCard({ sku }: { sku: string }) {
     <div className={styles.card} data-pagefind-ignore>
       <span className={styles.label}>Your collection</span>
       <div className={`${styles.chipRow} ${styles.collectionRow}`}>
-        {chip("owned", "I own it")}
-        {chip("wanted", "I want it")}
+        {chip("owned", "I own it", "Owned")}
+        {chip("wanted", "I want it", "Wishlisted")}
       </div>
       {note && <p className={styles.collectionNote}>{note}</p>}
     </div>

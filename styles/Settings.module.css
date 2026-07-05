@@ -8,8 +8,12 @@
   margin: 0 0 2.25rem;
 }
 
-/* liquid-glass card, matching the info cards */
+/* liquid-glass card, matching the info cards. Positioned + raised so
+   popovers inside it (whose z-index is capped by the card's own
+   backdrop-filter stacking context) paint above the footer. */
 .card {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -147,12 +151,15 @@
   color: #e3504f;
 }
 
-/* iOS-style switch */
+/* iOS-style switch — a <label>, so clicks toggle the checkbox natively
+   (Safari won't hit-test the invisible input on its own) */
 .switch {
   position: relative;
+  display: inline-block;
   width: 2.7rem;
   height: 1.6rem;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .switch input {
@@ -234,8 +241,16 @@
   color: #e3504f;
 }
 
-/* currency select */
-.select {
+/* dropdown menu (currency picker) */
+.menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.5rem 0.9rem;
   border-radius: 12px;
   border: 1px solid rgba(15, 18, 28, 0.12);
@@ -246,9 +261,107 @@
   cursor: pointer;
 }
 
-.select:focus {
+.menuButton:focus-visible {
   outline: 2px solid #e3504f;
   outline-offset: 2px;
+}
+
+.menuChevron {
+  opacity: 0.55;
+  transform: rotate(90deg);
+  transition: transform 140ms ease;
+}
+
+.menuChevron[data-open] {
+  transform: rotate(-90deg);
+}
+
+/* :global(.site-main) prefix: out-specifies the global prose list styles
+   (.site-main ul → disc markers, padding, margins) that were bleeding in. */
+:global(.site-main) ul.menuList {
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  line-height: 1.5;
+}
+
+:global(.site-main) .menuList li {
+  margin: 0;
+  list-style: none;
+}
+
+.menuList {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 10;
+  min-width: min(13rem, calc(100vw - 2rem));
+  max-width: calc(100vw - 1rem);
+  border-radius: 16px;
+  border: 1px solid rgba(15, 18, 28, 0.1);
+  background: rgba(252, 248, 250, 0.97);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 18px 50px rgba(50, 42, 48, 0.25);
+  animation: settings-menu-in 140ms ease;
+}
+
+/* The currency list is long (15 entries) — keep it on-screen and scrollable,
+   and stop boundary scrolls from chaining to the page behind. */
+/* Flipped above the trigger when the viewport has no room below. */
+.menuList[data-direction="up"] {
+  top: auto;
+  bottom: calc(100% + 0.5rem);
+}
+
+.menuListScroll {
+  max-height: min(21rem, 60vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  white-space: nowrap;
+}
+
+@keyframes settings-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuOption {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.45rem 0.75rem 0.45rem 0.5rem;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.menuOption:hover {
+  background: rgba(227, 80, 79, 0.08);
+}
+
+.menuOption[data-active="true"] {
+  color: #e3504f;
+  font-weight: 550;
+}
+
+.menuCheck {
+  display: inline-block;
+  width: 1em;
+  flex-shrink: 0;
 }
 
 /* dark mode */
@@ -267,9 +380,19 @@
 }
 
 :global(html:is(.dark, .black)) .input,
-:global(html:is(.dark, .black)) .select {
+:global(html:is(.dark, .black)) .menuButton {
   background: rgba(19, 19, 22, 0.9);
   border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(html:is(.dark, .black)) .menuList {
+  background: rgba(19, 19, 22, 0.97);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+}
+
+:global(html:is(.dark, .black)) .menuOption:hover {
+  background: rgba(255, 77, 77, 0.12);
 }
 
 :global(html:is(.dark, .black)) .secondaryButton {
