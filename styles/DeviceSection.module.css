@@ -1,0 +1,85 @@
+/* Device tiles and owner controls in collection card tracks. */
+
+/* Grid rows stretch tiles to equal height; a flex column lets the owner
+   controls pin to the bottom edge instead of trailing the title, so
+   buttons align across tiles with different amounts of text. */
+.tile {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mirrors .cardLink's inner layout — the device tile isn't a link. Children
+   stretch (the flex default) so the title's text-align: center actually
+   centers instead of shrink-wrapping left. */
+.deviceCardBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  flex: 1;
+}
+
+.placeholder {
+  width: 42%;
+  height: 42%;
+  color: rgba(15, 18, 28, 0.32);
+}
+
+/* Owner controls under a tile title (device tiles and case tiles). */
+.tileActions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.7rem;
+}
+
+/* The body's gap already spaces the controls from the title. */
+.deviceCardBody .tileActions {
+  padding-top: 0;
+}
+
+.tileButton {
+  padding: 0.28rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 550;
+  background-color: #fff;
+  border: 1px solid rgba(15, 18, 28, 0.12);
+  color: rgba(15, 18, 28, 0.7);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tileButton[data-armed="true"] {
+  background-color: #e3504f;
+  border-color: #e3504f;
+  color: #fff;
+}
+
+.tileButton:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* dark mode */
+:global(html:is(.dark, .black)) .placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+:global(html:is(.dark, .black)) .tileButton {
+  background: rgba(19, 19, 22, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:global(html:is(.dark, .black)) .tileButton[data-armed="true"] {
+  background-color: #e3504f;
+  border-color: #e3504f;
+  color: #fff;
+}

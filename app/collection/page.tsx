@@ -7,9 +7,11 @@ import { db } from "../../lib/mongo";
 import { loadCollection } from "../../lib/collectionItems";
 import {
   CaseGrid,
+  DeviceSections,
   computeLaunchValue,
 } from "../../components/CollectionGrid";
-import CollectionValue from "../../components/CollectionValue.client";
+import CollectionHead from "../../components/CollectionHead";
+import RefreshOnRestore from "../../components/RefreshOnRestore.client";
 
 // Personal, per-user page — always rendered on demand, never cached.
 export const dynamic = "force-dynamic";
@@ -46,13 +48,15 @@ export default async function CollectionPage() {
     redirect(`/collections/${userDoc.username}`);
   }
 
-  const { owned, wanted } = await loadCollection(userId);
+  const { owned, wanted, deviceGroups, unassigned } =
+    await loadCollection(userId);
   const { sums, pricedCount } = computeLaunchValue(owned);
 
   return (
     <article>
+      <RefreshOnRestore />
       <h1>Your collection</h1>
-      {owned.length === 0 && wanted.length === 0 ? (
+      {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
         <p>
           Nothing here yet. Open any case page and tap{" "}
           <strong>I own it</strong> or <strong>I want it</strong> — it shows
@@ -60,21 +64,28 @@ export default async function CollectionPage() {
         </p>
       ) : (
         <>
-          <CollectionValue
-            sums={sums}
-            pricedCount={pricedCount}
-            ownedCount={owned.length}
-          />
-          {owned.length > 0 && (
+          {(owned.length > 0 || deviceGroups.length > 0) && (
             <section>
-              <h2>Owned ({owned.length})</h2>
-              <CaseGrid cases={owned} />
+              <CollectionHead
+                title="Owned"
+                deviceCount={deviceGroups.length}
+                caseCount={owned.length}
+                sums={sums}
+                pricedCount={pricedCount}
+              />
+              <DeviceSections groups={deviceGroups} canRemove />
+              {unassigned.length > 0 && deviceGroups.length > 0 && (
+                <h3>Not linked to a device</h3>
+              )}
+              {unassigned.length > 0 && (
+                <CaseGrid cases={unassigned} canRemove />
+              )}
             </section>
           )}
           {wanted.length > 0 && (
             <section>
-              <h2>Wishlist ({wanted.length})</h2>
-              <CaseGrid cases={wanted} />
+              <CollectionHead title="Wishlist" caseCount={wanted.length} />
+              <CaseGrid cases={wanted} canRemove />
             </section>
           )}
         </>

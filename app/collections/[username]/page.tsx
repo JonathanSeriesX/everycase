@@ -1,13 +1,17 @@
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import type { Metadata } from "next";
 import type { Document } from "mongodb";
+import { auth } from "../../../lib/auth";
 import { db } from "../../../lib/mongo";
 import { loadCollection } from "../../../lib/collectionItems";
 import {
   CaseGrid,
+  DeviceSections,
   computeLaunchValue,
 } from "../../../components/CollectionGrid";
-import CollectionValue from "../../../components/CollectionValue.client";
+import CollectionHead from "../../../components/CollectionHead";
+import RefreshOnRestore from "../../../components/RefreshOnRestore.client";
 
 // Public, per-user page — rendered on demand so it always reflects the
 // owner's latest items and privacy setting.
@@ -42,32 +46,46 @@ export default async function PublicCollectionPage({
   const owner = await findPublicOwner(username.toLowerCase());
   if (!owner) return notFound();
 
-  const { owned, wanted } = await loadCollection(owner._id.toString());
+  // /collection redirects public owners here — this is also THEIR view, so
+  // they keep their remove/change-colour controls. Everyone else is a guest.
+  const session = await auth.api.getSession({ headers: await headers() });
+  const isOwner = session?.user.id === owner._id.toString();
+
+  const { owned, wanted, deviceGroups, unassigned } = await loadCollection(
+    owner._id.toString(),
+  );
   const { sums, pricedCount } = computeLaunchValue(owned);
 
   return (
     <article>
+      {isOwner && <RefreshOnRestore />}
       <h1>{displayName(owner)}’s collection</h1>
-      {owned.length === 0 && wanted.length === 0 ? (
+      {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
         <p>Nothing here yet.</p>
       ) : (
         <>
-          <CollectionValue
-            sums={sums}
-            pricedCount={pricedCount}
-            ownedCount={owned.length}
-            label="Launch value of this collection"
-          />
-          {owned.length > 0 && (
+          {(owned.length > 0 || deviceGroups.length > 0) && (
             <section>
-              <h2>Owned ({owned.length})</h2>
-              <CaseGrid cases={owned} />
+              <CollectionHead
+                title="Owned"
+                deviceCount={deviceGroups.length}
+                caseCount={owned.length}
+                sums={sums}
+                pricedCount={pricedCount}
+              />
+              <DeviceSections groups={deviceGroups} canRemove={isOwner} />
+              {unassigned.length > 0 && deviceGroups.length > 0 && (
+                <h3>Not linked to a device</h3>
+              )}
+              {unassigned.length > 0 && (
+                <CaseGrid cases={unassigned} canRemove={isOwner} />
+              )}
             </section>
           )}
           {wanted.length > 0 && (
             <section>
-              <h2>Wishlist ({wanted.length})</h2>
-              <CaseGrid cases={wanted} />
+              <CollectionHead title="Wishlist" caseCount={wanted.length} />
+              <CaseGrid cases={wanted} canRemove={isOwner} />
             </section>
           )}
         </>

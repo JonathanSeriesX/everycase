@@ -103,6 +103,87 @@
   color: rgba(15, 18, 28, 0.55);
 }
 
+/* Device links live in a small floating window so the card itself never
+   changes size. The window is a fixed, centered panel over a dimmed
+   backdrop; the device list scrolls (MagSafe cases fit years of iPhones). */
+.deviceOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(15, 18, 28, 0.28);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.deviceWindow {
+  display: flex;
+  flex-direction: column;
+  width: min(20rem, 100%);
+  max-height: min(30rem, 100%);
+  border-radius: 22px;
+  padding: 0.9rem 1.1rem 1rem;
+  background: rgba(252, 248, 250, 0.92);
+  box-shadow: 0 24px 55px rgba(50, 42, 48, 0.28),
+    0 3px 12px rgba(50, 42, 48, 0.1);
+  -webkit-backdrop-filter: blur(42px) saturate(145%);
+  backdrop-filter: blur(42px) saturate(145%);
+}
+
+.deviceList {
+  overflow-y: auto;
+  margin-top: 0.15rem;
+}
+
+.deviceListGroup {
+  margin-top: 0.55rem;
+}
+
+.deviceRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.3rem 0.45rem;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 550;
+  text-align: left;
+  color: rgba(15, 18, 28, 0.9);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .deviceRow:hover {
+    background: rgba(15, 18, 28, 0.05);
+  }
+}
+
+.deviceThumb {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deviceRowLabel {
+  flex: 1;
+  min-width: 0;
+}
+
+.windowDone {
+  margin-top: 0.7rem;
+  align-self: flex-end;
+}
+
 /* copyable order-number pill */
 .chip {
   display: inline-flex;
@@ -259,3 +340,28 @@
   background-color: rgb(19, 19, 22) !important;
   color: rgba(255, 255, 255, 0.88) !important;
 }
+
+:global(html:is(.dark, .black)) .deviceOverlay {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+:global(html:is(.dark, .black)) .deviceWindow {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.28),
+      rgba(255, 255, 255, 0.04)
+    ),
+    rgba(26, 28, 33, 0.88);
+  box-shadow: 0 18px 40px rgba(4, 9, 18, 0.6);
+}
+
+:global(html:is(.dark, .black)) .deviceRow {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :global(html:is(.dark, .black)) .deviceRow:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
