@@ -78,7 +78,7 @@ export default async function CollectionPage() {
                 <h3>Not linked to a device</h3>
               )}
               {unassigned.length > 0 && (
-                <CaseGrid cases={unassigned} canRemove />
+                <CaseGrid cases={unassigned} canRemove canLink />
               )}
             </section>
           )}

@@ -78,7 +78,7 @@ export default async function PublicCollectionPage({
                 <h3>Not linked to a device</h3>
               )}
               {unassigned.length > 0 && (
-                <CaseGrid cases={unassigned} canRemove={isOwner} />
+                <CaseGrid cases={unassigned} canRemove={isOwner} canLink={isOwner} />
               )}
             </section>
           )}

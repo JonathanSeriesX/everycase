@@ -162,9 +162,6 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
   // What each gallery tile currently shows: the small AVIF preview at first,
   // silently upgraded to the full-res source once it is preloaded.
   const [tileSrcs, setTileSrcs] = useState<Record<number, string>>({});
-  // Full-res sources are heavy (~300 KB each); fetching them is deferred
-  // until the visitor first opens the lightbox and actually wants hi-res.
-  const [upgradeStarted, setUpgradeStarted] = useState(false);
   // Per-tile position in the [preview, ...full-res] fallback chain, advanced
   // by onError when a tile's current source 404s.
   const [tileFallbacks, setTileFallbacks] = useState<Record<number, number>>(
@@ -225,13 +222,12 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
     });
   };
 
-  // Once the lightbox has been opened, upgrade tiles one at a time, first to
-  // last: preload + decode the full-res source in the background, then swap
-  // the tile's src — the replacement is invisible. A source that fails
-  // advances the slide's fallback chain (avif -> Apple CDN) and the next
-  // candidate is tried.
+  // Upgrade tiles one at a time, first to last, starting as soon as the
+  // gallery mounts: preload + decode the full-res source in the background,
+  // then swap the tile's src — the replacement is invisible. A source that
+  // fails advances the slide's fallback chain (avif -> Apple CDN) and the
+  // next candidate is tried.
   useEffect(() => {
-    if (!upgradeStarted) return;
     let cancelled = false;
     (async () => {
       for (let index = 0; index < baseSlides.length; index++) {
@@ -255,7 +251,7 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by the source list itself
-  }, [sourceKey, upgradeStarted]);
+  }, [sourceKey]);
 
   const gridStyle = useMemo(() => {
     const { minColumnWidth, maxColumns, gap } = GRID_CONFIG;
@@ -289,7 +285,6 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
               className="lightbox-tile relative w-full overflow-hidden"
               onClick={() => {
                 lightboxOpenRef.current = true;
-                setUpgradeStarted(true);
                 setLightboxIndex(index);
               }}
               aria-label={`Open ${slide.alt || "case image"}`}
@@ -297,7 +292,8 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
               <Image
                 src={tileSrcs[index] ?? candidates[fallbackIndex] ?? slide.src}
                 alt={slide.alt || "Case image"}
-                loading="lazy"
+                // The first tile is the page's LCP — fetch it eagerly.
+                {...(index === 0 ? { priority: true } : { loading: "lazy" })}
                 width={slide.width}
                 height={slide.height}
                 className="block h-auto w-full object-contain"

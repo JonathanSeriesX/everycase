@@ -2,28 +2,45 @@ import { Fragment } from "react";
 import Link from "next/link";
 import type { CaseRecord } from "../lib/getCasesFromCSV";
 import type { DeviceGroup } from "../lib/collectionItems";
-import { deviceThumbnail, getAllDevices } from "../lib/devices";
+import {
+  deviceThumbnail,
+  getAllDevices,
+  getCompatibleDevices,
+} from "../lib/devices";
 import { CURRENCIES, type Currency } from "../lib/currencies";
 import { getCaseName } from "../lib/caseName";
 import CaseImage from "./CaseImage.client";
 import DeviceActions, { type DeviceVariant } from "./DeviceActions.client";
+import LinkCaseButton from "./LinkCaseButton.client";
 import RemoveCaseButton from "./RemoveCaseButton.client";
 import carousel from "../styles/VerticalCarousel.module.css";
 import device from "../styles/DeviceSection.module.css";
 
 // One collection case card. `title` overrides the displayed name (device
 // groups show the short "kind — colour" form); the aria-label keeps the
-// full name either way.
+// full name either way. `canLink` (unlinked owned cases, owner's view)
+// offers the device window — but only when the catalogue actually has
+// devices this case fits.
 function CollectionCaseCard({
   item,
   title,
   canRemove = false,
+  canLink = false,
 }: {
   item: CaseRecord;
   title?: string;
   canRemove?: boolean;
+  canLink?: boolean;
 }) {
   const name = getCaseName(item);
+  const linkOptions = canLink
+    ? getCompatibleDevices(item.model).map((record) => ({
+        deviceId: record.deviceId,
+        model: record.model,
+        colour: record.colour,
+        thumbnail: deviceThumbnail(record),
+      }))
+    : [];
   return (
     <article className={`${carousel.caseCard} ${device.tile}`}>
       <Link
@@ -38,9 +55,12 @@ function CollectionCaseCard({
           {title ?? name}
         </strong>
       </Link>
-      {canRemove && (
+      {(canRemove || linkOptions.length > 0) && (
         <div className={device.tileActions}>
-          <RemoveCaseButton sku={item.SKU} label={name} />
+          {linkOptions.length > 0 && (
+            <LinkCaseButton label={name} options={linkOptions} />
+          )}
+          {canRemove && <RemoveCaseButton sku={item.SKU} label={name} />}
         </div>
       )}
     </article>
@@ -51,16 +71,24 @@ function CollectionCaseCard({
 export function CaseGrid({
   cases,
   canRemove = false,
+  canLink = false,
 }: {
   cases: CaseRecord[];
   canRemove?: boolean;
+  /** Offer "Link" on each case that has compatible devices (unlinked section). */
+  canLink?: boolean;
 }) {
   // `standalone` supplies the breathing room a tab bar would otherwise add
   // between the section heading and the grid.
   return (
     <div className={`${carousel.cardTrack} ${carousel.standalone}`}>
       {cases.map((item) => (
-        <CollectionCaseCard key={item.SKU} item={item} canRemove={canRemove} />
+        <CollectionCaseCard
+          key={item.SKU}
+          item={item}
+          canRemove={canRemove}
+          canLink={canLink}
+        />
       ))}
     </div>
   );
