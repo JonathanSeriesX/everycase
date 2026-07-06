@@ -1,10 +1,12 @@
 """Download Apple images using explicit per-line resolutions.
 
 Missing Apple CDN variants are expected: HTTP 404 responses are skipped safely.
-Successful asset codes are appended to source_images.txt for gallery discovery.
+Successful assets are appended to database/images.csv (filename + square res)
+for gallery discovery; the remaining metadata columns are filled in later.
 """
 
 import argparse
+import csv
 import multiprocessing
 import os
 import time
@@ -18,8 +20,13 @@ import requests
 BASE_URL_TEMPLATE = "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is/{code}?wid={wid}&hei={hei}&fmt=png-alpha"
 SCRIPT_DIR = Path(__file__).resolve().parent
 IMAGES_TO_DOWNLOAD_PATH = SCRIPT_DIR / "1_download_list.txt"
-SOURCE_IMAGES_PATH = SCRIPT_DIR.parent / "database" / "source_images.txt"
+IMAGES_CSV_PATH = SCRIPT_DIR.parent / "database" / "images.csv"
 DEFAULT_TARGET_FOLDER = Path("/Volumes/Storage/Images/download")
+
+# Column order of database/images.csv. The downloader only knows the filename
+# and the square resolution it requested; hidden/colour/non_transparent are
+# populated later by hand.
+IMAGES_CSV_HEADER = ["filename", "res", "hidden", "colour", "non_transparent"]
 
 
 @dataclass(frozen=True)
@@ -84,17 +91,32 @@ def parse_tasks(file_path: Path, target_folder: Path) -> List[DownloadTask]:
 def load_existing_codes(path: Path) -> Set[str]:
     if not path.exists():
         return set()
-    with path.open("r", encoding="utf-8") as file:
-        return {line.strip() for line in file if line.strip()}
+    with path.open("r", encoding="utf-8", newline="") as file:
+        reader = csv.DictReader(file)
+        return {
+            (row.get("filename") or "").strip()
+            for row in reader
+            if (row.get("filename") or "").strip()
+        }
 
 
-def append_codes(path: Path, codes: Iterable[str]) -> None:
-    codes = list(codes)
-    if not codes:
+def append_image_rows(path: Path, rows: Iterable[Tuple[str, int]]) -> None:
+    """Append (filename, res) rows to images.csv, writing the header if new.
+
+    Uses LF line endings (lineterminator) to match the file's existing style;
+    csv-parse reads either, but mixing endings in one file breaks the build.
+    """
+    rows = list(rows)
+    if not rows:
         return
-    with path.open("a", encoding="utf-8") as file:
-        for code in codes:
-            file.write(f"{code}\n")
+    write_header = not path.exists() or path.stat().st_size == 0
+    with path.open("a", encoding="utf-8", newline="") as file:
+        writer = csv.writer(file, lineterminator="\n")
+        if write_header:
+            writer.writerow(IMAGES_CSV_HEADER)
+        blanks = [""] * (len(IMAGES_CSV_HEADER) - 2)
+        for code, res in rows:
+            writer.writerow([code, res, *blanks])
 
 
 def download_image(task: DownloadTask, failed_list, success_list, resolved_list) -> bool:
@@ -228,7 +250,7 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
-    existing_codes = load_existing_codes(SOURCE_IMAGES_PATH)
+    existing_codes = load_existing_codes(IMAGES_CSV_PATH)
 
     manager = multiprocessing.Manager()
     failed_downloads = manager.list()
@@ -259,14 +281,14 @@ if __name__ == "__main__":
             pool.map(download_worker, worker_payloads)
 
     successful_set = set(successful_downloads)
-    ordered_new_codes = []
+    ordered_new_rows: List[Tuple[str, int]] = []
     seen = set()
     for task in tasks:
         code = task.code
         if code in successful_set and code not in existing_codes and code not in seen:
             seen.add(code)
-            ordered_new_codes.append(code)
-    append_codes(SOURCE_IMAGES_PATH, ordered_new_codes)
+            ordered_new_rows.append((code, task.width))
+    append_image_rows(IMAGES_CSV_PATH, ordered_new_rows)
 
     removed = remove_resolved_lines(input_file, set(resolved_downloads))
     if removed:

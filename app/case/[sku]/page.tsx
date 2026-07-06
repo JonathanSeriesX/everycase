@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import LightboxComponent, {
@@ -8,6 +6,7 @@ import LightboxComponent, {
 import Breadcrumb, { type Crumb } from "../../../components/Breadcrumb";
 import HeadingAnchor from "../../../components/HeadingAnchor";
 import { findPageForModel } from "../../../lib/catalogue";
+import { getVisibleImageFilenames } from "../../../lib/images";
 import KeyboardProductDetails, {
   type KeyboardRegionOption,
 } from "../../../components/KeyboardProductDetails";
@@ -49,20 +48,12 @@ function findCaseBySku(sku: string): CaseRecord | undefined {
   return cachedCasesBySku.get(sku);
 }
 
+// Gallery-eligible asset filenames in source order. Hidden rows (e.g. the
+// `_cut` thumbnails) are already dropped by getVisibleImageFilenames, so the
+// SKU/region prefix matching below behaves exactly as it did against
+// source_images.txt — minus the assets we deliberately keep out of galleries.
 function loadVariantFilenames(): string[] {
-  if (cachedVariantFilenames) return cachedVariantFilenames;
-
-  const filePath = path.join(process.cwd(), "database", "source_images.txt");
-  try {
-    const fileContents = fs.readFileSync(filePath, "utf-8");
-    cachedVariantFilenames = fileContents
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean);
-  } catch {
-    cachedVariantFilenames = [];
-  }
-
+  cachedVariantFilenames ??= getVisibleImageFilenames();
   return cachedVariantFilenames;
 }
 
