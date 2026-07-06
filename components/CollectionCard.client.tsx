@@ -3,76 +3,58 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSession } from "../lib/auth-client";
+import {
+  useAddDevice,
+  useCaseStatus,
+  useDevices,
+  useSetCaseStatus,
+  type CollectionStatus,
+} from "../lib/collectionQueries";
 import CaseImage from "./CaseImage.client";
 import styles from "../styles/CaseInfoCards.module.css";
 
-type Status = "owned" | "wanted" | null;
-
-interface DeviceOption {
-  deviceId: string;
-  model: string;
-  colour: string;
-  thumbnail: string;
-}
-
 /**
  * The "Your collection" info card on case pages: owned/wanted toggles for
- * this SKU. Pages stay fully static — collection state is fetched here on
- * the client, and only for signed-in visitors.
+ * this SKU. Pages stay fully static — collection state comes through the
+ * shared query cache (lib/collectionQueries), and only for signed-in
+ * visitors.
  *
- * Owned cases always belong to a device. Pressing "I own it" on the first
- * case that fits none of your registered devices opens a small window
- * asking which device you have; picking one registers the device and only
- * then adds the case (cancelling adds nothing). Every later compatible
- * case is owned with a single tap — no windows — and grouping is derived
- * server-side (see lib/collectionItems). The window is single-pick and
- * lives in a portal because the card's backdrop-filter would otherwise
+ * Pressing "I own it" on a case that fits none of your registered devices
+ * opens a small window asking which device you have; picking one registers
+ * the device (it then stays until you remove it on the collection page) and
+ * adds the case. "Skip" owns the case without a device — it lands in the
+ * collection page's "not linked to a device" section. Every later
+ * compatible case is owned with a single tap — no windows — and grouping is
+ * derived server-side (see lib/collectionItems). The window is single-pick
+ * and lives in a portal because the card's backdrop-filter would otherwise
  * trap and clip a fixed-position child.
  */
 export default function CollectionCard({ sku }: { sku: string }) {
   const { data: session } = useSession();
-  const [status, setStatus] = useState<Status>(null);
-  const [loaded, setLoaded] = useState(false);
-  const [note, setNote] = useState<string | null>(null);
-  const [ownedIds, setOwnedIds] = useState<string[]>([]);
-  const [compatible, setCompatible] = useState<DeviceOption[]>([]);
-  const [windowOpen, setWindowOpen] = useState(false);
   const userId = session?.user.id;
+  const signedIn = Boolean(userId);
+  const [note, setNote] = useState<string | null>(null);
+  const [windowOpen, setWindowOpen] = useState(false);
 
-  const fetchDevices = (cancelled?: () => boolean) =>
-    fetch(`/api/devices?sku=${encodeURIComponent(sku)}`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!data || cancelled?.()) return;
-        setOwnedIds(data.devices.map((d: DeviceOption) => d.deviceId));
-        setCompatible(data.compatible);
-      })
-      .catch(() => {});
+  const statusQuery = useCaseStatus(sku, signedIn);
+  const devicesQuery = useDevices(sku, signedIn);
+  const status = signedIn ? (statusQuery.data ?? null) : null;
+  const compatible = useMemo(
+    () => devicesQuery.data?.compatible ?? [],
+    [devicesQuery.data],
+  );
+  const ownedIds = useMemo(
+    () => new Set(devicesQuery.data?.devices.map((d) => d.deviceId)),
+    [devicesQuery.data],
+  );
 
-  useEffect(() => {
-    if (!userId) {
-      setStatus(null);
-      setLoaded(false);
-      setOwnedIds([]);
-      setCompatible([]);
-      setWindowOpen(false);
-      return;
-    }
-    let cancelled = false;
-    fetch(`/api/collection?skus=${encodeURIComponent(sku)}`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (cancelled || !data) return;
-        setStatus(data.items[0]?.status ?? null);
-        setLoaded(true);
-      })
-      .catch(() => {});
-    fetchDevices(() => cancelled);
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, sku]);
+  const failNote = () => setNote("Something went wrong — try again.");
+  const setStatus = useSetCaseStatus(sku, { onError: failNote });
+  const addDevice = useAddDevice({
+    onError: failNote,
+    // Only own the case once its device is actually registered.
+    onSuccess: () => setStatus.mutate("owned"),
+  });
 
   useEffect(() => {
     if (!windowOpen) return;
@@ -84,11 +66,11 @@ export default function CollectionCard({ sku }: { sku: string }) {
   }, [windowOpen]);
 
   const ownsCompatible = useMemo(
-    () => compatible.some((d) => ownedIds.includes(d.deviceId)),
+    () => compatible.some((d) => ownedIds.has(d.deviceId)),
     [compatible, ownedIds],
   );
   const modelGroups = useMemo(() => {
-    const byModel = new Map<string, DeviceOption[]>();
+    const byModel = new Map<string, typeof compatible>();
     for (const device of compatible) {
       const group = byModel.get(device.model);
       if (group) group.push(device);
@@ -97,68 +79,35 @@ export default function CollectionCard({ sku }: { sku: string }) {
     return [...byModel.entries()];
   }, [compatible]);
 
-  const saveStatus = async (target: Status) => {
-    const previous = status;
-    setStatus(target);
-    try {
-      const res = target
-        ? await fetch("/api/collection", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sku, status: target }),
-          })
-        : await fetch(`/api/collection?sku=${encodeURIComponent(sku)}`, {
-            method: "DELETE",
-          });
-      if (!res.ok) throw new Error();
-      // Shrinking the owned set may have pruned a device server-side.
-      if (target !== "owned") fetchDevices();
-      return true;
-    } catch {
-      setStatus(previous);
-      setNote("Something went wrong — try again.");
-      return false;
-    }
-  };
-
-  const toggle = (next: Exclude<Status, null>) => {
-    if (!userId) {
+  const toggle = (next: Exclude<CollectionStatus, null>) => {
+    if (!signedIn) {
       setNote("Sign in with the account button above to track your collection.");
       return;
     }
     setNote(null);
-    const target: Status = status === next ? null : next;
-    // Owned cases always belong to a device: the first case that fits none
-    // of the registered ones must pick a device before it can be owned.
+    const target: CollectionStatus = status === next ? null : next;
+    // First case that fits none of the registered devices: offer to pick
+    // one (or Skip and own the case unlinked).
     if (target === "owned" && compatible.length > 0 && !ownsCompatible) {
       setWindowOpen(true);
       return;
     }
     if (target !== "owned") setWindowOpen(false);
-    void saveStatus(target);
+    setStatus.mutate(target);
   };
 
-  const pick = async (deviceId: string) => {
+  const pick = (deviceId: string) => {
     setWindowOpen(false);
-    const previous = ownedIds;
-    setOwnedIds((ids) => [...ids, deviceId]);
-    try {
-      const res = await fetch("/api/devices", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deviceId }),
-      });
-      if (!res.ok) throw new Error();
-    } catch {
-      setOwnedIds(previous);
-      setNote("Something went wrong — try again.");
-      return;
-    }
-    await saveStatus("owned");
+    addDevice.mutate({ deviceId });
+  };
+
+  const skip = () => {
+    setWindowOpen(false);
+    setStatus.mutate("owned");
   };
 
   const chip = (
-    value: Exclude<Status, null>,
+    value: Exclude<CollectionStatus, null>,
     label: string,
     activeLabel: string,
   ) => (
@@ -167,7 +116,7 @@ export default function CollectionCard({ sku }: { sku: string }) {
       className={`${styles.chip} ${styles.actionChip} ${styles.collectionChip}`}
       data-active={status === value}
       aria-pressed={status === value}
-      disabled={Boolean(userId) && !loaded}
+      disabled={signedIn && statusQuery.isPending}
       onClick={() => toggle(value)}
     >
       {status === value ? activeLabel : label}
@@ -203,7 +152,8 @@ export default function CollectionCard({ sku }: { sku: string }) {
             >
               <span className={styles.label}>{windowTitle}</span>
               <p className={styles.collectionNote}>
-                The case goes under your device on the collection page.
+                The case goes under your device on the collection page — or
+                skip, and it stays unlinked.
               </p>
               <div className={styles.deviceList}>
                 {modelGroups.map(([model, devices]) => (
@@ -231,13 +181,22 @@ export default function CollectionCard({ sku }: { sku: string }) {
                   </div>
                 ))}
               </div>
-              <button
-                type="button"
-                className={`${styles.chip} ${styles.actionChip} ${styles.windowDone}`}
-                onClick={() => setWindowOpen(false)}
-              >
-                Cancel
-              </button>
+              <div className={styles.windowActions}>
+                <button
+                  type="button"
+                  className={`${styles.chip} ${styles.actionChip}`}
+                  onClick={skip}
+                >
+                  Skip
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.chip} ${styles.actionChip}`}
+                  onClick={() => setWindowOpen(false)}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>,
           document.body,

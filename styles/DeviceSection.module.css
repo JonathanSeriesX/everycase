@@ -67,6 +67,15 @@
   cursor: default;
 }
 
+/* Inline failure note under a tile's controls. */
+.tileNote {
+  width: 100%;
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  text-align: center;
+  color: #e3504f;
+}
+
 /* dark mode */
 :global(html:is(.dark, .black)) .placeholder {
   color: rgba(255, 255, 255, 0.35);

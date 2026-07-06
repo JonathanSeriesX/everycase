@@ -1,21 +1,14 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "../../../lib/auth";
-import {
-  collectionItems,
-  pruneOrphanedDevices,
-} from "../../../lib/collectionItems";
+import { collectionItems } from "../../../lib/collectionItems";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
-import { getCompatibleDevices } from "../../../lib/devices";
-import { userDevices } from "../../../lib/userDevices";
 
 // Collection items: one document per (user, case) — see lib/collectionItems.
-// Owning a case requires owning a compatible device (the client's "which
-// device do you have?" window registers one first) — except for cases whose
-// model has no devices in the catalogue at all. Devices are otherwise only
-// touched for pruning: whenever a mutation can shrink the owned set,
-// devices that no remaining owned case fits are removed (a device lives
-// exactly as long as its cases).
+// Devices are registered separately (/api/devices, offered by the client's
+// "which device do you have?" window) and are never touched here: an owned
+// case without a matching device simply lands in the "not linked to a
+// device" section, and devices stay until their owner removes them.
 
 const STATUSES = ["owned", "wanted"] as const;
 type Status = (typeof STATUSES)[number];
@@ -84,24 +77,6 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Invalid item" }, { status: 400 });
   }
 
-  // No unlinked cases: owning requires a device this case fits, when the
-  // catalogue has any for its model.
-  if (status === "owned") {
-    const compatible = getCompatibleDevices(model).map((d) => d.deviceId);
-    if (compatible.length > 0) {
-      const ownsOne = await userDevices().findOne({
-        userId,
-        deviceId: { $in: compatible },
-      });
-      if (!ownsOne) {
-        return NextResponse.json(
-          { error: "Pick a device first" },
-          { status: 409 },
-        );
-      }
-    }
-  }
-
   await ensureIndex();
   if ((await collectionItems().countDocuments({ userId })) >= MAX_ITEMS) {
     return NextResponse.json({ error: "Collection is full" }, { status: 400 });
@@ -112,8 +87,6 @@ export async function PUT(request: Request) {
     { $set: { status }, $setOnInsert: { createdAt: new Date() } },
     { upsert: true },
   );
-  // Downgrading owned → wanted can orphan a device.
-  if (status === "wanted") await pruneOrphanedDevices(userId);
   return NextResponse.json({ sku, status });
 }
 
@@ -129,6 +102,5 @@ export async function DELETE(request: Request) {
   }
 
   await collectionItems().deleteOne({ userId, sku });
-  await pruneOrphanedDevices(userId);
   return NextResponse.json({ sku, status: null });
 }

@@ -14,10 +14,9 @@ import { userDevices } from "./userDevices";
 //
 // Devices (lib/userDevices) are NOT linked to cases explicitly — a case
 // groups under every owned device it fits, derived from the compatibility
-// tables at read time. A device exists exactly as long as at least one
-// owned case fits it: created by the "which device do you have?" window on
-// the first such case, removed by pruneOrphanedDevices when the last one
-// goes.
+// tables at read time. Devices are first-class: usually registered by the
+// "which device do you have?" window on a case page, they stay until the
+// owner removes them, whatever happens to the cases.
 
 export interface CollectionItemDoc {
   userId: string;
@@ -29,16 +28,8 @@ export interface CollectionItemDoc {
 export const collectionItems = () =>
   db.collection<CollectionItemDoc>("collectionItems");
 
-let modelBySku: Map<string, string> | undefined;
-const catalogueModel = (sku: string) => {
-  modelBySku ??= new Map(
-    getAllCasesFromCSV().map((record) => [record.SKU, record.model]),
-  );
-  return modelBySku.get(sku);
-};
-
-// Compatible device ids per case model, cached — both the collection loader
-// and the pruner hit the same few models over and over.
+// Compatible device ids per case model, cached — the collection loader hits
+// the same few models over and over.
 const compatCache = new Map<string, Set<string>>();
 const compatibleDeviceIds = (model: string): Set<string> => {
   let ids = compatCache.get(model);
@@ -49,25 +40,8 @@ const compatibleDeviceIds = (model: string): Set<string> => {
   return ids;
 };
 
-/**
- * Drop every device of the user's that no remaining owned case fits.
- * Called after any mutation that can shrink the owned set.
- */
-export async function pruneOrphanedDevices(userId: string): Promise<void> {
-  const ownedDocs = await collectionItems()
-    .find({ userId, status: "owned" })
-    .toArray();
-  const keep = new Set<string>();
-  for (const doc of ownedDocs) {
-    const model = catalogueModel(doc.sku);
-    if (!model) continue;
-    for (const id of compatibleDeviceIds(model)) keep.add(id);
-  }
-  await userDevices().deleteMany({ userId, deviceId: { $nin: [...keep] } });
-}
-
-/** One owned device plus the owned cases that fit it (never empty in
- * practice — an empty device would have been pruned). */
+/** One owned device plus the owned cases that fit it (possibly none —
+ * a device with no cases renders as a bare device tile). */
 export interface DeviceGroup {
   device: DeviceRecord;
   cases: CaseRecord[];

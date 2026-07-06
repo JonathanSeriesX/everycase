@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
 import styles from "../styles/Settings.module.css";
 
 interface Profile {
@@ -9,6 +10,17 @@ interface Profile {
   username: string | null;
   collectionPublic: boolean;
 }
+
+const patchProfile = async (body: Record<string, unknown>): Promise<Profile> => {
+  const res = await fetch("/api/profile", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(data?.error ?? "Could not save — try again.");
+  return data as Profile;
+};
 
 /**
  * The Profile and Public collection sections on /settings. One component
@@ -19,57 +31,48 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
   const [name, setName] = useState(initial.name);
   const [username, setUsername] = useState(initial.username ?? "");
   const [saved, setSaved] = useState<Profile>(initial);
-  const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [visibilityError, setVisibilityError] = useState<string | null>(null);
 
   const dirty = name !== saved.name || username !== (saved.username ?? "");
 
-  const patch = async (body: Record<string, unknown>): Promise<Profile> => {
-    const res = await fetch("/api/profile", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    const data = await res.json().catch(() => null);
-    if (!res.ok) throw new Error(data?.error ?? "Could not save — try again.");
-    return data as Profile;
-  };
-
-  const save = async (event: FormEvent) => {
-    event.preventDefault();
-    setBusy(true);
-    setError(null);
-    setMessage(null);
-    try {
-      const data = await patch({
-        name: name.trim(),
-        username: username.trim() === "" ? null : username.trim(),
-      });
+  const saveProfile = useMutation({
+    mutationFn: patchProfile,
+    onSuccess: (data) => {
       setSaved(data);
       setName(data.name);
       setUsername(data.username ?? "");
       setMessage("Saved.");
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  };
+    },
+    onError: (err) => setError(err.message),
+  });
 
-  // The switch saves immediately — no Save button for a boolean.
-  const togglePublic = async (next: boolean) => {
-    const previous = saved;
-    setSaved({ ...saved, collectionPublic: next });
-    setVisibilityError(null);
-    try {
-      const data = await patch({ collectionPublic: next });
-      setSaved(data);
-    } catch (err) {
-      setSaved(previous);
-      setVisibilityError((err as Error).message);
-    }
+  // The switch saves immediately — no Save button for a boolean. Optimistic,
+  // rolled back on failure.
+  const saveVisibility = useMutation({
+    mutationFn: (next: boolean) => patchProfile({ collectionPublic: next }),
+    onMutate: (next) => {
+      const previous = saved;
+      setSaved({ ...saved, collectionPublic: next });
+      setVisibilityError(null);
+      return { previous };
+    },
+    onSuccess: (data) => setSaved(data),
+    onError: (err, _next, context) => {
+      if (context) setSaved(context.previous);
+      setVisibilityError(err.message);
+    },
+  });
+
+  const save = (event: FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    setMessage(null);
+    saveProfile.mutate({
+      name: name.trim(),
+      username: username.trim() === "" ? null : username.trim(),
+    });
   };
 
   const publicPath = saved.username ? `/collections/${saved.username}` : null;
@@ -115,9 +118,9 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
             <button
               type="submit"
               className={styles.primaryButton}
-              disabled={busy || !dirty}
+              disabled={saveProfile.isPending || !dirty}
             >
-              {busy ? "Saving…" : "Save"}
+              {saveProfile.isPending ? "Saving…" : "Save"}
             </button>
 
             {message && !dirty && (
@@ -158,7 +161,7 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
                 aria-label="Share your collection"
                 checked={saved.collectionPublic}
                 disabled={!saved.username}
-                onChange={(event) => togglePublic(event.target.checked)}
+                onChange={(event) => saveVisibility.mutate(event.target.checked)}
               />
               <span className={styles.switchTrack} aria-hidden="true" />
             </label>

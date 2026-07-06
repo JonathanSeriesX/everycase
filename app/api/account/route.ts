@@ -9,7 +9,8 @@ const escapeRegex = (value: string) =>
 
 /**
  * DELETE /api/account — remove the signed-in user and everything they own:
- * collection, passkeys, sessions, linked accounts, pending codes, user doc.
+ * collection, devices, passkeys, sessions, linked accounts, pending codes,
+ * user doc.
  */
 export async function DELETE() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -26,11 +27,14 @@ export async function DELETE() {
   const byUserId = { userId: { $in: userIdForms } };
 
   await db.collection("collectionItems").deleteMany({ userId });
+  await db.collection("userDevices").deleteMany({ userId });
   await db.collection("passkey").deleteMany(byUserId);
   await db.collection("account").deleteMany(byUserId);
   await db.collection("session").deleteMany(byUserId);
+  // Better Auth's email-otp stores identifiers as `<type>-otp-<email>` —
+  // anchor both ends so another user's email can't match as a substring.
   await db.collection("verification").deleteMany({
-    identifier: { $regex: escapeRegex(session.user.email) },
+    identifier: { $regex: `^[a-z-]+-otp-${escapeRegex(session.user.email)}$` },
   });
   await db.collection("user").deleteOne(
     ObjectId.isValid(userId)

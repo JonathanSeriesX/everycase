@@ -6,6 +6,7 @@ import Link from "next/link";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Navbar from "../components/Navbar";
+import Providers from "../components/Providers.client";
 import ThemeColorSync from "../components/ThemeColorSync.client";
 import HashNavigation from "../components/HashNavigation.client";
 import "../styles/globals.css";
@@ -118,25 +119,27 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           themes={["light", "dark", "black"]}
           enableColorScheme={false}
         >
-          <HashNavigation />
-          <Navbar />
-          <main className="site-main">{children}</main>
-          <footer className="site-footer">
-            <Link href="/about" prefetch={false}>
-              About ★
-            </Link>
-            <Link href="/support" prefetch={false}>
-              Support this ♥
-            </Link>
-          </footer>
-          <ThemeColorSync />
-          <Analytics />
-          <SpeedInsights />
-          <script
-            defer
-            src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon='{"token": "95e2bceaf09643619d934557acc8f72d"}'
-          ></script>
+          <Providers>
+            <HashNavigation />
+            <Navbar />
+            <main className="site-main">{children}</main>
+            <footer className="site-footer">
+              <Link href="/about" prefetch={false}>
+                About ★
+              </Link>
+              <Link href="/support" prefetch={false}>
+                Support this ♥
+              </Link>
+            </footer>
+            <ThemeColorSync />
+            <Analytics />
+            <SpeedInsights />
+            <script
+              defer
+              src="https://static.cloudflareinsights.com/beacon.min.js"
+              data-cf-beacon='{"token": "95e2bceaf09643619d934557acc8f72d"}'
+            ></script>
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
+import { useAddDevice, useRemoveDevice } from "../lib/collectionQueries";
 import CaseImage from "./CaseImage.client";
 import styles from "../styles/DeviceSection.module.css";
 import windowStyles from "../styles/CaseInfoCards.module.css";
@@ -19,7 +20,8 @@ export interface DeviceVariant {
  * Owner controls on a device tile: two-tap Remove, and "Change colour" —
  * a small window listing the other colours of the same model (picked the
  * wrong one in the case-page window). Changing colour swaps the device
- * document; grouping is derived, so nothing else moves.
+ * in one request (PUT with replaceDeviceId); grouping is derived, so
+ * nothing else moves.
  */
 export default function DeviceActions({
   deviceId,
@@ -35,8 +37,8 @@ export default function DeviceActions({
 }) {
   const router = useRouter();
   const [armed, setArmed] = useState(false);
-  const [busy, setBusy] = useState(false);
   const [windowOpen, setWindowOpen] = useState(false);
+  const [note, setNote] = useState<string | null>(null);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
@@ -52,46 +54,38 @@ export default function DeviceActions({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [windowOpen]);
 
-  const remove = async () => {
+  const fail = () => {
+    setArmed(false);
+    setNote("Something went wrong — try again.");
+  };
+  // The tiles themselves are server-rendered — refresh redraws the groups.
+  const removeDevice = useRemoveDevice({
+    onSuccess: () => router.refresh(),
+    onError: fail,
+  });
+  const swapDevice = useAddDevice({
+    onSuccess: () => router.refresh(),
+    onError: fail,
+  });
+  const busy = removeDevice.isPending || swapDevice.isPending;
+
+  const remove = () => {
     if (!armed) {
       setArmed(true);
+      setNote(null);
       clearTimeout(resetTimer.current);
       resetTimer.current = setTimeout(() => setArmed(false), ARM_RESET_TIMEOUT);
       return;
     }
     clearTimeout(resetTimer.current);
-    setBusy(true);
-    try {
-      const res = await fetch(
-        `/api/devices?deviceId=${encodeURIComponent(deviceId)}`,
-        { method: "DELETE" },
-      );
-      if (!res.ok) throw new Error();
-      router.refresh();
-    } catch {
-      setBusy(false);
-      setArmed(false);
-    }
+    removeDevice.mutate(deviceId);
   };
 
-  const swap = async (nextId: string) => {
+  const swap = (nextId: string) => {
     setWindowOpen(false);
     if (nextId === deviceId) return;
-    setBusy(true);
-    try {
-      const added = await fetch("/api/devices", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deviceId: nextId }),
-      });
-      if (!added.ok) throw new Error();
-      await fetch(`/api/devices?deviceId=${encodeURIComponent(deviceId)}`, {
-        method: "DELETE",
-      });
-      router.refresh();
-    } catch {
-      setBusy(false);
-    }
+    setNote(null);
+    swapDevice.mutate({ deviceId: nextId, replaceDeviceId: deviceId });
   };
 
   const others = variants.filter((variant) => variant.deviceId !== deviceId);
@@ -118,6 +112,11 @@ export default function DeviceActions({
       >
         {busy ? "Working…" : armed ? "Sure?" : "Remove"}
       </button>
+      {note && (
+        <p className={styles.tileNote} role="status">
+          {note}
+        </p>
+      )}
       {windowOpen &&
         createPortal(
           <div

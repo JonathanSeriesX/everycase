@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import { authClient } from "../lib/auth-client";
 import styles from "../styles/Settings.module.css";
 
@@ -9,24 +10,30 @@ import styles from "../styles/Settings.module.css";
 export default function DeleteAccount() {
   const router = useRouter();
   const [confirming, setConfirming] = useState(false);
-  const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const deleteAccount = async () => {
-    setBusy(true);
-    setError(null);
-    try {
+  const deletion = useMutation({
+    mutationFn: async () => {
       const res = await fetch("/api/account", { method: "DELETE" });
       if (!res.ok) throw new Error();
       // The session doc is already gone; this just clears the cookie.
       await authClient.signOut().catch(() => {});
+    },
+    onSuccess: () => {
       router.push("/");
       router.refresh();
-    } catch {
+    },
+    onError: () => {
       setError("Could not delete the account — try again.");
-      setBusy(false);
       setConfirming(false);
-    }
+    },
+  });
+  // Stay disabled through the post-success redirect.
+  const busy = deletion.isPending || deletion.isSuccess;
+
+  const deleteAccount = () => {
+    setError(null);
+    deletion.mutate();
   };
 
   return (

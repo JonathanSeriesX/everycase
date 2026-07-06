@@ -15,7 +15,8 @@ import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 // devices explicitly; grouping is derived from compatibility, so adding or
 // removing a device is just that one document. Devices normally enter via
 // the "which device do you have?" window (PUT, first compatible owned case)
-// and leave via pruning in /api/collection when their last case goes.
+// and stay until their owner explicitly removes them (DELETE, or a colour
+// swap replacing one via PUT's replaceDeviceId).
 
 const DEVICE_ID_PATTERN = /^[a-z0-9][a-z0-9-]{1,63}$/;
 const SKU_PATTERN = /^[A-Z0-9]{3,12}$/;
@@ -68,7 +69,12 @@ export async function GET(request: Request) {
   return NextResponse.json({ devices, compatible });
 }
 
-/** PUT /api/devices { deviceId } — the user owns this device. */
+/**
+ * PUT /api/devices { deviceId, replaceDeviceId? } — the user owns this
+ * device. With replaceDeviceId, the old device is removed in the same
+ * request (the "change colour" swap), so the client never has to sequence
+ * two calls that could fail halfway.
+ */
 export async function PUT(request: Request) {
   const userId = await getUserId();
   if (!userId) return unauthorized();
@@ -77,6 +83,11 @@ export async function PUT(request: Request) {
   const deviceId =
     typeof body?.deviceId === "string" ? body.deviceId.trim() : "";
   if (!DEVICE_ID_PATTERN.test(deviceId) || !getDeviceById(deviceId)) {
+    return NextResponse.json({ error: "Invalid device" }, { status: 400 });
+  }
+  const replaceDeviceId =
+    typeof body?.replaceDeviceId === "string" ? body.replaceDeviceId.trim() : "";
+  if (replaceDeviceId && !DEVICE_ID_PATTERN.test(replaceDeviceId)) {
     return NextResponse.json({ error: "Invalid device" }, { status: 400 });
   }
 
@@ -90,6 +101,9 @@ export async function PUT(request: Request) {
     { $setOnInsert: { userId, deviceId, createdAt: new Date() } },
     { upsert: true },
   );
+  if (replaceDeviceId && replaceDeviceId !== deviceId) {
+    await userDevices().deleteOne({ userId, deviceId: replaceDeviceId });
+  }
   return NextResponse.json({ deviceId });
 }
 

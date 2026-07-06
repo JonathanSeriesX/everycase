@@ -184,6 +184,14 @@
   align-self: flex-end;
 }
 
+/* Skip / Cancel row at the foot of the device window. */
+.windowActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
 /* copyable order-number pill */
 .chip {
   display: inline-flex;
