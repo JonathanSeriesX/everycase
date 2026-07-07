@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import type { Metadata, ResolvingMetadata } from "next";
@@ -5,6 +6,7 @@ import type { Document } from "mongodb";
 import { auth } from "../../../lib/auth";
 import { db } from "../../../lib/mongo";
 import { loadCollection } from "../../../lib/collectionItems";
+import { formatPrice } from "../../../lib/currencies";
 import {
   CaseGrid,
   DeviceSections,
@@ -21,14 +23,39 @@ interface CollectionsRouteProps {
   params: Promise<{ username: string }>;
 }
 
-async function findPublicOwner(username: string): Promise<Document | null> {
-  if (!/^[a-z0-9][a-z0-9_-]{2,19}$/.test(username)) return null;
-  const owner = await db.collection("user").findOne({ username });
-  return owner?.collectionPublic === true ? owner : null;
-}
+// Request-cached: generateMetadata and the page share one lookup.
+const findPublicOwner = cache(
+  async (username: string): Promise<Document | null> => {
+    if (!/^[a-z0-9][a-z0-9_-]{2,19}$/.test(username)) return null;
+    const owner = await db.collection("user").findOne({ username });
+    return owner?.collectionPublic === true ? owner : null;
+  },
+);
 
 const displayName = (owner: Document): string =>
   (typeof owner.name === "string" && owner.name.trim()) || owner.username;
+
+/** The header pills as prose — "3 devices • 5 accessories • worth $X at
+ * launch • 2 items wishlisted" — for meta descriptions. Empty when the
+ * collection is. */
+async function collectionSummary(ownerId: string): Promise<string> {
+  const { owned, wanted, deviceGroups } = await loadCollection(ownerId);
+  const { sums } = computeLaunchValue(owned);
+  const parts: string[] = [];
+  const deviceCount = deviceGroups.filter((group) => !group.implicit).length;
+  if (deviceCount > 0) {
+    parts.push(`${deviceCount} device${deviceCount === 1 ? "" : "s"}`);
+  }
+  if (owned.length > 0) {
+    parts.push(`${owned.length} accessor${owned.length === 1 ? "y" : "ies"}`);
+  }
+  const worth = sums.USD ? formatPrice(sums.USD, "USD") : "";
+  if (worth) parts.push(`worth ${worth} at launch`);
+  if (wanted.length > 0) {
+    parts.push(`${wanted.length} item${wanted.length === 1 ? "" : "s"} wishlisted`);
+  }
+  return parts.join(" • ");
+}
 
 export async function generateMetadata(
   { params }: CollectionsRouteProps,
@@ -38,15 +65,20 @@ export async function generateMetadata(
   const owner = await findPublicOwner(username.toLowerCase());
   if (!owner) return {};
   const title = `${displayName(owner)}’s collection`;
+  // The header pills, not the site's generic line — an empty collection
+  // falls back to the inherited description.
+  const summary = await collectionSummary(owner._id.toString());
   // Setting openGraph replaces the layout's whole object, so carry the
   // inherited bits over alongside the page title (matches the H1).
   const parentMetadata = await parent;
   return {
     title,
+    ...(summary ? { description: summary } : {}),
     openGraph: {
       // Absolute: matches the H1 exactly — cards show the site name via
       // og:site_name already, no "— Finest Woven" suffix needed.
       title: { absolute: title },
+      ...(summary ? { description: summary } : {}),
       siteName: parentMetadata.openGraph?.siteName,
       locale: parentMetadata.openGraph?.locale,
       type: "website",

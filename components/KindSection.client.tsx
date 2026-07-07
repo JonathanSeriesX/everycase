@@ -127,13 +127,16 @@ export default function KindSectionClient({
   }, [panelCount]);
 
   // Restore the reader's last active model from a previous visit. Runs after
-  // hydration so server and first client render still agree on the default tab.
+  // hydration so server and first client render still agree on the default
+  // tab — which is exactly why the setState must live in this effect: lazy
+  // state initialisation would desync the hydration pass.
   useEffect(() => {
     if (!showTabs) return;
     const stored = readStoredModel();
     if (!stored) return;
     const index = entries.findIndex((entry) => entry.label === stored);
     if (index < 0) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot post-hydration restore from localStorage, not a render-cascading sync
     setActive(index);
     setActivated((seen) => (seen.includes(index) ? seen : [...seen, index]));
   }, [entries, showTabs]);

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { db } from "./mongo";
 import { getAllCasesFromCSV, type CaseRecord } from "./getCasesFromCSV";
 import {
@@ -60,8 +61,9 @@ export interface LoadedCollection {
   unassigned: CaseRecord[];
 }
 
-/** A user's collection resolved to catalogue records, newest first. */
-export async function loadCollection(
+/** A user's collection resolved to catalogue records, newest first.
+ * Request-cached: generateMetadata and the page share one load. */
+export const loadCollection = cache(async function loadCollection(
   userId: string,
 ): Promise<LoadedCollection> {
   const [docs, deviceDocs] = await Promise.all([
@@ -122,4 +124,4 @@ export async function loadCollection(
   deviceGroups.sort((a, b) => compareDevicesForCollection(a.device, b.device));
 
   return { owned, wanted, deviceGroups, unassigned };
-}
+});
