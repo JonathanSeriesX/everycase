@@ -104,8 +104,7 @@ export const auth = betterAuth({
       expiresIn: OTP_EXPIRES_IN,
     }),
     passkey({
-      //temporarily disabled so I could keep on testing on localhost!
-      //rpID: "everycase.org",
+      rpID: "everycase.org",
       rpName: "Finest Woven",
     }),
     // Better Auth Dash (hosted dashboard); needs BETTER_AUTH_API_KEY.

@@ -1,8 +1,8 @@
 {
   "name": "everycase",
-  "version": "1.9.9",
+  "version": "2.0.0",
   "private": true,
-  "description": "A website describing every case made by Apple, Inc.",
+  "description": "A website describing every accessory from by Apple, Inc.",
   "author": "Evgenii <jonathan@everycase.org>",
   "license": "SEE LICENSE IN LICENSE.md",
   "homepage": "https://everycase.org",
