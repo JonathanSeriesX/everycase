@@ -229,7 +229,8 @@
   border: 1px solid rgba(15, 18, 28, 0.12);
   background: rgba(255, 255, 255, 0.75);
   font-family: inherit;
-  font-size: 0.9rem;
+  /* Keep a small margin above iOS Safari's 16px focus-zoom threshold. */
+  font-size: 17px;
   color: inherit;
 }
 
