@@ -73,16 +73,22 @@ export function CaseGrid({
   cases,
   canRemove = false,
   canLink = false,
+  anchorId,
 }: {
   cases: CaseRecord[];
   canRemove?: boolean;
   /** Offer "Link" on each case that has compatible devices (unlinked section). */
   canLink?: boolean;
+  /** Scroll-restoration anchor id for this whole section (see CollectionFreshness). */
+  anchorId?: string;
 }) {
   // `standalone` supplies the breathing room a tab bar would otherwise add
   // between the section heading and the grid.
   return (
-    <div className={`${carousel.cardTrack} ${carousel.standalone}`}>
+    <div
+      className={`${carousel.cardTrack} ${carousel.standalone}`}
+      data-collection-anchor={anchorId}
+    >
       {cases.map((item) => (
         <CollectionCaseCard
           key={item.SKU}
@@ -133,7 +139,10 @@ export function DeviceSections({
         return (
           <Fragment key={record.deviceId}>
           {index > 0 && <hr />}
-          <div className={`${carousel.cardTrack} ${carousel.standalone}`}>
+          <div
+            className={`${carousel.cardTrack} ${carousel.standalone}`}
+            data-collection-anchor={record.deviceId}
+          >
             <article className={`${carousel.caseCard} ${device.tile}`}>
               <div className={device.deviceCardBody}>
                 <div className={carousel.imageShell}>
@@ -184,6 +193,24 @@ export function DeviceSections({
       })}
     </>
   );
+}
+
+/**
+ * A compact fingerprint of everything the grid renders — each device group
+ * (id + its cases), the unassigned cases, and the wishlist. It changes on any
+ * add / remove / relink / recolour, letting CollectionFreshness tell when a
+ * router.refresh() has actually brought new data in.
+ */
+export function collectionSignature(
+  deviceGroups: DeviceGroup[],
+  unassigned: CaseRecord[],
+  wanted: CaseRecord[],
+): string {
+  const groups = deviceGroups
+    .map((g) => `${g.device.deviceId}:${g.cases.map((c) => c.SKU).join(",")}`)
+    .join("|");
+  const skus = (cases: CaseRecord[]) => cases.map((c) => c.SKU).join(",");
+  return `${groups}#u:${skus(unassigned)}#w:${skus(wanted)}`;
 }
 
 export interface LaunchValue {

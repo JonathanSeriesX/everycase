@@ -10,11 +10,12 @@ import { formatPrice } from "../../../lib/currencies";
 import {
   CaseGrid,
   DeviceSections,
+  collectionSignature,
   computeLaunchValue,
 } from "../../../components/CollectionGrid";
 import CollectionHead from "../../../components/CollectionHead";
 import CollectionStats from "../../../components/CollectionStats";
-import RefreshOnRestore from "../../../components/RefreshOnRestore.client";
+import CollectionFreshness from "../../../components/CollectionFreshness.client";
 
 // Public, per-user page — rendered on demand so it always reflects the
 // owner's latest items and privacy setting.
@@ -104,12 +105,13 @@ export default async function PublicCollectionPage({
     owner._id.toString(),
   );
   const { sums, pricedCount } = computeLaunchValue(owned);
+  const signature = collectionSignature(deviceGroups, unassigned, wanted);
 
   return (
     // Collections are personal, ever-changing, and noindex — keep them out of
     // the Pagefind search index entirely.
     <article data-pagefind-ignore>
-      {isOwner && <RefreshOnRestore />}
+      {isOwner && <CollectionFreshness signature={signature} />}
       <h1>{displayName(owner)}’s collection</h1>
       {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
         <p>Nothing here yet.</p>
@@ -131,14 +133,23 @@ export default async function PublicCollectionPage({
                 <h3>Not linked to a device</h3>
               )}
               {unassigned.length > 0 && (
-                <CaseGrid cases={unassigned} canRemove={isOwner} canLink={isOwner} />
+                <CaseGrid
+                  cases={unassigned}
+                  canRemove={isOwner}
+                  canLink={isOwner}
+                  anchorId="section:unassigned"
+                />
               )}
             </section>
           )}
           {wanted.length > 0 && (
             <section>
               <CollectionHead title="Wishlist" caseCount={wanted.length} />
-              <CaseGrid cases={wanted} canRemove={isOwner} />
+              <CaseGrid
+                cases={wanted}
+                canRemove={isOwner}
+                anchorId="section:wishlist"
+              />
             </section>
           )}
         </>

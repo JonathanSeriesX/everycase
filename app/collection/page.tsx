@@ -8,11 +8,12 @@ import { loadCollection } from "../../lib/collectionItems";
 import {
   CaseGrid,
   DeviceSections,
+  collectionSignature,
   computeLaunchValue,
 } from "../../components/CollectionGrid";
 import CollectionHead from "../../components/CollectionHead";
 import CollectionStats from "../../components/CollectionStats";
-import RefreshOnRestore from "../../components/RefreshOnRestore.client";
+import CollectionFreshness from "../../components/CollectionFreshness.client";
 
 // Personal, per-user page — always rendered on demand, never cached.
 export const dynamic = "force-dynamic";
@@ -52,11 +53,12 @@ export default async function CollectionPage() {
   const { owned, wanted, deviceGroups, unassigned } =
     await loadCollection(userId);
   const { sums, pricedCount } = computeLaunchValue(owned);
+  const signature = collectionSignature(deviceGroups, unassigned, wanted);
 
   return (
     // Personal + noindex — never index a collection in Pagefind search.
     <article data-pagefind-ignore>
-      <RefreshOnRestore />
+      <CollectionFreshness signature={signature} />
       <h1>Your collection</h1>
       {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
         <p>
@@ -82,14 +84,19 @@ export default async function CollectionPage() {
                 <h3>Not linked to a device</h3>
               )}
               {unassigned.length > 0 && (
-                <CaseGrid cases={unassigned} canRemove canLink />
+                <CaseGrid
+                  cases={unassigned}
+                  canRemove
+                  canLink
+                  anchorId="section:unassigned"
+                />
               )}
             </section>
           )}
           {wanted.length > 0 && (
             <section>
               <CollectionHead title="Wishlist" caseCount={wanted.length} />
-              <CaseGrid cases={wanted} canRemove />
+              <CaseGrid cases={wanted} canRemove anchorId="section:wishlist" />
             </section>
           )}
         </>
