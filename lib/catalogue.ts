@@ -29,6 +29,10 @@ export interface CataloguePage {
   kinds?: string[];
   /** Kinds rendered as one combined grid with no tabs (e.g. Clear Case). */
   merged?: string[];
+  /** Per-page section order, overriding the global KIND_ORDER. Listed kinds
+      lead in this order; any kind not listed falls back to KIND_ORDER, after
+      the listed ones. */
+  order?: string[];
   /** Overrides for tab captions, keyed by CSV model name. */
   tabLabels?: Record<string, string>;
 }
@@ -258,6 +262,7 @@ export const GROUPS: CatalogueGroup[] = [
         blurb: "Covers, sleeves & keyboards",
         hero: "MR5K2_AV1_GOLD",
         models: ["iPad 10.5"],
+        order: ["Smart Cover", "Leather Smart Cover", "Leather Sleeve"],
       },
       {
         slug: "pro-129",
@@ -265,6 +270,12 @@ export const GROUPS: CatalogueGroup[] = [
         blurb: "Cases, covers, sleeves, and keyboards",
         hero: "MPV12_AV1_SILVER",
         models: ["iPad Pro 12.9 A9X", "iPad Pro 12.9 1-2"],
+        order: [
+          "Smart Cover",
+          "Leather Smart Cover",
+          "Leather Sleeve",
+          "Silicone Case",
+        ],
       },
       {
         slug: "pro-97",
@@ -626,8 +637,22 @@ export function getPageSections(page: CataloguePage): PageSection[] {
     }
   }
 
+  // A page may pin its own section order; kinds it lists lead in that order,
+  // and anything unlisted falls back to the global KIND_ORDER behind them.
+  const pageRank = page.order
+    ? new Map(page.order.map((kind, index) => [kind, index]))
+    : null;
   return [...byKind.values()]
     .sort((a, b) => {
+      if (pageRank) {
+        const pa = pageRank.get(a.kind);
+        const pb = pageRank.get(b.kind);
+        if (pa !== undefined || pb !== undefined) {
+          if (pa === undefined) return 1;
+          if (pb === undefined) return -1;
+          return pa - pb;
+        }
+      }
       const rankA = kindRank.get(a.kind) ?? KIND_ORDER.length;
       const rankB = kindRank.get(b.kind) ?? KIND_ORDER.length;
       return rankA - rankB || a.kind.localeCompare(b.kind);

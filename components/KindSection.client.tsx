@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { formatPrice, type Currency } from "../lib/currencies";
 import { useCurrency } from "../lib/useCurrency";
 import VerticalCarouselClient from "./VerticalCarousel.client";
@@ -45,6 +51,34 @@ interface KindSectionClientProps {
 // without that label stay put.
 const TAB_SYNC_EVENT = "finestwoven:model-tab";
 
+// Because every section follows one model, a page only needs to remember a
+// single active model label. It is shared across pages: a family that has the
+// same model (e.g. "iPhone XS Max" on both /iphone/x and /iphone/xs) restores
+// it, and any page without that label simply keeps its default tab.
+const TAB_STORAGE_KEY = "finestwoven:model-tab";
+
+const readStoredModel = (): string | null => {
+  try {
+    return window.localStorage.getItem(TAB_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+};
+
+const storeModel = (label: string): void => {
+  try {
+    window.localStorage.setItem(TAB_STORAGE_KEY, label);
+  } catch {
+    // Ignore private-mode / disabled-storage failures.
+  }
+};
+
+// Scroll compensation must run before the browser paints the taller layout, so
+// prefer useLayoutEffect on the client and fall back to useEffect during SSR
+// (where it would otherwise warn and do nothing).
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 /**
  * One kind of accessory on a model page: heading with price pills, the
  * editorial blurb (server-rendered, passed as children), and the case cards.
@@ -65,6 +99,13 @@ export default function KindSectionClient({
   children,
 }: KindSectionClientProps) {
   const [active, setActive] = useState(0);
+  const tabListRef = useRef<HTMLDivElement>(null);
+  // When the reader switches tabs, sections *above* the clicked one may grow
+  // or shrink (different models carry different accessory counts), which would
+  // otherwise shove the clicked control up or down the viewport. We record the
+  // tab bar's position at click time and scroll by the delta once the new
+  // layout commits, pinning the clicked section in place.
+  const scrollAnchorTop = useRef<number | null>(null);
   // Panels whose images may load. Hidden panels start out deferred
   // (loading="lazy" inside hidden subtrees fetches nothing) so the visible
   // grid — and the LCP image — never share bandwidth with them; they queue
@@ -84,6 +125,29 @@ export default function KindSectionClient({
     window.addEventListener("load", activateAll, { once: true });
     return () => window.removeEventListener("load", activateAll);
   }, [panelCount]);
+
+  // Restore the reader's last active model from a previous visit. Runs after
+  // hydration so server and first client render still agree on the default tab.
+  useEffect(() => {
+    if (!showTabs) return;
+    const stored = readStoredModel();
+    if (!stored) return;
+    const index = entries.findIndex((entry) => entry.label === stored);
+    if (index < 0) return;
+    setActive(index);
+    setActivated((seen) => (seen.includes(index) ? seen : [...seen, index]));
+  }, [entries, showTabs]);
+
+  // Compensate the scroll position after a tab switch this section initiated.
+  useIsomorphicLayoutEffect(() => {
+    if (scrollAnchorTop.current === null) return;
+    const node = tabListRef.current;
+    if (node) {
+      const delta = node.getBoundingClientRect().top - scrollAnchorTop.current;
+      if (delta !== 0) window.scrollBy(0, delta);
+    }
+    scrollAnchorTop.current = null;
+  }, [active]);
 
   // Follow tab changes made in other sections (see TAB_SYNC_EVENT).
   useEffect(() => {
@@ -135,6 +199,7 @@ export default function KindSectionClient({
       {children}
       {showTabs && (
         <div
+          ref={tabListRef}
           role="tablist"
           aria-label={`${kind} by model`}
           className={chrome.tabList}
@@ -148,11 +213,16 @@ export default function KindSectionClient({
               data-active={index === active}
               className={chrome.tab}
               onClick={(e) => {
+                if (index !== active) {
+                  scrollAnchorTop.current =
+                    tabListRef.current?.getBoundingClientRect().top ?? null;
+                }
                 setActive(index);
                 setActivated((seen) =>
                   seen.includes(index) ? seen : [...seen, index],
                 );
                 if (entry.label) {
+                  storeModel(entry.label);
                   window.dispatchEvent(
                     new CustomEvent(TAB_SYNC_EVENT, { detail: entry.label }),
                   );
