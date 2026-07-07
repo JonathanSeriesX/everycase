@@ -24,6 +24,9 @@ export interface CataloguePage {
   image?: string;
   /** CSV model names shown on this page; empty = prose-only page. */
   models: string[];
+  /** Restrict to these CSV kinds — for pages whose models are shared with
+      other pages (the docks page shows iPhone 5s-SE docks, not its cases). */
+  kinds?: string[];
   /** Kinds rendered as one combined grid with no tabs (e.g. Clear Case). */
   merged?: string[];
   /** Overrides for tab captions, keyed by CSV model name. */
@@ -312,7 +315,10 @@ export const GROUPS: CatalogueGroup[] = [
         slug: "wallet",
         title: "MagSafe Wallet",
         hero: "MHLP3",
+        // Wallets and chargers share the "MagSafe iPhone" model; the kinds
+        // filters split them between this page and MagSafe Charging.
         models: ["MagSafe iPhone"],
+        kinds: ["FineWoven Wallet", "Leather Wallet"],
       },
       {
         slug: "crossbody",
@@ -324,14 +330,24 @@ export const GROUPS: CatalogueGroup[] = [
         title: "MagSafe Charging",
         blurb: "Chargers & Battery Packs",
         hero: "MGD74",
-        models: ["MagSafe Charging"],
+        models: ["MagSafe iPhone"],
+        kinds: [
+          "MagSafe Charger",
+          "MagSafe Duo Charger",
+          "MagSafe Battery Pack",
+          "iPhone Air MagSafe Battery",
+        ],
       },
       {
         slug: "docks",
         title: "Docking Stations",
         blurb: "iPhone Lightning Docks",
         hero: "ML8H2",
-        models: ["iPhone 5s Dock", "iPhone 5c Dock", "Dock"],
+        // Dock rows carry real device models (so their case pages show
+        // proper compatibility); the kinds filter keeps those models' cases
+        // from flooding this page.
+        models: ["iPhone 5s-SE", "iPhone 5c", "Lightning iPhone"],
+        kinds: ["iPhone Dock", "iPhone Lightning Dock"],
         // The 5s and 5c docks are one white cradle each, so combine them into
         // a single grid labelled by model, exactly like Clear Cases.
         merged: ["iPhone Dock"],
@@ -490,13 +506,14 @@ function validate(allRows: CaseRecord[]): void {
   }
 }
 
-// Rows come pre-trimmed from getCasesFromCSV; we only validate them once.
-let validated = false;
+// Rows come pre-trimmed from getCasesFromCSV; we validate once per parse —
+// in dev the CSV cache re-reads on edit, and the fresh array revalidates.
+let validatedFor: CaseRecord[] | undefined;
 function rows(): CaseRecord[] {
   const all = getAllCasesFromCSV();
-  if (!validated) {
+  if (validatedFor !== all) {
     validate(all);
-    validated = true;
+    validatedFor = all;
   }
   return all;
 }
@@ -580,6 +597,7 @@ export function getPageSections(page: CataloguePage): PageSection[] {
 
   for (const row of rows()) {
     if (!wanted.has(row.model) || !row.kind || aliased.has(row.SKU)) continue;
+    if (page.kinds && !page.kinds.includes(row.kind)) continue;
     let bucket = byKind.get(row.kind);
     if (!bucket) {
       bucket = {
@@ -732,16 +750,24 @@ export function getHomePrefetchImageCodes(limit = 10): string[] {
 // Where a case lives in the drill-down: the first page whose model list
 // contains the case's model. Used for case-page breadcrumbs. Returns
 // { group, page }; group is null for top-level pages (their URL is /<page.slug>).
+// Kind-restricted pages only match cases of their kinds, and win over
+// unrestricted ones — a 5s dock breadcrumbs to Docking Stations, a 5s case
+// to the iPhone 5s page, both via model "iPhone 5s-SE".
 export function findPageForModel(
   model: string,
+  kind?: string,
 ): { group: CatalogueGroup | null; page: CataloguePage } | null {
-  for (const page of TOP_PAGES) {
-    if (page.models.includes(model)) return { group: null, page };
-  }
+  const candidates: { group: CatalogueGroup | null; page: CataloguePage }[] =
+    [];
+  for (const page of TOP_PAGES) candidates.push({ group: null, page });
   for (const group of GROUPS) {
-    for (const page of group.pages) {
-      if (page.models.includes(model)) return { group, page };
-    }
+    for (const page of group.pages) candidates.push({ group, page });
   }
-  return null;
+
+  const matches = candidates.filter(
+    ({ page }) =>
+      page.models.includes(model) &&
+      (!page.kinds || (kind !== undefined && page.kinds.includes(kind))),
+  );
+  return matches.find(({ page }) => page.kinds) ?? matches[0] ?? null;
 }

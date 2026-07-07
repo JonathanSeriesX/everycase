@@ -45,6 +45,10 @@ const compatibleDeviceIds = (model: string): Set<string> => {
 export interface DeviceGroup {
   device: DeviceRecord;
   cases: CaseRecord[];
+  /** Derived, not owned: cases whose model fits exactly one catalogue
+   * device (AirTag, Apple Pencil, the MagSafe Accessories stand-in) group
+   * under it automatically, with no unlink controls. */
+  implicit?: boolean;
 }
 
 export interface LoadedCollection {
@@ -93,18 +97,42 @@ export async function loadCollection(
     );
   const ownedDeviceIds = new Set(devices.map((device) => device.deviceId));
 
-  const deviceGroups = devices.map((device) => ({
+  const deviceGroups: DeviceGroup[] = devices.map((device) => ({
     device,
     cases: owned.filter((record) =>
       compatibleDeviceIds(record.model).has(device.deviceId),
     ),
   }));
-  const unassigned = owned.filter((record) => {
-    for (const id of compatibleDeviceIds(record.model)) {
-      if (ownedDeviceIds.has(id)) return false;
+
+  // Cases that fit exactly one catalogue device link to it automatically —
+  // there is nothing to ask the owner. Everything else that fits none of
+  // the owned devices stays unassigned.
+  const implicitCases = new Map<string, CaseRecord[]>();
+  const unassigned: CaseRecord[] = [];
+  for (const record of owned) {
+    const fits = compatibleDeviceIds(record.model);
+    if ([...fits].some((id) => ownedDeviceIds.has(id))) continue;
+    const only = fits.size === 1 ? [...fits][0] : undefined;
+    const device = only !== undefined ? getDeviceById(only) : undefined;
+    if (only !== undefined && device) {
+      (implicitCases.get(only) ??
+        implicitCases.set(only, []).get(only)!).push(record);
+    } else {
+      unassigned.push(record);
     }
-    return true;
-  });
+  }
+  deviceGroups.push(
+    ...[...implicitCases.entries()].map(([deviceId, cases]) => ({
+      device: getDeviceById(deviceId)!,
+      cases,
+      implicit: true,
+    })),
+  );
+  deviceGroups.sort(
+    (a, b) =>
+      (catalogueOrder.get(b.device.deviceId) ?? 0) -
+      (catalogueOrder.get(a.device.deviceId) ?? 0),
+  );
 
   return { owned, wanted, deviceGroups, unassigned };
 }

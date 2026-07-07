@@ -72,7 +72,30 @@ const EMPTY_PRICES = Object.freeze(
 
 let cachedCases: CaseRecord[] | undefined;
 
+// In dev the module instance outlives database edits (next dev keeps module
+// state warm across recompiles), so key the cache on the source files'
+// mtimes and re-read when any of them change. Production reads once.
+const SOURCE_FILES = ["database.csv", "msrp.csv", "edu.csv", "alt.csv"];
+let cachedStamp: string | undefined;
+function sourcesStamp(): string {
+  return SOURCE_FILES.map((file) => {
+    try {
+      return fs.statSync(path.join(DATABASE_DIR, file)).mtimeMs;
+    } catch {
+      return 0;
+    }
+  }).join("|");
+}
+
 export function getAllCasesFromCSV(): CaseRecord[] {
+  if (process.env.NODE_ENV !== "production") {
+    const stamp = sourcesStamp();
+    if (stamp !== cachedStamp) {
+      cachedStamp = stamp;
+      cachedCases = undefined;
+      cachedAliasedSkus = undefined;
+    }
+  }
   if (cachedCases) return cachedCases;
 
   const msrp = indexBySku("msrp.csv", (r) => ({
@@ -104,7 +127,7 @@ export function getAllCasesFromCSV(): CaseRecord[] {
   return cachedCases;
 }
 
-let cachedAliasedSkus: Set<string> | undefined;
+let cachedAliasedSkus: Set<string> | undefined; // reset with cachedCases
 
 /**
  * Alt SKUs that also have their own database.csv row. Unlike ordinary

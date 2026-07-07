@@ -60,7 +60,8 @@ find "$folder_x" -maxdepth 1 -type f -iname '*.png' -print0 |
     # Drop a stale output if the source has changed since it was created.
     [ -e "$out" ] && [ "$file" -nt "$out" ] && rm -f "$out"
     [ -e "$out" ] && exit 0
-    magick "$file" -resize 512x512 -quality 90 -strip -filter Lanczos \
+    # ">" = shrink-only: never upscale a master smaller than the target.
+    magick "$file" -resize "512x512>" -quality 90 -strip -filter Lanczos \
       -define avif:codec=aom -define avif:speed=0 "$out"
   ' _ {}
 
@@ -75,6 +76,15 @@ find "$folder_x" -maxdepth 1 -type f -iname '*.png' -print0 |
     # Drop a stale output if the source has changed since it was created.
     [ -e "$out" ] && [ "$file" -nt "$out" ] && rm -f "$out"
     [ -e "$out" ] && exit 0
+    # Masters at or below 2048px are encoded at native size, straight from
+    # the PNG — resizing would only upscale and refilter them.
+    dims=$(magick identify -ping -format "%w %h" "$file")
+    w=${dims% *}
+    h=${dims#* }
+    if [ "$w" -le 2048 ] && [ "$h" -le 2048 ]; then
+      avifenc -j 1 -s 4 -q 95 -y 444 "$file" "$out" >/dev/null
+      exit 0
+    fi
     # avifenc cannot resize, so ImageMagick produces the 2048px pixels into a
     # temp PNG (same Lanczos downscale as the previews) and avifenc encodes it.
     tmp="$folder_y/.$base.tmp.png"

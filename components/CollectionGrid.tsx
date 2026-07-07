@@ -136,8 +136,10 @@ export function DeviceSections({
 
   return (
     <>
-      {groups.map(({ device: record, cases }, index) => {
-        const label = `${record.model} — ${record.colour}`;
+      {groups.map(({ device: record, cases, implicit }, index) => {
+        const label = record.colour
+          ? `${record.model} — ${record.colour}`
+          : record.model;
         const artwork = deviceThumbnail(record);
         return (
           <Fragment key={record.deviceId}>
@@ -157,7 +159,9 @@ export function DeviceSections({
                 >
                   {label}
                 </strong>
-                {canRemove && (
+                {/* Implicit groups are derived, not owned — nothing to
+                    remove or recolour. */}
+                {canRemove && !implicit && (
                   <DeviceActions
                     deviceId={record.deviceId}
                     label={label}

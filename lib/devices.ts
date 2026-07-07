@@ -106,6 +106,11 @@ const MODEL_ALIASES: Record<string, string> = {
   "iPhone SE (2016)": "iPhone SE 1st gen",
   "iPhone SE (2020)": "iPhone SE 2nd gen",
   "iPhone SE (2022)": "iPhone SE 3rd gen",
+  "Apple Pencil (1st generation)": "Apple Pencil (1st gen)",
+  // Not a real device: the shared home for every MagSafe accessory
+  // (wallets, chargers) in collections — see the implicit groups in
+  // lib/collectionItems.
+  "MagSafe iPhone": "MagSafe Accessories",
 };
 
 /**

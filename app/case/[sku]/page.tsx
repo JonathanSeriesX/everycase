@@ -287,7 +287,7 @@ export default async function CasePage({ params }: CaseRouteProps) {
   const defaultKeyboardRegion = isKeyboard
     ? getPreferredRegion(regions)
     : undefined;
-  const home = findPageForModel(data.model);
+  const home = findPageForModel(data.model, data.kind);
 
   const trail: Crumb[] = [];
   if (home) {

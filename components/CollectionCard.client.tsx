@@ -87,8 +87,10 @@ export default function CollectionCard({ sku }: { sku: string }) {
     setNote(null);
     const target: CollectionStatus = status === next ? null : next;
     // First case that fits none of the registered devices: offer to pick
-    // one (or Skip and own the case unlinked).
-    if (target === "owned" && compatible.length > 0 && !ownsCompatible) {
+    // one (or Skip and own the case unlinked). A single compatible device
+    // (AirTag, Apple Pencil, MagSafe Accessories) needs no asking — the
+    // collection page groups such cases under it automatically.
+    if (target === "owned" && compatible.length > 1 && !ownsCompatible) {
       setWindowOpen(true);
       return;
     }

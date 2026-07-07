@@ -68,7 +68,9 @@ export default async function CollectionPage() {
             <section>
               <CollectionHead
                 title="Owned"
-                deviceCount={deviceGroups.length}
+                // Implicit groups (AirTag, MagSafe Accessories, …) are
+                // derived homes for cases, not devices the user declared.
+                deviceCount={deviceGroups.filter((g) => !g.implicit).length}
                 caseCount={owned.length}
                 sums={sums}
                 pricedCount={pricedCount}
