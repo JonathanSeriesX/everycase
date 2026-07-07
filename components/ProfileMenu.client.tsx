@@ -7,7 +7,7 @@ import { authClient, SIGN_IN_EVENT, useSession } from "../lib/auth-client";
 import { PersonIcon } from "./icons";
 import chrome from "../styles/Chrome.module.css";
 
-type View = "menu" | "email" | "otp";
+type View = "menu" | "email" | "otp" | "passkey";
 
 const isPlausibleEmail = (value: string) => /^\S+@\S+\.\S+$/.test(value);
 
@@ -91,7 +91,10 @@ export default function ProfileMenu() {
       email,
       type: "sign-in",
     });
-    if (sendError) {
+    // A 429 means an unexpired code is already out there (see the before hook
+    // in lib/auth.ts). That's not a dead end for the user — the code already
+    // in their inbox still works, so move them straight to entering it.
+    if (sendError && sendError.status !== 429) {
       setError(sendError.message ?? "Could not send the code.");
       return false;
     }
@@ -99,37 +102,30 @@ export default function ProfileMenu() {
     return true;
   };
 
-  // The primary action: try the OS passkey prompt first; if the user has no
-  // passkey (or dismisses it), fall back to emailing a code — which needs an
-  // email address.
-  const continueSignIn = async (event: FormEvent) => {
+  // The primary action: email a code, then let the user enter it. Needs a
+  // plausible email address to send to.
+  const continueWithEmail = async (event: FormEvent) => {
     event.preventDefault();
-    setBusy(true);
     setError(null);
-    const passkey = await authClient.signIn.passkey();
-    if (passkey && !passkey.error) {
-      setBusy(false);
-      finishAuthChange();
-      return;
-    }
     if (!isPlausibleEmail(email)) {
-      setBusy(false);
-      setError("No passkey? Enter your email and we'll send you a code.");
+      setError("Enter your email and we'll send you a code.");
       return;
     }
+    setBusy(true);
     await sendCode();
     setBusy(false);
   };
 
-  const emailCodeInstead = async () => {
-    setError(null);
-    if (!isPlausibleEmail(email)) {
-      setError("Enter your email first.");
-      return;
-    }
+  const signInWithPasskey = async () => {
     setBusy(true);
-    await sendCode();
+    setError(null);
+    const passkey = await authClient.signIn.passkey();
     setBusy(false);
+    if (passkey && !passkey.error) {
+      finishAuthChange();
+    } else {
+      setError("Couldn't use a passkey. Continue with your email instead.");
+    }
   };
 
   const verifyCode = async (event: FormEvent) => {
@@ -143,9 +139,28 @@ export default function ProfileMenu() {
     setBusy(false);
     if (verifyError) {
       setError(verifyError.message ?? "That code didn't work.");
+      return;
+    }
+    // Signed in. Offer to set up a passkey so next time is one tap — but only
+    // where the browser can actually create one.
+    if (typeof window !== "undefined" && window.PublicKeyCredential) {
+      setError(null);
+      setView("passkey");
     } else {
       finishAuthChange();
     }
+  };
+
+  const createPasskey = async () => {
+    setBusy(true);
+    setError(null);
+    const result = await authClient.passkey.addPasskey();
+    setBusy(false);
+    if (result?.error) {
+      setError(result.error.message ?? "Could not add a passkey.");
+      return;
+    }
+    finishAuthChange();
   };
 
   const signOut = async () => {
@@ -211,7 +226,7 @@ export default function ProfileMenu() {
               </>
             )
           ) : view === "email" ? (
-            <form className={chrome.profileForm} onSubmit={continueSignIn}>
+            <form className={chrome.profileForm} onSubmit={continueWithEmail}>
               <p className={chrome.profileTitle}>Sign in | sign up</p>
               <input
                 type="email"
@@ -230,19 +245,19 @@ export default function ProfileMenu() {
                 className={chrome.profileButtonPrimary}
                 disabled={busy}
               >
-                {busy ? "One moment…" : "Use a passkey"}
+                {busy ? "One moment…" : "Continue with your email"}
               </button>
               <button
                 type="button"
                 className={chrome.profileButtonSecondary}
-                onClick={emailCodeInstead}
+                onClick={signInWithPasskey}
                 disabled={busy}
               >
-                Email me a code
+                Log in with a passkey
               </button>
               {error && <p className={chrome.profileError}>{error}</p>}
             </form>
-          ) : (
+          ) : view === "otp" ? (
             <form className={chrome.profileForm} onSubmit={verifyCode}>
               <p className={chrome.profileTitle}>
                 Enter the code sent to {email}
@@ -281,6 +296,31 @@ export default function ProfileMenu() {
               </button>
               {error && <p className={chrome.profileError}>{error}</p>}
             </form>
+          ) : (
+            <div className={chrome.profileForm}>
+              <p className={chrome.profileTitle}>You're in!</p>
+              <p className={chrome.profileHint}>
+                You can now add a passkey for one-tap sign-in. You can also skip
+                this step and do it later in Settings.{" "}
+              </p>
+              <button
+                type="button"
+                className={chrome.profileButtonPrimary}
+                onClick={createPasskey}
+                disabled={busy}
+              >
+                {busy ? "One moment…" : "Add a passkey"}
+              </button>
+              <button
+                type="button"
+                className={chrome.profileButtonSecondary}
+                onClick={finishAuthChange}
+                disabled={busy}
+              >
+                Not now
+              </button>
+              {error && <p className={chrome.profileError}>{error}</p>}
+            </div>
           )}
         </div>
       )}
