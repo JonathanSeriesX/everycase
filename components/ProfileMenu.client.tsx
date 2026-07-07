@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { authClient, useSession } from "../lib/auth-client";
+import { authClient, SIGN_IN_EVENT, useSession } from "../lib/auth-client";
 import { PersonIcon } from "./icons";
 import chrome from "../styles/Chrome.module.css";
 
@@ -52,6 +52,18 @@ export default function ProfileMenu() {
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);
+
+  // Other components can summon the sign-in flow (the collection card's
+  // "I own it" while signed out) — jump straight to the email view.
+  useEffect(() => {
+    if (session) return;
+    const onSummon = () => {
+      setOpen(true);
+      setView("email");
+    };
+    window.addEventListener(SIGN_IN_EVENT, onSummon);
+    return () => window.removeEventListener(SIGN_IN_EVENT, onSummon);
+  }, [session]);
 
   // Conditional passkey (WebAuthn autofill), armed while the email view is
   // open: Safari/Chrome offer a stored passkey in the autofill UI when the
@@ -200,12 +212,15 @@ export default function ProfileMenu() {
             )
           ) : view === "email" ? (
             <form className={chrome.profileForm} onSubmit={continueSignIn}>
-              <p className={chrome.profileTitle}>Your email</p>
+              <p className={chrome.profileTitle}>Sign in | sign up</p>
               <input
                 type="email"
                 name="email"
                 placeholder="you@example.com"
                 autoComplete="username webauthn"
+                // Deliberately NOT autofocused: focusing summons the
+                // password-manager dropdown over the whole panel, and a
+                // passkey user never needs the field at all.
                 className={chrome.profileInput}
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}

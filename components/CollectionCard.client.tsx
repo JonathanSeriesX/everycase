@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { useSession } from "../lib/auth-client";
+import { requestSignIn, useSession } from "../lib/auth-client";
 import {
   useAddDevice,
   useCaseStatus,
@@ -82,7 +82,9 @@ export default function CollectionCard({ sku }: { sku: string }) {
 
   const toggle = (next: Exclude<CollectionStatus, null>) => {
     if (!signedIn) {
-      setNote("Sign in with the account button above to track your collection.");
+      // Open the navbar's sign-in flow instead of a note that reflows the
+      // card and lingers until reload.
+      requestSignIn();
       return;
     }
     setNote(null);
