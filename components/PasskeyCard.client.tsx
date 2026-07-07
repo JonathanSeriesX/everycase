@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { authClient } from "../lib/auth-client";
 import styles from "../styles/Settings.module.css";
+
+const STATUS_TIMEOUT = 2000;
 
 export interface PasskeyInfo {
   id: string;
@@ -47,6 +49,19 @@ export default function PasskeyCard({ initial }: { initial: PasskeyInfo[] }) {
   const [status, setStatus] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const statusTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+
+  useEffect(() => () => clearTimeout(statusTimer.current), []);
+
+  // Success confirmations dismiss themselves; errors stay until acted on.
+  const flashStatus = (text: string) => {
+    setStatus(text);
+    setFailed(false);
+    clearTimeout(statusTimer.current);
+    statusTimer.current = setTimeout(() => setStatus(null), STATUS_TIMEOUT);
+  };
 
   const refresh = async () => {
     const result = await authClient.passkey.listUserPasskeys();
@@ -65,12 +80,13 @@ export default function PasskeyCard({ initial }: { initial: PasskeyInfo[] }) {
   const addPasskey = async () => {
     setStatus(null);
     setFailed(false);
+    clearTimeout(statusTimer.current);
     const result = await authClient.passkey.addPasskey();
     if (result?.error) {
       setStatus(result.error.message ?? "Could not add a passkey.");
       setFailed(true);
     } else {
-      setStatus("Passkey added.");
+      flashStatus("Passkey added.");
       await refresh();
     }
   };
@@ -91,8 +107,10 @@ export default function PasskeyCard({ initial }: { initial: PasskeyInfo[] }) {
 
   return (
     <div className={styles.card}>
+      {/* Dividers as direct card children, so the card's flex gap spaces
+          them evenly on both sides. */}
       {passkeys.map((passkey, index) => (
-        <div key={passkey.id}>
+        <Fragment key={passkey.id}>
           {index > 0 && <div className={styles.divider} />}
 
           <div className={styles.row}>
@@ -113,7 +131,7 @@ export default function PasskeyCard({ initial }: { initial: PasskeyInfo[] }) {
               {busyId === passkey.id ? "Removing…" : "Remove"}
             </button>
           </div>
-        </div>
+        </Fragment>
       ))}
 
       {passkeys.length > 0 && <div className={styles.divider} />}

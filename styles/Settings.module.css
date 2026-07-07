@@ -21,7 +21,8 @@
   padding: 1.1rem 1.25rem;
   border-radius: 22px;
   background: rgba(252, 248, 250, 0.64);
-  box-shadow: 0 24px 55px rgba(50, 42, 48, 0.16),
+  box-shadow:
+    0 24px 55px rgba(50, 42, 48, 0.16),
     0 3px 12px rgba(50, 42, 48, 0.08);
   -webkit-backdrop-filter: blur(42px) saturate(145%);
   backdrop-filter: blur(42px) saturate(145%);
@@ -42,6 +43,12 @@
   gap: 0.15rem;
   min-width: min(100%, 14rem);
   flex: 1;
+}
+
+/* Rows whose text is a lone short label (Theme): the 14rem floor exists
+   for hint readability and would only force needless wrapping here. */
+.rowTextCompact {
+  min-width: 0;
 }
 
 .rowLabel {
@@ -259,6 +266,29 @@
   color: #e3504f;
 }
 
+/* The segmented pill needs ~24rem to sit on one line; below that its
+   segments wrap into stray pills, so narrow viewports swap in a dropdown
+   (same component as the currency picker). */
+.themeMenu {
+  display: none;
+}
+
+@media (max-width: 715px) {
+  .themeSegmented {
+    display: none;
+  }
+
+  .themeMenu {
+    display: inline-flex;
+  }
+}
+
+.themeMenuOption {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 /* dropdown menu (currency picker) */
 .menu {
   position: relative;
@@ -324,6 +354,13 @@
   animation: settings-menu-in 140ms ease;
 }
 
+/* A trigger near the left screen edge (wrapped row) anchors the list to
+   its left corner, extending right — see DropdownMenu's toggleOpen. */
+.menuList[data-anchor="left"] {
+  right: auto;
+  left: 0;
+}
+
 /* The currency list is long (15 entries) — keep it on-screen and scrollable,
    and stop boundary scrolls from chaining to the page behind. */
 /* Flipped above the trigger when the viewport has no room below. */
@@ -386,7 +423,9 @@
 
 :global(html:is(.dark, .black)) .card {
   background: rgba(19, 19, 22, 0.64);
-  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.4), 0 3px 12px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 24px 55px rgba(0, 0, 0, 0.4),
+    0 3px 12px rgba(0, 0, 0, 0.3);
 }
 
 :global(html:is(.dark, .black)) .divider {

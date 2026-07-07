@@ -30,16 +30,23 @@ export default function DropdownMenu({
 }) {
   const [open, setOpen] = useState(false);
   const [direction, setDirection] = useState<"down" | "up">("down");
+  const [anchor, setAnchor] = useState<"right" | "left">("right");
   const containerRef = useRef<HTMLSpanElement>(null);
 
   // Open upward when the viewport has no room below the trigger (the list
-  // is capped at ~21rem, ≈340px).
+  // is capped at ~21rem, ≈340px). Anchor to whichever trigger corner keeps
+  // the list on-screen: right-anchored (extending left) by default, but a
+  // trigger sitting near the left edge — wrapped settings rows on narrow
+  // viewports — flips to left-anchored so the list extends right instead
+  // of crossing the screen boundary.
   const toggleOpen = () => {
     if (!open) {
       const rect = containerRef.current?.getBoundingClientRect();
       if (rect) {
         const spaceBelow = window.innerHeight - rect.bottom;
         setDirection(spaceBelow < 360 && rect.top > spaceBelow ? "up" : "down");
+        const listWidth = 240; // generous estimate; max-width caps overflow
+        setAnchor(rect.right - listWidth < 8 ? "left" : "right");
       }
     }
     setOpen((wasOpen) => !wasOpen);
@@ -93,6 +100,7 @@ export default function DropdownMenu({
           aria-label={ariaLabel}
           className={listClassName}
           data-direction={direction}
+          data-anchor={anchor}
         >
           {options.map((option) => (
             <li key={option.value} role="presentation">

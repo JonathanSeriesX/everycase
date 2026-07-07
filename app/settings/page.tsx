@@ -82,7 +82,9 @@ export default async function SettingsPage() {
 
         <div className={styles.card}>
           <div className={styles.row}>
-            <div className={styles.rowText}>
+            {/* rowTextCompact: no 14rem floor — a lone short label must not
+                push the control onto its own line on narrow viewports. */}
+            <div className={`${styles.rowText} ${styles.rowTextCompact}`}>
               <span className={styles.rowLabel}>Theme</span>
             </div>
             <ThemeControl />

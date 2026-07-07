@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import type { Document } from "mongodb";
 import { auth } from "../../../lib/auth";
 import { db } from "../../../lib/mongo";
@@ -30,13 +30,29 @@ async function findPublicOwner(username: string): Promise<Document | null> {
 const displayName = (owner: Document): string =>
   (typeof owner.name === "string" && owner.name.trim()) || owner.username;
 
-export async function generateMetadata({
-  params,
-}: CollectionsRouteProps): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: CollectionsRouteProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const { username } = await params;
   const owner = await findPublicOwner(username.toLowerCase());
   if (!owner) return {};
-  return { title: `${displayName(owner)}’s collection` };
+  const title = `${displayName(owner)}’s collection`;
+  // Setting openGraph replaces the layout's whole object, so carry the
+  // inherited bits over alongside the page title (matches the H1).
+  const parentMetadata = await parent;
+  return {
+    title,
+    openGraph: {
+      // Absolute: matches the H1 exactly — cards show the site name via
+      // og:site_name already, no "— Finest Woven" suffix needed.
+      title: { absolute: title },
+      siteName: parentMetadata.openGraph?.siteName,
+      locale: parentMetadata.openGraph?.locale,
+      type: "website",
+      images: parentMetadata.openGraph?.images,
+    },
+  };
 }
 
 export default async function PublicCollectionPage({

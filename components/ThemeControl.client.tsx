@@ -9,6 +9,7 @@ import {
   MoonFilledIcon,
   CircleHalfIcon,
 } from "./icons";
+import DropdownMenu from "./DropdownMenu.client";
 import styles from "../styles/Settings.module.css";
 
 const emptySubscribe = () => () => {};
@@ -51,28 +52,67 @@ export default function ThemeControl() {
     }
   };
 
+  const active = mounted
+    ? OPTIONS.find((option) => option.value === theme)
+    : undefined;
+
+  // Both controls render; CSS shows exactly one — the segmented pill where
+  // it fits on a single line, the dropdown on viewports too narrow for it
+  // (wrapped segments read as two stray pills — see .themeMenu).
   return (
-    <div className={styles.segmented} role="radiogroup" aria-label="Theme">
-      {OPTIONS.map(({ value, label, Icon }) => (
-        <button
-          key={value}
-          type="button"
-          role="radio"
-          aria-checked={mounted && theme === value}
-          data-active={mounted && theme === value}
-          className={styles.segment}
-          onClick={(event) => {
-            // Chrome focuses buttons on click, and the global button:focus
-            // reset kills the active segment's shadow; Safari never focuses
-            // on click, so this blur is a no-op there.
-            event.currentTarget.blur();
-            pickTheme(value);
-          }}
-        >
-          <Icon aria-hidden="true" />
-          {label}
-        </button>
-      ))}
-    </div>
+    <>
+      <div
+        className={`${styles.segmented} ${styles.themeSegmented}`}
+        role="radiogroup"
+        aria-label="Theme"
+      >
+        {OPTIONS.map(({ value, label, Icon }) => (
+          <button
+            key={value}
+            type="button"
+            role="radio"
+            aria-checked={mounted && theme === value}
+            data-active={mounted && theme === value}
+            className={styles.segment}
+            onClick={(event) => {
+              // Chrome focuses buttons on click, and the global button:focus
+              // reset kills the active segment's shadow; Safari never focuses
+              // on click, so this blur is a no-op there.
+              event.currentTarget.blur();
+              pickTheme(value);
+            }}
+          >
+            <Icon aria-hidden="true" />
+            {label}
+          </button>
+        ))}
+      </div>
+      <span className={styles.themeMenu}>
+        <DropdownMenu
+          ariaLabel="Theme"
+          value={active?.value ?? ""}
+          options={OPTIONS.map(({ value, label, Icon }) => ({
+            value,
+            label: (
+              <span className={styles.themeMenuOption}>
+                <Icon aria-hidden="true" />
+                {label}
+              </span>
+            ),
+          }))}
+          onSelect={pickTheme}
+          buttonContent={
+            active ? (
+              <span className={styles.themeMenuOption}>
+                <active.Icon aria-hidden="true" />
+                {active.label}
+              </span>
+            ) : (
+              "Theme"
+            )
+          }
+        />
+      </span>
+    </>
   );
 }
