@@ -37,6 +37,12 @@ interface KindSectionClientProps {
   children?: ReactNode;
 }
 
+// Sections follow each other's tabs: picking "iPhone 17 Pro" under Silicone
+// Case switches every other section that has an "iPhone 17 Pro" tab too
+// (matched by label, not index — tab sets differ between kinds). Sections
+// without that label stay put.
+const TAB_SYNC_EVENT = "finestwoven:model-tab";
+
 /**
  * One kind of accessory on a model page: heading with price pills, the
  * editorial blurb (server-rendered, passed as children), and the case cards.
@@ -75,6 +81,20 @@ export default function KindSectionClient({
     window.addEventListener("load", activateAll, { once: true });
     return () => window.removeEventListener("load", activateAll);
   }, [panelCount]);
+
+  // Follow tab changes made in other sections (see TAB_SYNC_EVENT).
+  useEffect(() => {
+    if (!showTabs) return;
+    const onSync = (event: Event) => {
+      const label = (event as CustomEvent<string>).detail;
+      const index = entries.findIndex((entry) => entry.label === label);
+      if (index < 0) return;
+      setActive(index);
+      setActivated((seen) => (seen.includes(index) ? seen : [...seen, index]));
+    };
+    window.addEventListener(TAB_SYNC_EVENT, onSync);
+    return () => window.removeEventListener(TAB_SYNC_EVENT, onSync);
+  }, [entries, showTabs]);
 
   // USD always leads; the second pill follows the footer's currency choice.
   const secondary = useCurrency();
@@ -129,6 +149,11 @@ export default function KindSectionClient({
                 setActivated((seen) =>
                   seen.includes(index) ? seen : [...seen, index],
                 );
+                if (entry.label) {
+                  window.dispatchEvent(
+                    new CustomEvent(TAB_SYNC_EVENT, { detail: entry.label }),
+                  );
+                }
                 e.currentTarget.blur();
               }}
             >

@@ -6,7 +6,7 @@ import LightboxComponent, {
 import Breadcrumb, { type Crumb } from "../../../components/Breadcrumb";
 import HeadingAnchor from "../../../components/HeadingAnchor";
 import { findPageForModel } from "../../../lib/catalogue";
-import { getVisibleImageFilenames } from "../../../lib/images";
+import { getImageRes, getVisibleImageFilenames } from "../../../lib/images";
 import KeyboardProductDetails, {
   type KeyboardRegionOption,
 } from "../../../components/KeyboardProductDetails";
@@ -100,6 +100,8 @@ function buildImages(variants: string[], caseName: string): GalleryImage[] {
   return variants.map((variant) => ({
     src: `${IMAGE_BASE_URL}/${variant.trim()}${EXTENSION}`,
     alt: caseName,
+    // The asset's native resolution, so download links never upscale.
+    res: getImageRes(variant.trim()),
   }));
 }
 

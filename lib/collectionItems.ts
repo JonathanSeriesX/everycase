@@ -77,8 +77,8 @@ export async function loadCollection(
   const owned = resolve("owned");
   const wanted = resolve("wanted");
 
-  // Devices resolve against the catalogue and keep its (release) order, so
-  // the collection page reads oldest device to newest regardless of when
+  // Devices resolve against the catalogue in reverse (release) order, so
+  // the collection page reads newest device to oldest regardless of when
   // each was added.
   const catalogueOrder = new Map(
     getAllDevices().map((device, index) => [device.deviceId, index]),
@@ -88,8 +88,8 @@ export async function loadCollection(
     .filter((device): device is DeviceRecord => Boolean(device))
     .sort(
       (a, b) =>
-        (catalogueOrder.get(a.deviceId) ?? 0) -
-        (catalogueOrder.get(b.deviceId) ?? 0),
+        (catalogueOrder.get(b.deviceId) ?? 0) -
+        (catalogueOrder.get(a.deviceId) ?? 0),
     );
   const ownedDeviceIds = new Set(devices.map((device) => device.deviceId));
 

@@ -35,6 +35,7 @@ const toBool = (value: string | undefined): boolean => {
 
 let cachedImages: ImageRecord[] | undefined;
 let cachedVisibleFilenames: string[] | undefined;
+let cachedResByFilename: Map<string, number> | undefined;
 
 /** Every image row, in images.csv (gallery) order. */
 export function getAllImages(): ImageRecord[] {
@@ -71,4 +72,12 @@ export function getVisibleImageFilenames(): string[] {
     .filter((record) => !record.hidden)
     .map((record) => record.filename);
   return cachedVisibleFilenames;
+}
+
+/** The asset's square resolution in px; 0 when unknown. */
+export function getImageRes(filename: string): number {
+  cachedResByFilename ??= new Map(
+    getAllImages().map((record) => [record.filename, record.res]),
+  );
+  return cachedResByFilename.get(filename) ?? 0;
 }

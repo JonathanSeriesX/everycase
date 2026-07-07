@@ -25,6 +25,8 @@ export interface GalleryImage {
   height?: number;
   formatLinks?: FormatLinks;
   previewSrc?: string;
+  /** Native square resolution (images.csv); 0/absent when unknown. */
+  res?: number;
 }
 
 interface FormatLinks {
@@ -39,9 +41,20 @@ const LIGHTBOX_IMAGE_FORMAT = "avif";
 const LIGHTBOX_PREVIEW_BASE_URL =
   "https://cloudfront.everycase.org/everypreview";
 const LIGHTBOX_PREVIEW_FORMAT = "avif";
+// Download-link dimensions. PNG uses the asset's native resolution from
+// images.csv when known (never upscaled padding); JPG is capped at 2560 but
+// also drops to the native size when that is smaller.
+const JPG_MAX_DIMENSION = 2560;
+const PNG_FALLBACK_DIMENSION = 4608;
 const FORMAT_PARAMS = {
-  jpg: "?wid=2560&hei=2560&fmt=jpg&qlt=95",
-  png: "?wid=4608&hei=4608&fmt=png-alpha",
+  jpg: (res?: number) => {
+    const wid = res && res < JPG_MAX_DIMENSION ? res : JPG_MAX_DIMENSION;
+    return `?wid=${wid}&hei=${wid}&fmt=jpg&qlt=95`;
+  },
+  png: (res?: number) => {
+    const wid = res || PNG_FALLBACK_DIMENSION;
+    return `?wid=${wid}&hei=${wid}&fmt=png-alpha`;
+  },
 };
 const DEFAULT_DIMENSION = 2048;
 const GRID_CONFIG = { minColumnWidth: 240, maxColumns: 4, gap: 12 };
@@ -52,11 +65,14 @@ const getAppleImageCode = (src: string | undefined): string => {
   return path?.split("/").pop() ?? "";
 };
 
-const buildFormatLink = (src: string, format: "jpg" | "png"): string => {
+const buildFormatLink = (
+  src: string,
+  format: "jpg" | "png",
+  res?: number,
+): string => {
   const code = getAppleImageCode(src);
-  const params = FORMAT_PARAMS[format];
-  if (code && params) {
-    return `${APPLE_IMAGE_BASE_URL}/${code}${params}`;
+  if (code) {
+    return `${APPLE_IMAGE_BASE_URL}/${code}${FORMAT_PARAMS[format](res)}`;
   }
   return src;
 };
@@ -82,8 +98,8 @@ const buildSlideSources = (src: string): string[] => {
 
 // Ensures download buttons always point at Apple's pristine sources.
 const buildFormatLinks = (image: GalleryImage): FormatLinks => ({
-  jpg: image.formatLinks?.jpg || buildFormatLink(image.src, "jpg"),
-  png: image.formatLinks?.png || buildFormatLink(image.src, "png"),
+  jpg: image.formatLinks?.jpg || buildFormatLink(image.src, "jpg", image.res),
+  png: image.formatLinks?.png || buildFormatLink(image.src, "png", image.res),
 });
 
 // Lightbox slides capture every bit of data needed for the zoom/gallery views.
