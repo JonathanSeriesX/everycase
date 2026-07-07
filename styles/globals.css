@@ -371,6 +371,15 @@ html {
   scroll-padding-top: 80px;
 }
 
+/* While the search field is focused, drop the inset. The search input lives in
+   the sticky navbar; with a scroll-padding-top the browser treats it as sitting
+   "under" the inset and, on focus/keystroke (caret-into-view), flings the page
+   toward the top. Anchor navigation happens when search is closed, so it keeps
+   its inset. See SearchBox.client.tsx. */
+html.search-active {
+  scroll-padding-top: 0;
+}
+
 /* A quick, subtle zoom on the heading you land on via a hash link. */
 @keyframes heading-target-pop {
   0% {

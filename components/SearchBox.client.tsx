@@ -44,6 +44,23 @@ function loadPagefind(): Promise<Pagefind | null> {
 const cleanUrl = (url: string): string =>
   url.replace(/\.html$/, "").replace(/\/index$/, "/") || "/";
 
+// The search input sits in the sticky navbar, so the page's scroll-padding-top
+// makes the browser scroll the page toward the top whenever the input is
+// focused or a keystroke pulls the caret "into view". We drop the inset (via a
+// class on <html>) for as long as the field is active — set before focus so the
+// very first focus-scroll is already suppressed, cleared on blur.
+const SEARCH_ACTIVE_CLASS = "search-active";
+const suppressScrollPadding = () => {
+  if (typeof document !== "undefined") {
+    document.documentElement.classList.add(SEARCH_ACTIVE_CLASS);
+  }
+};
+const releaseScrollPadding = () => {
+  if (typeof document !== "undefined") {
+    document.documentElement.classList.remove(SEARCH_ACTIVE_CLASS);
+  }
+};
+
 export default function SearchBox() {
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -69,6 +86,7 @@ export default function SearchBox() {
   }, []);
 
   const collapse = useCallback(() => {
+    releaseScrollPadding();
     setExpanded((wasExpanded) => {
       if (wasExpanded) {
         setClosing(true);
@@ -79,10 +97,19 @@ export default function SearchBox() {
     });
   }, []);
 
-  useEffect(() => () => clearTimeout(closeTimer.current), []);
+  useEffect(
+    () => () => {
+      clearTimeout(closeTimer.current);
+      releaseScrollPadding();
+    },
+    [],
+  );
 
   useEffect(() => {
-    if (expanded) inputRef.current?.focus();
+    if (expanded) {
+      suppressScrollPadding();
+      inputRef.current?.focus({ preventScroll: true });
+    }
   }, [expanded]);
 
   const runSearch = useCallback(async (value: string) => {
@@ -135,7 +162,8 @@ export default function SearchBox() {
         (event.key === "k" && (event.metaKey || event.ctrlKey))
       ) {
         event.preventDefault();
-        inputRef.current?.focus();
+        suppressScrollPadding();
+        inputRef.current?.focus({ preventScroll: true });
       }
     };
     document.addEventListener("mousedown", onClick);
@@ -194,7 +222,12 @@ export default function SearchBox() {
           placeholder="Search by colour or SKU..."
           aria-label="Search"
           value={query}
-          onFocus={() => loadPagefind()}
+          onPointerDown={suppressScrollPadding}
+          onFocus={() => {
+            suppressScrollPadding();
+            loadPagefind();
+          }}
+          onBlur={releaseScrollPadding}
           onChange={(event) => {
             setQuery(event.target.value);
             runSearch(event.target.value);
