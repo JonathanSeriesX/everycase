@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import type { CaseRecord } from "../lib/getCasesFromCSV";
+import { colourVariantCount, type CaseRecord } from "../lib/getCasesFromCSV";
 import type { DeviceGroup } from "../lib/collectionItems";
 import {
   deviceThumbnail,
@@ -165,9 +165,14 @@ export function DeviceSections({
                 key={item.SKU}
                 item={item}
                 canRemove={canRemove}
-                // "Clear Case" comes in colour "Clear" — don't say it twice.
+                // Append the colour only when it distinguishes something: skip
+                // it for one-colour products (MagSafe Battery Pack, a Smart
+                // Keyboard) and for "Clear Case" (colour "Clear" — don't say it
+                // twice).
                 title={
-                  item.colour && !item.kind.includes(item.colour)
+                  item.colour &&
+                  !item.kind.includes(item.colour) &&
+                  colourVariantCount(item.model, item.kind) > 1
                     ? `${item.kind} — ${item.colour}`
                     : item.kind
                 }
