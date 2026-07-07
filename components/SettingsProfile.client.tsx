@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import styles from "../styles/Settings.module.css";
 
@@ -28,6 +29,7 @@ const patchProfile = async (body: Record<string, unknown>): Promise<Profile> => 
  * but rendered as two separate cards.
  */
 export default function SettingsProfile({ initial }: { initial: Profile }) {
+  const router = useRouter();
   const [name, setName] = useState(initial.name);
   const [username, setUsername] = useState(initial.username ?? "");
   const [saved, setSaved] = useState<Profile>(initial);
@@ -44,6 +46,9 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
       setName(data.name);
       setUsername(data.username ?? "");
       setMessage("Saved.");
+      // Invalidate the App Router client cache so /settings and the collection
+      // pages don't re-mount with the stale server-rendered name.
+      router.refresh();
     },
     onError: (err) => setError(err.message),
   });
@@ -58,7 +63,10 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
       setVisibilityError(null);
       return { previous };
     },
-    onSuccess: (data) => setSaved(data),
+    onSuccess: (data) => {
+      setSaved(data);
+      router.refresh();
+    },
     onError: (err, _next, context) => {
       if (context) setSaved(context.previous);
       setVisibilityError(err.message);
@@ -69,6 +77,12 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
     event.preventDefault();
     setError(null);
     setMessage(null);
+    // The button press kept focus (see onPointerDown) so the tap reached us;
+    // now drop it ourselves so the keyboard closes on a successful save.
+    if (typeof document !== "undefined") {
+      const focused = document.activeElement;
+      if (focused instanceof HTMLElement) focused.blur();
+    }
     saveProfile.mutate({
       name: name.trim(),
       username: username.trim() === "" ? null : username.trim(),
@@ -119,6 +133,11 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
               type="submit"
               className={styles.primaryButton}
               disabled={saveProfile.isPending || !dirty}
+              // iOS otherwise spends the first tap dismissing the keyboard —
+              // blurring the focused field before the click can land, so the
+              // submit never fires. Keeping focus lets the tap reach the
+              // button; save() then blurs to close the keyboard.
+              onPointerDown={(event) => event.preventDefault()}
             >
               {saveProfile.isPending ? "Saving…" : "Save"}
             </button>
