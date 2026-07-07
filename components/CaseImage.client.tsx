@@ -15,6 +15,9 @@ interface CaseImageProps {
   alt?: string;
   priority?: boolean;
   activated?: boolean;
+  /** Plain native lazy-loading — for long flat grids with no hidden panels
+      (collection pages), where "load what you scroll" is exactly right. */
+  lazy?: boolean;
 }
 
 /**
@@ -35,6 +38,7 @@ export default function CaseImage({
   alt = "",
   priority = false,
   activated = true,
+  lazy = false,
 }: CaseImageProps) {
   const sources = code
     ? [
@@ -54,7 +58,7 @@ export default function CaseImage({
       title={alt || undefined}
       className={styles.image}
       fetchPriority={priority ? "high" : "low"}
-      loading={priority || activated ? "eager" : "lazy"}
+      loading={!lazy && (priority || activated) ? "eager" : "lazy"}
       unoptimized
       onError={() =>
         setIndex((current) => Math.min(current + 1, sources.length - 1))

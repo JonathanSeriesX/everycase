@@ -10,9 +10,8 @@ import {
 import { CURRENCIES, type Currency } from "../lib/currencies";
 import { getCaseName } from "../lib/caseName";
 import CaseImage from "./CaseImage.client";
+import CollectionCaseTile from "./CollectionCaseTile.client";
 import DeviceActions, { type DeviceVariant } from "./DeviceActions.client";
-import LinkCaseButton from "./LinkCaseButton.client";
-import RemoveCaseButton from "./RemoveCaseButton.client";
 import { PhoneSymbol } from "./icons";
 import carousel from "../styles/VerticalCarousel.module.css";
 import device from "../styles/DeviceSection.module.css";
@@ -43,28 +42,29 @@ function CollectionCaseCard({
       }))
     : [];
   return (
-    <article className={`${carousel.caseCard} ${device.tile}`}>
+    <CollectionCaseTile
+      sku={item.SKU}
+      label={name}
+      canRemove={canRemove}
+      linkOptions={linkOptions}
+    >
       <Link
         href={`/case/${item.SKU}`}
         className={carousel.cardLink}
         aria-label={name}
       >
         <div className={carousel.imageShell}>
-          <CaseImage code={(item.alt_thumbnail || item.SKU).trim()} alt={name} />
+          <CaseImage
+            code={(item.alt_thumbnail || item.SKU).trim()}
+            alt={name}
+            lazy
+          />
         </div>
         <strong className={`${carousel.caseTitle} ${carousel.linkTitle}`}>
           {title ?? name}
         </strong>
       </Link>
-      {(canRemove || linkOptions.length > 0) && (
-        <div className={device.tileActions}>
-          {linkOptions.length > 0 && (
-            <LinkCaseButton label={name} options={linkOptions} />
-          )}
-          {canRemove && <RemoveCaseButton sku={item.SKU} label={name} />}
-        </div>
-      )}
-    </article>
+    </CollectionCaseTile>
   );
 }
 
@@ -138,7 +138,7 @@ export function DeviceSections({
               <div className={device.deviceCardBody}>
                 <div className={carousel.imageShell}>
                   {artwork ? (
-                    <CaseImage code={artwork} alt={label} />
+                    <CaseImage code={artwork} alt={label} lazy />
                   ) : (
                     <PhoneSymbol className={device.placeholder} />
                   )}
