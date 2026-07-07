@@ -135,6 +135,16 @@ h1 {
   margin-top: 0.5rem;
 }
 
+/* Pages without a breadcrumb (home, personal collections) render the H1 as
+   the first child, so its 0.5rem top margin collapses tight against the
+   navbar while the prose below sits 1.5rem away — top-light and unbalanced.
+   Match the top margin to that below-title gap, which also equals the
+   navbar → breadcrumb offset on trailed pages so titles line up either way.
+   Trailed pages are unaffected: the breadcrumb <nav> precedes the H1. */
+.site-main h1:first-child {
+  margin-top: 1.5rem;
+}
+
 h2 {
   font-size: 1.875rem;
   font-weight: 600;

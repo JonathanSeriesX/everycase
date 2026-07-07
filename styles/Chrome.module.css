@@ -314,6 +314,7 @@
   width: min(26rem, calc(100vw - 2rem));
   max-height: min(24rem, 70vh);
   overflow-y: auto;
+  overscroll-behavior: contain;
   border-radius: 18px;
   border: 1px solid rgba(15, 18, 28, 0.1);
   background: rgba(252, 248, 250, 0.97);

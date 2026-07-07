@@ -48,7 +48,7 @@ export default function CollectionStats({
 
   return (
     <div className={`${card.card} ${styles.tile}`}>
-      <span className={card.label}>Collection stats</span>
+      <span className={card.label}>Stats</span>
       <div className={styles.stats}>
         {stats.map((stat) => (
           <span key={stat.key} className={styles.stat} title={stat.title}>
