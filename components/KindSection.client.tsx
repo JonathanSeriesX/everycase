@@ -34,6 +34,8 @@ interface KindSectionClientProps {
   showTabs: boolean;
   /** One combined grid across models (Clear Cases, iPhone Dock). */
   merged: boolean;
+  /** Display overrides for model names on merged cards (page.tabLabels). */
+  modelLabels?: Record<string, string>;
   children?: ReactNode;
 }
 
@@ -59,6 +61,7 @@ export default function KindSectionClient({
   entries,
   showTabs,
   merged,
+  modelLabels,
   children,
 }: KindSectionClientProps) {
   const [active, setActive] = useState(0);
@@ -173,6 +176,7 @@ export default function KindSectionClient({
             model={entry.model ?? undefined}
             material={kind}
             merged={merged}
+            modelLabels={modelLabels}
             standalone={!showTabs}
             primary={index === 0}
             activated={activated.includes(index)}

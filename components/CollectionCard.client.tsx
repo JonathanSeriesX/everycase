@@ -11,6 +11,7 @@ import {
   type CollectionStatus,
 } from "../lib/collectionQueries";
 import CaseImage from "./CaseImage.client";
+import { PhoneSymbol } from "./icons";
 import styles from "../styles/CaseInfoCards.module.css";
 
 /**
@@ -171,8 +172,10 @@ export default function CollectionCard({ sku }: { sku: string }) {
                         onClick={() => pick(device.deviceId)}
                       >
                         <span className={styles.deviceThumb} aria-hidden="true">
-                          {device.thumbnail && (
+                          {device.thumbnail ? (
                             <CaseImage code={device.thumbnail} alt="" />
+                          ) : (
+                            <PhoneSymbol className={styles.deviceThumbFallback} />
                           )}
                         </span>
                         <span className={styles.deviceRowLabel}>

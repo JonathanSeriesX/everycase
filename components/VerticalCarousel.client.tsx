@@ -11,17 +11,20 @@ const formatSkuLabel = (sku: string) => (sku || "").replace(/zm\/?a?$/i, "");
 
 // What the card's title line shows. Normally the colour — except for merged
 // grids, which combine several models into one section (Clear Cases, the
-// iPhone Dock), where the colour would repeat, so the model name is shown.
+// iPhone Dock), where the colour would repeat, so the model name is shown —
+// run through the page's display overrides ("iPhone 5s-SE" → "iPhone 5s").
 const getDisplayLabel = (
   itemColour: string,
   itemModel: string,
   model?: string,
   material?: string,
   merged?: boolean,
+  modelLabels?: Record<string, string>,
 ) => {
   const normalizedMaterial = material?.trim().toLowerCase();
   if (merged || normalizedMaterial === "clear case") {
-    return itemModel || model;
+    const raw = itemModel || model;
+    return (raw && modelLabels?.[raw]) || raw;
   }
   if (itemColour === "Clear Case") {
     return model || itemModel;
@@ -36,6 +39,8 @@ interface VerticalCarouselProps {
   material?: string;
   /** Merged grid (no tabs): label cards by model rather than colour. */
   merged?: boolean;
+  /** Display overrides for model names on merged cards (page.tabLabels). */
+  modelLabels?: Record<string, string>;
   standalone?: boolean;
   primary?: boolean;
   /** False while this grid's hidden tab panel is still queued behind the
@@ -48,6 +53,7 @@ const VerticalCarouselClient = ({
   model,
   material,
   merged = false,
+  modelLabels,
   standalone = false,
   primary = true,
   activated = true,
@@ -57,8 +63,8 @@ const VerticalCarouselClient = ({
   // Map colour/model labels consistently across sections of the UI.
   const displayLabel = useCallback(
     (itemColour: string, itemModel: string) =>
-      getDisplayLabel(itemColour, itemModel, model, material, merged),
-    [material, model, merged],
+      getDisplayLabel(itemColour, itemModel, model, material, merged, modelLabels),
+    [material, model, merged, modelLabels],
   );
 
   const copySku = useCallback((skuWithSuffix: string, key: string) => {

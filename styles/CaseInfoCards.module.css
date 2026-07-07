@@ -179,6 +179,16 @@
   min-width: 0;
 }
 
+/* Placeholder glyph for devices with no artwork. */
+.deviceThumbFallback {
+  height: 75%;
+  color: rgba(15, 18, 28, 0.32);
+}
+
+:global(html:is(.dark, .black)) .deviceThumbFallback {
+  color: rgba(255, 255, 255, 0.35);
+}
+
 .windowDone {
   margin-top: 0.7rem;
   align-self: flex-end;

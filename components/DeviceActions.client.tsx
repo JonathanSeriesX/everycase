@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useAddDevice, useRemoveDevice } from "../lib/collectionQueries";
 import CaseImage from "./CaseImage.client";
+import { PhoneSymbol } from "./icons";
 import styles from "../styles/DeviceSection.module.css";
 import windowStyles from "../styles/CaseInfoCards.module.css";
 
@@ -148,8 +149,12 @@ export default function DeviceActions({
                         className={windowStyles.deviceThumb}
                         aria-hidden="true"
                       >
-                        {variant.thumbnail && (
+                        {variant.thumbnail ? (
                           <CaseImage code={variant.thumbnail} alt="" />
+                        ) : (
+                          <PhoneSymbol
+                            className={windowStyles.deviceThumbFallback}
+                          />
                         )}
                       </span>
                       <span className={windowStyles.deviceRowLabel}>

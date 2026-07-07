@@ -13,6 +13,25 @@ const base = {
   strokeLinejoin: "round",
 } as const;
 
+/** Stand-in artwork for devices without an image. Deliberately carries no
+    width/height defaults — callers size it entirely via CSS. */
+export function PhoneSymbol(props: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.1}
+      strokeLinecap="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="6.75" y="2.75" width="10.5" height="18.5" rx="2.6" />
+      <line x1="10.6" y1="18.7" x2="13.4" y2="18.7" />
+    </svg>
+  );
+}
+
 export function CopyIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" width="1em" height="1em" {...base} {...props}>

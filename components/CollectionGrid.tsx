@@ -13,6 +13,7 @@ import CaseImage from "./CaseImage.client";
 import DeviceActions, { type DeviceVariant } from "./DeviceActions.client";
 import LinkCaseButton from "./LinkCaseButton.client";
 import RemoveCaseButton from "./RemoveCaseButton.client";
+import { PhoneSymbol } from "./icons";
 import carousel from "../styles/VerticalCarousel.module.css";
 import device from "../styles/DeviceSection.module.css";
 
@@ -94,22 +95,6 @@ export function CaseGrid({
   );
 }
 
-// Stand-in artwork for devices without an image yet.
-const PhoneSymbol = ({ className }: { className?: string }) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.1"
-    strokeLinecap="round"
-    className={className}
-    aria-hidden="true"
-  >
-    <rect x="6.75" y="2.75" width="10.5" height="18.5" rx="2.6" />
-    <line x1="10.6" y1="18.7" x2="13.4" y2="18.7" />
-  </svg>
-);
-
 /**
  * Owned devices with their cases, shared by /collection and
  * /collections/[username]. Each device is one card track: the device tile
@@ -137,9 +122,13 @@ export function DeviceSections({
   return (
     <>
       {groups.map(({ device: record, cases, implicit }, index) => {
-        const label = record.colour
-          ? `${record.model} — ${record.colour}`
-          : record.model;
+        const variants = variantsFor(record.model);
+        // A colour distinguishes nothing when the model only comes in one
+        // (AirTag, Apple Pencil) — show just the name.
+        const label =
+          record.colour && variants.length > 1
+            ? `${record.model} — ${record.colour}`
+            : record.model;
         const artwork = deviceThumbnail(record);
         return (
           <Fragment key={record.deviceId}>
@@ -166,7 +155,7 @@ export function DeviceSections({
                     deviceId={record.deviceId}
                     label={label}
                     model={record.model}
-                    variants={variantsFor(record.model)}
+                    variants={variants}
                   />
                 )}
               </div>

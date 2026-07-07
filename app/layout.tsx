@@ -127,6 +127,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Link href="/about" prefetch={false}>
                 About ★
               </Link>
+              <Link href="/contact" prefetch={false}>
+                Reach out ✿
+              </Link>
               <Link href="/support" prefetch={false}>
                 Support this ♥
               </Link>

@@ -351,6 +351,9 @@ export const GROUPS: CatalogueGroup[] = [
         // The 5s and 5c docks are one white cradle each, so combine them into
         // a single grid labelled by model, exactly like Clear Cases.
         merged: ["iPhone Dock"],
+        // Only 5s buyers got this dock — the SE half of "5s-SE" is a
+        // compatibility fact, not part of the product's name.
+        tabLabels: { "iPhone 5s-SE": "iPhone 5s" },
       },
       {
         slug: "macbook",
