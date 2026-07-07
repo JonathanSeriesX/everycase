@@ -322,6 +322,11 @@ export default async function CasePage({ params }: CaseRouteProps) {
       ) : (
         <section>
           <hr />
+          {/* Invisible, but indexed: gives the gallery a searchable count and
+              lets Pagefind excerpts end on "… N images." */}
+          <p className="sr-only">
+            {defaultImages.length} image{defaultImages.length === 1 ? "" : "s"}.
+          </p>
           <LightboxComponent images={defaultImages} />
         </section>
       )}

@@ -71,6 +71,10 @@ const KeyboardProductDetails = ({
         />
         <section>
           <hr />
+          <p className="sr-only">
+            {fallbackImages.length} image
+            {fallbackImages.length === 1 ? "" : "s"}.
+          </p>
           <LightboxComponent images={fallbackImages} />
         </section>
       </>
@@ -139,6 +143,10 @@ const KeyboardProductDetails = ({
       </div>
       <section>
         <hr />
+        <p className="sr-only">
+          {selectedOption.images.length} image
+          {selectedOption.images.length === 1 ? "" : "s"}.
+        </p>
         <LightboxComponent
           key={selectedOption.region}
           images={selectedOption.images}

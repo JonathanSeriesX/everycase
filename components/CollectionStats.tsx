@@ -48,11 +48,14 @@ export default function CollectionStats({
 
   return (
     <div className={`${card.card} ${styles.tile}`}>
-      {stats.map((stat) => (
-        <span key={stat.key} className={styles.stat} title={stat.title}>
-          {stat.label}
-        </span>
-      ))}
+      <span className={card.label}>Collection stats</span>
+      <div className={styles.stats}>
+        {stats.map((stat) => (
+          <span key={stat.key} className={styles.stat} title={stat.title}>
+            {stat.label}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

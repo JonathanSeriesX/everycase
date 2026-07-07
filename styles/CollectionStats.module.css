@@ -1,12 +1,17 @@
 /* A single liquid-glass tile summarising an owned collection. The card shell
-   is shared with the case-page info cards (CaseInfoCards.module.css `.card`);
-   this module only lays the stat chips out inside it. */
+   and the uppercase label are shared with the case-page info cards
+   (CaseInfoCards.module.css `.card` / `.label`); this module only spaces the
+   tile and lays the stat chips out under the label. */
 .tile {
+  margin: 1.5rem 0;
+}
+
+.stats {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  margin: 1.5rem 0;
+  margin-top: 0.5rem;
 }
 
 .stat {

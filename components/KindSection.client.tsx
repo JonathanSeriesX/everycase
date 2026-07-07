@@ -244,6 +244,12 @@ export default function KindSectionClient({
           role="tabpanel"
           hidden={index !== active}
         >
+          {/* The visible tab reads terse ("Pro 13″"); the full model name is
+              hidden here so Pagefind indexes each panel's cases under the whole
+              device name and excerpts read "iPad Pro 13 M4. Black MW983 …". */}
+          {showTabs && entry.model && (
+            <p className="sr-only">{entry.model}.</p>
+          )}
           <VerticalCarouselClient
             cases={entry.cases}
             model={entry.model ?? undefined}
