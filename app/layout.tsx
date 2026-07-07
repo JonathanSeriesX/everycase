@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 import Providers from "../components/Providers.client";
 import ThemeColorSync from "../components/ThemeColorSync.client";
 import HashNavigation from "../components/HashNavigation.client";
+import ScrollToTopOnNavigate from "../components/ScrollToTopOnNavigate.client";
 import "../styles/globals.css";
 
 // Theme-color = the page background per OS colour scheme, as the old Nextra
@@ -121,6 +122,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           <Providers>
             <HashNavigation />
+            <ScrollToTopOnNavigate />
             <Navbar />
             <main className="site-main">{children}</main>
             <footer className="site-footer">
