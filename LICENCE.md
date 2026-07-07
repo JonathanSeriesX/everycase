@@ -1,6 +1,6 @@
 # LICENSE FOR "FINEST WOVEN" WEBSITE
 
-Copyright © 2023-2025 Evgenii Ostrovskii
+Copyright © 2023-2026 Evgenii Ostrovskii
 
 You may use this website for personal and non-commercial purposes.
 Redistribution or use in derivative works requires the author’s explicit written permission.
