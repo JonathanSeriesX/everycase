@@ -13,6 +13,7 @@ import {
   computeLaunchValue,
 } from "../../../components/CollectionGrid";
 import CollectionHead from "../../../components/CollectionHead";
+import CollectionStats from "../../../components/CollectionStats";
 import RefreshOnRestore from "../../../components/RefreshOnRestore.client";
 
 // Public, per-user page — rendered on demand so it always reflects the
@@ -105,7 +106,9 @@ export default async function PublicCollectionPage({
   const { sums, pricedCount } = computeLaunchValue(owned);
 
   return (
-    <article>
+    // Collections are personal, ever-changing, and noindex — keep them out of
+    // the Pagefind search index entirely.
+    <article data-pagefind-ignore>
       {isOwner && <RefreshOnRestore />}
       <h1>{displayName(owner)}’s collection</h1>
       {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
@@ -114,8 +117,7 @@ export default async function PublicCollectionPage({
         <>
           {(owned.length > 0 || deviceGroups.length > 0) && (
             <section>
-              <CollectionHead
-                title="Owned"
+              <CollectionStats
                 // Implicit groups (AirTag, MagSafe Accessories, …) are
                 // derived homes for cases, not devices the owner declared.
                 deviceCount={deviceGroups.filter((g) => !g.implicit).length}
@@ -123,6 +125,7 @@ export default async function PublicCollectionPage({
                 sums={sums}
                 pricedCount={pricedCount}
               />
+              <hr />
               <DeviceSections groups={deviceGroups} canRemove={isOwner} />
               {unassigned.length > 0 && deviceGroups.length > 0 && (
                 <h3>Not linked to a device</h3>

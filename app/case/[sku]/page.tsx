@@ -4,7 +4,6 @@ import LightboxComponent, {
   type GalleryImage,
 } from "../../../components/LightboxComponent";
 import Breadcrumb, { type Crumb } from "../../../components/Breadcrumb";
-import HeadingAnchor from "../../../components/HeadingAnchor";
 import { findPageForModel } from "../../../lib/catalogue";
 import { getImageRes, getVisibleImageFilenames } from "../../../lib/images";
 import KeyboardProductDetails, {
@@ -322,10 +321,7 @@ export default async function CasePage({ params }: CaseRouteProps) {
         />
       ) : (
         <section>
-          <h2 id="image-gallery" data-pagefind-ignore>
-            Image gallery
-            <HeadingAnchor id="image-gallery" title="Image gallery" />
-          </h2>
+          <hr />
           <LightboxComponent images={defaultImages} />
         </section>
       )}

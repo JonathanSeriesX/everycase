@@ -11,7 +11,6 @@ import CaseInfoCards, {
   type CaseInfo,
 } from "./CaseInfoCards";
 import CollectionCard from "./CollectionCard.client";
-import HeadingAnchor from "./HeadingAnchor";
 import {
   formatOrderNumber,
   getKeyboardLanguageName,
@@ -71,10 +70,7 @@ const KeyboardProductDetails = ({
           compatibleModels={info.compatibleModels}
         />
         <section>
-          <h2 id="image-gallery" data-pagefind-ignore>
-            Image gallery
-            <HeadingAnchor id="image-gallery" title="Image gallery" />
-          </h2>
+          <hr />
           <LightboxComponent images={fallbackImages} />
         </section>
       </>
@@ -142,10 +138,7 @@ const KeyboardProductDetails = ({
         {info.collectionSku && <CollectionCard sku={info.collectionSku} />}
       </div>
       <section>
-        <h2 id="image-gallery" data-pagefind-ignore>
-            Image gallery
-            <HeadingAnchor id="image-gallery" title="Image gallery" />
-          </h2>
+        <hr />
         <LightboxComponent
           key={selectedOption.region}
           images={selectedOption.images}

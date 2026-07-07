@@ -11,6 +11,7 @@ import {
   computeLaunchValue,
 } from "../../components/CollectionGrid";
 import CollectionHead from "../../components/CollectionHead";
+import CollectionStats from "../../components/CollectionStats";
 import RefreshOnRestore from "../../components/RefreshOnRestore.client";
 
 // Personal, per-user page — always rendered on demand, never cached.
@@ -53,7 +54,8 @@ export default async function CollectionPage() {
   const { sums, pricedCount } = computeLaunchValue(owned);
 
   return (
-    <article>
+    // Personal + noindex — never index a collection in Pagefind search.
+    <article data-pagefind-ignore>
       <RefreshOnRestore />
       <h1>Your collection</h1>
       {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
@@ -66,8 +68,7 @@ export default async function CollectionPage() {
         <>
           {(owned.length > 0 || deviceGroups.length > 0) && (
             <section>
-              <CollectionHead
-                title="Owned"
+              <CollectionStats
                 // Implicit groups (AirTag, MagSafe Accessories, …) are
                 // derived homes for cases, not devices the user declared.
                 deviceCount={deviceGroups.filter((g) => !g.implicit).length}
@@ -75,6 +76,7 @@ export default async function CollectionPage() {
                 sums={sums}
                 pricedCount={pricedCount}
               />
+              <hr />
               <DeviceSections groups={deviceGroups} canRemove />
               {unassigned.length > 0 && deviceGroups.length > 0 && (
                 <h3>Not linked to a device</h3>

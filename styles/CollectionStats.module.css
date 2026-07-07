@@ -1,0 +1,32 @@
+/* A single liquid-glass tile summarising an owned collection. The card shell
+   is shared with the case-page info cards (CaseInfoCards.module.css `.card`);
+   this module only lays the stat chips out inside it. */
+.tile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.32rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 550;
+  white-space: nowrap;
+  background-color: #fff;
+  border: 1px solid rgba(15, 18, 28, 0.12);
+  color: rgba(15, 18, 28, 0.9);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+:global(html:is(.dark, .black)) .stat {
+  background: rgba(19, 19, 22, 0.92);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.88);
+}
