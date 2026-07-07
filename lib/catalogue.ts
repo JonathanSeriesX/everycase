@@ -1,4 +1,8 @@
-import { getAllCasesFromCSV, type CaseRecord } from "./getCasesFromCSV";
+import {
+  getAliasedSkus,
+  getAllCasesFromCSV,
+  type CaseRecord,
+} from "./getCasesFromCSV";
 import { CURRENCIES, type Currency } from "./currencies";
 
 // The whole site tree in one place: groups → pages → CSV model names.
@@ -570,9 +574,12 @@ interface KindBucket {
 export function getPageSections(page: CataloguePage): PageSection[] {
   const wanted = new Set(page.models);
   const byKind = new Map<string, KindBucket>();
+  // Rows merged into another SKU's page (international keyboard siblings)
+  // share that primary's tile instead of getting their own.
+  const aliased = getAliasedSkus();
 
   for (const row of rows()) {
-    if (!wanted.has(row.model) || !row.kind) continue;
+    if (!wanted.has(row.model) || !row.kind || aliased.has(row.SKU)) continue;
     let bucket = byKind.get(row.kind);
     if (!bucket) {
       bucket = {

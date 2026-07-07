@@ -18,9 +18,11 @@ import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 // and stay until their owner explicitly removes them (DELETE, or a colour
 // swap replacing one via PUT's replaceDeviceId).
 
+// No size cap: writes are upserts on the unique (userId, deviceId) index
+// against catalogue-validated ids, so a user's devices are structurally
+// bounded by the device catalogue.
 const DEVICE_ID_PATTERN = /^[a-z0-9][a-z0-9-]{1,63}$/;
 const SKU_PATTERN = /^[A-Z0-9]{3,12}$/;
-const MAX_DEVICES = 500;
 
 let modelBySku: Map<string, string> | undefined;
 const catalogueModel = (sku: string) => {
@@ -92,10 +94,6 @@ export async function PUT(request: Request) {
   }
 
   await ensureUserDeviceIndex();
-  if ((await userDevices().countDocuments({ userId })) >= MAX_DEVICES) {
-    return NextResponse.json({ error: "Too many devices" }, { status: 400 });
-  }
-
   await userDevices().updateOne(
     { userId, deviceId },
     { $setOnInsert: { userId, deviceId, createdAt: new Date() } },

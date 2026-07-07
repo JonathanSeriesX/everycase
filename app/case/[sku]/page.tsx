@@ -14,6 +14,7 @@ import CaseInfoCards, {
   type CaseInfo,
 } from "../../../components/CaseInfoCards";
 import {
+  getAliasedSkus,
   getAllCasesFromCSV,
   type CaseRecord,
 } from "../../../lib/getCasesFromCSV";
@@ -24,6 +25,7 @@ import { getCaseName } from "../../../lib/caseName";
 import {
   formatOrderNumber,
   formatPrice,
+  getPreferredRegion,
   isKeyboardProduct,
   parseRegionCodes,
 } from "../../../lib/productRegions";
@@ -101,6 +103,18 @@ function buildImages(variants: string[], caseName: string): GalleryImage[] {
   }));
 }
 
+// The original US-only Smart Keyboards and their international siblings
+// (released slightly later under a fresh base SKU) share one page. The US SKU
+// is deliberately the primary URL because it came out first; the
+// international SKU keeps its own database row for regions/prices/images and
+// its URL 301s here via the alt.csv redirect mechanism.
+//
+// An alt SKU that has its own catalogue row is a merged sibling, not a plain
+// re-release.
+function findSiblingRecord(data: CaseRecord): CaseRecord | undefined {
+  return data.alt_sku ? findCaseBySku(data.alt_sku) : undefined;
+}
+
 // Gather everything the info cards need: copyable order numbers, the release
 // date (and a re-release date when the case came back under an alt SKU),
 // regional MSRP and, for keyboards, the US education price when it differs
@@ -108,24 +122,41 @@ function buildImages(variants: string[], caseName: string): GalleryImage[] {
 function buildCaseInfo(data: CaseRecord, regions: string[]): CaseInfo {
   const sku = data.SKU;
   const altSku = data.alt_sku;
+  const sibling = findSiblingRecord(data);
   // No regional suffix on record → fall back to the bare SKU as the order number.
   const orderRegions = regions.length > 0 ? regions : [""];
 
-  const allOrderNumbers = orderRegions.map((region) =>
+  const primaryOrderNumbers = orderRegions.map((region) =>
     formatOrderNumber(sku, region),
   );
-  if (altSku) {
-    allOrderNumbers.push(
-      ...orderRegions.map((region) => formatOrderNumber(altSku, region)),
-    );
-  }
 
-  const skuGroups = [
-    {
-      label: null,
-      orderNumbers: allOrderNumbers,
-    },
-  ];
+  let skuGroups;
+  if (sibling) {
+    // Merged sibling: each SKU pairs with its own region list — the US SKU
+    // never shipped in international layouts and vice versa.
+    skuGroups = [
+      { label: "US English", orderNumbers: primaryOrderNumbers },
+      {
+        label: "International",
+        orderNumbers: parseRegionCodes(sibling.regions).map((region) =>
+          formatOrderNumber(sibling.SKU, region),
+        ),
+      },
+    ];
+  } else {
+    const allOrderNumbers = [...primaryOrderNumbers];
+    if (altSku) {
+      allOrderNumbers.push(
+        ...orderRegions.map((region) => formatOrderNumber(altSku, region)),
+      );
+    }
+    skuGroups = [
+      {
+        label: null,
+        orderNumbers: allOrderNumbers,
+      },
+    ];
+  }
 
   const msrp = data.MSRP;
   const eduPriceRaw = data.edu_price;
@@ -159,10 +190,13 @@ interface CaseRouteProps {
 export async function generateStaticParams() {
   const seen = new Set<string>();
   const params: { sku: string }[] = [];
+  // Merged siblings don't get their own page — their URLs 301 to the primary
+  // SKU (the US keyboard, which shipped first) via getAltSkuRedirects.
+  const aliased = getAliasedSkus();
 
   for (const record of getAllCasesFromCSV()) {
     const sku = record.SKU;
-    if (!sku || seen.has(sku)) continue;
+    if (!sku || seen.has(sku) || aliased.has(sku)) continue;
     seen.add(sku);
     params.push({ sku });
   }
@@ -222,12 +256,35 @@ export default async function CasePage({ params }: CaseRouteProps) {
   const isKeyboard = isKeyboardProduct(data.kind);
   const info = buildCaseInfo(data, regions);
   const defaultImages = buildImages(listVariantsForSku(sku), caseName);
+  const sibling = findSiblingRecord(data);
   const keyboardRegionOptions: KeyboardRegionOption[] = isKeyboard
-    ? regions.map((region) => ({
-        region,
-        images: buildImages(listMergedVariantsForRegion(sku, region), caseName),
-      }))
+    ? [
+        ...regions.map((region) => ({
+          region,
+          images: buildImages(
+            listMergedVariantsForRegion(sku, region),
+            caseName,
+          ),
+        })),
+        // Merged international sibling: its languages join the picker, each
+        // ordering (and picturing) the sibling SKU rather than the primary.
+        ...(sibling
+          ? parseRegionCodes(sibling.regions).map((region) => ({
+              region,
+              sku: sibling.SKU,
+              images: buildImages(
+                listMergedVariantsForRegion(sibling.SKU, region),
+                caseName,
+              ),
+            }))
+          : []),
+      ]
     : [];
+  // On merged pages the US layout is the default; the sibling's list would
+  // otherwise win via the ZM (International English) preference.
+  const defaultKeyboardRegion = isKeyboard
+    ? getPreferredRegion(regions)
+    : undefined;
   const home = findPageForModel(data.model);
 
   const trail: Crumb[] = [];
@@ -259,6 +316,7 @@ export default async function CasePage({ params }: CaseRouteProps) {
           regionOptions={keyboardRegionOptions}
           fallbackImages={defaultImages}
           info={info}
+          defaultRegion={defaultKeyboardRegion}
         />
       ) : (
         <section>

@@ -23,6 +23,9 @@ import styles from "../styles/KeyboardProductDetails.module.css";
 export interface KeyboardRegionOption {
   region: string;
   images: GalleryImage[];
+  /** Base SKU for this language's order number, when it differs from the
+      page's primary SKU (merged international keyboard siblings). */
+  sku?: string;
 }
 
 interface KeyboardProductDetailsProps {
@@ -30,6 +33,8 @@ interface KeyboardProductDetailsProps {
   regionOptions?: KeyboardRegionOption[];
   fallbackImages?: GalleryImage[];
   info?: CaseInfo;
+  /** Preselected language; falls back to the usual region preference. */
+  defaultRegion?: string;
 }
 
 const KeyboardProductDetails = ({
@@ -37,10 +42,13 @@ const KeyboardProductDetails = ({
   regionOptions = [],
   fallbackImages = [],
   info = {},
+  defaultRegion: defaultRegionProp,
 }: KeyboardProductDetailsProps) => {
-  const defaultRegion = getPreferredRegion(
-    regionOptions.map((option) => option.region),
-  );
+  const defaultRegion =
+    (defaultRegionProp &&
+      regionOptions.some((option) => option.region === defaultRegionProp) &&
+      defaultRegionProp) ||
+    getPreferredRegion(regionOptions.map((option) => option.region));
   const [selectedRegion, setSelectedRegion] = useState(defaultRegion);
   const selectedOption = useMemo(
     () =>
@@ -73,7 +81,10 @@ const KeyboardProductDetails = ({
     );
   }
 
-  const orderNumber = formatOrderNumber(sku, selectedOption.region);
+  const orderNumber = formatOrderNumber(
+    selectedOption.sku ?? sku,
+    selectedOption.region,
+  );
 
   return (
     <>

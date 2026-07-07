@@ -13,9 +13,10 @@ import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 const STATUSES = ["owned", "wanted"] as const;
 type Status = (typeof STATUSES)[number];
 
-// Fast-path shape check before the catalogue lookup.
+// Fast-path shape check before the catalogue lookup. No size cap: writes
+// are upserts on the unique (userId, sku) index against catalogue-validated
+// SKUs, so a user's collection is structurally bounded by catalogue size.
 const SKU_PATTERN = /^[A-Z0-9]{3,12}$/;
-const MAX_ITEMS = 5000;
 
 let indexReady: Promise<unknown> | undefined;
 const ensureIndex = () =>
@@ -78,10 +79,6 @@ export async function PUT(request: Request) {
   }
 
   await ensureIndex();
-  if ((await collectionItems().countDocuments({ userId })) >= MAX_ITEMS) {
-    return NextResponse.json({ error: "Collection is full" }, { status: 400 });
-  }
-
   await collectionItems().updateOne(
     { userId, sku },
     { $set: { status }, $setOnInsert: { createdAt: new Date() } },

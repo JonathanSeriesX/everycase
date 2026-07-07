@@ -104,6 +104,27 @@ export function getAllCasesFromCSV(): CaseRecord[] {
   return cachedCases;
 }
 
+let cachedAliasedSkus: Set<string> | undefined;
+
+/**
+ * Alt SKUs that also have their own database.csv row. Unlike ordinary
+ * re-release alt SKUs (which only exist in alt.csv), these rows carry real
+ * data — regions, prices, images — but are merged into their primary SKU's
+ * page and tile (e.g. the international Smart Keyboards MNKR2/MNKT2, folded
+ * into MM2L2/MJYR2). Listings and static params skip them; their URLs 301
+ * to the primary via getAltSkuRedirects.
+ */
+export function getAliasedSkus(): Set<string> {
+  if (cachedAliasedSkus) return cachedAliasedSkus;
+  const bySku = new Set(getAllCasesFromCSV().map((record) => record.SKU));
+  cachedAliasedSkus = new Set(
+    getAllCasesFromCSV()
+      .map((record) => record.alt_sku)
+      .filter((altSku) => altSku && bySku.has(altSku)),
+  );
+  return cachedAliasedSkus;
+}
+
 export interface CaseFilters {
   model?: string | string[] | null;
   material?: string | null;
