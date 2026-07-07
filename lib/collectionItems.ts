@@ -1,7 +1,7 @@
 import { db } from "./mongo";
 import { getAllCasesFromCSV, type CaseRecord } from "./getCasesFromCSV";
 import {
-  getAllDevices,
+  compareDevicesForCollection,
   getCompatibleDevices,
   getDeviceById,
   type DeviceRecord,
@@ -81,20 +81,9 @@ export async function loadCollection(
   const owned = resolve("owned");
   const wanted = resolve("wanted");
 
-  // Devices resolve against the catalogue in reverse (release) order, so
-  // the collection page reads newest device to oldest regardless of when
-  // each was added.
-  const catalogueOrder = new Map(
-    getAllDevices().map((device, index) => [device.deviceId, index]),
-  );
   const devices = deviceDocs
     .map((doc) => getDeviceById(doc.deviceId))
-    .filter((device): device is DeviceRecord => Boolean(device))
-    .sort(
-      (a, b) =>
-        (catalogueOrder.get(b.deviceId) ?? 0) -
-        (catalogueOrder.get(a.deviceId) ?? 0),
-    );
+    .filter((device): device is DeviceRecord => Boolean(device));
   const ownedDeviceIds = new Set(devices.map((device) => device.deviceId));
 
   const deviceGroups: DeviceGroup[] = devices.map((device) => ({
@@ -128,11 +117,9 @@ export async function loadCollection(
       implicit: true,
     })),
   );
-  deviceGroups.sort(
-    (a, b) =>
-      (catalogueOrder.get(b.device.deviceId) ?? 0) -
-      (catalogueOrder.get(a.device.deviceId) ?? 0),
-  );
+  // Real devices newest to oldest by release date, accessory homes
+  // (Pencil, AirTag, MagSafe, Lightning) trailing in fixed order.
+  deviceGroups.sort((a, b) => compareDevicesForCollection(a.device, b.device));
 
   return { owned, wanted, deviceGroups, unassigned };
 }

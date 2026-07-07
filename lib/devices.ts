@@ -107,11 +107,53 @@ const MODEL_ALIASES: Record<string, string> = {
   "iPhone SE (2020)": "iPhone SE 2nd gen",
   "iPhone SE (2022)": "iPhone SE 3rd gen",
   "Apple Pencil (1st generation)": "Apple Pencil (1st gen)",
-  // Not a real device: the shared home for every MagSafe accessory
-  // (wallets, chargers) in collections — see the implicit groups in
-  // lib/collectionItems.
+  // Not real devices: the shared homes for MagSafe accessories (wallets,
+  // chargers) and Lightning docks in collections — see the implicit groups
+  // in lib/collectionItems.
   "MagSafe iPhone": "MagSafe Accessories",
+  "Lightning iPhone": "Lightning Accessories",
 };
+
+// Collection pages list the owner's real devices newest-first, then the
+// accessory homes (single-device models and the dummy devices) in this
+// fixed editorial order.
+const TAIL_KINDS = ["Apple Pencil", "AirTag", "MagSafe", "Lightning"];
+
+const parseReleaseDate = (value: string): number => {
+  const time = Date.parse(value);
+  return Number.isFinite(time) ? time : 0;
+};
+
+let cachedCatalogueIndex: Map<string, number> | undefined;
+const catalogueIndex = (deviceId: string): number => {
+  cachedCatalogueIndex ??= new Map(
+    getAllDevices().map((device, index) => [device.deviceId, index]),
+  );
+  return cachedCatalogueIndex.get(deviceId) ?? 0;
+};
+
+/**
+ * Order for collection-page device groups: real devices by release date,
+ * newest first (devices.csv order breaks same-day ties); accessory kinds
+ * trail in TAIL_KINDS order.
+ */
+export function compareDevicesForCollection(
+  a: DeviceRecord,
+  b: DeviceRecord,
+): number {
+  const tailA = TAIL_KINDS.indexOf(a.kind);
+  const tailB = TAIL_KINDS.indexOf(b.kind);
+  if (tailA !== tailB) {
+    if (tailA === -1) return -1;
+    if (tailB === -1) return 1;
+    return tailA - tailB;
+  }
+  if (tailA !== -1) return 0;
+  return (
+    parseReleaseDate(b.releaseDate) - parseReleaseDate(a.releaseDate) ||
+    catalogueIndex(a.deviceId) - catalogueIndex(b.deviceId)
+  );
+}
 
 /**
  * Devices a case fits, in catalogue order: the case's compatible models
