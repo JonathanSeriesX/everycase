@@ -298,7 +298,7 @@ export default function ProfileMenu() {
             </form>
           ) : (
             <div className={chrome.profileForm}>
-              <p className={chrome.profileTitle}>You're in!</p>
+              <p className={chrome.profileTitle}>You&rsquo;re in!</p>
               <p className={chrome.profileHint}>
                 You can now add a passkey for one-tap sign-in. You can also skip
                 this step and do it later in Settings.{" "}
