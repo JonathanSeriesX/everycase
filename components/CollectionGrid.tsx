@@ -17,6 +17,20 @@ import { PhoneSymbol } from "./icons";
 import carousel from "../styles/VerticalCarousel.module.css";
 import device from "../styles/DeviceSection.module.css";
 
+// Render a case-card title with each " — " segment on its own centred line —
+// "Silicone Case" / "Pink Pomelo" instead of "Silicone Case — Pink Pomelo".
+// Titles without the separator (single-colour products, "Clear Case") stay on
+// one line. The full name still rides on the Link's aria-label for screen
+// readers, so dropping the dash is purely visual.
+function titleLines(text: string) {
+  return text.split(" — ").map((segment, index) => (
+    <Fragment key={index}>
+      {index > 0 && <br />}
+      {segment}
+    </Fragment>
+  ));
+}
+
 // One collection case card. `title` overrides the displayed name (device
 // groups show the short "kind — colour" form); the aria-label keeps the
 // full name either way. `canLink` (unlinked owned cases, owner's view)
@@ -67,7 +81,7 @@ function CollectionCaseCard({
           <CaseImage code={code} alt={name} lazy />
         </div>
         <strong className={`${carousel.caseTitle} ${carousel.linkTitle}`}>
-          {title ?? name}
+          {titleLines(title ?? name)}
         </strong>
       </Link>
     </CollectionCaseTile>
@@ -161,7 +175,7 @@ export function DeviceSections({
                 <strong
                   className={`${carousel.caseTitle} ${carousel.linkTitle}`}
                 >
-                  {label}
+                  {titleLines(label)}
                 </strong>
                 {/* Implicit groups are derived, not owned — nothing to
                     remove or recolour. */}
