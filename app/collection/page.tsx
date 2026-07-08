@@ -19,7 +19,7 @@ import CollectionFreshness from "../../components/CollectionFreshness.client";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Your collection",
+  title: "My collection",
   robots: { index: false },
 };
 
@@ -29,10 +29,10 @@ export default async function CollectionPage() {
   if (!session) {
     return (
       <article>
-        <h1>Your collection</h1>
+        <h1>My collection</h1>
         <p>
           Sign in with the account button in the top-right corner to start
-          tracking the cases you own — and the ones you&rsquo;re still
+          tracking the accessories you own — and the ones you&rsquo;re still
           hunting for.
         </p>
       </article>
@@ -46,7 +46,10 @@ export default async function CollectionPage() {
     .findOne(
       ObjectId.isValid(userId) ? { _id: new ObjectId(userId) } : { id: userId },
     );
-  if (userDoc?.collectionPublic === true && typeof userDoc.username === "string") {
+  if (
+    userDoc?.collectionPublic === true &&
+    typeof userDoc.username === "string"
+  ) {
     redirect(`/collections/${userDoc.username}`);
   }
 
@@ -59,12 +62,13 @@ export default async function CollectionPage() {
     // Personal + noindex — never index a collection in Pagefind search.
     <article data-pagefind-ignore>
       <CollectionFreshness signature={signature} />
-      <h1>Your collection</h1>
-      {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
+      <h1>My collection</h1>
+      {owned.length === 0 &&
+      wanted.length === 0 &&
+      deviceGroups.length === 0 ? (
         <p>
-          Nothing here yet. Open any case page and tap{" "}
-          <strong>I own it</strong> or <strong>I want it</strong> — it shows
-          up here.
+          Nothing here yet. Open any case page and tap <strong>I own it</strong>{" "}
+          or <strong>I want it</strong> — it shows up here.
         </p>
       ) : (
         <>

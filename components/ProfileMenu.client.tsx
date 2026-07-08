@@ -11,6 +11,55 @@ type View = "menu" | "email" | "otp" | "passkey";
 
 const isPlausibleEmail = (value: string) => /^\S+@\S+\.\S+$/.test(value);
 
+// Remember an outstanding sign-in code across popup closes and page reloads,
+// so a user who clicks away mid-flow (or refreshes) lands back on the code
+// entry instead of starting over. The window mirrors OTP_EXPIRES_IN in
+// lib/auth.ts — the server keeps the same code valid for 30 minutes and
+// refuses to mint another while it lives, so re-entering that code just works.
+const PENDING_CODE_KEY = "fw:pending-otp";
+const PENDING_CODE_TTL = 30 * 60 * 1000; // ms — mirrors OTP_EXPIRES_IN
+
+type PendingCode = { email: string; sentAt: number };
+
+const readPendingCode = (): PendingCode | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(PENDING_CODE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<PendingCode>;
+    if (
+      typeof parsed?.email !== "string" ||
+      typeof parsed?.sentAt !== "number" ||
+      Date.now() - parsed.sentAt >= PENDING_CODE_TTL
+    ) {
+      window.localStorage.removeItem(PENDING_CODE_KEY);
+      return null;
+    }
+    return { email: parsed.email, sentAt: parsed.sentAt };
+  } catch {
+    return null;
+  }
+};
+
+const writePendingCode = (email: string) => {
+  if (typeof window === "undefined") return;
+  try {
+    const value: PendingCode = { email, sentAt: Date.now() };
+    window.localStorage.setItem(PENDING_CODE_KEY, JSON.stringify(value));
+  } catch {
+    // Private mode / quota — losing the hint just means starting over.
+  }
+};
+
+const clearPendingCode = () => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(PENDING_CODE_KEY);
+  } catch {
+    // Ignore — a stale hint expires on its own within the TTL.
+  }
+};
+
 export default function ProfileMenu() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -29,9 +78,24 @@ export default function ProfileMenu() {
     setError(null);
   };
 
+  // Enter the sign-in flow. If a code is already outstanding for a remembered
+  // address, skip the email step and drop the user straight on code entry.
+  const openSignIn = () => {
+    const pending = readPendingCode();
+    if (pending) {
+      setEmail(pending.email);
+      setOtp("");
+      setError(null);
+      setView("otp");
+    } else {
+      setView("email");
+    }
+  };
+
   // Server components (settings, collection pages) render per-session — they
   // must re-render whenever the session changes under them.
   const finishAuthChange = () => {
+    clearPendingCode();
     close();
     router.refresh();
   };
@@ -59,7 +123,7 @@ export default function ProfileMenu() {
     if (session) return;
     const onSummon = () => {
       setOpen(true);
-      setView("email");
+      openSignIn();
     };
     window.addEventListener(SIGN_IN_EVENT, onSummon);
     return () => window.removeEventListener(SIGN_IN_EVENT, onSummon);
@@ -98,6 +162,10 @@ export default function ProfileMenu() {
       setError(sendError.message ?? "Could not send the code.");
       return false;
     }
+    // A code is now outstanding for this address (freshly sent, or a 429
+    // meaning one already is) — remember it so an accidental close or reload
+    // returns the user straight to code entry.
+    writePendingCode(email);
     setView("otp");
     return true;
   };
@@ -212,7 +280,7 @@ export default function ProfileMenu() {
                 <button
                   type="button"
                   className={chrome.profileMenuItem}
-                  onClick={() => setView("email")}
+                  onClick={openSignIn}
                 >
                   Sign in to start collecting
                 </button>
