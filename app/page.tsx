@@ -12,6 +12,7 @@ import { getProsePage } from "../lib/notes";
 import MdxContent from "../components/MdxContent";
 import NavCard, { CardGrid } from "../components/NavCard";
 import PrefetchImages from "../components/PrefetchImages.client";
+import AvifCallout from "../components/AvifCallout.client";
 
 const PREVIEW_BASE_URL = "https://cloudfront.everycase.org/everypreview";
 
@@ -26,6 +27,7 @@ export default async function HomePage() {
   return (
     <div data-pagefind-body>
       <MdxContent Content={intro?.Content} />
+      <AvifCallout />
       <CardGrid>
         {HOME_CARDS.map((card) => {
           if (card.page !== undefined) {

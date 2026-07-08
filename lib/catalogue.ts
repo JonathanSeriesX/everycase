@@ -326,7 +326,7 @@ export const GROUPS: CatalogueGroup[] = [
     pages: [
       {
         slug: "crossbody",
-        title: "Crossbody Straps",
+        title: "Crossbody Strap",
         models: ["iPhone Gloryhole Case"],
       },
       {
