@@ -321,7 +321,13 @@ export const GROUPS: CatalogueGroup[] = [
     slug: "others",
     title: "Others",
     blurb: "Wallets, MacBook sleeves, and more",
+    hero: "MM0W3",
     pages: [
+      {
+        slug: "crossbody",
+        title: "Crossbody Straps",
+        models: ["iPhone Gloryhole Case"],
+      },
       {
         slug: "wallet",
         title: "MagSafe Wallet",
@@ -332,14 +338,9 @@ export const GROUPS: CatalogueGroup[] = [
         kinds: ["FineWoven Wallet", "Leather Wallet"],
       },
       {
-        slug: "crossbody",
-        title: "Crossbody Straps",
-        models: ["iPhone Gloryhole Case"],
-      },
-      {
         slug: "magsafe",
         title: "MagSafe Charging",
-        blurb: "Chargers & Battery Packs",
+        //blurb: "Chargers & Battery Packs",
         hero: "MGD74",
         models: ["MagSafe iPhone"],
         kinds: [
@@ -352,8 +353,8 @@ export const GROUPS: CatalogueGroup[] = [
       {
         slug: "docks",
         title: "Docking Stations",
-        blurb: "iPhone Lightning Docks",
-        hero: "ML8H2",
+        //blurb: "iPhone Lightning Docks",
+        hero: "ML8L2",
         // Dock rows carry real device models (so their case pages show
         // proper compatibility); the kinds filter keeps those models' cases
         // from flooding this page.
@@ -369,6 +370,7 @@ export const GROUPS: CatalogueGroup[] = [
       {
         slug: "macbook",
         title: "MacBook Leather Sleeve",
+        hero: "MRQU2",
         models: [
           "MacBook 12",
           "MacBook Pro 13",
@@ -384,7 +386,11 @@ export const GROUPS: CatalogueGroup[] = [
       },
       { slug: "pencil", title: "Apple Pencil", models: ["Apple Pencil"] },
       { slug: "ipod-touch", title: "iPod Touch Loop", models: ["iPod touch"] },
-      { slug: "ipod-accessories", title: "iPod Accessories", models: [] },
+      {
+        slug: "ipod-accessories",
+        title: "iPod Accessories [draft]",
+        models: [],
+      },
     ],
   },
 ];
@@ -396,7 +402,7 @@ export const TOP_PAGES: CataloguePage[] = [
     slug: "airtag",
     title: "AirTag",
     blurb: "Loops and Key Rings",
-    hero: "MT2M3",
+    hero: "MM083",
     models: ["AirTag"],
   },
 ];
