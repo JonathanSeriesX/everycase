@@ -53,12 +53,16 @@ function CollectionCaseCard({
   deviceColour,
   canRemove = false,
   canLink = false,
+  priority = false,
 }: {
   item: CaseRecord;
   title?: string;
   deviceColour?: string;
   canRemove?: boolean;
   canLink?: boolean;
+  /** Above-the-fold card: load its image eagerly at high priority for LCP,
+   * instead of the grid's default native lazy-loading. */
+  priority?: boolean;
 }) {
   const name = getCaseName(item);
   const code = (
@@ -87,7 +91,11 @@ function CollectionCaseCard({
         aria-label={name}
       >
         <div className={carousel.imageShell}>
-          <CaseImage code={code} alt={name} lazy />
+          {priority ? (
+            <CaseImage code={code} alt={name} priority />
+          ) : (
+            <CaseImage code={code} alt={name} lazy />
+          )}
         </div>
         <strong className={`${carousel.caseTitle} ${carousel.linkTitle}`}>
           {titleLines(title ?? name)}
@@ -103,6 +111,7 @@ export function CaseGrid({
   canRemove = false,
   canLink = false,
   anchorId,
+  priorityCount = 0,
 }: {
   cases: CaseRecord[];
   canRemove?: boolean;
@@ -110,6 +119,9 @@ export function CaseGrid({
   canLink?: boolean;
   /** Scroll-restoration anchor id for this whole section (see CollectionFreshness). */
   anchorId?: string;
+  /** Eagerly load the first N cards' images — set only when this grid is the
+   * page's first content (no device sections above it). */
+  priorityCount?: number;
 }) {
   // `standalone` supplies the breathing room a tab bar would otherwise add
   // between the section heading and the grid.
@@ -118,12 +130,13 @@ export function CaseGrid({
       className={`${carousel.cardTrack} ${carousel.standalone}`}
       data-collection-anchor={anchorId}
     >
-      {cases.map((item) => (
+      {cases.map((item, index) => (
         <CollectionCaseCard
           key={item.SKU}
           item={item}
           canRemove={canRemove}
           canLink={canLink}
+          priority={index < priorityCount}
         />
       ))}
     </div>
@@ -157,6 +170,9 @@ export function DeviceSections({
   return (
     <>
       {groups.map(({ device: record, cases, implicit }, index) => {
+        // The first group is the page's first content row — load its device
+        // tile and leading cases eagerly for LCP; everything below stays lazy.
+        const firstGroup = index === 0;
         const variants = variantsFor(record.model);
         const modelName = displayModelName(record.model);
         const pagePath = devicePagePath(record.deviceId);
@@ -181,7 +197,11 @@ export function DeviceSections({
                     <>
                       <div className={carousel.imageShell}>
                         {artwork ? (
-                          <CaseImage code={artwork} alt={label} lazy />
+                          <CaseImage
+                            code={artwork}
+                            alt={label}
+                            {...(firstGroup ? { priority: true } : { lazy: true })}
+                          />
                         ) : (
                           <PhoneSymbol className={device.placeholder} />
                         )}
@@ -218,13 +238,15 @@ export function DeviceSections({
                 )}
               </div>
             </article>
-            {cases.map((item) => {
+            {cases.map((item, caseIndex) => {
               const kindLabel = COLLECTION_KIND_LABELS[item.kind] ?? item.kind;
               return (
               <CollectionCaseCard
                 key={item.SKU}
                 item={item}
                 canRemove={canRemove}
+                // First row: eager-load the device tile's leading cases too.
+                priority={firstGroup && caseIndex < 3}
                 // Match the case photo to the owned device's colour when a
                 // matching shot exists (falls back to the default thumbnail).
                 deviceColour={record.colour}

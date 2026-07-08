@@ -1,6 +1,8 @@
 import { headers } from "next/headers";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { auth } from "../../../lib/auth";
+import { collectionTag } from "../../../lib/collectionItems";
 import {
   deviceThumbnail,
   getAllDevices,
@@ -102,6 +104,9 @@ export async function PUT(request: Request) {
   if (replaceDeviceId && replaceDeviceId !== deviceId) {
     await userDevices().deleteOne({ userId, deviceId: replaceDeviceId });
   }
+  // Route handlers can't use updateTag (Server-Action-only); "max" is Next
+  // 16's drop-in for the old single-arg purge — expire every tagged entry.
+  revalidateTag(collectionTag(userId), "max");
   return NextResponse.json({ deviceId });
 }
 
@@ -118,5 +123,8 @@ export async function DELETE(request: Request) {
   }
 
   await userDevices().deleteOne({ userId, deviceId });
+  // Route handlers can't use updateTag (Server-Action-only); "max" is Next
+  // 16's drop-in for the old single-arg purge — expire every tagged entry.
+  revalidateTag(collectionTag(userId), "max");
   return NextResponse.json({ deviceId, removed: true });
 }

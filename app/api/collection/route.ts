@@ -1,7 +1,8 @@
 import { headers } from "next/headers";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { auth } from "../../../lib/auth";
-import { collectionItems } from "../../../lib/collectionItems";
+import { collectionItems, collectionTag } from "../../../lib/collectionItems";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 
 // Collection items: one document per (user, case) — see lib/collectionItems.
@@ -84,6 +85,9 @@ export async function PUT(request: Request) {
     { $set: { status }, $setOnInsert: { createdAt: new Date() } },
     { upsert: true },
   );
+  // Route handlers can't use updateTag (Server-Action-only); "max" is Next
+  // 16's drop-in for the old single-arg purge — expire every tagged entry.
+  revalidateTag(collectionTag(userId), "max");
   return NextResponse.json({ sku, status });
 }
 
@@ -99,5 +103,8 @@ export async function DELETE(request: Request) {
   }
 
   await collectionItems().deleteOne({ userId, sku });
+  // Route handlers can't use updateTag (Server-Action-only); "max" is Next
+  // 16's drop-in for the old single-arg purge — expire every tagged entry.
+  revalidateTag(collectionTag(userId), "max");
   return NextResponse.json({ sku, status: null });
 }

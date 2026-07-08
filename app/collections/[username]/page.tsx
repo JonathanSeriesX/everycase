@@ -93,12 +93,16 @@ export default async function PublicCollectionPage({
   params,
 }: CollectionsRouteProps) {
   const { username } = await params;
-  const owner = await findPublicOwner(username.toLowerCase());
+  // The owner lookup and the visitor's session are independent — run them
+  // together so the page isn't waiting on two serial Mongo round trips.
+  const [owner, session] = await Promise.all([
+    findPublicOwner(username.toLowerCase()),
+    auth.api.getSession({ headers: await headers() }),
+  ]);
   if (!owner) return notFound();
 
   // /collection redirects public owners here — this is also THEIR view, so
   // they keep their remove/change-colour controls. Everyone else is a guest.
-  const session = await auth.api.getSession({ headers: await headers() });
   const isOwner = session?.user.id === owner._id.toString();
 
   const { owned, wanted, deviceGroups, unassigned } = await loadCollection(
@@ -138,6 +142,8 @@ export default async function PublicCollectionPage({
                   canRemove={isOwner}
                   canLink={isOwner}
                   anchorId="section:unassigned"
+                  // First content only when there are no device sections above.
+                  priorityCount={deviceGroups.length === 0 ? 4 : 0}
                 />
               )}
             </section>
@@ -149,6 +155,10 @@ export default async function PublicCollectionPage({
                 cases={wanted}
                 canRemove={isOwner}
                 anchorId="section:wishlist"
+                // First content only when nothing owned renders above it.
+                priorityCount={
+                  owned.length === 0 && deviceGroups.length === 0 ? 4 : 0
+                }
               />
             </section>
           )}

@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { db } from "./mongo";
 import { getAllCasesFromCSV, type CaseRecord } from "./getCasesFromCSV";
 import {
@@ -28,6 +29,33 @@ export interface CollectionItemDoc {
 
 export const collectionItems = () =>
   db.collection<CollectionItemDoc>("collectionItems");
+
+/** Cache tag for a user's collection reads. The write routes
+ * (api/collection, api/devices) revalidate it, so guest page views serve
+ * from cache and skip Mongo entirely until the owner next changes something. */
+export const collectionTag = (userId: string) => `collection:${userId}`;
+
+// The two per-user Mongo reads, cached under the user's collection tag. Only
+// the fields the loader actually uses are projected, so the cached payload is
+// plain and serialisable (no ObjectId/Date round-tripping). The createdAt
+// sort still applies server-side before projection, preserving newest-first.
+const loadCollectionDocs = (userId: string) =>
+  unstable_cache(
+    async () => {
+      const [docs, deviceDocs] = await Promise.all([
+        collectionItems()
+          .find({ userId }, { projection: { _id: 0, sku: 1, status: 1 } })
+          .sort({ createdAt: -1 })
+          .toArray(),
+        userDevices()
+          .find({ userId }, { projection: { _id: 0, deviceId: 1 } })
+          .toArray(),
+      ]);
+      return { docs, deviceDocs };
+    },
+    ["collection-docs", userId],
+    { tags: [collectionTag(userId)] },
+  )();
 
 // Compatible device ids per case model, cached — the collection loader hits
 // the same few models over and over.
@@ -66,10 +94,7 @@ export interface LoadedCollection {
 export const loadCollection = cache(async function loadCollection(
   userId: string,
 ): Promise<LoadedCollection> {
-  const [docs, deviceDocs] = await Promise.all([
-    collectionItems().find({ userId }).sort({ createdAt: -1 }).toArray(),
-    userDevices().find({ userId }).toArray(),
-  ]);
+  const { docs, deviceDocs } = await loadCollectionDocs(userId);
 
   const bySku = new Map(
     getAllCasesFromCSV().map((record) => [record.SKU, record]),
