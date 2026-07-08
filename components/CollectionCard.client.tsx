@@ -135,7 +135,7 @@ export default function CollectionCard({ sku }: { sku: string }) {
 
   return (
     <div className={styles.card} data-pagefind-ignore>
-      <span className={styles.label}>Your collection</span>
+      <span className={styles.label}>Collection status</span>
       <div className={`${styles.chipRow} ${styles.collectionRow}`}>
         {chip("owned", "I own it", "Owned")}
         {chip("wanted", "I want it", "Wishlisted")}
@@ -177,7 +177,9 @@ export default function CollectionCard({ sku }: { sku: string }) {
                           {device.thumbnail ? (
                             <CaseImage code={device.thumbnail} alt="" />
                           ) : (
-                            <PhoneSymbol className={styles.deviceThumbFallback} />
+                            <PhoneSymbol
+                              className={styles.deviceThumbFallback}
+                            />
                           )}
                         </span>
                         <span className={styles.deviceRowLabel}>
