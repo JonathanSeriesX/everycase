@@ -23,6 +23,20 @@ export interface DeviceRecord {
 export const deviceThumbnail = (device: DeviceRecord): string =>
   device.altThumbnail || device.imageKey;
 
+/**
+ * Human-facing model name. devices.csv stores the join-friendly form that
+ * matches models.csv compatibility ("iPad Pro 9.7-inch", "MacBook 12"); the UI
+ * shows screen sizes with the ″ prime ("iPad Pro 9.7″", "MacBook 12″"). Only
+ * screen-size numbers get the prime — iPhone/iPad generation numbers ("iPad 2",
+ * "iPhone 15") are untouched.
+ */
+export function displayModelName(model: string): string {
+  const withPrime = model.replace(/-inch/g, "″");
+  return /^MacBook\b/.test(withPrime) && /[0-9]$/.test(withPrime)
+    ? `${withPrime}″`
+    : withPrime;
+}
+
 const DEVICES_PATH = path.join(process.cwd(), "database", "devices.csv");
 
 let cachedDevices: DeviceRecord[] | undefined;

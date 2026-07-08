@@ -2,8 +2,10 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { colourVariantCount, type CaseRecord } from "../lib/getCasesFromCSV";
 import type { DeviceGroup } from "../lib/collectionItems";
+import { devicePagePath } from "../lib/catalogue";
 import {
   deviceThumbnail,
+  displayModelName,
   getAllDevices,
   getCompatibleDevices,
 } from "../lib/devices";
@@ -156,12 +158,14 @@ export function DeviceSections({
     <>
       {groups.map(({ device: record, cases, implicit }, index) => {
         const variants = variantsFor(record.model);
+        const modelName = displayModelName(record.model);
+        const pagePath = devicePagePath(record.deviceId);
         // A colour distinguishes nothing when the model only comes in one
         // (AirTag, Apple Pencil) — show just the name.
         const label =
           record.colour && variants.length > 1
-            ? `${record.model} — ${record.colour}`
-            : record.model;
+            ? `${modelName} — ${record.colour}`
+            : modelName;
         const artwork = deviceThumbnail(record);
         return (
           <Fragment key={record.deviceId}>
@@ -172,25 +176,43 @@ export function DeviceSections({
           >
             <article className={`${carousel.caseCard} ${device.tile}`}>
               <div className={device.deviceCardBody}>
-                <div className={carousel.imageShell}>
-                  {artwork ? (
-                    <CaseImage code={artwork} alt={label} lazy />
+                {(() => {
+                  const inner = (
+                    <>
+                      <div className={carousel.imageShell}>
+                        {artwork ? (
+                          <CaseImage code={artwork} alt={label} lazy />
+                        ) : (
+                          <PhoneSymbol className={device.placeholder} />
+                        )}
+                      </div>
+                      <strong
+                        className={`${carousel.caseTitle} ${carousel.linkTitle}`}
+                      >
+                        {titleLines(label)}
+                      </strong>
+                    </>
+                  );
+                  // Tap the tile to open the model's catalogue page (its cases).
+                  return pagePath ? (
+                    <Link
+                      href={pagePath}
+                      className={carousel.cardLink}
+                      aria-label={label}
+                    >
+                      {inner}
+                    </Link>
                   ) : (
-                    <PhoneSymbol className={device.placeholder} />
-                  )}
-                </div>
-                <strong
-                  className={`${carousel.caseTitle} ${carousel.linkTitle}`}
-                >
-                  {titleLines(label)}
-                </strong>
+                    inner
+                  );
+                })()}
                 {/* Implicit groups are derived, not owned — nothing to
                     remove or recolour. */}
                 {canRemove && !implicit && (
                   <DeviceActions
                     deviceId={record.deviceId}
                     label={label}
-                    model={record.model}
+                    model={modelName}
                     variants={variants}
                   />
                 )}

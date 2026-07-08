@@ -4,6 +4,7 @@ import {
   type CaseRecord,
 } from "./getCasesFromCSV";
 import { CURRENCIES, type Currency } from "./currencies";
+import { getCompatibleDevices } from "./devices";
 
 // The whole site tree in one place: groups → pages → CSV model names.
 // This replaces Nextra's _meta files and the model/material props that were
@@ -804,4 +805,59 @@ export function findPageForModel(
       (!page.kinds || (kind !== undefined && page.kinds.includes(kind))),
   );
   return matches.find(({ page }) => page.kinds) ?? matches[0] ?? null;
+}
+
+let devicePageIndex:
+  | Map<string, { group: CatalogueGroup | null; page: CataloguePage }>
+  | undefined;
+
+/**
+ * Every device → the catalogue page whose cases it fits. This is the inverse
+ * of getCompatibleDevices (which the collection uses to group cases under a
+ * device): a device belongs to a page when the page has a case model the
+ * device is compatible with. Main product pages (no `kinds` filter) win over
+ * the accessory sub-pages (docks/wallets) a device may also fit; ties break in
+ * catalogue order (newest first). Built once, then cached.
+ */
+function buildDevicePageIndex() {
+  const candidates: { group: CatalogueGroup | null; page: CataloguePage }[] =
+    [];
+  for (const page of TOP_PAGES) candidates.push({ group: null, page });
+  for (const group of GROUPS) {
+    for (const page of group.pages) candidates.push({ group, page });
+  }
+  // Product pages before their accessory sub-pages, so an iPhone lands on
+  // /iphone/5s rather than the docks page whose model it also carries.
+  const ordered = [
+    ...candidates.filter(({ page }) => !page.kinds),
+    ...candidates.filter(({ page }) => page.kinds),
+  ];
+  const index = new Map<
+    string,
+    { group: CatalogueGroup | null; page: CataloguePage }
+  >();
+  for (const candidate of ordered) {
+    for (const model of candidate.page.models) {
+      for (const device of getCompatibleDevices(model)) {
+        if (!index.has(device.deviceId)) index.set(device.deviceId, candidate);
+      }
+    }
+  }
+  return index;
+}
+
+export function findPageForDevice(
+  deviceId: string,
+): { group: CatalogueGroup | null; page: CataloguePage } | null {
+  devicePageIndex ??= buildDevicePageIndex();
+  return devicePageIndex.get(deviceId) ?? null;
+}
+
+/** The catalogue-page URL for a device, or null when it fits no page. */
+export function devicePagePath(deviceId: string): string | null {
+  const found = findPageForDevice(deviceId);
+  if (!found) return null;
+  return found.group
+    ? `/${found.group.slug}/${found.page.slug}`
+    : `/${found.page.slug}`;
 }
