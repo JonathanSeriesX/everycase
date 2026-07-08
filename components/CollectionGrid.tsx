@@ -17,6 +17,13 @@ import { PhoneSymbol } from "./icons";
 import carousel from "../styles/VerticalCarousel.module.css";
 import device from "../styles/DeviceSection.module.css";
 
+// Collection-only display overrides for a few verbose accessory kinds. Only the
+// short title under a device group is affected — case pages and search keep the
+// full CSV name ("iPhone Lightning Dock — …").
+const COLLECTION_KIND_LABELS: Record<string, string> = {
+  "iPhone Lightning Dock": "Lightning Dock",
+};
+
 // Render a case-card title with each " — " segment on its own centred line —
 // "Silicone Case" / "Pink Pomelo" instead of "Silicone Case — Pink Pomelo".
 // Titles without the separator (single-colour products, "Clear Case") stay on
@@ -189,7 +196,9 @@ export function DeviceSections({
                 )}
               </div>
             </article>
-            {cases.map((item) => (
+            {cases.map((item) => {
+              const kindLabel = COLLECTION_KIND_LABELS[item.kind] ?? item.kind;
+              return (
               <CollectionCaseCard
                 key={item.SKU}
                 item={item}
@@ -200,16 +209,18 @@ export function DeviceSections({
                 // Append the colour only when it distinguishes something: skip
                 // it for one-colour products (MagSafe Battery Pack, a Smart
                 // Keyboard) and for "Clear Case" (colour "Clear" — don't say it
-                // twice).
+                // twice). Colour logic keys off the real kind; only the shown
+                // label is overridden.
                 title={
                   item.colour &&
                   !item.kind.includes(item.colour) &&
                   colourVariantCount(item.model, item.kind) > 1
-                    ? `${item.kind} — ${item.colour}`
-                    : item.kind
+                    ? `${kindLabel} — ${item.colour}`
+                    : kindLabel
                 }
               />
-            ))}
+              );
+            })}
           </div>
           </Fragment>
         );
