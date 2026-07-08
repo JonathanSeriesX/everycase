@@ -107,6 +107,11 @@ const MODEL_ALIASES: Record<string, string> = {
   "iPhone SE (2020)": "iPhone SE 2nd gen",
   "iPhone SE (2022)": "iPhone SE 3rd gen",
   "Apple Pencil (1st generation)": "Apple Pencil (1st gen)",
+  "MacBook 12″ (2015–2017)": "MacBook 12",
+  "MacBook Air 13″": "MacBook Air 13",
+  "MacBook Pro 13″": "MacBook Pro 13",
+  "MacBook Pro 15″ (2016–2019)": "MacBook Pro 15",
+  "MacBook Pro 16″ (2019)": "MacBook Pro 16",
   // Not real devices: the shared homes for MagSafe accessories (wallets,
   // chargers) and Lightning docks in collections — see the implicit groups
   // in lib/collectionItems.
@@ -161,7 +166,9 @@ export function compareDevicesForCollection(
  */
 export function getCompatibleDevices(caseModel: string): DeviceRecord[] {
   const wanted = new Set(
-    getCompatibleModels(caseModel).map((model) => MODEL_ALIASES[model] ?? model),
+    getCompatibleModels(caseModel).map(
+      (model) => MODEL_ALIASES[model] ?? model,
+    ),
   );
   if (wanted.size === 0) return [];
   return getAllDevices().filter((device) => wanted.has(device.model));
