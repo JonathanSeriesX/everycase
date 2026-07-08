@@ -198,7 +198,7 @@ export const GROUPS: CatalogueGroup[] = [
       {
         slug: "4",
         title: "iPhone 4, 4s",
-        hero: "MC671",
+        hero: "MC672_AV5",
         blurb: "Bumpers",
         models: ["iPhone 4"],
       },
