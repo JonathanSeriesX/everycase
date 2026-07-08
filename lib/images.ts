@@ -36,6 +36,7 @@ const toBool = (value: string | undefined): boolean => {
 let cachedImages: ImageRecord[] | undefined;
 let cachedVisibleFilenames: string[] | undefined;
 let cachedResByFilename: Map<string, number> | undefined;
+let cachedImagesBySku: Map<string, ImageRecord[]> | undefined;
 
 /** Every image row, in images.csv (gallery) order. */
 export function getAllImages(): ImageRecord[] {
@@ -72,6 +73,32 @@ export function getVisibleImageFilenames(): string[] {
     .filter((record) => !record.hidden)
     .map((record) => record.filename);
   return cachedVisibleFilenames;
+}
+
+/**
+ * The image filename whose pictured device colour matches `colour` for a given
+ * case SKU — e.g. the `MH004` photo showing a Light Gold iPhone Air. Lets the
+ * collection page swap a case's thumbnail to match the owned device's colour.
+ * Returns null when the SKU has no colour-tagged image for that colour (the
+ * caller should fall back to its default thumbnail). Filenames key to a SKU by
+ * their pre-underscore prefix (`MH004`, `MH004_AV1`); colour is matched exactly
+ * against the device finish names in devices.csv (both are trimmed on load).
+ */
+export function imageForColour(sku: string, colour: string): string | null {
+  if (!sku || !colour) return null;
+  if (!cachedImagesBySku) {
+    cachedImagesBySku = new Map();
+    for (const record of getAllImages()) {
+      const key = record.filename.split("_")[0];
+      let list = cachedImagesBySku.get(key);
+      if (!list) cachedImagesBySku.set(key, (list = []));
+      list.push(record);
+    }
+  }
+  const match = cachedImagesBySku
+    .get(sku)
+    ?.find((record) => !record.hidden && record.colour === colour);
+  return match?.filename ?? null;
 }
 
 /** The asset's square resolution in px; 0 when unknown. */

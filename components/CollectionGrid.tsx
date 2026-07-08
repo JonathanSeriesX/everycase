@@ -9,6 +9,7 @@ import {
 } from "../lib/devices";
 import { CURRENCIES, type Currency } from "../lib/currencies";
 import { getCaseName } from "../lib/caseName";
+import { imageForColour } from "../lib/images";
 import CaseImage from "./CaseImage.client";
 import CollectionCaseTile from "./CollectionCaseTile.client";
 import DeviceActions, { type DeviceVariant } from "./DeviceActions.client";
@@ -20,19 +21,28 @@ import device from "../styles/DeviceSection.module.css";
 // groups show the short "kind — colour" form); the aria-label keeps the
 // full name either way. `canLink` (unlinked owned cases, owner's view)
 // offers the device window — but only when the catalogue actually has
-// devices this case fits.
+// devices this case fits. `deviceColour` (cases nested under a device) swaps
+// the thumbnail to the photo whose pictured device matches that colour, when
+// one has been tagged in images.csv.
 function CollectionCaseCard({
   item,
   title,
+  deviceColour,
   canRemove = false,
   canLink = false,
 }: {
   item: CaseRecord;
   title?: string;
+  deviceColour?: string;
   canRemove?: boolean;
   canLink?: boolean;
 }) {
   const name = getCaseName(item);
+  const code = (
+    (deviceColour && imageForColour(item.SKU, deviceColour)) ||
+    item.alt_thumbnail ||
+    item.SKU
+  ).trim();
   const linkOptions = canLink
     ? getCompatibleDevices(item.model).map((record) => ({
         deviceId: record.deviceId,
@@ -54,11 +64,7 @@ function CollectionCaseCard({
         aria-label={name}
       >
         <div className={carousel.imageShell}>
-          <CaseImage
-            code={(item.alt_thumbnail || item.SKU).trim()}
-            alt={name}
-            lazy
-          />
+          <CaseImage code={code} alt={name} lazy />
         </div>
         <strong className={`${carousel.caseTitle} ${carousel.linkTitle}`}>
           {title ?? name}
@@ -174,6 +180,9 @@ export function DeviceSections({
                 key={item.SKU}
                 item={item}
                 canRemove={canRemove}
+                // Match the case photo to the owned device's colour when a
+                // matching shot exists (falls back to the default thumbnail).
+                deviceColour={record.colour}
                 // Append the colour only when it distinguishes something: skip
                 // it for one-colour products (MagSafe Battery Pack, a Smart
                 // Keyboard) and for "Clear Case" (colour "Clear" — don't say it
