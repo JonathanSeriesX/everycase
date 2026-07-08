@@ -20,7 +20,7 @@ Thanks ever so much!
 
 You can buy me a [nice latte](https://www.youtube.com/shorts/h75W1uhL-iQ) here:
 
-<a href="https://ko-fi.com/jonathanx64" target="_blank" rel="noreferrer"><img src="https://cloudfront.everycase.org/assets/ko-fi.jpg" alt="Buy Me A Coffee" style={{ height: "auto", width: "315px" }} /></a>
+<a href="https://ko-fi.com/jonathanx64" target="_blank" rel="noreferrer"><img src="https://cloudfront.everycase.org/assets/ko-fi.jpg" alt="Buy Me A Coffee" style={{ height: "auto", width: "315px", borderRadius: "22px" }} /></a>
 
 Or by using:
 
@@ -33,8 +33,7 @@ Noticeable contributions will be acknowledged in [Credits](about#contributors--p
 ---
 
 I also promise to donate 10% of your contributions towards aiding Ukraine 🇺🇦. The funds will be transferred directly to
-the squads fighting on the battlefield. They use these donations to purchase additional gear such as ballistic vests,
-diesel generators, drones, pickup trucks, and other necessary equipment.
+the squads fighting on the battlefield.
 
 However, if you prefer not to contribute towards this cause, please let me know by leaving a comment when making a
 donation, and I will respect your choice. Thanks.
