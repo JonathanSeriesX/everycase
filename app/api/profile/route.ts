@@ -3,52 +3,18 @@ import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { auth } from "../../../lib/auth";
 import { db } from "../../../lib/mongo";
+import {
+  ensureUsernameIndex,
+  RESERVED_USERNAMES,
+  USERNAME_PATTERN,
+} from "../../../lib/username";
 
 // Profile fields: display name (Better Auth's `name`), the URL handle
 // (`username`, unique, lowercase) and the `collectionPublic` flag gating
-// /collections/<username>.
-
-const USERNAME_PATTERN = /^[a-z0-9][a-z0-9_-]{2,19}$/;
-
-// Handles that would shadow routes or misrepresent the site.
-const RESERVED_USERNAMES = new Set([
-  "about",
-  "account",
-  "admin",
-  "administrator",
-  "api",
-  "apple",
-  "case",
-  "cases",
-  "collection",
-  "collections",
-  "everycase",
-  "help",
-  "login",
-  "logout",
-  "me",
-  "moderator",
-  "official",
-  "root",
-  "settings",
-  "signin",
-  "signup",
-  "support",
-  "user",
-  "users",
-]);
+// /collections/<username>. Handle rules (pattern, reserved set, unique index)
+// live in lib/username, shared with the signup default-handle assignment.
 
 const users = db.collection("user");
-
-let indexReady: Promise<unknown> | undefined;
-const ensureUsernameIndex = () =>
-  (indexReady ??= users.createIndex(
-    { username: 1 },
-    {
-      unique: true,
-      partialFilterExpression: { username: { $type: "string" } },
-    },
-  ));
 
 // The Mongo adapter stores users under an ObjectId; sessions carry it as a
 // hex string.

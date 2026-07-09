@@ -1,11 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { headers } from "next/headers";
 
-export default function NotFound() {
+export default async function NotFound() {
+  // The collections middleware (proxy.ts) tags its requests so this shared
+  // boundary can name the right thing — "collection" under /collections/*,
+  // "case" everywhere else.
+  const noun =
+    (await headers()).get("x-ec-section") === "collections"
+      ? "collection"
+      : "case";
   return (
     <div style={{ textAlign: "center", padding: "3rem 0" }}>
       <h1>
-        This case is a lie.
+        This {noun} is a lie.
         <br />
         <br />
       </h1>

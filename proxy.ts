@@ -10,11 +10,21 @@ export default function proxy(request: NextRequest) {
 
   const canonical =
     section === "case" ? slug.toUpperCase() : slug.toLowerCase();
-  if (canonical === slug) return;
+  if (canonical !== slug) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${section}/${canonical}`;
+    return NextResponse.redirect(url, 308);
+  }
 
-  const url = request.nextUrl.clone();
-  url.pathname = `/${section}/${canonical}`;
-  return NextResponse.redirect(url, 308);
+  // Tag collection requests so the root 404 can say "This collection is a lie"
+  // rather than "…case…". A nested not-found.tsx would be the natural home for
+  // this, but notFound() from the force-dynamic [username] page always renders
+  // the root boundary, so the copy has to branch there instead.
+  if (section === "collections") {
+    const headers = new Headers(request.headers);
+    headers.set("x-ec-section", "collections");
+    return NextResponse.next({ request: { headers } });
+  }
 }
 
 export const config = {

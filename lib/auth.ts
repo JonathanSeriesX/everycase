@@ -6,6 +6,7 @@ import { emailOTP } from "better-auth/plugins/email-otp";
 import { passkey } from "@better-auth/passkey";
 import { dash } from "@better-auth/infra";
 import { db } from "./mongo";
+import { assignDefaultUsername } from "./username";
 
 // Codes live long enough that "it will arrive eventually" holds, and while
 // one is outstanding the send endpoint refuses to mint another (see the
@@ -56,6 +57,19 @@ export const auth = betterAuth({
         required: false,
         input: false,
         defaultValue: false,
+      },
+    },
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        // Give every new account a default handle from its email
+        // (local-part + 69, then 64, 67, 420, then 1, 2, 3, …) so their
+        // collection has a shareable address ready. collectionPublic stays
+        // false, so nothing is exposed until they flip the switch.
+        after: async (user) => {
+          await assignDefaultUsername(user.id, user.email);
+        },
       },
     },
   },
