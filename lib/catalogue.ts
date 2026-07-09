@@ -371,7 +371,7 @@ export const GROUPS: CatalogueGroup[] = [
       {
         slug: "macbook",
         title: "MacBook Leather Sleeve",
-        hero: "MRQU2",
+        hero: "MQG12",
         models: [
           "MacBook 12",
           "MacBook Pro 13",
