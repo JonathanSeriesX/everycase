@@ -1,5 +1,4 @@
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { ObjectId } from "mongodb";
 import { auth } from "../../lib/auth";
@@ -14,6 +13,7 @@ import {
 import CollectionHead from "../../components/CollectionHead";
 import CollectionStats from "../../components/CollectionStats";
 import CollectionFreshness from "../../components/CollectionFreshness.client";
+import PublicAccessCard from "../../components/PublicAccessCard.client";
 
 // Personal, per-user page — always rendered on demand, never cached.
 export const dynamic = "force-dynamic";
@@ -39,19 +39,20 @@ export default async function CollectionPage() {
     );
   }
 
-  // A public collection has a nicer address — send its owner there.
+  // The owner always stays here on their editable view — the "Public access"
+  // tile below carries the identity + share controls, and /collections/<handle>
+  // is the read-only public mirror. Seed the tile from the user doc.
   const userId = session.user.id;
   const userDoc = await db
     .collection("user")
     .findOne(
       ObjectId.isValid(userId) ? { _id: new ObjectId(userId) } : { id: userId },
     );
-  if (
-    userDoc?.collectionPublic === true &&
-    typeof userDoc.username === "string"
-  ) {
-    redirect(`/collections/${userDoc.username}`);
-  }
+  const profile = {
+    name: typeof userDoc?.name === "string" ? userDoc.name : "",
+    username: typeof userDoc?.username === "string" ? userDoc.username : null,
+    collectionPublic: userDoc?.collectionPublic === true,
+  };
 
   const { owned, wanted, deviceGroups, unassigned } =
     await loadCollection(userId);
@@ -63,6 +64,7 @@ export default async function CollectionPage() {
     <article data-pagefind-ignore>
       <CollectionFreshness signature={signature} />
       <h1>My collection</h1>
+      <PublicAccessCard initial={profile} />
       {owned.length === 0 &&
       wanted.length === 0 &&
       deviceGroups.length === 0 ? (

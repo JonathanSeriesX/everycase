@@ -1,9 +1,7 @@
 import { headers } from "next/headers";
+import Link from "next/link";
 import type { Metadata } from "next";
-import { ObjectId } from "mongodb";
 import { auth } from "../../lib/auth";
-import { db } from "../../lib/mongo";
-import SettingsProfile from "../../components/SettingsProfile.client";
 import PasskeyCard, {
   type PasskeyInfo,
 } from "../../components/PasskeyCard.client";
@@ -23,23 +21,8 @@ export const metadata: Metadata = {
 export default async function SettingsPage() {
   const session = await auth.api.getSession({ headers: await headers() });
 
-  let profile = null;
   let passkeys: PasskeyInfo[] = [];
   if (session) {
-    const userId = session.user.id;
-    const userDoc = await db
-      .collection("user")
-      .findOne(
-        ObjectId.isValid(userId)
-          ? { _id: new ObjectId(userId) }
-          : { id: userId },
-      );
-    profile = {
-      name: typeof userDoc?.name === "string" ? userDoc.name : "",
-      username: typeof userDoc?.username === "string" ? userDoc.username : null,
-      collectionPublic: userDoc?.collectionPublic === true,
-    };
-
     // Through Better Auth's own API (not a raw query): its adapter stores
     // userId as an ObjectId, which a naive string query silently misses.
     const passkeyList = await auth.api.listPasskeys({
@@ -57,22 +40,23 @@ export default async function SettingsPage() {
     <article className={styles.page}>
       <h1>Settings</h1>
 
-      {profile ? (
+      {session ? (
         <>
-          <SettingsProfile initial={profile} />
-          <DeleteAccount />
-
           <section className={styles.section}>
             <h2>Passkeys</h2>
             <PasskeyCard initial={passkeys} />
           </section>
+
+          <DeleteAccount />
         </>
       ) : (
         <section className={styles.section}>
-          <h2>Profile</h2>
+          <h2>Account</h2>
           <p>
-            Sign in with the account button in the top-right corner to set your
-            display name, username, and collection visibility.
+            Sign in with the account button in the top-right corner to manage
+            your passkeys and account. Your display name, username, and
+            collection sharing live on your{" "}
+            <Link href="/collection">collection page</Link>.
           </p>
         </section>
       )}

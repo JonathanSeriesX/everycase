@@ -1,21 +1,17 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
-import { headers } from "next/headers";
 import type { Metadata, ResolvingMetadata } from "next";
 import type { Document } from "mongodb";
-import { auth } from "../../../lib/auth";
 import { db } from "../../../lib/mongo";
 import { loadCollection } from "../../../lib/collectionItems";
 import { formatPrice } from "../../../lib/currencies";
 import {
   CaseGrid,
   DeviceSections,
-  collectionSignature,
   computeLaunchValue,
 } from "../../../components/CollectionGrid";
 import CollectionHead from "../../../components/CollectionHead";
 import CollectionStats from "../../../components/CollectionStats";
-import CollectionFreshness from "../../../components/CollectionFreshness.client";
 
 // Public, per-user page — rendered on demand so it always reflects the
 // owner's latest items and privacy setting.
@@ -93,29 +89,20 @@ export default async function PublicCollectionPage({
   params,
 }: CollectionsRouteProps) {
   const { username } = await params;
-  // The owner lookup and the visitor's session are independent — run them
-  // together so the page isn't waiting on two serial Mongo round trips.
-  const [owner, session] = await Promise.all([
-    findPublicOwner(username.toLowerCase()),
-    auth.api.getSession({ headers: await headers() }),
-  ]);
+  const owner = await findPublicOwner(username.toLowerCase());
   if (!owner) return notFound();
 
-  // /collection redirects public owners here — this is also THEIR view, so
-  // they keep their remove/change-colour controls. Everyone else is a guest.
-  const isOwner = session?.user.id === owner._id.toString();
-
+  // This page is read-only for everyone, owner included — no remove/link/
+  // recolour controls. Owners edit on /collection.
   const { owned, wanted, deviceGroups, unassigned } = await loadCollection(
     owner._id.toString(),
   );
   const { sums, pricedCount } = computeLaunchValue(owned);
-  const signature = collectionSignature(deviceGroups, unassigned, wanted);
 
   return (
     // Collections are personal, ever-changing, and noindex — keep them out of
     // the Pagefind search index entirely.
     <article data-pagefind-ignore>
-      {isOwner && <CollectionFreshness signature={signature} />}
       <h1>{displayName(owner)}’s collection</h1>
       {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
         <p>Nothing here yet.</p>
@@ -132,15 +119,13 @@ export default async function PublicCollectionPage({
                 pricedCount={pricedCount}
               />
               <hr />
-              <DeviceSections groups={deviceGroups} canRemove={isOwner} />
+              <DeviceSections groups={deviceGroups} />
               {unassigned.length > 0 && deviceGroups.length > 0 && (
                 <h3>Not linked to a device</h3>
               )}
               {unassigned.length > 0 && (
                 <CaseGrid
                   cases={unassigned}
-                  canRemove={isOwner}
-                  canLink={isOwner}
                   anchorId="section:unassigned"
                   // First content only when there are no device sections above.
                   priorityCount={deviceGroups.length === 0 ? 4 : 0}
@@ -153,7 +138,6 @@ export default async function PublicCollectionPage({
               <CollectionHead title="Wishlist" caseCount={wanted.length} />
               <CaseGrid
                 cases={wanted}
-                canRemove={isOwner}
                 anchorId="section:wishlist"
                 // First content only when nothing owned renders above it.
                 priorityCount={

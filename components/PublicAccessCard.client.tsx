@@ -24,11 +24,12 @@ const patchProfile = async (body: Record<string, unknown>): Promise<Profile> => 
 };
 
 /**
- * The Profile and Public collection sections on /settings. One component
- * because they share state (going public needs the freshly-saved username),
- * but rendered as two separate cards.
+ * The "Public access" tile on the owner's /collection page: display name and
+ * username (one Save) above the share switch, all in a single card. Name and
+ * username share the form because going public needs a freshly-saved handle;
+ * the switch saves on its own, optimistically.
  */
-export default function SettingsProfile({ initial }: { initial: Profile }) {
+export default function PublicAccessCard({ initial }: { initial: Profile }) {
   const router = useRouter();
   const [name, setName] = useState(initial.name);
   const [username, setUsername] = useState(initial.username ?? "");
@@ -46,8 +47,8 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
       setName(data.name);
       setUsername(data.username ?? "");
       setMessage("Saved.");
-      // Invalidate the App Router client cache so /settings and the collection
-      // pages don't re-mount with the stale server-rendered name.
+      // Refresh the App Router cache so the H1 and public link pick up the
+      // freshly-saved name/username without a stale re-mount.
       router.refresh();
     },
     onError: (err) => setError(err.message),
@@ -92,12 +93,12 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
   const publicPath = saved.username ? `/collections/${saved.username}` : null;
 
   return (
-    <>
-      <section className={styles.section}>
-        <h2>Profile</h2>
-
-        <form className={styles.card} onSubmit={save}>
-          <div className={styles.fields}>
+    <section className={styles.section}>
+      <div className={styles.card}>
+        <form onSubmit={save}>
+          {/* Wide viewports keep Save to the right of both fields; under
+              600px the row stacks (see .identityRow). */}
+          <div className={styles.identityRow}>
             <label className={styles.field}>
               <span className={styles.fieldLabel}>Display name</span>
               <input
@@ -126,69 +127,67 @@ export default function SettingsProfile({ initial }: { initial: Profile }) {
                 }
               />
             </label>
-          </div>
 
-          <div className={styles.actions}>
-            <button
-              type="submit"
-              className={styles.primaryButton}
-              disabled={saveProfile.isPending || !dirty}
-              // iOS otherwise spends the first tap dismissing the keyboard —
-              // blurring the focused field before the click can land, so the
-              // submit never fires. Keeping focus lets the tap reach the
-              // button; save() then blurs to close the keyboard.
-              onPointerDown={(event) => event.preventDefault()}
-            >
-              {saveProfile.isPending ? "Saving…" : "Save"}
-            </button>
+            <div className={styles.actions}>
+              <button
+                type="submit"
+                className={styles.primaryButton}
+                disabled={saveProfile.isPending || !dirty}
+                // iOS otherwise spends the first tap dismissing the keyboard —
+                // blurring the focused field before the click can land, so the
+                // submit never fires. Keeping focus lets the tap reach the
+                // button; save() then blurs to close the keyboard.
+                onPointerDown={(event) => event.preventDefault()}
+              >
+                {saveProfile.isPending ? "Saving…" : "Save"}
+              </button>
 
-            {message && !dirty && (
-              <span className={styles.status}>{message}</span>
-            )}
+              {message && !dirty && (
+                <span className={styles.status}>{message}</span>
+              )}
 
-            {error && <span className={styles.error}>{error}</span>}
+              {error && <span className={styles.error}>{error}</span>}
+            </div>
           </div>
         </form>
-      </section>
 
-      <section className={styles.section}>
-        <div className={styles.card}>
-          <div className={styles.row}>
-            <div className={styles.rowText}>
-              <span className={styles.rowLabel}>Share your collection</span>
+        <div className={styles.divider} />
 
-              <span className={styles.rowHint}>
-                {saved.collectionPublic && publicPath ? (
-                  <>
-                    Live at{" "}
-                    <Link href={publicPath}>everycase.org{publicPath}</Link>
-                  </>
-                ) : publicPath ? (
-                  `Anyone with the link will see it at everycase.org${publicPath}`
-                ) : (
-                  "Pick a username first — it becomes your collection's address."
-                )}
-              </span>
-            </div>
+        <div className={styles.row}>
+          <div className={styles.rowText}>
+            <span className={styles.rowLabel}>Share your collection</span>
 
-            {/* A label, not a span: Safari won't hit-test the invisible
-                checkbox, but label activation works everywhere. */}
-            <label className={styles.switch}>
-              <input
-                type="checkbox"
-                role="switch"
-                aria-label="Share your collection"
-                checked={saved.collectionPublic}
-                disabled={!saved.username}
-                onChange={(event) => saveVisibility.mutate(event.target.checked)}
-              />
-              <span className={styles.switchTrack} aria-hidden="true" />
-            </label>
+            <span className={styles.rowHint}>
+              {saved.collectionPublic && publicPath ? (
+                <>
+                  Live at{" "}
+                  <Link href={publicPath}>everycase.org{publicPath}</Link>
+                </>
+              ) : publicPath ? (
+                `Anyone with the link will see it at everycase.org${publicPath}`
+              ) : (
+                "Pick a username first — it becomes your collection's address."
+              )}
+            </span>
           </div>
 
-          {visibilityError && <p className={styles.error}>{visibilityError}</p>}
+          {/* A label, not a span: Safari won't hit-test the invisible
+              checkbox, but label activation works everywhere. */}
+          <label className={styles.switch}>
+            <input
+              type="checkbox"
+              role="switch"
+              aria-label="Share your collection"
+              checked={saved.collectionPublic}
+              disabled={!saved.username}
+              onChange={(event) => saveVisibility.mutate(event.target.checked)}
+            />
+            <span className={styles.switchTrack} aria-hidden="true" />
+          </label>
         </div>
-      </section>
-    </>
+
+        {visibilityError && <p className={styles.error}>{visibilityError}</p>}
+      </div>
+    </section>
   );
 }

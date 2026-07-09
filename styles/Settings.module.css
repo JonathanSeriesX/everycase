@@ -72,6 +72,38 @@
   background: rgba(15, 18, 28, 0.08);
 }
 
+/* The identity row (display name, username, Save). Wide viewports lay all
+   three out on one line with Save bottom-aligned to the inputs; under 600px
+   it stacks. */
+.identityRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.identityRow .field {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.identityRow .actions {
+  flex: 0 0 auto;
+}
+
+/* The inputs carry a 1px border the pill button doesn't, making them 2px
+   taller; a transparent border on the button matches the box heights so the
+   bottom-aligned row lines up flush at both edges. */
+.identityRow .primaryButton {
+  border: 1px solid transparent;
+}
+
+@media (max-width: 600px) {
+  .identityRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 /* profile fields */
 .fields {
   display: grid;
