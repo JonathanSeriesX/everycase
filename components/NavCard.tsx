@@ -28,28 +28,41 @@ export default function NavCard({
   const code = (heroCase?.alt_thumbnail || heroCase?.SKU || "").trim();
   const src =
     image ?? (code ? `${CAROUSEL_IMAGE_BASE_URL}/${code}.avif` : null);
+  // The trailing space after </article> keeps naive text extractors from
+  // gluing this card's subtitle to the next card's title ("BumpersiPad");
+  // the grid/flex parents ignore whitespace-only text nodes.
   return (
-    <article className={styles.caseCard}>
-      <Link href={href} className={styles.cardLink}>
-        <div className={styles.imageShell}>
-          {src && (
-            <Image
-              src={src}
-              width={512}
-              height={512}
-              alt=""
-              className={styles.image}
-              unoptimized
-              loading="eager"
-            />
+    <>
+      <article className={styles.caseCard}>
+        <Link href={href} className={styles.cardLink}>
+          <div className={styles.imageShell}>
+            {src && (
+              <Image
+                src={src}
+                width={512}
+                height={512}
+                alt=""
+                className={styles.image}
+                unoptimized
+                loading="eager"
+              />
+            )}
+          </div>
+          <strong className={`${styles.caseTitle} ${styles.linkTitle}`}>
+            {title}
+          </strong>
+          {/* Explicit space: scrapers join adjacent inline tags without CSS, so
+            without it Google renders "iPhoneCases, Sleeves…". Flex layout
+            ignores whitespace-only text nodes, so nothing shifts visually. */}
+          {subtitle && (
+            <>
+              {" "}
+              <span className={styles.navCardSubtitle}>{subtitle}</span>
+            </>
           )}
-        </div>
-        <strong className={`${styles.caseTitle} ${styles.linkTitle}`}>
-          {title}
-        </strong>
-        {subtitle && <span className={styles.navCardSubtitle}>{subtitle}</span>}
-      </Link>
-    </article>
+        </Link>
+      </article>{" "}
+    </>
   );
 }
 

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { ChevronRightIcon } from "./icons";
 import chrome from "../styles/Chrome.module.css";
@@ -18,15 +19,19 @@ export default function Breadcrumb({ trail }: { trail?: Crumb[] }) {
   const crumbs = [{ href: "/", title: "Home" }, ...trail].slice(0, -1);
   return (
     <nav aria-label="Breadcrumb" className={chrome.breadcrumb}>
+      {/* Spaces between crumbs are for text scrapers, which glue adjacent
+          inline tags ("HomeiPhone"); the flex layout ignores them. */}
       {crumbs.map((crumb) => (
-        <span key={crumb.href} className={chrome.breadcrumbItem}>
-          <Link href={crumb.href} className={chrome.breadcrumbLink}>
-            {crumb.title}
-          </Link>
-          <span className={chrome.breadcrumbSep} aria-hidden="true">
-            <ChevronRightIcon />
-          </span>
-        </span>
+        <Fragment key={crumb.href}>
+          <span className={chrome.breadcrumbItem}>
+            <Link href={crumb.href} className={chrome.breadcrumbLink}>
+              {crumb.title}
+            </Link>
+            <span className={chrome.breadcrumbSep} aria-hidden="true">
+              <ChevronRightIcon />
+            </span>
+          </span>{" "}
+        </Fragment>
       ))}
     </nav>
   );

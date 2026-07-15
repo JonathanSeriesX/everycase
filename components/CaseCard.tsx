@@ -36,59 +36,68 @@ const CaseCard = ({
     getPreferredRegion(item.regions),
   );
 
+  // The trailing space after </article> keeps text scrapers from gluing this
+  // card's season badge to the next card's title ("Autumn 2025Black"); the
+  // grid parent ignores whitespace-only text nodes.
   return (
-    <article className={styles.caseCard}>
-      <Link
-        href={`/case/${item.SKU}`}
-        className={styles.cardLink}
-        aria-label={imageAlt || undefined}
-      >
-        <div className={styles.imageShell}>
-          <CaseImage
-            code={imageCode}
-            alt={imageAlt}
-            priority={priority}
-            activated={activated}
-          />
-        </div>
-        <strong className={`${styles.caseTitle} ${styles.linkTitle}`}>
-          {displayLabel(item.colour, item.model)}
-        </strong>
-      </Link>
-      <div className={styles.metaRow}>
-        <button
-          type="button"
-          className={`${styles.metaBadge} ${styles.actionBadge}`}
-          aria-label={`Copy ${orderNumber}`}
-          title={`Copy ${orderNumber}`}
-          onClick={(e) => {
-            copySku(orderNumber, item.SKU);
-            e.currentTarget.blur();
-          }}
+    <>
+      <article className={styles.caseCard}>
+        <Link
+          href={`/case/${item.SKU}`}
+          className={styles.cardLink}
+          aria-label={imageAlt || undefined}
         >
-          <span>{formatSkuLabel(item.SKU)}</span>
-          <span className={styles.iconSwap} aria-hidden="true">
-            <CopyIcon
-              className={`${styles.iconLayer} ${
-                copiedSku === item.SKU ? styles.iconHidden : styles.iconVisible
-              }`}
+          <div className={styles.imageShell}>
+            <CaseImage
+              code={imageCode}
+              alt={imageAlt}
+              priority={priority}
+              activated={activated}
             />
-            <CheckIcon
-              className={`${styles.iconLayer} ${
-                copiedSku === item.SKU ? styles.iconVisible : styles.iconHidden
-              }`}
-            />
-          </span>
-        </button>{" "}
-        {item.colour !== "Clear" && item.season ? (
-          <span
-            className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
+          </div>
+          <strong className={`${styles.caseTitle} ${styles.linkTitle}`}>
+            {displayLabel(item.colour, item.model)}
+          </strong>
+        </Link>
+        <div className={styles.metaRow}>
+          <button
+            type="button"
+            className={`${styles.metaBadge} ${styles.actionBadge}`}
+            aria-label={`Copy ${orderNumber}`}
+            title={`Copy ${orderNumber}`}
+            onClick={(e) => {
+              copySku(orderNumber, item.SKU);
+              e.currentTarget.blur();
+            }}
           >
-            {item.season}
-          </span>
-        ) : null}
-      </div>
-    </article>
+            <span>{formatSkuLabel(item.SKU)}</span>
+            <span className={styles.iconSwap} aria-hidden="true">
+              <CopyIcon
+                className={`${styles.iconLayer} ${
+                  copiedSku === item.SKU
+                    ? styles.iconHidden
+                    : styles.iconVisible
+                }`}
+              />
+              <CheckIcon
+                className={`${styles.iconLayer} ${
+                  copiedSku === item.SKU
+                    ? styles.iconVisible
+                    : styles.iconHidden
+                }`}
+              />
+            </span>
+          </button>{" "}
+          {item.colour !== "Clear" && item.season ? (
+            <span
+              className={`${styles.metaBadge} ${styles.metaBadgeSecondary} ${styles.linkBadge}`}
+            >
+              {item.season}
+            </span>
+          ) : null}
+        </div>
+      </article>{" "}
+    </>
   );
 };
 

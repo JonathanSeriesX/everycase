@@ -31,7 +31,9 @@ const logo = (
       }}
     >
       Finest
-    </span>
+    </span>{" "}
+    {/* ^ scraper-only space so extracted text reads "Finest Woven", not
+        "FinestWoven"; the inline-flex parent ignores it. */}
     <picture
       style={{
         display: "inline-flex",
@@ -62,7 +64,7 @@ const logo = (
       }}
     >
       Woven
-    </span>
+    </span>{" "}
   </span>
 );
 

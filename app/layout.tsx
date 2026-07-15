@@ -31,8 +31,10 @@ const baseTitle = {
   template: "%s — Finest Woven",
 };
 
+// ~150 chars on purpose: much shorter and Google pads the snippet with
+// scraped page text instead of using this verbatim.
 const baseDescription =
-  "The only catalogue of all the Apple accessories ever released for iPhone, iPad, and Mac.";
+  "The only catalogue of every Apple accessory ever released — iPhone cases, sleeves, bumpers, Smart Covers, Smart Folios, iPad keyboards and more!";
 
 export const metadata: Metadata = {
   applicationName: "Finest Woven",
@@ -125,13 +127,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ScrollToTopOnNavigate />
             <Navbar />
             <main className="site-main">{children}</main>
+            {/* The stray {" "}s are for text scrapers, which would otherwise
+                glue the labels ("About ★Reach out ✿"); the flex layout
+                ignores whitespace-only text nodes. */}
             <footer className="site-footer">
               <Link href="/about" prefetch={false}>
                 About ★
-              </Link>
+              </Link>{" "}
               <Link href="/contact" prefetch={false}>
                 Reach out ✿
-              </Link>
+              </Link>{" "}
               <Link href="/support" prefetch={false}>
                 Support this ♥
               </Link>

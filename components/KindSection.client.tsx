@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Fragment,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -36,7 +37,11 @@ interface KindSectionClientProps {
   slug: string;
   price: SectionPrice;
   /** `model` and `label` are null for merged sections (single grid, no tabs). */
-  entries: { model: string | null; label: string | null; cases: CaseRecord[] }[];
+  entries: {
+    model: string | null;
+    label: string | null;
+    cases: CaseRecord[];
+  }[];
   showTabs: boolean;
   /** One combined grid across models (Clear Cases, iPhone Dock). */
   merged: boolean;
@@ -191,10 +196,12 @@ export default function KindSectionClient({
         </h2>
         {pills.length > 0 && (
           <div className={headingStyles.pills} aria-hidden="true">
+            {/* Spaces between pills keep scraped text from gluing labels
+                together ("from $49£45"); flex layout ignores them. */}
             {pills.map((pill) => (
-              <span key={pill.code} className={headingStyles.pill}>
-                {pill.label}
-              </span>
+              <Fragment key={pill.code}>
+                <span className={headingStyles.pill}>{pill.label}</span>{" "}
+              </Fragment>
             ))}
           </div>
         )}
@@ -207,34 +214,37 @@ export default function KindSectionClient({
           aria-label={`${kind} by model`}
           className={chrome.tabList}
         >
+          {/* Spaces between tabs keep scraped text from gluing the labels
+              ("iPhone 17iPhone 17 Pro"); flex layout ignores them. */}
           {entries.map((entry, index) => (
-            <button
-              key={entry.model}
-              role="tab"
-              type="button"
-              aria-selected={index === active}
-              data-active={index === active}
-              className={chrome.tab}
-              onClick={(e) => {
-                if (index !== active) {
-                  scrollAnchorTop.current =
-                    tabListRef.current?.getBoundingClientRect().top ?? null;
-                }
-                setActive(index);
-                setActivated((seen) =>
-                  seen.includes(index) ? seen : [...seen, index],
-                );
-                if (entry.label) {
-                  storeModel(entry.label);
-                  window.dispatchEvent(
-                    new CustomEvent(TAB_SYNC_EVENT, { detail: entry.label }),
+            <Fragment key={entry.model}>
+              <button
+                role="tab"
+                type="button"
+                aria-selected={index === active}
+                data-active={index === active}
+                className={chrome.tab}
+                onClick={(e) => {
+                  if (index !== active) {
+                    scrollAnchorTop.current =
+                      tabListRef.current?.getBoundingClientRect().top ?? null;
+                  }
+                  setActive(index);
+                  setActivated((seen) =>
+                    seen.includes(index) ? seen : [...seen, index],
                   );
-                }
-                e.currentTarget.blur();
-              }}
-            >
-              {entry.label}
-            </button>
+                  if (entry.label) {
+                    storeModel(entry.label);
+                    window.dispatchEvent(
+                      new CustomEvent(TAB_SYNC_EVENT, { detail: entry.label }),
+                    );
+                  }
+                  e.currentTarget.blur();
+                }}
+              >
+                {entry.label}
+              </button>{" "}
+            </Fragment>
           ))}
         </div>
       )}
@@ -247,9 +257,7 @@ export default function KindSectionClient({
           {/* The visible tab reads terse ("Pro 13″"); the full model name is
               hidden here so Pagefind indexes each panel's cases under the whole
               device name and excerpts read "iPad Pro 13 M4. Black MW983 …". */}
-          {showTabs && entry.model && (
-            <p className="sr-only">{entry.model}.</p>
-          )}
+          {showTabs && entry.model && <p className="sr-only">{entry.model}.</p>}
           <VerticalCarouselClient
             cases={entry.cases}
             model={entry.model ?? undefined}
