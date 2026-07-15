@@ -356,11 +356,11 @@ textarea:focus-visible {
   }
 }
 
-/* Below 600px the trailing ↗ arrows (external-link and heading-permalink)
-   are clutter on a narrow screen — drop them entirely. Placed after the
+/* Below 600px the heading-permalink ↗ arrow is clutter on a narrow
+   screen — drop it entirely. (Link arrows on hyperlinks stay: they carry
+   the accent colour and signal an actual navigation.) Placed after the
    rules above so it wins on source order at equal specificity. */
 @media (max-width: 599.98px) {
-  .mdx-link-arrow,
   .subheading-anchor {
     display: none;
   }
