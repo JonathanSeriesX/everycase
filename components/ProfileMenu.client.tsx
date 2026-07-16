@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient, SIGN_IN_EVENT, useSession } from "../lib/auth-client";
+import { useDismiss } from "../lib/useDismiss";
 import { PersonIcon } from "./icons";
 import chrome from "../styles/Chrome.module.css";
 
@@ -101,21 +102,7 @@ export default function ProfileMenu() {
   };
 
   // Close on outside click / Escape, mirroring the search box.
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (event: MouseEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) close();
-    };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
-    };
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
+  useDismiss(containerRef, close, open);
 
   // Other components can summon the sign-in flow (the collection card's
   // "I own it" while signed out) — jump straight to the email view.
@@ -250,8 +237,8 @@ export default function ProfileMenu() {
       </button>
       {open && (
         <div className={chrome.profileMenu} role="dialog" aria-label="Account">
-          {view === "menu" ? (
-            session ? (
+          {view === "menu" &&
+            (session ? (
               <>
                 <Link
                   href="/collection"
@@ -292,8 +279,8 @@ export default function ProfileMenu() {
                   Settings
                 </Link>
               </>
-            )
-          ) : view === "email" ? (
+            ))}
+          {view === "email" && (
             <form className={chrome.profileForm} onSubmit={continueWithEmail}>
               <p className={chrome.profileTitle}>Sign in | sign up</p>
               <input
@@ -325,7 +312,8 @@ export default function ProfileMenu() {
               </button>
               {error && <p className={chrome.profileError}>{error}</p>}
             </form>
-          ) : view === "otp" ? (
+          )}
+          {view === "otp" && (
             <form className={chrome.profileForm} onSubmit={verifyCode}>
               <p className={chrome.profileTitle}>
                 Enter the code sent to {email}
@@ -364,7 +352,8 @@ export default function ProfileMenu() {
               </button>
               {error && <p className={chrome.profileError}>{error}</p>}
             </form>
-          ) : (
+          )}
+          {view === "passkey" && (
             <div className={chrome.profileForm}>
               <p className={chrome.profileTitle}>You&rsquo;re in!</p>
               <p className={chrome.profileHint}>

@@ -2,10 +2,12 @@
 
 import { Fragment, useCallback, useState, type MouseEvent, type ReactNode } from "react";
 import Link from "next/link";
-import { CopyIcon, CheckIcon, LinkArrowIcon } from "./icons";
+import { LinkArrowIcon } from "./icons";
 import { formatPrice, type Currency } from "../lib/currencies";
 import { useCurrency } from "../lib/useCurrency";
+import { copyToClipboard } from "../lib/clipboard";
 import CollectionCard from "./CollectionCard.client";
+import CopySwapIcon from "./CopySwapIcon";
 import styles from "../styles/CaseInfoCards.module.css";
 
 const COPY_RESET_TIMEOUT = 1000;
@@ -59,6 +61,29 @@ export const StatCard = ({ label, value }: { label: string; value: string }) => 
   </InfoCard>
 );
 
+// A row of chips with an invisible ", " between them and a "." after the
+// last. The separators keep Pagefind excerpts and screen-reader output
+// reading as a punctuated list instead of a word soup; the trailing spaces
+// do the same for plain text scrapers (flex layout ignores both).
+const PunctuatedChips = ({
+  className,
+  items,
+}: {
+  className: string;
+  items: { key: string; chip: ReactNode }[];
+}) => (
+  <div className={className}>
+    {items.map(({ key, chip }, index) => (
+      <Fragment key={key}>
+        {chip}
+        <span className="sr-punctuation">
+          {index < items.length - 1 ? ", " : "."}
+        </span>{" "}
+      </Fragment>
+    ))}
+  </div>
+);
+
 // USD pill first, then the reader's footer-chosen currency (when we have a
 // launch price for it). All amounts are baked into the static HTML — the
 // hook only decides which one is displayed.
@@ -76,19 +101,17 @@ export const PriceCard = ({
 
   return (
     <InfoCard label="MSRP">
-      <div className={`${styles.chipRow} ${styles.priceRow}`}>
-        {shown.map((price, index) => (
-          <Fragment key={price}>
+      <PunctuatedChips
+        className={`${styles.chipRow} ${styles.priceRow}`}
+        items={shown.map((price) => ({
+          key: price,
+          chip: (
             <span className={`${styles.chip} ${styles.priceChip}`}>
               {price}
             </span>
-            {/* Keep Pagefind excerpts and screen-reader output punctuated. */}
-            <span className="sr-punctuation">
-              {index < shown.length - 1 ? ", " : "."}
-            </span>{" "}
-          </Fragment>
-        ))}
-      </div>
+          ),
+        }))}
+      />
     </InfoCard>
   );
 };
@@ -100,16 +123,11 @@ export const CopyChip = ({ value }: { value: string }) => {
   const copy = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       e.currentTarget.blur();
-      if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
-        return;
-      }
-      navigator.clipboard
-        .writeText(value)
-        .then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), COPY_RESET_TIMEOUT);
-        })
-        .catch(() => {});
+      void copyToClipboard(value).then((landed) => {
+        if (!landed) return;
+        setCopied(true);
+        setTimeout(() => setCopied(false), COPY_RESET_TIMEOUT);
+      });
     },
     [value],
   );
@@ -123,18 +141,7 @@ export const CopyChip = ({ value }: { value: string }) => {
       title={`Copy ${value}`}
     >
       <span className={styles.chipValue}>{value}</span>
-      <span className={styles.iconSwap} aria-hidden="true">
-        <CopyIcon
-          className={`${styles.iconLayer} ${
-            copied ? styles.iconHidden : styles.iconVisible
-          }`}
-        />
-        <CheckIcon
-          className={`${styles.iconLayer} ${
-            copied ? styles.iconVisible : styles.iconHidden
-          }`}
-        />
-      </span>
+      <CopySwapIcon copied={copied} styles={styles} />
     </button>
   );
 };
@@ -154,18 +161,13 @@ export const CompatibilityCard = ({
 
   return (
     <InfoCard label="Compatible with">
-      <div className={`${styles.chipRow} ${styles.compatibilityRow}`}>
-        {compatibleModels.map((model, index) => (
-          <Fragment key={model}>
-            <CompatibilityChip value={model} />
-            {/* Invisible in the layout, but keeps the search index (and
-                screen readers) reading a punctuated list, not a word soup. */}
-            <span className="sr-punctuation">
-              {index < compatibleModels.length - 1 ? ", " : "."}
-            </span>{" "}
-          </Fragment>
-        ))}
-      </div>
+      <PunctuatedChips
+        className={`${styles.chipRow} ${styles.compatibilityRow}`}
+        items={compatibleModels.map((model) => ({
+          key: model,
+          chip: <CompatibilityChip value={model} />,
+        }))}
+      />
     </InfoCard>
   );
 };
@@ -214,18 +216,13 @@ const OrderNumbersCard = ({ skuGroups }: { skuGroups: SkuGroup[] }) => {
           {group.label && (
             <span className={styles.skuGroupLabel}>{group.label} </span>
           )}
-          <div className={styles.chipRow}>
-            {group.orderNumbers.map((orderNumber, chipIndex) => (
-              <Fragment key={orderNumber}>
-                <CopyChip value={orderNumber} />
-                {/* Invisible separators keep Pagefind excerpts (and screen
-                    readers) from running the order numbers together. */}
-                <span className="sr-punctuation">
-                  {chipIndex < group.orderNumbers.length - 1 ? ", " : "."}
-                </span>{" "}
-              </Fragment>
-            ))}
-          </div>
+          <PunctuatedChips
+            className={styles.chipRow}
+            items={group.orderNumbers.map((orderNumber) => ({
+              key: orderNumber,
+              chip: <CopyChip value={orderNumber} />,
+            }))}
+          />
         </div>
       ))}
     </InfoCard>
@@ -243,13 +240,21 @@ const CaseInfoCards = ({
   reReleaseDate = "",
   msrp = {},
   eduPrice = "",
-}: CaseInfo) => (
+  orderCard,
+}: CaseInfo & {
+  /** Replaces the order-numbers card — keyboard pages slot in their own
+      card with the language picker (see KeyboardProductDetails). */
+  orderCard?: ReactNode;
+}) => (
   <div className={styles.grid}>
-    {((skuGroups && skuGroups.length > 0) || compatibleModels.length > 0) && (
+    {(orderCard ||
+      (skuGroups && skuGroups.length > 0) ||
+      compatibleModels.length > 0) && (
       <div className={styles.primaryRow}>
-        {skuGroups && skuGroups.length > 0 && (
-          <OrderNumbersCard skuGroups={skuGroups} />
-        )}
+        {orderCard ??
+          (skuGroups && skuGroups.length > 0 && (
+            <OrderNumbersCard skuGroups={skuGroups} />
+          ))}
         <CompatibilityCard compatibleModels={compatibleModels} />
       </div>
     )}

@@ -4,14 +4,8 @@ import { ObjectId } from "mongodb";
 import { auth } from "../../lib/auth";
 import { db } from "../../lib/mongo";
 import { loadCollection } from "../../lib/collectionItems";
-import {
-  CaseGrid,
-  DeviceSections,
-  collectionSignature,
-  computeLaunchValue,
-} from "../../components/CollectionGrid";
-import CollectionHead from "../../components/CollectionHead";
-import CollectionStats from "../../components/CollectionStats";
+import { collectionSignature } from "../../components/CollectionGrid";
+import CollectionSections from "../../components/CollectionSections";
 import CollectionFreshness from "../../components/CollectionFreshness.client";
 import PublicAccessCard from "../../components/PublicAccessCard.client";
 
@@ -56,7 +50,6 @@ export default async function CollectionPage() {
 
   const { owned, wanted, deviceGroups, unassigned } =
     await loadCollection(userId);
-  const { sums, pricedCount } = computeLaunchValue(owned);
   const signature = collectionSignature(deviceGroups, unassigned, wanted);
 
   return (
@@ -73,39 +66,13 @@ export default async function CollectionPage() {
           or <strong>I want it</strong> — it shows up here.
         </p>
       ) : (
-        <>
-          {(owned.length > 0 || deviceGroups.length > 0) && (
-            <section>
-              <CollectionStats
-                // Implicit groups (AirTag, MagSafe Accessories, …) are
-                // derived homes for cases, not devices the user declared.
-                deviceCount={deviceGroups.filter((g) => !g.implicit).length}
-                caseCount={owned.length}
-                sums={sums}
-                pricedCount={pricedCount}
-              />
-              <hr />
-              <DeviceSections groups={deviceGroups} canRemove />
-              {unassigned.length > 0 && deviceGroups.length > 0 && (
-                <h3>Not linked to a device</h3>
-              )}
-              {unassigned.length > 0 && (
-                <CaseGrid
-                  cases={unassigned}
-                  canRemove
-                  canLink
-                  anchorId="section:unassigned"
-                />
-              )}
-            </section>
-          )}
-          {wanted.length > 0 && (
-            <section>
-              <CollectionHead title="Wishlist" caseCount={wanted.length} />
-              <CaseGrid cases={wanted} canRemove anchorId="section:wishlist" />
-            </section>
-          )}
-        </>
+        <CollectionSections
+          owned={owned}
+          wanted={wanted}
+          deviceGroups={deviceGroups}
+          unassigned={unassigned}
+          canEdit
+        />
       )}
     </article>
   );

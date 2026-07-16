@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useAddDevice, useRemoveDevice } from "../lib/collectionQueries";
-import CaseImage from "./CaseImage.client";
-import { PhoneSymbol } from "./icons";
+import DeviceWindow, { DeviceRow } from "./DeviceWindow.client";
 import styles from "../styles/DeviceSection.module.css";
 import windowStyles from "../styles/CaseInfoCards.module.css";
 
@@ -45,15 +43,6 @@ export default function DeviceActions({
   );
 
   useEffect(() => () => clearTimeout(resetTimer.current), []);
-
-  useEffect(() => {
-    if (!windowOpen) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setWindowOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [windowOpen]);
 
   const fail = () => {
     setArmed(false);
@@ -118,64 +107,29 @@ export default function DeviceActions({
           {note}
         </p>
       )}
-      {windowOpen &&
-        createPortal(
-          <div
-            className={windowStyles.deviceOverlay}
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget) setWindowOpen(false);
-            }}
-          >
-            <div
-              className={windowStyles.deviceWindow}
-              role="dialog"
-              aria-modal="true"
-              aria-label={`Which ${model} do you have?`}
-            >
-              <span className={windowStyles.label}>
-                Which {model} do you have?
-              </span>
-              <div className={windowStyles.deviceList}>
-                <div className={windowStyles.deviceListGroup}>
-                  {variants.map((variant) => (
-                    <button
-                      key={variant.deviceId}
-                      type="button"
-                      className={windowStyles.deviceRow}
-                      disabled={variant.deviceId === deviceId}
-                      onClick={() => swap(variant.deviceId)}
-                    >
-                      <span
-                        className={windowStyles.deviceThumb}
-                        aria-hidden="true"
-                      >
-                        {variant.thumbnail ? (
-                          <CaseImage code={variant.thumbnail} alt="" />
-                        ) : (
-                          <PhoneSymbol
-                            className={windowStyles.deviceThumbFallback}
-                          />
-                        )}
-                      </span>
-                      <span className={windowStyles.deviceRowLabel}>
-                        {variant.colour}
-                        {variant.deviceId === deviceId && " — current"}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <button
-                type="button"
-                className={`${windowStyles.chip} ${windowStyles.actionChip} ${windowStyles.windowDone}`}
-                onClick={() => setWindowOpen(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>,
-          document.body,
-        )}
+      {windowOpen && (
+        <DeviceWindow
+          title={`Which ${model} do you have?`}
+          onClose={() => setWindowOpen(false)}
+        >
+          <div className={windowStyles.deviceListGroup}>
+            {variants.map((variant) => (
+              <DeviceRow
+                key={variant.deviceId}
+                thumbnail={variant.thumbnail}
+                disabled={variant.deviceId === deviceId}
+                onClick={() => swap(variant.deviceId)}
+                label={
+                  <>
+                    {variant.colour}
+                    {variant.deviceId === deviceId && " — current"}
+                  </>
+                }
+              />
+            ))}
+          </div>
+        </DeviceWindow>
+      )}
     </div>
   );
 }

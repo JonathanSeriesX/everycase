@@ -2,9 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import type { HeroCase } from "../lib/catalogue";
+import { everypreviewUrl } from "../lib/imageCdn";
 import styles from "../styles/VerticalCarousel.module.css";
-
-const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
 
 interface NavCardProps {
   href: string;
@@ -26,8 +25,7 @@ export default function NavCard({
   image,
 }: NavCardProps) {
   const code = (heroCase?.alt_thumbnail || heroCase?.SKU || "").trim();
-  const src =
-    image ?? (code ? `${CAROUSEL_IMAGE_BASE_URL}/${code}.avif` : null);
+  const src = image ?? (code ? everypreviewUrl(code) : null);
   // The trailing space after </article> keeps naive text extractors from
   // gluing this card's subtitle to the next card's title ("BumpersiPad");
   // the grid/flex parents ignore whitespace-only text nodes.

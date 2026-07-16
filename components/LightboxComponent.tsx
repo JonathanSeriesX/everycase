@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { appleImageUrl, everyimageUrl, everypreviewUrl } from "../lib/imageCdn";
 import { LinkArrowIcon } from "./icons";
 import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -34,13 +35,6 @@ interface FormatLinks {
   png?: string;
 }
 
-const APPLE_IMAGE_BASE_URL =
-  "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
-const LIGHTBOX_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everyimage";
-const LIGHTBOX_IMAGE_FORMAT = "avif";
-const LIGHTBOX_PREVIEW_BASE_URL =
-  "https://cloudfront.everycase.org/everypreview";
-const LIGHTBOX_PREVIEW_FORMAT = "avif";
 // Download-link dimensions. PNG uses the asset's native resolution from
 // images.csv when known (never upscaled padding); JPG is capped at 2560 but
 // also drops to the native size when that is smaller.
@@ -72,19 +66,17 @@ const buildFormatLink = (
 ): string => {
   const code = getAppleImageCode(src);
   if (code) {
-    return `${APPLE_IMAGE_BASE_URL}/${code}${FORMAT_PARAMS[format](res)}`;
+    return appleImageUrl(code, FORMAT_PARAMS[format](res));
   }
   return src;
 };
 
 const buildCarouselImageSrc = (code: string): string =>
-  code ? `${LIGHTBOX_IMAGE_BASE_URL}/${code}.${LIGHTBOX_IMAGE_FORMAT}` : "";
+  code ? everyimageUrl(code) : "";
 
 const buildPreviewImageSrc = (src: string): string => {
   const code = getAppleImageCode(src);
-  return code
-    ? `${LIGHTBOX_PREVIEW_BASE_URL}/${code}.${LIGHTBOX_PREVIEW_FORMAT}`
-    : "";
+  return code ? everypreviewUrl(code) : "";
 };
 
 const buildSlideSources = (src: string): string[] => {
@@ -372,3 +364,19 @@ const LightboxComponent = ({ images = [] }: { images?: GalleryImage[] }) => {
 };
 
 export default LightboxComponent;
+
+/**
+ * A case page's whole gallery block: divider, an invisible-but-indexed image
+ * count (gives Pagefind a searchable count and lets excerpts end on
+ * "… N images."), and the tiles. Shared by plain case pages and the
+ * per-language keyboard galleries.
+ */
+export const GallerySection = ({ images }: { images: GalleryImage[] }) => (
+  <section>
+    <hr />
+    <p className="sr-only">
+      {images.length} image{images.length === 1 ? "" : "s"}.
+    </p>
+    <LightboxComponent images={images} />
+  </section>
+);

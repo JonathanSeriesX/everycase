@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { appleImageUrl, everypreviewUrl } from "../lib/imageCdn";
 import styles from "../styles/VerticalCarousel.module.css";
 
-const CAROUSEL_IMAGE_BASE_URL = "https://cloudfront.everycase.org/everypreview";
-const APPLE_IMAGE_BASE_URL =
-  "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const APPLE_FALLBACK_PARAMS = "?wid=512&hei=512&fmt=png-alpha";
 
 interface CaseImageProps {
@@ -41,10 +39,7 @@ export default function CaseImage({
   lazy = false,
 }: CaseImageProps) {
   const sources = code
-    ? [
-        `${CAROUSEL_IMAGE_BASE_URL}/${code}.avif`,
-        `${APPLE_IMAGE_BASE_URL}/${code}${APPLE_FALLBACK_PARAMS}`,
-      ]
+    ? [everypreviewUrl(code), appleImageUrl(code, APPLE_FALLBACK_PARAMS)]
     : [];
   const [index, setIndex] = useState(0);
   if (sources.length === 0) return null;

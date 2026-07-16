@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { copyToClipboard } from "../lib/clipboard";
 import CaseCard from "./CaseCard";
 import type { CaseRecord } from "../lib/getCasesFromCSV";
 import styles from "../styles/VerticalCarousel.module.css";
@@ -68,19 +69,15 @@ const VerticalCarouselClient = ({
   );
 
   const copySku = useCallback((skuWithSuffix: string, key: string) => {
-    if (!skuWithSuffix || typeof navigator === "undefined") return;
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard
-        .writeText(skuWithSuffix)
-        .then(() => {
-          // Flash the success icon without affecting sibling cards.
-          setCopiedSku(key);
-          setTimeout(() => {
-            setCopiedSku((current) => (current === key ? null : current));
-          }, COPY_BADGE_RESET_TIMEOUT);
-        })
-        .catch(() => {});
-    }
+    if (!skuWithSuffix) return;
+    void copyToClipboard(skuWithSuffix).then((landed) => {
+      if (!landed) return;
+      // Flash the success icon without affecting sibling cards.
+      setCopiedSku(key);
+      setTimeout(() => {
+        setCopiedSku((current) => (current === key ? null : current));
+      }, COPY_BADGE_RESET_TIMEOUT);
+    });
   }, []);
 
   return (

@@ -143,6 +143,105 @@ export function CaseGrid({
   );
 }
 
+// Colour variants per model, for the owner's "Change colour" window.
+const variantsFor = (model: string): DeviceVariant[] =>
+  getAllDevices()
+    .filter((record) => record.model === model)
+    .map((record) => ({
+      deviceId: record.deviceId,
+      colour: record.colour,
+      thumbnail: deviceThumbnail(record),
+    }));
+
+// The short title under a device group: "kind — colour", with the colour
+// dropped when it distinguishes nothing — one-colour products (MagSafe
+// Battery Pack, a Smart Keyboard) and "Clear Case" (colour "Clear" — don't
+// say it twice). Colour logic keys off the real kind; only the shown label
+// gets the COLLECTION_KIND_LABELS override.
+function shortCaseTitle(item: CaseRecord): string {
+  const kindLabel = COLLECTION_KIND_LABELS[item.kind] ?? item.kind;
+  return item.colour &&
+    !item.kind.includes(item.colour) &&
+    colourVariantCount(item.model, item.kind) > 1
+    ? `${kindLabel} — ${item.colour}`
+    : kindLabel;
+}
+
+// One owned-device tile: artwork (or the phone placeholder) + name, linking
+// to the model's catalogue page when it has one, plus the owner's
+// remove/change-colour controls.
+function DeviceTile({
+  record,
+  implicit,
+  firstGroup,
+  canRemove,
+}: {
+  record: DeviceGroup["device"];
+  implicit: boolean | undefined;
+  /** First content row of the page — load the artwork eagerly for LCP. */
+  firstGroup: boolean;
+  canRemove: boolean;
+}) {
+  const variants = variantsFor(record.model);
+  const modelName = displayModelName(record.model);
+  const pagePath = devicePagePath(record.deviceId);
+  // A colour distinguishes nothing when the model only comes in one
+  // (AirTag, Apple Pencil) — show just the name.
+  const label =
+    record.colour && variants.length > 1
+      ? `${modelName} — ${record.colour}`
+      : modelName;
+  const artwork = deviceThumbnail(record);
+
+  const inner = (
+    <>
+      <div className={carousel.imageShell}>
+        {artwork ? (
+          <CaseImage
+            code={artwork}
+            alt={label}
+            {...(firstGroup ? { priority: true } : { lazy: true })}
+          />
+        ) : (
+          <PhoneSymbol className={device.placeholder} />
+        )}
+      </div>
+      <strong className={`${carousel.caseTitle} ${carousel.linkTitle}`}>
+        {titleLines(label)}
+      </strong>
+    </>
+  );
+
+  return (
+    <article className={`${carousel.caseCard} ${device.tile}`}>
+      <div className={device.deviceCardBody}>
+        {/* Tap the tile to open the model's catalogue page (its cases). */}
+        {pagePath ? (
+          <Link
+            href={pagePath}
+            className={carousel.cardLink}
+            aria-label={label}
+          >
+            {inner}
+          </Link>
+        ) : (
+          inner
+        )}
+        {/* Implicit groups are derived, not owned — nothing to
+            remove or recolour. */}
+        {canRemove && !implicit && (
+          <DeviceActions
+            deviceId={record.deviceId}
+            label={label}
+            model={modelName}
+            variants={variants}
+          />
+        )}
+      </div>
+    </article>
+  );
+}
+
 /**
  * Owned devices with their cases, shared by /collection and
  * /collections/[username]. Each device is one card track: the device tile
@@ -157,115 +256,39 @@ export function DeviceSections({
   groups: DeviceGroup[];
   canRemove?: boolean;
 }) {
-  // Colour variants per model, for the owner's "Change colour" window.
-  const variantsFor = (model: string): DeviceVariant[] =>
-    getAllDevices()
-      .filter((record) => record.model === model)
-      .map((record) => ({
-        deviceId: record.deviceId,
-        colour: record.colour,
-        thumbnail: deviceThumbnail(record),
-      }));
-
   return (
     <>
       {groups.map(({ device: record, cases, implicit }, index) => {
         // The first group is the page's first content row — load its device
         // tile and leading cases eagerly for LCP; everything below stays lazy.
         const firstGroup = index === 0;
-        const variants = variantsFor(record.model);
-        const modelName = displayModelName(record.model);
-        const pagePath = devicePagePath(record.deviceId);
-        // A colour distinguishes nothing when the model only comes in one
-        // (AirTag, Apple Pencil) — show just the name.
-        const label =
-          record.colour && variants.length > 1
-            ? `${modelName} — ${record.colour}`
-            : modelName;
-        const artwork = deviceThumbnail(record);
         return (
           <Fragment key={record.deviceId}>
-          {index > 0 && <hr />}
-          <div
-            className={`${carousel.cardTrack} ${carousel.standalone}`}
-            data-collection-anchor={record.deviceId}
-          >
-            <article className={`${carousel.caseCard} ${device.tile}`}>
-              <div className={device.deviceCardBody}>
-                {(() => {
-                  const inner = (
-                    <>
-                      <div className={carousel.imageShell}>
-                        {artwork ? (
-                          <CaseImage
-                            code={artwork}
-                            alt={label}
-                            {...(firstGroup ? { priority: true } : { lazy: true })}
-                          />
-                        ) : (
-                          <PhoneSymbol className={device.placeholder} />
-                        )}
-                      </div>
-                      <strong
-                        className={`${carousel.caseTitle} ${carousel.linkTitle}`}
-                      >
-                        {titleLines(label)}
-                      </strong>
-                    </>
-                  );
-                  // Tap the tile to open the model's catalogue page (its cases).
-                  return pagePath ? (
-                    <Link
-                      href={pagePath}
-                      className={carousel.cardLink}
-                      aria-label={label}
-                    >
-                      {inner}
-                    </Link>
-                  ) : (
-                    inner
-                  );
-                })()}
-                {/* Implicit groups are derived, not owned — nothing to
-                    remove or recolour. */}
-                {canRemove && !implicit && (
-                  <DeviceActions
-                    deviceId={record.deviceId}
-                    label={label}
-                    model={modelName}
-                    variants={variants}
-                  />
-                )}
-              </div>
-            </article>
-            {cases.map((item, caseIndex) => {
-              const kindLabel = COLLECTION_KIND_LABELS[item.kind] ?? item.kind;
-              return (
-              <CollectionCaseCard
-                key={item.SKU}
-                item={item}
+            {index > 0 && <hr />}
+            <div
+              className={`${carousel.cardTrack} ${carousel.standalone}`}
+              data-collection-anchor={record.deviceId}
+            >
+              <DeviceTile
+                record={record}
+                implicit={implicit}
+                firstGroup={firstGroup}
                 canRemove={canRemove}
-                // First row: eager-load the device tile's leading cases too.
-                priority={firstGroup && caseIndex < 3}
-                // Match the case photo to the owned device's colour when a
-                // matching shot exists (falls back to the default thumbnail).
-                deviceColour={record.colour}
-                // Append the colour only when it distinguishes something: skip
-                // it for one-colour products (MagSafe Battery Pack, a Smart
-                // Keyboard) and for "Clear Case" (colour "Clear" — don't say it
-                // twice). Colour logic keys off the real kind; only the shown
-                // label is overridden.
-                title={
-                  item.colour &&
-                  !item.kind.includes(item.colour) &&
-                  colourVariantCount(item.model, item.kind) > 1
-                    ? `${kindLabel} — ${item.colour}`
-                    : kindLabel
-                }
               />
-              );
-            })}
-          </div>
+              {cases.map((item, caseIndex) => (
+                <CollectionCaseCard
+                  key={item.SKU}
+                  item={item}
+                  canRemove={canRemove}
+                  // First row: eager-load the device tile's leading cases too.
+                  priority={firstGroup && caseIndex < 3}
+                  // Match the case photo to the owned device's colour when a
+                  // matching shot exists (falls back to the default thumbnail).
+                  deviceColour={record.colour}
+                  title={shortCaseTitle(item)}
+                />
+              ))}
+            </div>
           </Fragment>
         );
       })}

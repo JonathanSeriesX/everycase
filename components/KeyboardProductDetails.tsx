@@ -1,22 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import LightboxComponent, { type GalleryImage } from "./LightboxComponent";
+import { GallerySection, type GalleryImage } from "./LightboxComponent";
 import CaseInfoCards, {
-  CompatibilityCard,
   CopyChip,
   InfoCard,
-  PriceCard,
-  StatCard,
   type CaseInfo,
 } from "./CaseInfoCards";
-import CollectionCard from "./CollectionCard.client";
 import {
   formatOrderNumber,
   getKeyboardLanguageName,
   getPreferredRegion,
 } from "../lib/productRegions";
-import cardStyles from "../styles/CaseInfoCards.module.css";
 import styles from "../styles/KeyboardProductDetails.module.css";
 
 export interface KeyboardRegionOption {
@@ -36,6 +31,11 @@ interface KeyboardProductDetailsProps {
   defaultRegion?: string;
 }
 
+/**
+ * The interactive half of a keyboard case page: the usual info cards, but
+ * with the order-number card swapped for one that follows a language picker
+ * — order number and gallery both track the selected layout.
+ */
 const KeyboardProductDetails = ({
   sku,
   regionOptions = [],
@@ -56,27 +56,16 @@ const KeyboardProductDetails = ({
     [regionOptions, selectedRegion],
   );
 
+  // The keyboard layout owns the order-number card, so the plain SKU groups
+  // never render here; similar-case suggestions don't apply to keyboards.
+  const cardInfo = { ...info, skuGroups: null, similarCases: [] };
+
+  // No regions on record at all: plain cards and the default gallery.
   if (!selectedOption) {
     return (
       <>
-        <CaseInfoCards
-          collectionSku={info.collectionSku}
-          releaseSku={info.releaseSku}
-          reReleaseSku={info.reReleaseSku}
-          releaseDate={info.releaseDate}
-          reReleaseDate={info.reReleaseDate}
-          msrp={info.msrp}
-          eduPrice={info.eduPrice}
-          compatibleModels={info.compatibleModels}
-        />
-        <section>
-          <hr />
-          <p className="sr-only">
-            {fallbackImages.length} image
-            {fallbackImages.length === 1 ? "" : "s"}.
-          </p>
-          <LightboxComponent images={fallbackImages} />
-        </section>
+        <CaseInfoCards {...cardInfo} />
+        <GallerySection images={fallbackImages} />
       </>
     );
   }
@@ -88,8 +77,9 @@ const KeyboardProductDetails = ({
 
   return (
     <>
-      <div className={cardStyles.grid}>
-        <div className={cardStyles.primaryRow}>
+      <CaseInfoCards
+        {...cardInfo}
+        orderCard={
           <InfoCard label="Order number">
             <div className={styles.keyboardOrderRow}>
               {/* keyed so the copy state resets when the language changes */}
@@ -115,43 +105,10 @@ const KeyboardProductDetails = ({
               )}
             </div>
           </InfoCard>
-          <CompatibilityCard compatibleModels={info.compatibleModels} />
-        </div>
-        {info.releaseDate && (
-          <StatCard
-            label={
-              info.releaseSku ? `${info.releaseSku} released on` : "Released on"
-            }
-            value={info.releaseDate}
-          />
-        )}
-        {info.reReleaseDate && (
-          <StatCard
-            label={
-              info.reReleaseSku
-                ? `${info.reReleaseSku} released on`
-                : "Re-released on"
-            }
-            value={info.reReleaseDate}
-          />
-        )}
-        <PriceCard prices={info.msrp} />
-        {info.eduPrice && (
-          <StatCard label="Education price" value={info.eduPrice} />
-        )}
-        {info.collectionSku && <CollectionCard sku={info.collectionSku} />}
-      </div>
-      <section>
-        <hr />
-        <p className="sr-only">
-          {selectedOption.images.length} image
-          {selectedOption.images.length === 1 ? "" : "s"}.
-        </p>
-        <LightboxComponent
-          key={selectedOption.region}
-          images={selectedOption.images}
-        />
-      </section>
+        }
+      />
+      {/* keyed so the gallery resets to the first shot on a language change */}
+      <GallerySection key={selectedOption.region} images={selectedOption.images} />
     </>
   );
 };

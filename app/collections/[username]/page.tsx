@@ -4,14 +4,9 @@ import type { Metadata, ResolvingMetadata } from "next";
 import type { Document } from "mongodb";
 import { db } from "../../../lib/mongo";
 import { loadCollection } from "../../../lib/collectionItems";
-import { formatPrice } from "../../../lib/currencies";
-import {
-  CaseGrid,
-  DeviceSections,
-  computeLaunchValue,
-} from "../../../components/CollectionGrid";
-import CollectionHead from "../../../components/CollectionHead";
-import CollectionStats from "../../../components/CollectionStats";
+import { buildCollectionStats } from "../../../lib/collectionStats";
+import { computeLaunchValue } from "../../../components/CollectionGrid";
+import CollectionSections from "../../../components/CollectionSections";
 
 // Public, per-user page — rendered on demand so it always reflects the
 // owner's latest items and privacy setting.
@@ -38,17 +33,13 @@ const displayName = (owner: Document): string =>
  * collection is. */
 async function collectionSummary(ownerId: string): Promise<string> {
   const { owned, wanted, deviceGroups } = await loadCollection(ownerId);
-  const { sums } = computeLaunchValue(owned);
-  const parts: string[] = [];
-  const deviceCount = deviceGroups.filter((group) => !group.implicit).length;
-  if (deviceCount > 0) {
-    parts.push(`${deviceCount} device${deviceCount === 1 ? "" : "s"}`);
-  }
-  if (owned.length > 0) {
-    parts.push(`${owned.length} accessor${owned.length === 1 ? "y" : "ies"}`);
-  }
-  const worth = sums.USD ? formatPrice(sums.USD, "USD") : "";
-  if (worth) parts.push(`worth ${worth} at launch`);
+  const { sums, pricedCount } = computeLaunchValue(owned);
+  const parts = buildCollectionStats({
+    deviceCount: deviceGroups.filter((group) => !group.implicit).length,
+    caseCount: owned.length,
+    sums,
+    pricedCount,
+  }).map((stat) => stat.label);
   if (wanted.length > 0) {
     parts.push(`${wanted.length} item${wanted.length === 1 ? "" : "s"} wishlisted`);
   }
@@ -97,7 +88,6 @@ export default async function PublicCollectionPage({
   const { owned, wanted, deviceGroups, unassigned } = await loadCollection(
     owner._id.toString(),
   );
-  const { sums, pricedCount } = computeLaunchValue(owned);
 
   return (
     // Collections are personal, ever-changing, and noindex — keep them out of
@@ -107,46 +97,12 @@ export default async function PublicCollectionPage({
       {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
         <p>Nothing here yet.</p>
       ) : (
-        <>
-          {(owned.length > 0 || deviceGroups.length > 0) && (
-            <section>
-              <CollectionStats
-                // Implicit groups (AirTag, MagSafe Accessories, …) are
-                // derived homes for cases, not devices the owner declared.
-                deviceCount={deviceGroups.filter((g) => !g.implicit).length}
-                caseCount={owned.length}
-                sums={sums}
-                pricedCount={pricedCount}
-              />
-              <hr />
-              <DeviceSections groups={deviceGroups} />
-              {unassigned.length > 0 && deviceGroups.length > 0 && (
-                <h3>Not linked to a device</h3>
-              )}
-              {unassigned.length > 0 && (
-                <CaseGrid
-                  cases={unassigned}
-                  anchorId="section:unassigned"
-                  // First content only when there are no device sections above.
-                  priorityCount={deviceGroups.length === 0 ? 4 : 0}
-                />
-              )}
-            </section>
-          )}
-          {wanted.length > 0 && (
-            <section>
-              <CollectionHead title="Wishlist" caseCount={wanted.length} />
-              <CaseGrid
-                cases={wanted}
-                anchorId="section:wishlist"
-                // First content only when nothing owned renders above it.
-                priorityCount={
-                  owned.length === 0 && deviceGroups.length === 0 ? 4 : 0
-                }
-              />
-            </section>
-          )}
-        </>
+        <CollectionSections
+          owned={owned}
+          wanted={wanted}
+          deviceGroups={deviceGroups}
+          unassigned={unassigned}
+        />
       )}
     </article>
   );

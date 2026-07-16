@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
+import { useMemo, useState } from "react";
 import { requestSignIn, useSession } from "../lib/auth-client";
 import {
   useAddDevice,
@@ -10,8 +9,11 @@ import {
   useSetCaseStatus,
   type CollectionStatus,
 } from "../lib/collectionQueries";
-import CaseImage from "./CaseImage.client";
-import { PhoneSymbol } from "./icons";
+import DeviceWindow, {
+  GroupedDeviceRows,
+  devicePickerTitle,
+  groupByModel,
+} from "./DeviceWindow.client";
 import styles from "../styles/CaseInfoCards.module.css";
 
 /**
@@ -57,28 +59,11 @@ export default function CollectionCard({ sku }: { sku: string }) {
     onSuccess: () => setStatus.mutate("owned"),
   });
 
-  useEffect(() => {
-    if (!windowOpen) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setWindowOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [windowOpen]);
-
   const ownsCompatible = useMemo(
     () => compatible.some((d) => ownedIds.has(d.deviceId)),
     [compatible, ownedIds],
   );
-  const modelGroups = useMemo(() => {
-    const byModel = new Map<string, typeof compatible>();
-    for (const device of compatible) {
-      const group = byModel.get(device.model);
-      if (group) group.push(device);
-      else byModel.set(device.model, [device]);
-    }
-    return [...byModel.entries()];
-  }, [compatible]);
+  const modelGroups = useMemo(() => groupByModel(compatible), [compatible]);
 
   const toggle = (next: Exclude<CollectionStatus, null>) => {
     if (!signedIn) {
@@ -128,11 +113,6 @@ export default function CollectionCard({ sku }: { sku: string }) {
     </button>
   );
 
-  const windowTitle =
-    modelGroups.length === 1
-      ? `Which ${modelGroups[0][0]} do you have?`
-      : "Which device do you have?";
-
   return (
     <div className={styles.card} data-pagefind-ignore>
       <span className={styles.label}>Collection status</span>
@@ -141,75 +121,33 @@ export default function CollectionCard({ sku }: { sku: string }) {
         {chip("wanted", "I want it", "Wishlisted")}
       </div>
       {note && <p className={styles.collectionNote}>{note}</p>}
-      {windowOpen &&
-        createPortal(
-          <div
-            className={styles.deviceOverlay}
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget) setWindowOpen(false);
-            }}
-          >
-            <div
-              className={styles.deviceWindow}
-              role="dialog"
-              aria-modal="true"
-              aria-label={windowTitle}
-            >
-              <span className={styles.label}>{windowTitle}</span>
-              <p className={styles.collectionNote}>
-                The case goes under your device on the collection page — or
-                skip, and it stays unlinked.
-              </p>
-              <div className={styles.deviceList}>
-                {modelGroups.map(([model, devices]) => (
-                  <div key={model} className={styles.deviceListGroup}>
-                    {modelGroups.length > 1 && (
-                      <span className={styles.skuGroupLabel}>{model}</span>
-                    )}
-                    {devices.map((device) => (
-                      <button
-                        key={device.deviceId}
-                        type="button"
-                        className={styles.deviceRow}
-                        onClick={() => pick(device.deviceId)}
-                      >
-                        <span className={styles.deviceThumb} aria-hidden="true">
-                          {device.thumbnail ? (
-                            <CaseImage code={device.thumbnail} alt="" />
-                          ) : (
-                            <PhoneSymbol
-                              className={styles.deviceThumbFallback}
-                            />
-                          )}
-                        </span>
-                        <span className={styles.deviceRowLabel}>
-                          {device.colour}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                ))}
-              </div>
-              <div className={styles.windowActions}>
-                <button
-                  type="button"
-                  className={`${styles.chip} ${styles.actionChip}`}
-                  onClick={skip}
-                >
-                  Skip
-                </button>
-                <button
-                  type="button"
-                  className={`${styles.chip} ${styles.actionChip}`}
-                  onClick={() => setWindowOpen(false)}
-                >
-                  Cancel
-                </button>
-              </div>
+      {windowOpen && (
+        <DeviceWindow
+          title={devicePickerTitle(modelGroups)}
+          note="The case goes under your device on the collection page — or skip, and it stays unlinked."
+          onClose={() => setWindowOpen(false)}
+          footer={
+            <div className={styles.windowActions}>
+              <button
+                type="button"
+                className={`${styles.chip} ${styles.actionChip}`}
+                onClick={skip}
+              >
+                Skip
+              </button>
+              <button
+                type="button"
+                className={`${styles.chip} ${styles.actionChip}`}
+                onClick={() => setWindowOpen(false)}
+              >
+                Cancel
+              </button>
             </div>
-          </div>,
-          document.body,
-        )}
+          }
+        >
+          <GroupedDeviceRows groups={modelGroups} onPick={pick} />
+        </DeviceWindow>
+      )}
     </div>
   );
 }

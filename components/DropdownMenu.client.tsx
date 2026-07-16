@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
+import { useDismiss } from "../lib/useDismiss";
 import { ChevronRightIcon } from "./icons";
 import styles from "../styles/Settings.module.css";
 
@@ -53,23 +54,7 @@ export default function DropdownMenu({
   };
 
   // Close on outside interaction / Escape.
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (event: MouseEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
+  useDismiss(containerRef, () => setOpen(false), open);
 
   const listClassName = [
     styles.menuList,

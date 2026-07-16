@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
-import LightboxComponent, {
+import {
+  GallerySection,
   type GalleryImage,
 } from "../../../components/LightboxComponent";
 import Breadcrumb, { type Crumb } from "../../../components/Breadcrumb";
@@ -28,12 +29,11 @@ import {
   isKeyboardProduct,
   parseRegionCodes,
 } from "../../../lib/productRegions";
+import { appleImageUrl } from "../../../lib/imageCdn";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-const IMAGE_BASE_URL =
-  "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 const EXTENSION = "?wid=1536&hei=1536&fmt=png-alpha";
 const OG_IMAGE_EXTENSION = "?wid=1200&hei=630&fmt=jpg&qlt=99";
 
@@ -97,7 +97,7 @@ function listMergedVariantsForRegion(sku: string, region: string): string[] {
 
 function buildImages(variants: string[], caseName: string): GalleryImage[] {
   return variants.map((variant) => ({
-    src: `${IMAGE_BASE_URL}/${variant.trim()}${EXTENSION}`,
+    src: appleImageUrl(variant.trim(), EXTENSION),
     alt: caseName,
     // The asset's native resolution, so download links never upscale.
     res: getImageRes(variant.trim()),
@@ -217,7 +217,7 @@ export async function generateMetadata(
   const caseName = getCaseName(data);
   const title = caseName;
   const firstVariant = listVariantsForSku(sku)[0];
-  const image = `${IMAGE_BASE_URL}/${firstVariant.trim()}${OG_IMAGE_EXTENSION}`;
+  const image = appleImageUrl(firstVariant.trim(), OG_IMAGE_EXTENSION);
   const parentMetadata = await parent;
 
   return {
@@ -320,15 +320,7 @@ export default async function CasePage({ params }: CaseRouteProps) {
           defaultRegion={defaultKeyboardRegion}
         />
       ) : (
-        <section>
-          <hr />
-          {/* Invisible, but indexed: gives the gallery a searchable count and
-              lets Pagefind excerpts end on "… N images." */}
-          <p className="sr-only">
-            {defaultImages.length} image{defaultImages.length === 1 ? "" : "s"}.
-          </p>
-          <LightboxComponent images={defaultImages} />
-        </section>
+        <GallerySection images={defaultImages} />
       )}
     </article>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CopyIcon, CheckIcon } from "./icons";
+import CopySwapIcon from "./CopySwapIcon";
 import CaseImage from "./CaseImage.client";
 import { formatOrderNumber, getPreferredRegion } from "../lib/productRegions";
 import type { CaseRecord } from "../lib/getCasesFromCSV";
@@ -71,22 +71,7 @@ const CaseCard = ({
             }}
           >
             <span>{formatSkuLabel(item.SKU)}</span>
-            <span className={styles.iconSwap} aria-hidden="true">
-              <CopyIcon
-                className={`${styles.iconLayer} ${
-                  copiedSku === item.SKU
-                    ? styles.iconHidden
-                    : styles.iconVisible
-                }`}
-              />
-              <CheckIcon
-                className={`${styles.iconLayer} ${
-                  copiedSku === item.SKU
-                    ? styles.iconVisible
-                    : styles.iconHidden
-                }`}
-              />
-            </span>
+            <CopySwapIcon copied={copiedSku === item.SKU} styles={styles} />
           </button>{" "}
           {item.colour !== "Clear" && item.season ? (
             <span
