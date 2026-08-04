@@ -5,8 +5,6 @@ import { getPageHeading } from "../../../lib/notes";
 import { resolveOgImage, ogMetadata } from "../../../lib/og";
 import ModelPageContent from "../../../components/ModelPageContent";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 interface ModelRouteProps {
   params: Promise<{ group: string; page: string }>;

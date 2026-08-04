@@ -57,6 +57,12 @@ const csp = [
 //TODO flip to "Content-Security-Policy" once the console is quiet for a few days.
 
 const nextConfig: NextConfig = {
+  // Cache Components (16.3): dynamic by default, explicit caching via
+  // "use cache", and per-user pages stream behind Suspense shells so
+  // navigations stay instant. Partial Prefetching replaces per-link
+  // prefetch requests with one reusable shell per route.
+  cacheComponents: true,
+  partialPrefetching: true,
   images: {
     remotePatterns: [
       {

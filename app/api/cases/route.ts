@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAllCasesFromCSV, filterCases } from "../../../lib/getCasesFromCSV";
 
-export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {

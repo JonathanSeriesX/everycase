@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { unstable_cache } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { db } from "./mongo";
 import { getAllCasesFromCSV, type CaseRecord } from "./getCasesFromCSV";
 import {
@@ -39,23 +39,23 @@ export const collectionTag = (userId: string) => `collection:${userId}`;
 // the fields the loader actually uses are projected, so the cached payload is
 // plain and serialisable (no ObjectId/Date round-tripping). The createdAt
 // sort still applies server-side before projection, preserving newest-first.
-const loadCollectionDocs = (userId: string) =>
-  unstable_cache(
-    async () => {
-      const [docs, deviceDocs] = await Promise.all([
-        collectionItems()
-          .find({ userId }, { projection: { _id: 0, sku: 1, status: 1 } })
-          .sort({ createdAt: -1 })
-          .toArray(),
-        userDevices()
-          .find({ userId }, { projection: { _id: 0, deviceId: 1 } })
-          .toArray(),
-      ]);
-      return { docs, deviceDocs };
-    },
-    ["collection-docs", userId],
-    { tags: [collectionTag(userId)] },
-  )();
+// Lives until a write route revalidates the tag (cacheLife "max"), exactly
+// the lifetime unstable_cache used to give it.
+async function loadCollectionDocs(userId: string) {
+  "use cache";
+  cacheTag(collectionTag(userId));
+  cacheLife("max");
+  const [docs, deviceDocs] = await Promise.all([
+    collectionItems()
+      .find({ userId }, { projection: { _id: 0, sku: 1, status: 1 } })
+      .sort({ createdAt: -1 })
+      .toArray(),
+    userDevices()
+      .find({ userId }, { projection: { _id: 0, deviceId: 1 } })
+      .toArray(),
+  ]);
+  return { docs, deviceDocs };
+}
 
 // Compatible device ids per case model, cached — the collection loader hits
 // the same few models over and over.

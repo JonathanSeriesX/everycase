@@ -15,7 +15,6 @@ import NavCard, { CardGrid } from "../components/NavCard";
 import PrefetchImages from "../components/PrefetchImages.client";
 import AvifCallout from "../components/AvifCallout.client";
 
-export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: { absolute: "Finest Woven" },

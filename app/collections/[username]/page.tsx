@@ -1,4 +1,4 @@
-import { cache } from "react";
+import { cache, Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import type { Document } from "mongodb";
@@ -8,9 +8,9 @@ import { buildCollectionStats } from "../../../lib/collectionStats";
 import { computeLaunchValue } from "../../../components/CollectionGrid";
 import CollectionSections from "../../../components/CollectionSections";
 
-// Public, per-user page — rendered on demand so it always reflects the
-// owner's latest items and privacy setting.
-export const dynamic = "force-dynamic";
+// Public, per-user page — the body streams behind a Suspense shell so it
+// always reflects the owner's latest items and privacy setting while the
+// navigation itself stays instant.
 
 interface CollectionsRouteProps {
   params: Promise<{ username: string }>;
@@ -76,9 +76,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function PublicCollectionPage({
-  params,
-}: CollectionsRouteProps) {
+async function PublicCollection({ params }: CollectionsRouteProps) {
   const { username } = await params;
   const owner = await findPublicOwner(username.toLowerCase());
   if (!owner) return notFound();
@@ -90,9 +88,7 @@ export default async function PublicCollectionPage({
   );
 
   return (
-    // Collections are personal, ever-changing, and noindex — keep them out of
-    // the Pagefind search index entirely.
-    <article data-pagefind-ignore>
+    <>
       <h1>{displayName(owner)}’s collection</h1>
       {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
         <p>Nothing here yet.</p>
@@ -104,6 +100,20 @@ export default async function PublicCollectionPage({
           unassigned={unassigned}
         />
       )}
+    </>
+  );
+}
+
+export default function PublicCollectionPage({
+  params,
+}: CollectionsRouteProps) {
+  return (
+    // Collections are personal, ever-changing, and noindex — keep them out of
+    // the Pagefind search index entirely.
+    <article data-pagefind-ignore>
+      <Suspense>
+        <PublicCollection params={params} />
+      </Suspense>
     </article>
   );
 }

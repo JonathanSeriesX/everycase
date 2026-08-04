@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { preconnect, preload } from "react-dom";
 import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
@@ -124,7 +125,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           <Providers>
             <HashNavigation />
-            <ScrollToTopOnNavigate />
+            {/* usePathname() is runtime-only URL data — under Cache
+                Components it must sit inside Suspense so the static shell
+                prerenders without it. Renders null; no fallback needed. */}
+            <Suspense>
+              <ScrollToTopOnNavigate />
+            </Suspense>
             <Navbar />
             <main className="site-main">{children}</main>
             {/* The stray {" "}s are for text scrapers, which would otherwise

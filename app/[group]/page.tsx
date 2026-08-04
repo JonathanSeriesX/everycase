@@ -14,8 +14,6 @@ import MdxContent from "../../components/MdxContent";
 import ModelPageContent from "../../components/ModelPageContent";
 import NavCard, { CardGrid } from "../../components/NavCard";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 interface GroupRouteProps {
   params: Promise<{ group: string }>;

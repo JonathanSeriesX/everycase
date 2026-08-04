@@ -31,8 +31,6 @@ import {
 } from "../../../lib/productRegions";
 import { appleImageUrl } from "../../../lib/imageCdn";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 const EXTENSION = "?wid=1536&hei=1536&fmt=png-alpha";
 const OG_IMAGE_EXTENSION = "?wid=1200&hei=630&fmt=jpg&qlt=99";

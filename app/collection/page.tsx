@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { headers } from "next/headers";
 import type { Metadata } from "next";
 import { ObjectId } from "mongodb";
@@ -9,27 +10,24 @@ import CollectionSections from "../../components/CollectionSections";
 import CollectionFreshness from "../../components/CollectionFreshness.client";
 import PublicAccessCard from "../../components/PublicAccessCard.client";
 
-// Personal, per-user page — always rendered on demand, never cached.
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "My collection",
   robots: { index: false },
 };
 
-export default async function CollectionPage() {
+// Personal, per-user content — streamed behind the static shell below, so
+// navigating here is instant and the grid fills in when the session and
+// Mongo reads land.
+async function CollectionContent() {
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session) {
     return (
-      <article>
-        <h1>My collection</h1>
-        <p>
-          Sign in with the account button in the top-right corner to start
-          tracking the accessories you own — and the ones you&rsquo;re still
-          hunting for.
-        </p>
-      </article>
+      <p>
+        Sign in with the account button in the top-right corner to start
+        tracking the accessories you own — and the ones you&rsquo;re still
+        hunting for.
+      </p>
     );
   }
 
@@ -53,10 +51,8 @@ export default async function CollectionPage() {
   const signature = collectionSignature(deviceGroups, unassigned, wanted);
 
   return (
-    // Personal + noindex — never index a collection in Pagefind search.
-    <article data-pagefind-ignore>
+    <>
       <CollectionFreshness signature={signature} />
-      <h1>My collection</h1>
       <PublicAccessCard initial={profile} />
       {owned.length === 0 &&
       wanted.length === 0 &&
@@ -74,6 +70,18 @@ export default async function CollectionPage() {
           canEdit
         />
       )}
+    </>
+  );
+}
+
+export default function CollectionPage() {
+  return (
+    // Personal + noindex — never index a collection in Pagefind search.
+    <article data-pagefind-ignore>
+      <h1>My collection</h1>
+      <Suspense>
+        <CollectionContent />
+      </Suspense>
     </article>
   );
 }

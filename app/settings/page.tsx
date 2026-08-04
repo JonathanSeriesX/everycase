@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -10,15 +11,15 @@ import ThemeControl from "../../components/ThemeControl.client";
 import CurrencyControl from "../../components/CurrencyControl.client";
 import styles from "../../styles/Settings.module.css";
 
-// Per-user page — rendered on demand.
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Settings",
   robots: { index: false },
 };
 
-export default async function SettingsPage() {
+// The session-dependent half of the page — streamed behind the static shell
+// so navigating to Settings is instant; the appearance section below never
+// waits on the session lookup.
+async function AccountSections() {
   const session = await auth.api.getSession({ headers: await headers() });
 
   let passkeys: PasskeyInfo[] = [];
@@ -36,30 +37,40 @@ export default async function SettingsPage() {
     }));
   }
 
+  if (!session) {
+    return (
+      <section className={styles.section}>
+        <h2>Account</h2>
+        <p>
+          Sign in with the account button in the top-right corner to manage
+          your passkeys and account. Your display name, username, and
+          collection sharing live on your{" "}
+          <Link href="/collection">collection page</Link>.
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <>
+      <section className={styles.section}>
+        <h2>Passkeys</h2>
+        <PasskeyCard initial={passkeys} />
+      </section>
+
+      <DeleteAccount />
+    </>
+  );
+}
+
+export default function SettingsPage() {
   return (
     <article className={styles.page}>
       <h1>Settings</h1>
 
-      {session ? (
-        <>
-          <section className={styles.section}>
-            <h2>Passkeys</h2>
-            <PasskeyCard initial={passkeys} />
-          </section>
-
-          <DeleteAccount />
-        </>
-      ) : (
-        <section className={styles.section}>
-          <h2>Account</h2>
-          <p>
-            Sign in with the account button in the top-right corner to manage
-            your passkeys and account. Your display name, username, and
-            collection sharing live on your{" "}
-            <Link href="/collection">collection page</Link>.
-          </p>
-        </section>
-      )}
+      <Suspense>
+        <AccountSections />
+      </Suspense>
 
       <section className={styles.section}>
         <h2>Appearance</h2>
