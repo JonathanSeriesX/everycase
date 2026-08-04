@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { preconnect, preload } from "react-dom";
 import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
@@ -10,7 +9,6 @@ import Navbar from "../components/Navbar";
 import Providers from "../components/Providers.client";
 import ThemeColorSync from "../components/ThemeColorSync.client";
 import HashNavigation from "../components/HashNavigation.client";
-import ScrollToTopOnNavigate from "../components/ScrollToTopOnNavigate.client";
 import "../styles/globals.css";
 
 // Theme-color = the page background per OS colour scheme, as the old Nextra
@@ -125,12 +123,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           <Providers>
             <HashNavigation />
-            {/* usePathname() is runtime-only URL data — under Cache
-                Components it must sit inside Suspense so the static shell
-                prerenders without it. Renders null; no fallback needed. */}
-            <Suspense>
-              <ScrollToTopOnNavigate />
-            </Suspense>
             <Navbar />
             <main className="site-main">{children}</main>
             {/* The stray {" "}s are for text scrapers, which would otherwise

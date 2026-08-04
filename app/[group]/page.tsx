@@ -31,6 +31,7 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: GroupRouteProps): Promise<Metadata> {
+  "use cache";
   const { group: slug } = await params;
   const entry = getGroup(slug) ?? getTopPage(slug);
   if (!entry) return {};
@@ -40,7 +41,13 @@ export async function generateMetadata({
   });
 }
 
+// Same deal as the model pages (see [page]/page.tsx): a blocking route on
+// purpose, so unknown slugs get a real 404 status; all known slugs are fully
+// prerendered and the render is cached per-slug.
+export const instant = false;
+
 export default async function GroupPage({ params }: GroupRouteProps) {
+  "use cache";
   const { group: slug } = await params;
 
   const topPage = getTopPage(slug);

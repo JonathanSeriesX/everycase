@@ -244,6 +244,12 @@ export async function generateMetadata(
   };
 }
 
+// Deliberately a blocking route: every real SKU is prerendered in full by
+// generateStaticParams, so only unknown SKUs render at request time — and
+// those must block so notFound() can return a real 404 status instead of a
+// streamed soft-404 behind a Suspense shell.
+export const instant = false;
+
 export default async function CasePage({ params }: CaseRouteProps) {
   const { sku } = await params;
   const data = findCaseBySku(sku);

@@ -9,8 +9,7 @@ import { computeLaunchValue } from "../../../components/CollectionGrid";
 import CollectionSections from "../../../components/CollectionSections";
 
 // Public, per-user page — the body streams behind a Suspense shell so it
-// always reflects the owner's latest items and privacy setting while the
-// navigation itself stays instant.
+// always reflects the owner's latest items and privacy setting.
 
 interface CollectionsRouteProps {
   params: Promise<{ username: string }>;
@@ -52,7 +51,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { username } = await params;
   const owner = await findPublicOwner(username.toLowerCase());
-  if (!owner) return {};
+  if (!owner) notFound();
   const title = `${displayName(owner)}’s collection`;
   // The header pills, not the site's generic line — an empty collection
   // falls back to the inherited description.
@@ -108,8 +107,8 @@ export default function PublicCollectionPage({
   params,
 }: CollectionsRouteProps) {
   return (
-    // Collections are personal, ever-changing, and noindex — keep them out of
-    // the Pagefind search index entirely.
+    // Public collections may be indexed by search engines, but keep them out
+    // of the site's Pagefind search index.
     <article data-pagefind-ignore>
       <Suspense>
         <PublicCollection params={params} />

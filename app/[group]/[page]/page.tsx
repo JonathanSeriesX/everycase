@@ -19,6 +19,7 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ModelRouteProps): Promise<Metadata> {
+  "use cache";
   const { group: groupSlug, page: pageSlug } = await params;
   const page = getPage(groupSlug, pageSlug);
   if (!page) return {};
@@ -31,7 +32,17 @@ export async function generateMetadata({
   });
 }
 
+// Deliberately a blocking route (`instant = false`): every legitimate path is
+// prerendered in full by generateStaticParams, so only unknown slugs ever
+// render at request time — and those must block so notFound() can return a
+// real 404 status instead of a streamed soft-404 behind a Suspense shell.
+// The render is cached per-slug ("use cache") — pure build-time catalogue
+// data — which is also what lets params resolve inside a cache scope without
+// making the route dynamic.
+export const instant = false;
+
 export default async function ModelPage({ params }: ModelRouteProps) {
+  "use cache";
   const { group: groupSlug, page: pageSlug } = await params;
   const group = getGroup(groupSlug);
   const page = getPage(groupSlug, pageSlug);
