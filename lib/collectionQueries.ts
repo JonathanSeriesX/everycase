@@ -82,6 +82,16 @@ export function useInvalidateCollection() {
   };
 }
 
+/** Invalidate only the device lists. Device writes never change a case's
+ * status, and refetching ["collection", sku] here would race (and briefly
+ * overwrite) the optimistic "owned" flip during the pick-a-device flow. */
+function useInvalidateDevices() {
+  const queryClient = useQueryClient();
+  return () => {
+    void queryClient.invalidateQueries({ queryKey: collectionKeys.devices() });
+  };
+}
+
 /**
  * Set (or clear, with null) one case's status. Optimistic: the cached
  * status flips immediately and rolls back on failure.
@@ -133,7 +143,7 @@ export function useAddDevice(
     "onError" | "onSuccess"
   >,
 ) {
-  const invalidate = useInvalidateCollection();
+  const invalidate = useInvalidateDevices();
   return useMutation({
     mutationFn: (body: { deviceId: string; replaceDeviceId?: string }) =>
       putJSON("/api/devices", body),
@@ -150,7 +160,7 @@ export function useRemoveDevice(
     "onError" | "onSuccess"
   >,
 ) {
-  const invalidate = useInvalidateCollection();
+  const invalidate = useInvalidateDevices();
   return useMutation({
     mutationFn: (deviceId: string) =>
       requestJSON(`/api/devices?deviceId=${encodeURIComponent(deviceId)}`, {

@@ -1,8 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ComponentType, type SVGProps } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { requestSignIn, useSession } from "../lib/auth-client";
+import { CheckIcon, HeartIcon, PlusIcon } from "./icons";
 import {
+  collectionKeys,
   useAddDevice,
   useCaseStatus,
   useDevices,
@@ -86,9 +89,26 @@ export default function CollectionCard({ sku }: { sku: string }) {
     setStatus.mutate(target);
   };
 
+  // Picking a device flips the chip red immediately — the registration and
+  // the status write follow behind the optimistic cache entry, and a failed
+  // registration rolls the chip back (the hook-level onError shows the note).
+  const queryClient = useQueryClient();
   const pick = (deviceId: string) => {
     setWindowOpen(false);
-    addDevice.mutate({ deviceId });
+    const previous = queryClient.getQueryData<CollectionStatus>(
+      collectionKeys.status(sku),
+    );
+    queryClient.setQueryData(collectionKeys.status(sku), "owned");
+    addDevice.mutate(
+      { deviceId },
+      {
+        onError: () =>
+          queryClient.setQueryData(
+            collectionKeys.status(sku),
+            previous ?? null,
+          ),
+      },
+    );
   };
 
   const skip = () => {
@@ -96,29 +116,47 @@ export default function CollectionCard({ sku }: { sku: string }) {
     setStatus.mutate("owned");
   };
 
+  // Same stacked-icon swap as the SKU copy pill: both glyphs stay mounted
+  // and opacity-fade, so toggling never reflows the button.
   const chip = (
     value: Exclude<CollectionStatus, null>,
     label: string,
     activeLabel: string,
-  ) => (
-    <button
-      type="button"
-      className={`${styles.chip} ${styles.actionChip} ${styles.collectionChip}`}
-      data-active={status === value}
-      aria-pressed={status === value}
-      disabled={signedIn && statusQuery.isPending}
-      onClick={() => toggle(value)}
-    >
-      {status === value ? activeLabel : label}
-    </button>
-  );
+    Icon: ComponentType<SVGProps<SVGSVGElement>>,
+  ) => {
+    const active = status === value;
+    return (
+      <button
+        type="button"
+        className={`${styles.chip} ${styles.actionChip} ${styles.collectionChip}`}
+        data-active={active}
+        aria-pressed={active}
+        disabled={signedIn && statusQuery.isPending}
+        onClick={() => toggle(value)}
+      >
+        {active ? activeLabel : label}
+        <span className={styles.iconSwap} aria-hidden="true">
+          <Icon
+            className={`${styles.iconLayer} ${
+              active ? styles.iconHidden : styles.iconVisible
+            }`}
+          />
+          <CheckIcon
+            className={`${styles.iconLayer} ${
+              active ? styles.iconVisible : styles.iconHidden
+            }`}
+          />
+        </span>
+      </button>
+    );
+  };
 
   return (
     <div className={styles.card} data-pagefind-ignore>
       <span className={styles.label}>Collection status</span>
       <div className={`${styles.chipRow} ${styles.collectionRow}`}>
-        {chip("owned", "I own it", "Owned")}
-        {chip("wanted", "I want it", "Wishlisted")}
+        {chip("owned", "I own it", "Owned", PlusIcon)}
+        {chip("wanted", "I want it", "Wishlisted", HeartIcon)}
       </div>
       {note && <p className={styles.collectionNote}>{note}</p>}
       {windowOpen && (

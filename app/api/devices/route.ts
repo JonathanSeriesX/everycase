@@ -104,9 +104,11 @@ export async function PUT(request: Request) {
   if (replaceDeviceId && replaceDeviceId !== deviceId) {
     await userDevices().deleteOne({ userId, deviceId: replaceDeviceId });
   }
-  // Route handlers can't use updateTag (Server-Action-only); "max" is Next
-  // 16's drop-in for the old single-arg purge — expire every tagged entry.
-  revalidateTag(collectionTag(userId), "max");
+  // Route handlers can't use updateTag (Server-Action-only), and the "max"
+  // profile is stale-while-revalidate — a router.refresh() right after this
+  // write would still be served the old collection. { expire: 0 } hard-expires
+  // the tagged entries so the very next read sees this write.
+  revalidateTag(collectionTag(userId), { expire: 0 });
   return NextResponse.json({ deviceId });
 }
 
@@ -123,8 +125,10 @@ export async function DELETE(request: Request) {
   }
 
   await userDevices().deleteOne({ userId, deviceId });
-  // Route handlers can't use updateTag (Server-Action-only); "max" is Next
-  // 16's drop-in for the old single-arg purge — expire every tagged entry.
-  revalidateTag(collectionTag(userId), "max");
+  // Route handlers can't use updateTag (Server-Action-only), and the "max"
+  // profile is stale-while-revalidate — a router.refresh() right after this
+  // write would still be served the old collection. { expire: 0 } hard-expires
+  // the tagged entries so the very next read sees this write.
+  revalidateTag(collectionTag(userId), { expire: 0 });
   return NextResponse.json({ deviceId, removed: true });
 }

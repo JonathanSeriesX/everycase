@@ -7,7 +7,7 @@ import LinkCaseButton from "./LinkCaseButton.client";
 import carousel from "../styles/VerticalCarousel.module.css";
 import device from "../styles/DeviceSection.module.css";
 
-const ARM_RESET_TIMEOUT = 2000;
+const ARM_RESET_TIMEOUT = 3000;
 
 /**
  * Client shell of one collection case tile: renders the server-provided
@@ -82,9 +82,11 @@ export default function CollectionCaseTile({
               className={device.tileButton}
               data-armed={armed}
               onClick={onRemoveClick}
-              aria-label={`Remove ${label}`}
+              aria-label={
+                armed ? `Confirm removing ${label}` : `Remove ${label}`
+              }
             >
-              {armed ? "Sure?" : "Remove"}
+              {armed ? "Confirm" : "Remove"}
             </button>
           )}
           {note && (

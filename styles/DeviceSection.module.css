@@ -60,6 +60,26 @@
   background-color: #e3504f;
   border-color: #e3504f;
   color: #fff;
+  animation: armPulse 260ms ease;
+}
+
+/* One quick pulse when the button arms, so the state change can't be missed. */
+@keyframes armPulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tileButton[data-armed="true"] {
+    animation: none;
+  }
 }
 
 .tileButton:disabled {

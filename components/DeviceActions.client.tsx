@@ -98,9 +98,9 @@ export default function DeviceActions({
         data-armed={armed}
         disabled={busy}
         onClick={remove}
-        aria-label={`Unlink ${label}`}
+        aria-label={armed ? `Confirm unlinking ${label}` : `Unlink ${label}`}
       >
-        {busy ? "Working…" : armed ? "Sure?" : "Unlink"}
+        {busy ? "Working…" : armed ? "Confirm" : "Unlink"}
       </button>
       {note && (
         <p className={styles.tileNote} role="status">
