@@ -46,6 +46,13 @@ export const auth = betterAuth({
   appName: "Finest Woven",
   baseURL,
   database: pool,
+  session: {
+    // Six months before an idle session dies; any visit at least a day
+    // after the last refresh (updateAge, default 1d) re-extends the clock,
+    // so active users effectively never get logged out. Also sets the
+    // session cookie's maxAge.
+    expiresIn: 60 * 60 * 24 * 180,
+  },
   user: {
     // Profile fields managed by /api/profile (hence input: false — they are
     // not settable through Better Auth's own endpoints).
