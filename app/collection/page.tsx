@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 import { headers } from "next/headers";
 import type { Metadata } from "next";
-import { ObjectId } from "mongodb";
 import { auth } from "../../lib/auth";
-import { db } from "../../lib/mongo";
+import { pool } from "../../lib/db";
 import { loadCollection } from "../../lib/collectionItems";
 import { collectionSignature } from "../../components/CollectionGrid";
 import CollectionSections from "../../components/CollectionSections";
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
 
 // Personal, per-user content — streamed behind the static shell below, so
 // navigating here is instant and the grid fills in when the session and
-// Mongo reads land.
+// database reads land.
 async function CollectionContent() {
   const session = await auth.api.getSession({ headers: await headers() });
 
@@ -35,15 +34,19 @@ async function CollectionContent() {
   // tile below carries the identity + share controls, and /collections/<handle>
   // is the read-only public mirror. Seed the tile from the user doc.
   const userId = session.user.id;
-  const userDoc = await db
-    .collection("user")
-    .findOne(
-      ObjectId.isValid(userId) ? { _id: new ObjectId(userId) } : { id: userId },
-    );
+  const { rows } = await pool.query<{
+    name: string | null;
+    username: string | null;
+    collectionPublic: boolean | null;
+  }>(
+    `SELECT "name", "username", "collectionPublic" FROM "user" WHERE "id" = $1`,
+    [userId],
+  );
+  const userRow = rows[0];
   const profile = {
-    name: typeof userDoc?.name === "string" ? userDoc.name : "",
-    username: typeof userDoc?.username === "string" ? userDoc.username : null,
-    collectionPublic: userDoc?.collectionPublic === true,
+    name: typeof userRow?.name === "string" ? userRow.name : "",
+    username: typeof userRow?.username === "string" ? userRow.username : null,
+    collectionPublic: userRow?.collectionPublic === true,
   };
 
   const { owned, wanted, deviceGroups, unassigned } =

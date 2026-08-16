@@ -1,8 +1,7 @@
 import { cache, Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
-import type { Document } from "mongodb";
-import { db } from "../../../lib/mongo";
+import { pool } from "../../../lib/db";
 import { loadCollection } from "../../../lib/collectionItems";
 import { buildCollectionStats } from "../../../lib/collectionStats";
 import { computeLaunchValue } from "../../../components/CollectionGrid";
@@ -15,16 +14,26 @@ interface CollectionsRouteProps {
   params: Promise<{ username: string }>;
 }
 
+interface PublicOwner {
+  id: string;
+  name: string | null;
+  username: string;
+}
+
 // Request-cached: generateMetadata and the page share one lookup.
 const findPublicOwner = cache(
-  async (username: string): Promise<Document | null> => {
+  async (username: string): Promise<PublicOwner | null> => {
     if (!/^[a-z0-9][a-z0-9_-]{2,19}$/.test(username)) return null;
-    const owner = await db.collection("user").findOne({ username });
-    return owner?.collectionPublic === true ? owner : null;
+    const { rows } = await pool.query<PublicOwner>(
+      `SELECT "id", "name", "username" FROM "user"
+       WHERE "username" = $1 AND "collectionPublic" = true`,
+      [username],
+    );
+    return rows[0] ?? null;
   },
 );
 
-const displayName = (owner: Document): string =>
+const displayName = (owner: PublicOwner): string =>
   (typeof owner.name === "string" && owner.name.trim()) || owner.username;
 
 /** The header pills as prose — "3 devices • 5 accessories • worth $X at
@@ -55,7 +64,7 @@ export async function generateMetadata(
   const title = `${displayName(owner)}’s collection`;
   // The header pills, not the site's generic line — an empty collection
   // falls back to the inherited description.
-  const summary = await collectionSummary(owner._id.toString());
+  const summary = await collectionSummary(owner.id);
   // Setting openGraph replaces the layout's whole object, so carry the
   // inherited bits over alongside the page title (matches the H1).
   const parentMetadata = await parent;
@@ -83,7 +92,7 @@ async function PublicCollection({ params }: CollectionsRouteProps) {
   // This page is read-only for everyone, owner included — no remove/link/
   // recolour controls. Owners edit on /collection.
   const { owned, wanted, deviceGroups, unassigned } = await loadCollection(
-    owner._id.toString(),
+    owner.id,
   );
 
   return (

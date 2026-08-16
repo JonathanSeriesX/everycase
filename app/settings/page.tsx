@@ -24,8 +24,8 @@ async function AccountSections() {
 
   let passkeys: PasskeyInfo[] = [];
   if (session) {
-    // Through Better Auth's own API (not a raw query): its adapter stores
-    // userId as an ObjectId, which a naive string query silently misses.
+    // Through Better Auth's own API (not a raw query), so this keeps
+    // working whatever the adapter's storage details are.
     const passkeyList = await auth.api.listPasskeys({
       headers: await headers(),
     });

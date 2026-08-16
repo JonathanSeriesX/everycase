@@ -1,16 +1,14 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
 import { auth } from "../../../lib/auth";
-import { db } from "../../../lib/mongo";
-
-const escapeRegex = (value: string) =>
-  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+import { pool } from "../../../lib/db";
 
 /**
- * DELETE /api/account — remove the signed-in user and everything they own:
- * collection, devices, passkeys, sessions, linked accounts, pending codes,
- * user doc.
+ * DELETE /api/account — remove the signed-in user and everything they own.
+ * Every owned table (session, account, passkey, collectionItems,
+ * userDevices) references "user"("id") ON DELETE CASCADE, so deleting the
+ * user row covers all of it; only verification rows (keyed by email, not
+ * user id) need their own delete.
  */
 export async function DELETE() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -18,29 +16,15 @@ export async function DELETE() {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
 
-  const userId = session.user.id;
-  // Better Auth's adapter stores userId as an ObjectId; our own collections
-  // use the plain string. Match both wherever the type isn't ours.
-  const userIdForms: (string | ObjectId)[] = ObjectId.isValid(userId)
-    ? [userId, new ObjectId(userId)]
-    : [userId];
-  const byUserId = { userId: { $in: userIdForms } };
-
-  await db.collection("collectionItems").deleteMany({ userId });
-  await db.collection("userDevices").deleteMany({ userId });
-  await db.collection("passkey").deleteMany(byUserId);
-  await db.collection("account").deleteMany(byUserId);
-  await db.collection("session").deleteMany(byUserId);
-  // Better Auth's email-otp stores identifiers as `<type>-otp-<email>` —
-  // anchor both ends so another user's email can't match as a substring.
-  await db.collection("verification").deleteMany({
-    identifier: { $regex: `^[a-z-]+-otp-${escapeRegex(session.user.email)}$` },
-  });
-  await db.collection("user").deleteOne(
-    ObjectId.isValid(userId)
-      ? { _id: new ObjectId(userId) }
-      : { _id: userId as never },
-  );
+  // Better Auth's email-otp stores identifiers as `<type>-otp-<email>` with
+  // a known, closed set of types — exact matches, so another user's email
+  // can never match as a substring.
+  await pool.query(`DELETE FROM "verification" WHERE "identifier" = ANY($1)`, [
+    ["sign-in", "email-verification", "forget-password"].map(
+      (type) => `${type}-otp-${session.user.email}`,
+    ),
+  ]);
+  await pool.query(`DELETE FROM "user" WHERE "id" = $1`, [session.user.id]);
 
   return NextResponse.json({ ok: true });
 }

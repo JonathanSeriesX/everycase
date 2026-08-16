@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { cacheLife, cacheTag } from "next/cache";
-import { db } from "./mongo";
+import { pool } from "./db";
 import { getAllCasesFromCSV, type CaseRecord } from "./getCasesFromCSV";
 import {
   compareDevicesForCollection,
@@ -8,11 +8,11 @@ import {
   getDeviceById,
   type DeviceRecord,
 } from "./devices";
-import { userDevices } from "./userDevices";
+import { listUserDeviceIds } from "./userDevices";
 
-// One document per (user, case): { userId, sku, status, createdAt }. The
-// unique index on (userId, sku) is the source of truth for "at most one
-// status per case"; createdAt exists solely so pages can sort by freshness.
+// One row per (user, case): (userId, sku, status, createdAt). The primary
+// key on (userId, sku) is the source of truth for "at most one status per
+// case"; createdAt exists solely so pages can sort by freshness.
 //
 // Devices (lib/userDevices) are NOT linked to cases explicitly — a case
 // groups under every owned device it fits, derived from the compatibility
@@ -20,41 +20,35 @@ import { userDevices } from "./userDevices";
 // "which device do you have?" window on a case page, they stay until the
 // owner removes them, whatever happens to the cases.
 
-export interface CollectionItemDoc {
-  userId: string;
+export interface CollectionItem {
   sku: string;
   status: "owned" | "wanted";
-  createdAt: Date;
 }
-
-export const collectionItems = () =>
-  db.collection<CollectionItemDoc>("collectionItems");
 
 /** Cache tag for a user's collection reads. The write routes
  * (api/collection, api/devices) revalidate it, so guest page views serve
- * from cache and skip Mongo entirely until the owner next changes something. */
+ * from cache and skip Postgres entirely until the owner next changes
+ * something. */
 export const collectionTag = (userId: string) => `collection:${userId}`;
 
-// The two per-user Mongo reads, cached under the user's collection tag. Only
-// the fields the loader actually uses are projected, so the cached payload is
-// plain and serialisable (no ObjectId/Date round-tripping). The createdAt
-// sort still applies server-side before projection, preserving newest-first.
-// Lives until a write route revalidates the tag (cacheLife "max"), exactly
-// the lifetime unstable_cache used to give it.
+// The two per-user Postgres reads, cached under the user's collection tag.
+// Only the fields the loader actually uses are selected, so the cached
+// payload is plain and serialisable (no Date round-tripping). The createdAt
+// sort applies server-side, preserving newest-first. Lives until a write
+// route revalidates the tag (cacheLife "max").
 async function loadCollectionDocs(userId: string) {
   "use cache";
   cacheTag(collectionTag(userId));
   cacheLife("max");
-  const [docs, deviceDocs] = await Promise.all([
-    collectionItems()
-      .find({ userId }, { projection: { _id: 0, sku: 1, status: 1 } })
-      .sort({ createdAt: -1 })
-      .toArray(),
-    userDevices()
-      .find({ userId }, { projection: { _id: 0, deviceId: 1 } })
-      .toArray(),
+  const [{ rows: docs }, deviceIds] = await Promise.all([
+    pool.query<CollectionItem>(
+      `SELECT "sku", "status" FROM "collectionItems"
+       WHERE "userId" = $1 ORDER BY "createdAt" DESC`,
+      [userId],
+    ),
+    listUserDeviceIds(userId),
   ]);
-  return { docs, deviceDocs };
+  return { docs, deviceIds };
 }
 
 // Compatible device ids per case model, cached — the collection loader hits
@@ -94,7 +88,7 @@ export interface LoadedCollection {
 export const loadCollection = cache(async function loadCollection(
   userId: string,
 ): Promise<LoadedCollection> {
-  const { docs, deviceDocs } = await loadCollectionDocs(userId);
+  const { docs, deviceIds } = await loadCollectionDocs(userId);
 
   const bySku = new Map(
     getAllCasesFromCSV().map((record) => [record.SKU, record]),
@@ -108,8 +102,8 @@ export const loadCollection = cache(async function loadCollection(
   const owned = resolve("owned");
   const wanted = resolve("wanted");
 
-  const devices = deviceDocs
-    .map((doc) => getDeviceById(doc.deviceId))
+  const devices = deviceIds
+    .map((deviceId) => getDeviceById(deviceId))
     .filter((device): device is DeviceRecord => Boolean(device));
   const ownedDeviceIds = new Set(devices.map((device) => device.deviceId));
 

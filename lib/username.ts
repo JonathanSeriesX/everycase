@@ -1,5 +1,4 @@
-import { ObjectId } from "mongodb";
-import { db } from "./mongo";
+import { pool } from "./db";
 
 // Username rules, shared by the profile write route (validation) and the
 // signup hook (default-handle assignment). Handles are 3–20 chars: letters,
@@ -34,22 +33,12 @@ export const RESERVED_USERNAMES = new Set([
   "users",
 ]);
 
-const users = db.collection("user");
-
-// The unique index is what makes the claim race-safe: assignDefaultUsername
-// simply tries to set each candidate and lets a duplicate-key error bump it to
-// the next one. Partial so users without a handle don't collide on `null`.
-let indexReady: Promise<unknown> | undefined;
-export const ensureUsernameIndex = () =>
-  (indexReady ??= users.createIndex(
-    { username: 1 },
-    { unique: true, partialFilterExpression: { username: { $type: "string" } } },
-  ));
-
 /**
  * Give a freshly-created user a default handle from their email: local-part +
- * 69, then 64, 67, 420, then 1, 2, 3, … — claiming the first the unique index
- * accepts. Best-effort: swallows errors so it can never break signup.
+ * 69, then 64, 67, 420, then 1, 2, 3, … — claiming the first one the unique
+ * constraint on "user"."username" accepts (that constraint is what makes the
+ * claim race-safe: a duplicate-key error just bumps to the next candidate).
+ * Best-effort: swallows errors so it can never break signup.
  */
 export async function assignDefaultUsername(
   userId: string,
@@ -60,24 +49,24 @@ export async function assignDefaultUsername(
   const base =
     (email.split("@")[0] ?? "").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 15) ||
     "user";
-  const filter = ObjectId.isValid(userId)
-    ? { _id: new ObjectId(userId) }
-    : { id: userId };
 
   // The fun ones first (hehe), then a plain sequence.
   const suffixes = [69, 64, 67, 420];
   for (let n = 1; n <= 1000; n++) suffixes.push(n);
 
   try {
-    await ensureUsernameIndex();
     for (const suffix of suffixes) {
       const username = `${base}${suffix}`;
       if (!USERNAME_PATTERN.test(username)) continue; // too short/long — skip
       try {
-        await users.updateOne(filter, { $set: { username } });
+        await pool.query(
+          `UPDATE "user" SET "username" = $1, "updatedAt" = now()
+           WHERE "id" = $2`,
+          [username, userId],
+        );
         return username;
       } catch (error) {
-        if ((error as { code?: number }).code === 11000) continue; // taken
+        if ((error as { code?: string }).code === "23505") continue; // taken
         throw error;
       }
     }

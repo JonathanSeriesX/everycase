@@ -1,12 +1,19 @@
 # Garbage
 .DS_Store
 
+# Local database dumps (user PII — never commit)
+backups/
+
 # Editing
 .idea/
 .vscode/
 .obsidian/
 .claude/
 .codex-tmp/
+
+# who at Next thought that it's a good idea??
+AGENTS.md
+CLAUDE.md
 
 # Building & Deploying
 .next/

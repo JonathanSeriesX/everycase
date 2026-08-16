@@ -2,10 +2,11 @@ import { headers } from "next/headers";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { auth } from "../../../lib/auth";
-import { collectionItems, collectionTag } from "../../../lib/collectionItems";
+import { pool } from "../../../lib/db";
+import { collectionTag, type CollectionItem } from "../../../lib/collectionItems";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 
-// Collection items: one document per (user, case) — see lib/collectionItems.
+// Collection items: one row per (user, case) — see lib/collectionItems.
 // Devices are registered separately (/api/devices, offered by the client's
 // "which device do you have?" window) and are never touched here: an owned
 // case without a matching device simply lands in the "not linked to a
@@ -15,16 +16,9 @@ const STATUSES = ["owned", "wanted"] as const;
 type Status = (typeof STATUSES)[number];
 
 // Fast-path shape check before the catalogue lookup. No size cap: writes
-// are upserts on the unique (userId, sku) index against catalogue-validated
+// are upserts on the (userId, sku) primary key against catalogue-validated
 // SKUs, so a user's collection is structurally bounded by catalogue size.
 const SKU_PATTERN = /^[A-Z0-9]{3,12}$/;
-
-let indexReady: Promise<unknown> | undefined;
-const ensureIndex = () =>
-  (indexReady ??= collectionItems().createIndex(
-    { userId: 1, sku: 1 },
-    { unique: true },
-  ));
 
 let modelBySku: Map<string, string> | undefined;
 const catalogueModel = (sku: string) => {
@@ -48,20 +42,26 @@ export async function GET(request: Request) {
   if (!userId) return unauthorized();
 
   const skusParam = new URL(request.url).searchParams.get("skus");
-  const filter: Record<string, unknown> = { userId };
+  let rows: CollectionItem[];
   if (skusParam !== null) {
     const skus = skusParam
       .split(",")
       .map((sku) => sku.trim().toUpperCase())
       .filter((sku) => SKU_PATTERN.test(sku));
-    filter.sku = { $in: skus };
+    ({ rows } = await pool.query<CollectionItem>(
+      `SELECT "sku", "status" FROM "collectionItems"
+       WHERE "userId" = $1 AND "sku" = ANY($2)`,
+      [userId, skus],
+    ));
+  } else {
+    ({ rows } = await pool.query<CollectionItem>(
+      `SELECT "sku", "status" FROM "collectionItems" WHERE "userId" = $1`,
+      [userId],
+    ));
   }
 
-  const docs = await collectionItems()
-    .find(filter as { userId: string })
-    .toArray();
   return NextResponse.json({
-    items: docs.map((doc) => ({ sku: doc.sku, status: doc.status })),
+    items: rows.map((row) => ({ sku: row.sku, status: row.status })),
   });
 }
 
@@ -79,11 +79,13 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Invalid item" }, { status: 400 });
   }
 
-  await ensureIndex();
-  await collectionItems().updateOne(
-    { userId, sku },
-    { $set: { status }, $setOnInsert: { createdAt: new Date() } },
-    { upsert: true },
+  // createdAt is set on first insert only, so a later status flip keeps the
+  // item's place in the newest-first ordering.
+  await pool.query(
+    `INSERT INTO "collectionItems" ("userId", "sku", "status")
+     VALUES ($1, $2, $3)
+     ON CONFLICT ("userId", "sku") DO UPDATE SET "status" = EXCLUDED."status"`,
+    [userId, sku, status],
   );
   // Route handlers can't use updateTag (Server-Action-only), and the "max"
   // profile is stale-while-revalidate — a router.refresh() right after this
@@ -104,7 +106,10 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Invalid item" }, { status: 400 });
   }
 
-  await collectionItems().deleteOne({ userId, sku });
+  await pool.query(
+    `DELETE FROM "collectionItems" WHERE "userId" = $1 AND "sku" = $2`,
+    [userId, sku],
+  );
   // Route handlers can't use updateTag (Server-Action-only), and the "max"
   // profile is stale-while-revalidate — a router.refresh() right after this
   // write would still be served the old collection. { expire: 0 } hard-expires

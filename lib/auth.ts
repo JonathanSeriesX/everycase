@@ -1,11 +1,10 @@
 import { betterAuth } from "better-auth";
 import { APIError, createAuthMiddleware } from "better-auth/api";
-import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { nextCookies } from "better-auth/next-js";
 import { emailOTP } from "better-auth/plugins/email-otp";
 import { passkey } from "@better-auth/passkey";
 import { dash } from "@better-auth/infra";
-import { db } from "./mongo";
+import { pool } from "./db";
 import { assignDefaultUsername } from "./username";
 
 // Codes live long enough that "it will arrive eventually" holds, and while
@@ -46,7 +45,7 @@ const baseURL =
 export const auth = betterAuth({
   appName: "Finest Woven",
   baseURL,
-  database: mongodbAdapter(db),
+  database: pool,
   user: {
     // Profile fields managed by /api/profile (hence input: false — they are
     // not settable through Better Auth's own endpoints).
@@ -83,10 +82,13 @@ export const auth = betterAuth({
         typeof ctx.body?.email === "string" ? ctx.body.email.trim() : "";
       const type = typeof ctx.body?.type === "string" ? ctx.body.type : "";
       if (!email || !type) return;
-      const existing = await db.collection("verification").findOne({
-        identifier: `${type}-otp-${email}`,
-        expiresAt: { $gt: new Date() },
-      });
+      const { rows } = await pool.query<{ expiresAt: Date }>(
+        `SELECT "expiresAt" FROM "verification"
+         WHERE "identifier" = $1 AND "expiresAt" > now()
+         ORDER BY "expiresAt" DESC LIMIT 1`,
+        [`${type}-otp-${email}`],
+      );
+      const existing = rows[0];
       if (existing) {
         const minutes = Math.max(
           1,
@@ -105,11 +107,12 @@ export const auth = betterAuth({
           await sendOTPEmail(email, otp);
         } catch (error) {
           // The plugin stores the code before this runs; without cleanup a
-          // failed send would leave a doc that blocks resends (see the
+          // failed send would leave a row that blocks resends (see the
           // before hook) for a code that never went out.
-          await db
-            .collection("verification")
-            .deleteMany({ identifier: `${type}-otp-${email}` })
+          await pool
+            .query(`DELETE FROM "verification" WHERE "identifier" = $1`, [
+              `${type}-otp-${email}`,
+            ])
             .catch(() => {});
           throw error;
         }

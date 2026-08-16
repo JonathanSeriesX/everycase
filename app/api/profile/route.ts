@@ -1,25 +1,17 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
 import { auth } from "../../../lib/auth";
-import { db } from "../../../lib/mongo";
+import { pool } from "../../../lib/db";
 import {
-  ensureUsernameIndex,
   RESERVED_USERNAMES,
   USERNAME_PATTERN,
 } from "../../../lib/username";
 
 // Profile fields: display name (Better Auth's `name`), the URL handle
 // (`username`, unique, lowercase) and the `collectionPublic` flag gating
-// /collections/<username>. Handle rules (pattern, reserved set, unique index)
-// live in lib/username, shared with the signup default-handle assignment.
-
-const users = db.collection("user");
-
-// The Mongo adapter stores users under an ObjectId; sessions carry it as a
-// hex string.
-const userFilter = (id: string) =>
-  ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { id };
+// /collections/<username>. Handle rules (pattern, reserved set) live in
+// lib/username, shared with the signup default-handle assignment; the
+// unique constraint on "user"."username" is part of the schema.
 
 export interface Profile {
   name: string;
@@ -27,19 +19,33 @@ export interface Profile {
   collectionPublic: boolean;
 }
 
-const toProfile = (doc: Record<string, unknown> | null): Profile => ({
-  name: typeof doc?.name === "string" ? doc.name : "",
-  username: typeof doc?.username === "string" ? doc.username : null,
-  collectionPublic: doc?.collectionPublic === true,
+interface ProfileRow {
+  name: string | null;
+  username: string | null;
+  collectionPublic: boolean | null;
+}
+
+const toProfile = (row: ProfileRow | undefined): Profile => ({
+  name: typeof row?.name === "string" ? row.name : "",
+  username: typeof row?.username === "string" ? row.username : null,
+  collectionPublic: row?.collectionPublic === true,
 });
+
+const readProfile = async (userId: string) => {
+  const { rows } = await pool.query<ProfileRow>(
+    `SELECT "name", "username", "collectionPublic"
+     FROM "user" WHERE "id" = $1`,
+    [userId],
+  );
+  return rows[0];
+};
 
 export async function GET() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
-  const doc = await users.findOne(userFilter(session.user.id));
-  return NextResponse.json(toProfile(doc));
+  return NextResponse.json(toProfile(await readProfile(session.user.id)));
 }
 
 export async function PATCH(request: Request) {
@@ -53,8 +59,12 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const sets: Record<string, unknown> = {};
-  const unsets: Record<string, ""> = {};
+  const sets: { column: string; value: string | boolean | null }[] = [];
+  const set = (column: string, value: string | boolean | null) => {
+    const existing = sets.find((entry) => entry.column === column);
+    if (existing) existing.value = value;
+    else sets.push({ column, value });
+  };
 
   if ("name" in body) {
     const name = typeof body.name === "string" ? body.name.trim() : "";
@@ -64,13 +74,15 @@ export async function PATCH(request: Request) {
         { status: 400 },
       );
     }
-    sets.name = name;
+    set("name", name);
   }
 
+  let clearsUsername = false;
   if ("username" in body) {
     if (body.username === null || body.username === "") {
-      unsets.username = "";
-      sets.collectionPublic = false;
+      set("username", null);
+      set("collectionPublic", false);
+      clearsUsername = true;
     } else {
       const username =
         typeof body.username === "string"
@@ -91,28 +103,32 @@ export async function PATCH(request: Request) {
           { status: 400 },
         );
       }
-      sets.username = username;
+      set("username", username);
     }
   }
 
-  if ("collectionPublic" in body && !("collectionPublic" in sets)) {
+  if ("collectionPublic" in body && !clearsUsername) {
     if (typeof body.collectionPublic !== "boolean") {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
-    sets.collectionPublic = body.collectionPublic;
+    set("collectionPublic", body.collectionPublic);
   }
 
-  if (Object.keys(sets).length === 0 && Object.keys(unsets).length === 0) {
+  if (sets.length === 0) {
     return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
   }
 
-  const filter = userFilter(session.user.id);
-
   // Going public requires a handle — either the one being set right now or
   // one already on the account.
-  if (sets.collectionPublic === true && !sets.username) {
-    const current = await users.findOne(filter);
-    if (typeof current?.username !== "string" && !("username" in sets)) {
+  const settingUsername = sets.some(
+    (entry) => entry.column === "username" && entry.value !== null,
+  );
+  const goingPublic = sets.some(
+    (entry) => entry.column === "collectionPublic" && entry.value === true,
+  );
+  if (goingPublic && !settingUsername) {
+    const current = await readProfile(session.user.id);
+    if (typeof current?.username !== "string") {
       return NextResponse.json(
         { error: "Pick a username before making your collection public." },
         { status: 400 },
@@ -120,14 +136,16 @@ export async function PATCH(request: Request) {
     }
   }
 
-  await ensureUsernameIndex();
+  const assignments = sets
+    .map((entry, i) => `"${entry.column}" = $${i + 2}`)
+    .join(", ");
   try {
-    await users.updateOne(filter, {
-      $set: { ...sets, updatedAt: new Date() },
-      ...(Object.keys(unsets).length > 0 ? { $unset: unsets } : {}),
-    });
+    await pool.query(
+      `UPDATE "user" SET ${assignments}, "updatedAt" = now() WHERE "id" = $1`,
+      [session.user.id, ...sets.map((entry) => entry.value)],
+    );
   } catch (error) {
-    if ((error as { code?: number }).code === 11000) {
+    if ((error as { code?: string }).code === "23505") {
       return NextResponse.json(
         { error: "That username is taken." },
         { status: 409 },
@@ -136,6 +154,5 @@ export async function PATCH(request: Request) {
     throw error;
   }
 
-  const doc = await users.findOne(filter);
-  return NextResponse.json(toProfile(doc));
+  return NextResponse.json(toProfile(await readProfile(session.user.id)));
 }

@@ -10,7 +10,11 @@ import {
   getDeviceById,
   type DeviceRecord,
 } from "../../../lib/devices";
-import { ensureUserDeviceIndex, userDevices } from "../../../lib/userDevices";
+import {
+  addUserDevice,
+  listUserDeviceIds,
+  removeUserDevice,
+} from "../../../lib/userDevices";
 import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 
 // The user's owned devices — see lib/userDevices. Cases are never linked to
@@ -20,7 +24,7 @@ import { getAllCasesFromCSV } from "../../../lib/getCasesFromCSV";
 // and stay until their owner explicitly removes them (DELETE, or a colour
 // swap replacing one via PUT's replaceDeviceId).
 
-// No size cap: writes are upserts on the unique (userId, deviceId) index
+// No size cap: writes are upserts on the (userId, deviceId) primary key
 // against catalogue-validated ids, so a user's devices are structurally
 // bounded by the device catalogue.
 const DEVICE_ID_PATTERN = /^[a-z0-9][a-z0-9-]{1,63}$/;
@@ -58,8 +62,7 @@ export async function GET(request: Request) {
   const userId = await getUserId();
   if (!userId) return unauthorized();
 
-  const docs = await userDevices().find({ userId }).toArray();
-  const ownedIds = new Set(docs.map((doc) => doc.deviceId));
+  const ownedIds = new Set(await listUserDeviceIds(userId));
   const devices = getAllDevices()
     .filter((device) => ownedIds.has(device.deviceId))
     .map(publicShape);
@@ -95,14 +98,9 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Invalid device" }, { status: 400 });
   }
 
-  await ensureUserDeviceIndex();
-  await userDevices().updateOne(
-    { userId, deviceId },
-    { $setOnInsert: { userId, deviceId, createdAt: new Date() } },
-    { upsert: true },
-  );
+  await addUserDevice(userId, deviceId);
   if (replaceDeviceId && replaceDeviceId !== deviceId) {
-    await userDevices().deleteOne({ userId, deviceId: replaceDeviceId });
+    await removeUserDevice(userId, replaceDeviceId);
   }
   // Route handlers can't use updateTag (Server-Action-only), and the "max"
   // profile is stale-while-revalidate — a router.refresh() right after this
@@ -124,7 +122,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Invalid device" }, { status: 400 });
   }
 
-  await userDevices().deleteOne({ userId, deviceId });
+  await removeUserDevice(userId, deviceId);
   // Route handlers can't use updateTag (Server-Action-only), and the "max"
   // profile is stale-while-revalidate — a router.refresh() right after this
   // write would still be served the old collection. { expire: 0 } hard-expires
