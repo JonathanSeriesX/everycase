@@ -58,23 +58,40 @@ function loadReleaseDates(): Map<string, string> {
   return cachedReleaseDates;
 }
 
-// Catalog dates are M/D/YY (e.g. "9/12/23"). Turn that into "September 12, 2023".
-function formatRawDate(raw: string): string {
+// Catalog dates are M/D/YY (e.g. "9/12/23"). One parser, two renderings.
+function parseRawDate(
+  raw: string,
+): { year: number; month: number; day: number } | null {
   const match = String(raw || "")
     .trim()
     .match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
-  if (!match) return "";
+  if (!match) return null;
 
   const month = Number(match[1]);
   const day = Number(match[2]);
   let year = Number(match[3]);
   if (year < 100) year += 2000;
 
-  if (month < 1 || month > 12 || day < 1 || day > 31) return "";
-  return `${MONTHS[month - 1]} ${day}, ${year}`;
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  return { year, month, day };
 }
 
+function lookup(sku: string) {
+  return parseRawDate(loadReleaseDates().get(String(sku || "").trim()) || "");
+}
+
+/** Reading form: "September 12, 2023" — "" when the SKU has no known date. */
 export function getReleaseDate(sku: string): string {
-  const raw = loadReleaseDates().get(String(sku || "").trim());
-  return raw ? formatRawDate(raw) : "";
+  const date = lookup(sku);
+  return date ? `${MONTHS[date.month - 1]} ${date.day}, ${date.year}` : "";
+}
+
+/** Machine form: "2023-09-12", what the sitemap's <lastmod> wants. Sorts
+ *  lexicographically, so callers can compare these strings to find the
+ *  newest date in a set. "" when the SKU has no known date. */
+export function getReleaseDateIso(sku: string): string {
+  const date = lookup(sku);
+  if (!date) return "";
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${date.year}-${pad(date.month)}-${pad(date.day)}`;
 }

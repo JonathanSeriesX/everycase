@@ -1,7 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://everycase.org";
+import { SITE_URL } from "../lib/siteUrl";
 
 const legacyWordpressPaths = [
   "/wp-admin",
@@ -24,6 +22,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: legacyWordpressPaths,
       },
     ],
-    host: BASE_URL,
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }
