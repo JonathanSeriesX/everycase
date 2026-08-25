@@ -1,0 +1,12 @@
+# build output
+.next/
+out/
+public/_pagefind/
+
+# generated
+next-env.d.ts
+pnpm-lock.yaml
+
+# data tables, not code
+database/
+scripts/*.csv

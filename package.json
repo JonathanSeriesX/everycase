@@ -18,6 +18,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind"
   },
   "dependencies": {
@@ -46,6 +49,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.1",
     "pagefind": "^1.5.2",
+    "prettier": "^3.9.6",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   },
