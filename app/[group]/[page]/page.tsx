@@ -4,7 +4,8 @@ import { GROUPS, getGroup, getPage } from "../../../lib/catalogue";
 import { getPageHeading } from "../../../lib/notes";
 import { resolveOgImage, ogMetadata } from "../../../lib/og";
 import ModelPageContent from "../../../components/ModelPageContent";
-
+import JsonLd from "../../../components/JsonLd";
+import { breadcrumbJsonLd } from "../../../lib/jsonLd";
 
 interface ModelRouteProps {
   params: Promise<{ group: string; page: string }>;
@@ -48,14 +49,19 @@ export default async function ModelPage({ params }: ModelRouteProps) {
   const page = getPage(groupSlug, pageSlug);
   if (!group || !page) notFound();
 
+  const trail = [
+    { href: `/${group.slug}`, title: group.title },
+    { href: `/${group.slug}/${page.slug}`, title: page.title },
+  ];
+
   return (
-    <ModelPageContent
-      page={page}
-      trail={[
-        { href: `/${group.slug}`, title: group.title },
-        { href: `/${group.slug}/${page.slug}`, title: page.title },
-      ]}
-      noteSegments={[groupSlug, pageSlug]}
-    />
+    <>
+      <JsonLd data={breadcrumbJsonLd(trail)} />
+      <ModelPageContent
+        page={page}
+        trail={trail}
+        noteSegments={[groupSlug, pageSlug]}
+      />
+    </>
   );
 }
