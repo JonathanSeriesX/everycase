@@ -64,7 +64,14 @@ const VerticalCarouselClient = ({
   // Map colour/model labels consistently across sections of the UI.
   const displayLabel = useCallback(
     (itemColour: string, itemModel: string) =>
-      getDisplayLabel(itemColour, itemModel, model, material, merged, modelLabels),
+      getDisplayLabel(
+        itemColour,
+        itemModel,
+        model,
+        material,
+        merged,
+        modelLabels,
+      ),
     [material, model, merged, modelLabels],
   );
 

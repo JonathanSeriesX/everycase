@@ -12,7 +12,9 @@ interface Profile {
   collectionPublic: boolean;
 }
 
-const patchProfile = async (body: Record<string, unknown>): Promise<Profile> => {
+const patchProfile = async (
+  body: Record<string, unknown>,
+): Promise<Profile> => {
   const res = await fetch("/api/profile", {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },

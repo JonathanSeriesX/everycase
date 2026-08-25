@@ -107,7 +107,9 @@ export function DeviceRow({
 }
 
 /** Devices bucketed by model, in first-seen order, as [model, devices]. */
-export function groupByModel(options: DeviceOption[]): [string, DeviceOption[]][] {
+export function groupByModel(
+  options: DeviceOption[],
+): [string, DeviceOption[]][] {
   const byModel = new Map<string, DeviceOption[]>();
   for (const option of options) {
     const group = byModel.get(option.model);

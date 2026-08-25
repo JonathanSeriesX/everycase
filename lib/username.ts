@@ -47,8 +47,10 @@ export async function assignDefaultUsername(
   // Email local-part, reduced to letters and digits and capped so any suffix
   // still fits the 20-char limit. Falls back to "user" if nothing survives.
   const base =
-    (email.split("@")[0] ?? "").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 15) ||
-    "user";
+    (email.split("@")[0] ?? "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "")
+      .slice(0, 15) || "user";
 
   // The fun ones first (hehe), then a plain sequence.
   const suffixes = [69, 64, 67, 420];

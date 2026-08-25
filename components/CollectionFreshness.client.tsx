@@ -35,7 +35,9 @@ interface Anchor {
 
 /** The topmost anchored section still visible below the navbar. */
 function topAnchor(): Anchor | null {
-  const els = document.querySelectorAll<HTMLElement>("[data-collection-anchor]");
+  const els = document.querySelectorAll<HTMLElement>(
+    "[data-collection-anchor]",
+  );
   for (const el of els) {
     const rect = el.getBoundingClientRect();
     if (rect.bottom > NAV_OFFSET) {
@@ -66,7 +68,9 @@ function restoreAnchor() {
     return;
   }
   if (!anchor) return;
-  const els = document.querySelectorAll<HTMLElement>("[data-collection-anchor]");
+  const els = document.querySelectorAll<HTMLElement>(
+    "[data-collection-anchor]",
+  );
   for (const el of els) {
     if (el.dataset.collectionAnchor === anchor.id) {
       const delta = el.getBoundingClientRect().top - anchor.top;

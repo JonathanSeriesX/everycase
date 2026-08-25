@@ -3,12 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
 import { useTheme } from "next-themes";
-import {
-  SunIcon,
-  MoonIcon,
-  MoonFilledIcon,
-  CircleHalfIcon,
-} from "./icons";
+import { SunIcon, MoonIcon, MoonFilledIcon, CircleHalfIcon } from "./icons";
 import DropdownMenu from "./DropdownMenu.client";
 import styles from "../styles/Settings.module.css";
 

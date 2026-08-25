@@ -20,7 +20,8 @@
   padding: 0.9rem 1.1rem;
   background: rgba(252, 248, 250, 0.64);
   border: none;
-  box-shadow: 0 24px 55px rgba(50, 42, 48, 0.16),
+  box-shadow:
+    0 24px 55px rgba(50, 42, 48, 0.16),
     0 3px 12px rgba(50, 42, 48, 0.08);
   -webkit-backdrop-filter: blur(42px) saturate(145%);
   backdrop-filter: blur(42px) saturate(145%);
@@ -127,7 +128,8 @@
   border-radius: 22px;
   padding: 0.9rem 1.1rem 1rem;
   background: rgba(252, 248, 250, 0.92);
-  box-shadow: 0 24px 55px rgba(50, 42, 48, 0.28),
+  box-shadow:
+    0 24px 55px rgba(50, 42, 48, 0.28),
     0 3px 12px rgba(50, 42, 48, 0.1);
   -webkit-backdrop-filter: blur(42px) saturate(145%);
   backdrop-filter: blur(42px) saturate(145%);
@@ -221,7 +223,10 @@
 
 .actionChip {
   transform-origin: center;
-  transition: transform 120ms ease, box-shadow 120ms ease, color 120ms ease;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    color 120ms ease;
   will-change: transform;
 }
 
@@ -278,8 +283,8 @@
 }
 
 .chipValue {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-    monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   letter-spacing: 0.01em;
 }
 
@@ -296,7 +301,9 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  transition: opacity 160ms ease, transform 160ms ease;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
 }
 
 .iconVisible {
@@ -311,7 +318,8 @@
 
 /* dark mode */
 :global(html:is(.dark, .black)) .card {
-  background: linear-gradient(
+  background:
+    linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.28),
       rgba(255, 255, 255, 0.04)
@@ -364,7 +372,8 @@
 }
 
 :global(html:is(.dark, .black)) .deviceWindow {
-  background: linear-gradient(
+  background:
+    linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.28),
       rgba(255, 255, 255, 0.04)
@@ -382,4 +391,3 @@
     background: rgba(255, 255, 255, 0.07);
   }
 }
-

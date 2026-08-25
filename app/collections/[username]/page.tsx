@@ -49,7 +49,9 @@ async function collectionSummary(ownerId: string): Promise<string> {
     pricedCount,
   }).map((stat) => stat.label);
   if (wanted.length > 0) {
-    parts.push(`${wanted.length} item${wanted.length === 1 ? "" : "s"} wishlisted`);
+    parts.push(
+      `${wanted.length} item${wanted.length === 1 ? "" : "s"} wishlisted`,
+    );
   }
   return parts.join(" • ");
 }
@@ -98,7 +100,9 @@ async function PublicCollection({ params }: CollectionsRouteProps) {
   return (
     <>
       <h1>{displayName(owner)}’s collection</h1>
-      {owned.length === 0 && wanted.length === 0 && deviceGroups.length === 0 ? (
+      {owned.length === 0 &&
+      wanted.length === 0 &&
+      deviceGroups.length === 0 ? (
         <p>Nothing here yet.</p>
       ) : (
         <CollectionSections

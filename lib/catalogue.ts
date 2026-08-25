@@ -410,8 +410,7 @@ export const TOP_PAGES: CataloguePage[] = [
 
 // What the front page shows, in order: group cards and top-level pages.
 export type HomeCard =
-  | { group: string; page?: undefined }
-  | { group?: string; page: string };
+  { group: string; page?: undefined } | { group?: string; page: string };
 
 export const HOME_CARDS: HomeCard[] = [
   { group: "iphone" },

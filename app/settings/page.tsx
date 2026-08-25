@@ -42,10 +42,9 @@ async function AccountSections() {
       <section className={styles.section}>
         <h2>Account</h2>
         <p>
-          Sign in with the account button in the top-right corner to manage
-          your passkeys and account. Your display name, username, and
-          collection sharing live on your{" "}
-          <Link href="/collection">collection page</Link>.
+          Sign in with the account button in the top-right corner to manage your
+          passkeys and account. Your display name, username, and collection
+          sharing live on your <Link href="/collection">collection page</Link>.
         </p>
       </section>
     );

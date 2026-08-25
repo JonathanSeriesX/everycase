@@ -50,7 +50,6 @@
   font-size: 0.9rem;
 }
 
-
 :global(html:is(.dark, .black)) .keyboardHint {
   color: rgba(203, 213, 225, 0.82);
 }

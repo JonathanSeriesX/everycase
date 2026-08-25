@@ -42,7 +42,7 @@ async function requestJSON<T>(input: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-const putJSON = <T,>(input: string, body: unknown) =>
+const putJSON = <T>(input: string, body: unknown) =>
   requestJSON<T>(input, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

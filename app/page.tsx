@@ -15,7 +15,6 @@ import NavCard, { CardGrid } from "../components/NavCard";
 import PrefetchImages from "../components/PrefetchImages.client";
 import AvifCallout from "../components/AvifCallout.client";
 
-
 export const metadata: Metadata = {
   title: { absolute: "Finest Woven" },
 };
@@ -33,7 +32,9 @@ export default async function HomePage() {
               ? getPage(card.group, card.page)
               : getTopPage(card.page);
             if (!page) {
-              throw new Error(`home: HOME_CARDS names unknown page "${card.page}"`);
+              throw new Error(
+                `home: HOME_CARDS names unknown page "${card.page}"`,
+              );
             }
             return (
               <NavCard
@@ -50,7 +51,9 @@ export default async function HomePage() {
           }
           const group = getGroup(card.group);
           if (!group) {
-            throw new Error(`home: HOME_CARDS names unknown group "${card.group}"`);
+            throw new Error(
+              `home: HOME_CARDS names unknown group "${card.group}"`,
+            );
           }
           return (
             <NavCard

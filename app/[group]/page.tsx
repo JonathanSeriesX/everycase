@@ -14,7 +14,6 @@ import MdxContent from "../../components/MdxContent";
 import ModelPageContent from "../../components/ModelPageContent";
 import NavCard, { CardGrid } from "../../components/NavCard";
 
-
 interface GroupRouteProps {
   params: Promise<{ group: string }>;
 }

@@ -32,11 +32,14 @@
   max-width: 250px;
   background: rgba(252, 248, 250, 0.64);
   border: none;
-  box-shadow: 0 35px 70px rgba(50, 42, 48, 0.2),
+  box-shadow:
+    0 35px 70px rgba(50, 42, 48, 0.2),
     0 4px 14px rgba(50, 42, 48, 0.09);
   -webkit-backdrop-filter: blur(42px) saturate(145%);
   backdrop-filter: blur(42px) saturate(145%);
-  transition: transform 160ms ease, border-color 160ms ease,
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
     box-shadow 180ms ease;
 }
 
@@ -44,7 +47,8 @@
   .caseCard:hover {
     transform: scale(1.02);
     border-color: transparent;
-    box-shadow: 0 30px 64px rgba(50, 42, 48, 0.22),
+    box-shadow:
+      0 30px 64px rgba(50, 42, 48, 0.22),
       0 4px 14px rgba(50, 42, 48, 0.1);
   }
 }
@@ -140,7 +144,10 @@
 .actionBadge {
   cursor: pointer;
   gap: 0.35rem;
-  transition: transform 120ms ease, box-shadow 120ms ease, color 120ms ease;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    color 120ms ease;
 }
 
 .actionBadge:active {
@@ -197,7 +204,9 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  transition: opacity 160ms ease, transform 160ms ease;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
 }
 
 .iconVisible {
@@ -227,7 +236,8 @@
 
 /* dark mode */
 :global(html:is(.dark, .black)) .caseCard {
-  background: linear-gradient(
+  background:
+    linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.28),
       rgba(255, 255, 255, 0.04)

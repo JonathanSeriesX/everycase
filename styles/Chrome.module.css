@@ -445,7 +445,9 @@
   color: rgba(15, 18, 28, 0.85);
   cursor: pointer;
   white-space: nowrap;
-  transition: background 120ms ease, color 120ms ease;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
 }
 
 .tab[data-active="true"] {

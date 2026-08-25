@@ -7,7 +7,8 @@ export const APPLE_IMAGE_BASE_URL =
   "https://store.storeimages.cdn-apple.com/8755/as-images.apple.com/is";
 
 /** Our CloudFront mirror of the full-resolution shots, re-encoded to AVIF. */
-export const EVERYIMAGE_BASE_URL = "https://cloudfront.everycase.org/everyimage";
+export const EVERYIMAGE_BASE_URL =
+  "https://cloudfront.everycase.org/everyimage";
 
 /** Our CloudFront mirror of the small (512²) AVIF previews used by card
     grids and gallery tiles. */

@@ -2,10 +2,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "../../../lib/auth";
 import { pool } from "../../../lib/db";
-import {
-  RESERVED_USERNAMES,
-  USERNAME_PATTERN,
-} from "../../../lib/username";
+import { RESERVED_USERNAMES, USERNAME_PATTERN } from "../../../lib/username";
 
 // Profile fields: display name (Better Auth's `name`), the URL handle
 // (`username`, unique, lowercase) and the `collectionPublic` flag gating

@@ -93,7 +93,9 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Invalid device" }, { status: 400 });
   }
   const replaceDeviceId =
-    typeof body?.replaceDeviceId === "string" ? body.replaceDeviceId.trim() : "";
+    typeof body?.replaceDeviceId === "string"
+      ? body.replaceDeviceId.trim()
+      : "";
   if (replaceDeviceId && !DEVICE_ID_PATTERN.test(replaceDeviceId)) {
     return NextResponse.json({ error: "Invalid device" }, { status: 400 });
   }

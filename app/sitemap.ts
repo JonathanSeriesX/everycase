@@ -45,7 +45,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // on SKU collisions, and rows merged into another SKU's page are skipped.
   const aliased = getAliasedSkus();
   const seen = new Set<string>();
-  const cases: { sku: string; model: string; kind: string; date: string }[] = [];
+  const cases: { sku: string; model: string; kind: string; date: string }[] =
+    [];
 
   for (const record of getAllCasesFromCSV()) {
     const sku = record.SKU;
@@ -98,7 +99,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry(`/case/${item.sku}`, item.date, "yearly", 0.5),
   );
 
-  const newestCase = cases.reduce((latest, item) => newer(latest, item.date), "");
+  const newestCase = cases.reduce(
+    (latest, item) => newer(latest, item.date),
+    "",
+  );
 
   return [
     entry("", newestCase, "weekly", 1),

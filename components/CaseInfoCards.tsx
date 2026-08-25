@@ -1,6 +1,12 @@
 "use client";
 
-import { Fragment, useCallback, useState, type MouseEvent, type ReactNode } from "react";
+import {
+  Fragment,
+  useCallback,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import Link from "next/link";
 import { LinkArrowIcon } from "./icons";
 import { formatPrice, type Currency } from "../lib/currencies";
@@ -55,7 +61,13 @@ export const InfoCard = ({
 );
 
 // A label + plain value card (release date, MSRP, education price …).
-export const StatCard = ({ label, value }: { label: string; value: string }) => (
+export const StatCard = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) => (
   <InfoCard label={label}>
     <span className={styles.value}>{value}</span>
   </InfoCard>

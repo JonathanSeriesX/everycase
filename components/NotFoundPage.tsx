@@ -1,7 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function NotFoundPage({ noun }: { noun: "case" | "collection" }) {
+export default function NotFoundPage({
+  noun,
+}: {
+  noun: "case" | "collection";
+}) {
   return (
     <div style={{ textAlign: "center", padding: "3rem 0" }}>
       <h1>

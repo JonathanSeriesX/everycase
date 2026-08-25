@@ -1,10 +1,6 @@
 import type { CaseRecord } from "../lib/getCasesFromCSV";
 import type { DeviceGroup } from "../lib/collectionItems";
-import {
-  CaseGrid,
-  DeviceSections,
-  computeLaunchValue,
-} from "./CollectionGrid";
+import { CaseGrid, DeviceSections, computeLaunchValue } from "./CollectionGrid";
 import CollectionHead from "./CollectionHead";
 import CollectionStats from "./CollectionStats";
 

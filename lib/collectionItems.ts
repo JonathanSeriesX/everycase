@@ -125,8 +125,9 @@ export const loadCollection = cache(async function loadCollection(
     const only = fits.size === 1 ? [...fits][0] : undefined;
     const device = only !== undefined ? getDeviceById(only) : undefined;
     if (only !== undefined && device) {
-      (implicitCases.get(only) ??
-        implicitCases.set(only, []).get(only)!).push(record);
+      (implicitCases.get(only) ?? implicitCases.set(only, []).get(only)!).push(
+        record,
+      );
     } else {
       unassigned.push(record);
     }

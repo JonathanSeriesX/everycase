@@ -108,7 +108,10 @@ const KeyboardProductDetails = ({
         }
       />
       {/* keyed so the gallery resets to the first shot on a language change */}
-      <GallerySection key={selectedOption.region} images={selectedOption.images} />
+      <GallerySection
+        key={selectedOption.region}
+        images={selectedOption.images}
+      />
     </>
   );
 };
