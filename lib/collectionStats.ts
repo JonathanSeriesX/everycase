@@ -1,4 +1,18 @@
-import { formatPrice, type Currency } from "./currencies";
+import { formatPrice } from "./currencies";
+import type { CaseRecord } from "./getCasesFromCSV";
+
+export function computeLaunchValue(cases: CaseRecord[]) {
+  let totalUSD = 0;
+  let pricedCount = 0;
+  for (const item of cases) {
+    const amount = Number(item.prices.USD);
+    if (item.prices.USD && Number.isFinite(amount)) {
+      totalUSD += amount;
+      pricedCount += 1;
+    }
+  }
+  return { totalUSD, pricedCount };
+}
 
 export interface CollectionStat {
   key: string;
@@ -15,13 +29,13 @@ export interface CollectionStat {
 export function buildCollectionStats({
   deviceCount = 0,
   caseCount,
-  sums = {},
+  totalUSD = 0,
   pricedCount = 0,
 }: {
   deviceCount?: number;
   /** Accessories in this section. */
   caseCount: number;
-  sums?: Partial<Record<Currency, number>>;
+  totalUSD?: number;
   /** Accessories with a known USD launch price; the worth stat hides when 0. */
   pricedCount?: number;
 }): CollectionStat[] {
@@ -38,7 +52,7 @@ export function buildCollectionStats({
       label: `${caseCount} accessor${caseCount === 1 ? "y" : "ies"}`,
     });
   }
-  const worth = sums.USD ? formatPrice(sums.USD, "USD") : "";
+  const worth = totalUSD ? formatPrice(totalUSD, "USD") : "";
   if (worth) {
     const partial = pricedCount > 0 && pricedCount < caseCount;
     stats.push({

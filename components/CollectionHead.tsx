@@ -1,5 +1,4 @@
 import { buildCollectionStats } from "../lib/collectionStats";
-import type { Currency } from "../lib/currencies";
 import styles from "../styles/SectionHeading.module.css";
 
 /**
@@ -8,25 +7,13 @@ import styles from "../styles/SectionHeading.module.css";
  */
 export default function CollectionHead({
   title,
-  deviceCount = 0,
   caseCount,
-  sums = {},
-  pricedCount = 0,
 }: {
   title: string;
-  deviceCount?: number;
   /** Accessories in this section. */
   caseCount: number;
-  sums?: Partial<Record<Currency, number>>;
-  /** Accessories with a known USD launch price; the worth pill hides when 0. */
-  pricedCount?: number;
 }) {
-  const pills = buildCollectionStats({
-    deviceCount,
-    caseCount,
-    sums,
-    pricedCount,
-  });
+  const pills = buildCollectionStats({ caseCount });
 
   return (
     <div className={styles.sectionHead}>

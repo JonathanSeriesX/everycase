@@ -1,5 +1,4 @@
 import { buildCollectionStats } from "../lib/collectionStats";
-import type { Currency } from "../lib/currencies";
 import card from "../styles/CaseInfoCards.module.css";
 import styles from "../styles/CollectionStats.module.css";
 
@@ -10,19 +9,19 @@ import styles from "../styles/CollectionStats.module.css";
 export default function CollectionStats({
   deviceCount = 0,
   caseCount,
-  sums = {},
+  totalUSD = 0,
   pricedCount = 0,
 }: {
   deviceCount?: number;
   caseCount: number;
-  sums?: Partial<Record<Currency, number>>;
+  totalUSD?: number;
   /** Accessories with a known USD launch price; the worth chip hides when 0. */
   pricedCount?: number;
 }) {
   const stats = buildCollectionStats({
     deviceCount,
     caseCount,
-    sums,
+    totalUSD,
     pricedCount,
   });
   if (stats.length === 0) return null;

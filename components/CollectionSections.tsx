@@ -1,6 +1,7 @@
 import type { CaseRecord } from "../lib/getCasesFromCSV";
 import type { DeviceGroup } from "../lib/collectionItems";
-import { CaseGrid, DeviceSections, computeLaunchValue } from "./CollectionGrid";
+import { CaseGrid, DeviceSections } from "./CollectionGrid";
+import { computeLaunchValue } from "../lib/collectionStats";
 import CollectionHead from "./CollectionHead";
 import CollectionStats from "./CollectionStats";
 
@@ -28,7 +29,7 @@ export default function CollectionSections({
   /** The owner's view: remove/link/recolour controls on every tile. */
   canEdit?: boolean;
 }) {
-  const { sums, pricedCount } = computeLaunchValue(owned);
+  const { totalUSD, pricedCount } = computeLaunchValue(owned);
 
   return (
     <>
@@ -39,7 +40,7 @@ export default function CollectionSections({
             // homes for cases, not devices the owner declared.
             deviceCount={deviceGroups.filter((g) => !g.implicit).length}
             caseCount={owned.length}
-            sums={sums}
+            totalUSD={totalUSD}
             pricedCount={pricedCount}
           />
           <hr />

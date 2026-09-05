@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { pool } from "../../../lib/db";
 import { loadCollection } from "../../../lib/collectionItems";
-import { buildCollectionStats } from "../../../lib/collectionStats";
-import { computeLaunchValue } from "../../../components/CollectionGrid";
+import {
+  buildCollectionStats,
+  computeLaunchValue,
+} from "../../../lib/collectionStats";
 import CollectionSections from "../../../components/CollectionSections";
 
 // Public, per-user page — the body streams behind a Suspense shell so it
@@ -41,11 +43,11 @@ const displayName = (owner: PublicOwner): string =>
  * collection is. */
 async function collectionSummary(ownerId: string): Promise<string> {
   const { owned, wanted, deviceGroups } = await loadCollection(ownerId);
-  const { sums, pricedCount } = computeLaunchValue(owned);
+  const { totalUSD, pricedCount } = computeLaunchValue(owned);
   const parts = buildCollectionStats({
     deviceCount: deviceGroups.filter((group) => !group.implicit).length,
     caseCount: owned.length,
-    sums,
+    totalUSD,
     pricedCount,
   }).map((stat) => stat.label);
   if (wanted.length > 0) {
