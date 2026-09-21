@@ -136,9 +136,6 @@ export const auth = betterAuth({
     // Must stay last: rewrites Set-Cookie for Next.js server actions.
     nextCookies(),
   ],
-  experimental: {
-    joins: true, // Enable database joins for better performance
-  },
   advanced: {
     ipAddress: {
       // For Vercel
