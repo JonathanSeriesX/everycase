@@ -129,7 +129,7 @@ def main():
 
     fields = list(asdict(results[0]).keys()) if results else []
     with args.report.open("w", newline="") as f:
-        wr = csv.DictWriter(f, fieldnames=fields)
+        wr = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         wr.writeheader()
         for m in results:
             wr.writerow(asdict(m))

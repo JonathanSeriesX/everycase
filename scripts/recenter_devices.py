@@ -139,7 +139,7 @@ def main():
               f"y {float(r['off_y_frac']):+.3f}->{new_off_y:+.3f}  AE={ae}")
 
     with (args.dest / "centering_manifest.csv").open("w", newline="") as f:
-        wr = csv.DictWriter(f, fieldnames=list(manifest[0].keys()))
+        wr = csv.DictWriter(f, fieldnames=list(manifest[0].keys()), lineterminator="\n")
         wr.writeheader()
         wr.writerows(manifest)
 
