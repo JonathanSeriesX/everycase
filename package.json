@@ -21,7 +21,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind"
+    "postbuild": "node scripts/pagefind.mjs"
   },
   "dependencies": {
     "@better-auth/infra": "^0.4.17",
