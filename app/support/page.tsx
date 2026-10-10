@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   title: "Support",
 };
 
+export const ensureStatic = "navigation";
+
 export default function SupportPage() {
   return <ProseArticle slug="support" title="Support" />;
 }

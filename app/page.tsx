@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   title: { absolute: "Finest Woven" },
 };
 
+export const ensureStatic = "navigation";
+
 export default async function HomePage() {
   const intro = await getProsePage("index");
   return (

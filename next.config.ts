@@ -63,40 +63,13 @@ const nextConfig: NextConfig = {
   // prefetch requests with one reusable shell per route.
   cacheComponents: true,
   partialPrefetching: true,
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "everycase.org",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "cloudfront.everycase.org",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "store.storeimages.cdn-apple.com",
-        pathname: "/**",
-      },
-    ],
-    unoptimized: true,
-    //quality: 100,
-    formats: ["image/avif", "image/webp"],
-    imageSizes: [512, 2048],
-    minimumCacheTTL: 2678400, // 31 days
-  },
+  images: { unoptimized: true },
   // The collection page and API read the catalogue CSVs at request time;
   // make sure they're bundled into those routes' serverless functions.
   outputFileTracingIncludes: {
     "/collection": ["./database/*"],
     "/collections/[username]": ["./database/*"],
     "/api/collection": ["./database/*"],
-  },
-  experimental: {
-    appNewScrollHandler: true,
-    turbopackFileSystemCacheForDev: true,
   },
   allowedDevOrigins: ["*.orb.local", "127.0.0.1"],
   async headers() {

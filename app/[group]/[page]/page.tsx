@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import { GROUPS, getGroup, getPage } from "../../../lib/catalogue";
 import { getPageHeading } from "../../../lib/notes";
 import { resolveOgImage, ogMetadata } from "../../../lib/og";
@@ -21,6 +22,7 @@ export async function generateMetadata({
   params,
 }: ModelRouteProps): Promise<Metadata> {
   "use cache";
+  cacheLife("max");
   const { group: groupSlug, page: pageSlug } = await params;
   const page = getPage(groupSlug, pageSlug);
   if (!page) return {};
@@ -41,9 +43,11 @@ export async function generateMetadata({
 // data — which is also what lets params resolve inside a cache scope without
 // making the route dynamic.
 export const instant = false;
+export const ensureStatic = "navigation";
 
 export default async function ModelPage({ params }: ModelRouteProps) {
   "use cache";
+  cacheLife("max");
   const { group: groupSlug, page: pageSlug } = await params;
   const group = getGroup(groupSlug);
   const page = getPage(groupSlug, pageSlug);

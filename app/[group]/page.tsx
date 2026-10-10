@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import {
   GROUPS,
   TOP_PAGES,
@@ -31,6 +32,7 @@ export async function generateMetadata({
   params,
 }: GroupRouteProps): Promise<Metadata> {
   "use cache";
+  cacheLife("max");
   const { group: slug } = await params;
   const entry = getGroup(slug) ?? getTopPage(slug);
   if (!entry) return {};
@@ -44,9 +46,11 @@ export async function generateMetadata({
 // purpose, so unknown slugs get a real 404 status; all known slugs are fully
 // prerendered and the render is cached per-slug.
 export const instant = false;
+export const ensureStatic = "navigation";
 
 export default async function GroupPage({ params }: GroupRouteProps) {
   "use cache";
+  cacheLife("max");
   const { group: slug } = await params;
 
   const topPage = getTopPage(slug);

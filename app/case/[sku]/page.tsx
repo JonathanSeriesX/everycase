@@ -250,6 +250,7 @@ export async function generateMetadata(
 // those must block so notFound() can return a real 404 status instead of a
 // streamed soft-404 behind a Suspense shell.
 export const instant = false;
+export const ensureStatic = "navigation";
 
 export default async function CasePage({ params }: CaseRouteProps) {
   const { sku } = await params;
