@@ -25,6 +25,9 @@ export const viewport: Viewport = {
   ],
 };
 
+// Vercel sets this for Production only: previews and local dev stay untracked.
+const beaconToken = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
+
 const baseTitle = {
   default: "Finest Woven",
   template: "%s — Finest Woven",
@@ -142,11 +145,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ThemeColorSync />
             <Analytics />
             <SpeedInsights />
-            <script
-              defer
-              src="https://static.cloudflareinsights.com/beacon.min.js"
-              data-cf-beacon='{"token": "95e2bceaf09643619d934557acc8f72d"}'
-            ></script>
+            {beaconToken && (
+              <script
+                defer
+                src="https://static.cloudflareinsights.com/beacon.min.js"
+                data-cf-beacon={JSON.stringify({ token: beaconToken })}
+              ></script>
+            )}
           </Providers>
         </ThemeProvider>
       </body>
