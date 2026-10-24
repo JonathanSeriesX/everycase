@@ -55,6 +55,21 @@ export const GROUPS: CatalogueGroup[] = [
     hero: "MM163_AV4",
     pages: [
       {
+        slug: "duo",
+        title: "iPhone Duo",
+        blurb: "Cases & Folios",
+        hero: "MKR94",
+        models: ["iPhone Duo"],
+      },
+      {
+        slug: "18",
+        title: "iPhone 18 Pro, Max",
+        blurb: "Silicone & TechWoven",
+        hero: "MK8U4",
+        models: ["iPhone 18 Pro", "iPhone 18 Pro Max"],
+        merged: ["Clear Case"],
+      },
+      {
         slug: "air",
         title: "iPhone Air",
         blurb: "Cases & Bumpers",
@@ -326,7 +341,7 @@ export const GROUPS: CatalogueGroup[] = [
     pages: [
       {
         slug: "crossbody",
-        title: "Crossbody Strap",
+        title: "Crossbody & Wrist Straps",
         models: ["iPhone Gloryhole Case"],
       },
       {
@@ -433,6 +448,7 @@ const KIND_ORDER = [
   "Leather Case",
   "Leather Sleeve",
   "Leather Folio",
+  "Folio",
   "Smart Battery Case",
   "Bumper",
   "Smart Case",
@@ -448,6 +464,7 @@ const KIND_ORDER = [
   "FineWoven Wallet",
   "Leather Wallet",
   "Crossbody Strap",
+  "Wrist Strap",
   "FineWoven Key Ring",
   "Leather Key Ring",
   "Leather Loop",
