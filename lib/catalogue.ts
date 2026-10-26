@@ -227,7 +227,7 @@ export const GROUPS: CatalogueGroup[] = [
     pages: [
       {
         slug: "mini-2026",
-        title: "iPad mini A20 Pro",
+        title: "iPad mini (A20 Pro)",
         blurb: "Smart Folio",
         hero: "MKR54_AV4",
         models: ["iPad mini A20 Pro"],
