@@ -24,7 +24,7 @@
     "postbuild": "node scripts/pagefind.mjs"
   },
   "dependencies": {
-    "@better-auth/infra": "^0.4.23",
+    "@better-auth/infra": "^0.4.24",
     "@better-auth/passkey": "^1.7.14",
     "@mdx-js/mdx": "^3.1.1",
     "@tanstack/react-query": "^5.105.0",
